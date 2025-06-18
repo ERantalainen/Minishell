@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 16:05:04 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/18 02:06:18 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/18 04:19:23 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,8 @@ void	*arena_malloc(size_t n)
 
 	arena = get_arenas(n);
 	alg_i = (arena->index + (ALIGNMENT - 1)) & ~(ALIGNMENT - 1);
-	arena->size += n;
 	ret = &arena->data[alg_i];
-	arena->index = alg_i + n + 1;
+	arena->index = alg_i + n;
 	return (ret);
 }
 
@@ -34,11 +33,10 @@ t_arena *init_arena(size_t size)
 {
 	t_arena	*arena;
 
-	arena = ft_calloc(size, 1);
+	arena = ft_calloc(size + (sizeof(t_arena)), 1);
 	if (!arena)
 		exit(1);
 	arena->max = size;
-	arena->size = 0;
 	arena->index = 0;
 	return (arena);
 }
@@ -48,7 +46,7 @@ t_arena *init_arena(size_t size)
 t_arena *get_arenas(size_t n)
 {
 	static int		arena_count = 0;
-	static int		index = 0;
+	int		i = 0;
 	static t_arena **arenas;
 
 	if (arena_count < 2)
@@ -59,25 +57,29 @@ t_arena *get_arenas(size_t n)
 		arenas[arena_count++] = init_arena(ARENA_SIZE);
 		arenas[arena_count++] = init_arena(ARENA_SIZE);
 	}
-	while (index < arena_count && arenas[index]->max - arenas[index]->size < n)
-	while (arenas[index]->max - arenas[index]->size < n && index < arena_count)
-		index++;
-	if (index == arena_count)
+	while (i < arena_count)
+	{
+		if (arenas[i]->max - arenas[i]->index >= n)
+			return (arenas[i]);
+		i++;
+	}
+	if (i == arena_count)
 	{
 		arenas = new_arena(arenas, arena_count, n);
-		index++;
+		arena_count++;
 	}
-	return (arenas[index]);
+	return (arenas[i]);
 }
 
-// Creates a new arena when there isn't enough memory in current arenas.
+// Creates a new arena when there isn't enough memory in current arenas. 
+// Free the old arena pointers, only the data matters. 
 
 t_arena **new_arena(t_arena **curr, int	count, size_t n)
 {
 	t_arena	**arenas;
 	int		i = 0;
 
-	arenas = malloc(sizeof(t_arena *) * count + 1);
+	arenas = malloc(sizeof(t_arena *) * (count + 1));
 	if (!arenas)
 		exit(1);
 	while (i < count)
@@ -85,6 +87,10 @@ t_arena **new_arena(t_arena **curr, int	count, size_t n)
 		arenas[i] = curr[i];
 		i++;
 	}
-	arenas[i] = init_arena(n);
+	free (curr);
+	if (n > ARENA_SIZE)
+		arenas[i] = init_arena(n);
+	else
+		arenas[i] = init_arena(ARENA_SIZE);
 	return (arenas);
 }

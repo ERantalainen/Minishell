@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 16:05:32 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/18 02:01:57 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/18 04:08:19 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@
 
 typedef struct s_arena
 {
-	size_t	size;
 	size_t	max;
 	size_t	index;
 	char	data[];
