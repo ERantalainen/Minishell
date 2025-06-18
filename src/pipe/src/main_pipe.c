@@ -76,12 +76,10 @@ static void	open_infile(t_pipex *p, char **av)
 		handle_open_error(av[1], p);
 }
 
-int	ft_pipe(int ac, char **av, char **env)
+void	ft_pipe(int ac, char **av, char **env)
 {
 	t_pipex	*p;
 
-	ft_printf("pipe\n");
-	return (0);
 	p = ft_calloc(1, sizeof(t_pipex));
 	if (!p)
 		exit_handler(1, "allocation failed", NULL);

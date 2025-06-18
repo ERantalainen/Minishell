@@ -44,7 +44,7 @@ typedef struct s_pipex
 	bool	is_heredoc;
 }			t_pipex;
 
-int		ft_pipe(int ac, char **av, char **env);
+void	ft_pipe(int ac, char **av, char **env);
 void	execute_pipeline(t_pipex *p, int ac, char **av, char **env);
 void	exit_handler(int code, char *param1, void *param2);
 void	free_exit(t_pipex *p, char **array1, char **array2, bool status);
