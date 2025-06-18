@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_BONUS_H
-# define PIPEX_BONUS_H
+#ifndef PIPEX_H
+# define PIPEX_H
 
 # include "libft.h"
 # include <errno.h>
@@ -44,6 +44,7 @@ typedef struct s_pipex
 	bool	is_heredoc;
 }			t_pipex;
 
+int		ft_pipe(int ac, char **av, char **env);
 void	execute_pipeline(t_pipex *p, int ac, char **av, char **env);
 void	exit_handler(int code, char *param1, void *param2);
 void	free_exit(t_pipex *p, char **array1, char **array2, bool status);
@@ -52,4 +53,4 @@ void	free_arrays(char **array1, char **array2);
 void	get_cmd_args(t_pipex *p, char *av_cmd);
 void	get_bin_path(t_pipex *p, char *av_index, char **env);
 
-#endif // PIPEX_BONUS_H
+#endif // PIPEX_H

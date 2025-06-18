@@ -59,7 +59,8 @@ FD_SRCS		:= get_next_line.c ft_putchar_fd.c ft_putstr_fd.c \
 			ft_uputnbr_fd.c
 
 # Conversion functions
-CONV_SRCS	:= ft_atoi.c ft_atof.c ft_atoib.c ft_itoa.c ft_printf.c
+CONV_SRCS	:= ft_atoi.c ft_atof.c ft_atoib.c ft_itoa.c ft_printf.c \
+			   ft_fprintf.c
 
 # Linked list functions (bonus)
 LST_SRCS	:= ft_lstnew_bonus.c ft_lstadd_front_bonus.c \
