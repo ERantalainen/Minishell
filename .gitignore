@@ -1,6 +1,4 @@
 .vscode/c_cpp_properties.json
 .vscode/launch.json
 .vscode/settings.json
-srcs/a.out
-.gitignore
-srcs/unit_test.c
+
