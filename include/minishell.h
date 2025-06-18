@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 16:05:32 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/18 17:28:09 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/18 17:48:11 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ typedef	struct s_token
 	t_type	t;
 	char	*s;
 	int		i;
-};
+}	t_token;
 
 typedef	struct s_vector
 {
@@ -62,7 +62,7 @@ t_arena *find_arena(size_t n);
 t_arena **new_arena(t_arena **curr, int	count, size_t n);
 
 t_vector	*new_vector(size_t elem);
-t_vector	*expand_vector(t_vector *vector, size_t elems);
+void		expand_vector(t_vector **vector, size_t elems);
 int			add_elem(t_vector *vector, void *elem);
 void		change_data(t_vector *vector, void *elem, void *target);
 

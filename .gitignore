@@ -1,4 +1,5 @@
 .vscode/c_cpp_properties.json
 .vscode/launch.json
 .vscode/settings.json
-
+a.out
+src/vector_test.c

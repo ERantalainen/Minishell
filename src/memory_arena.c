@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 16:05:04 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/18 17:27:23 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/18 17:32:43 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	*arena_malloc(size_t n)
 	void	*ret;
 	size_t	alg_i;
 
-	arena = get_arenas(n);
+	arena = find_arena(n);
 	alg_i = (arena->index + (ALIGNMENT - 1)) & ~(ALIGNMENT - 1);
 	ret = &arena->data[alg_i];
 	arena->index = alg_i + n;

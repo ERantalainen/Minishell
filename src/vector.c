@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 16:48:14 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/18 17:27:35 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/18 17:47:52 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_vector	*new_vector(size_t elem)
 {
 	t_vector	*vector;
 
-	vector = arena_malloc(sizeof(vector));
+	vector = arena_malloc(sizeof(t_vector));
 	if (!vector)
 		exit(1);
 	vector->data = arena_malloc(sizeof(void *) * (elem * 2 + 1));
@@ -27,26 +27,28 @@ t_vector	*new_vector(size_t elem)
 	return (vector);
 }
 
-t_vector	*expand_vector(t_vector *vector, size_t elems)
+void	expand_vector(t_vector **vector, size_t elems)
 {
 	t_vector	*dup;
 	int			i;
 
 	i = 0;
 	dup = new_vector(elems);
-	while(i < vector->count && vector->data[i] != NULL)
+	while(i < vector[0]->count && vector[0]->data[i] != NULL)
 	{
-		dup->data[i] = vector->data[i];
+		dup->data[i] = vector[0]->data[i];
 		i++;
 	}
-	return (dup);
+	dup->count = vector[0]->count;
+	free(vector[0]);
+	vector = &dup;
 }
 
 int	add_elem(t_vector *vector, void *elem)
 {
 	if (vector->count == vector->size)
-		expand_vector(vector, vector->count + 1);
-	vector->data[vector->count + 1] = elem;
+		expand_vector(&vector, vector->count + 1);
+	vector->data[vector->count] = elem;
 	vector->count++;
 	return (vector->count);
 }
