@@ -1,0 +1,25 @@
+[
+ {
+  "directory": "/home/jpelline/42curriculum/minishell",
+  "arguments": [
+   "cc",
+   "-Wextra",
+   "-Wall",
+   "-Werror",
+   "-MT",
+   "obj/main.o",
+   "-MMD",
+   "-MP",
+   "-MF",
+   "obj/.deps/main.d",
+   "-O2",
+   "-c",
+   "src/main.c",
+   "-o",
+   "obj/main.o",
+   "-I./include",
+   "-Ilibft/include"
+  ],
+  "file": "src/main.c"
+ }
+]
