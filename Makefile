@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+         #
+#    By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/03 18:36:06 by jpelline          #+#    #+#              #
-#    Updated: 2025/06/17 16:42:15 by jpelline         ###   ########.fr        #
+#    Updated: 2025/06/18 15:21:45 by erantala         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
