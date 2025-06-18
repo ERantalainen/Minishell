@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 16:05:32 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/18 17:48:11 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/18 18:54:24 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,10 @@ typedef struct s_arena
 typedef enum e_type
 {
 	PIPE,
-	REDIRECT
+	INPUT,
+	OUTPUT,
+	APPEND,
+	HERE_DOC
 }	t_type;
 
 typedef	struct s_token

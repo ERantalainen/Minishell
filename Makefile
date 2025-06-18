@@ -24,7 +24,7 @@ CFLAGS		:= -Wextra -Wall -Werror
 DEBUG_FLAGS	:= -g3 -fsanitize=address -fsanitize=undefined
 OPTFLAGS	:= -O2
 
-VPATH		:= src:src/pipe/src
+VPATH		:= src:src/pipe/src:src/builtin:src/tokenizer
 
 ifeq ($(MAKECMDGOALS),bonus)
 SRC_DIR		:= src_bonus
@@ -57,10 +57,12 @@ RESET		:= $(shell tput sgr0)
 
 # ============================== SOURCE FILES ================================ #
 
-SRCS_MAIN	:= main.c memory_arena.c vector.c
+SRCS_MAIN	:= main.c memory_arena.c vector.c parseinput.c
 
 SRCS_PIPE	:= child_process.c cleanup_utils.c command_parser.c \
 		   main_pipe.c pipeline_manager.c
+
+SRCS_BUILTIN	:= cd.c echo.c export.c pwd.c
 
 SRCS_BONUS	:= \
 
