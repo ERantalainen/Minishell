@@ -6,7 +6,7 @@
 #    By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/03 18:36:06 by jpelline          #+#    #+#              #
-#    Updated: 2025/06/18 15:21:45 by erantala         ###   ########.fr        #
+#    Updated: 2025/06/18 19:34:54 by jpelline         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,10 +20,11 @@ endif
 
 PROGRAM_NAME	:= minishell
 CC		:= cc
-CFLAGS		:= -Wextra -Wall -Werror
+CFLAGS		:= -Wextra -Wall -Werror 
 DEBUG_FLAGS	:= -g3 -fsanitize=address -fsanitize=undefined
 OPTFLAGS	:= -O2
 
+VPATH		:= src:src/pipe/src
 
 ifeq ($(MAKECMDGOALS),bonus)
 SRC_DIR		:= src_bonus
@@ -41,10 +42,7 @@ LIBFT		:= $(LIBFT_DIR)/libft.a
 INC		:= -I./include -I$(LIBFT_DIR)/include -I./src/pipe/include
 INC_BONUS	:= -I./include_bonus -I$(LIBFT_DIR)/include
 
-LDFLAGS		:= -L$(LIBFT_DIR) -lft
-
-MARKER_STANDARD := .standard_build
-MARKER_BONUS	:= .bonus_build
+LDFLAGS		:= -L$(LIBFT_DIR) -lft -lreadline
 
 # ============================== VISUAL STYLING ============================== #
 
@@ -59,10 +57,10 @@ RESET		:= $(shell tput sgr0)
 
 # ============================== SOURCE FILES ================================ #
 
-SRCS_MAIN	:= main.c \
+SRCS_MAIN	:= main.c memory_arena.c vector.c
 
 SRCS_PIPE	:= child_process.c cleanup_utils.c command_parser.c \
-		   main.c pipeline_manager.c
+		   main_pipe.c pipeline_manager.c
 
 SRCS_BONUS	:= \
 
@@ -78,12 +76,11 @@ OBJS		:= $(addprefix $(OBJ_DIR)/,$(SRCS:.c=.o))
 TOTAL_SRCS	:= $(words $(SRCS))
 endif
 
-WAS_BONUS	:= $(shell [ -f "$(MARKER_BONUS)" ] && echo yes)
-
+MARKER_STANDARD := .standard_build
+MARKER_BONUS	:= .bonus_build
 PROGRESS_FILE	:= $(OBJ_DIR)/.progress
-
-LATEST_SRC	:= $(shell ls -t $(SRC_DIR)/*.c 2>/dev/null | head -n1)
-
+WAS_BONUS	:= $(shell [ -f "$(MARKER_BONUS)" ] && echo yes)
+LATEST_SRC	:= $(shell find src -name "*.c" | xargs ls -t 2>/dev/null | head -1)
 OBJ_FILES_EXIST := $(shell [ -n "$(wildcard $(OBJ_DIR)/*.o)" ] && echo yes)
 
 is_up_to_date = \
@@ -109,7 +106,6 @@ all:
 		echo ">$(BOLD)$(GREEN)  All components built successfully!$(RESET)"; \
 	fi
 
-# Main executable target - links all objects and libraries
 $(NAME): $(OBJS) $(LIBFT)
 	@echo ">$(BOLD)$(GREEN)  Linking $(NAME)...$(RESET)"
 	@$(CC) $(CFLAGS) -o $(PROGRAM_NAME) $(OBJS) $(LDFLAGS) $(OPTFLAGS)
@@ -118,8 +114,7 @@ $(NAME): $(OBJS) $(LIBFT)
 	@rm -f $(PROGRESS_FILE)
 	@echo ">$(BOLD)$(GREEN)  $(NAME) successfully compiled!$(RESET)"
 
-# Compilation rule for each source file
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR) $(DEP_DIR)
+$(OBJ_DIR)/%.o: %.c | $(OBJ_DIR) $(DEP_DIR)
 	@if [ -f $(PROGRESS_FILE) ]; then \
 		CURRENT=$$(cat $(PROGRESS_FILE)); \
 		NEXT=$$((CURRENT + 1)); \
@@ -169,7 +164,6 @@ endif
 
 # ============================== ADDITIONAL TARGETS =============================== #
 
-# Create necessary directories if they don't exist
 $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
 	@echo "0" > $(PROGRESS_FILE)
@@ -177,23 +171,19 @@ $(OBJ_DIR):
 $(DEP_DIR): | $(OBJ_DIR)
 	@mkdir -p $@
 
-# Include auto-generated dependency files
 -include $(wildcard $(DEP_DIR)/*.d)
 
-# Debug target
 debug: CFLAGS += $(DEBUG_FLAGS)
 debug: OPTFLAGS := -O0
 debug: clean $(NAME)
 	@echo ">$(BOLD)$(CYAN)  Debug build completed!$(RESET)"
 
-# build libft if needed
 $(LIBFT):
 	@echo ">$(MAGENTA)  Entering libft directory...$(RESET)"
 	@$(MAKE) -C $(LIBFT_DIR) --no-print-directory
 
 # ============================== CLEAN TARGETS =============================== #
 
-# Remove object files and dependency files
 clean:
 	@if [ -d $(OBJ_DIR) ]; then \
 		echo "> [ pipex ] $(YELLOW) Cleaning object files...$(RESET)"; \
@@ -210,7 +200,6 @@ clean:
 		fi; \
 	fi
 
-# Remove everything including the executable
 fclean: clean
 	@if [ -f $(PROGRAM_NAME) ]; then \
 		echo "> [ pipex ] $(YELLOW) Removing $(PROGRAM_NAME)...$(RESET)"; \
@@ -227,7 +216,6 @@ fclean: clean
 		echo "> [ libft ] $(BOLD)$(YELLOW) Nothing to be done with $(RESET)$(WHITE)fclean$(RESET)"; \
 	fi
 
-# Full rebuild from scratch
 ifeq ($(WAS_BONUS),yes)
 re:
 	@echo "> [ pipex ] $(BOLD)$(WHITE) Rebuilding from scratch...$(RESET)"
@@ -240,7 +228,6 @@ re:
 	@$(MAKE) $(NAME) --no-print-directory
 endif
 
-# Additional useful targets
 help:
 	@echo "$(BOLD)$(CYAN)Available targets:$(RESET)"
 	@echo "  $(GREEN)all$(RESET)     - Build the project (default)"
@@ -250,6 +237,5 @@ help:
 	@echo "  $(GREEN)re$(RESET)      - Rebuild from scratch"
 	@echo "  $(GREEN)help$(RESET)    - Show this help message"
 
-# Prevent intermediate files from being deleted
 .SECONDARY: $(OBJS) $(OBJS_BONUS)
 .PHONY: all debug clean fclean re help bonus

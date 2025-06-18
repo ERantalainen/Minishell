@@ -6,11 +6,11 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 16:05:04 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/18 04:19:23 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/18 17:32:43 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../Includes/minishell.h"
+#include "minishell.h"
 
 // Memory arena to store all allocated memory in one location.
 
@@ -20,7 +20,7 @@ void	*arena_malloc(size_t n)
 	void	*ret;
 	size_t	alg_i;
 
-	arena = get_arenas(n);
+	arena = find_arena(n);
 	alg_i = (arena->index + (ALIGNMENT - 1)) & ~(ALIGNMENT - 1);
 	ret = &arena->data[alg_i];
 	arena->index = alg_i + n;
@@ -43,19 +43,20 @@ t_arena *init_arena(size_t size)
 
 // Returns a free point in the arena, if arenas are full allocates more.
 
-t_arena *get_arenas(size_t n)
+t_arena *find_arena(size_t n)
 {
-	static int		arena_count = 0;
+	static int	arena_count = 0;
 	int		i = 0;
-	static t_arena **arenas;
+	t_arena	**arenas;
 
+	arenas = get_arenas();
 	if (arena_count < 2)
 	{
 		arenas = malloc(sizeof(t_arena *) * 2);
 		if (!arenas)
-			exit;
-		arenas[arena_count++] = init_arena(ARENA_SIZE);
-		arenas[arena_count++] = init_arena(ARENA_SIZE);
+			exit(1);
+		arenas = new_arena(arenas, 0, ARENA_SIZE);
+		arenas = new_arena(arenas, 1, ARENA_SIZE);
 	}
 	while (i < arena_count)
 	{
@@ -71,15 +72,15 @@ t_arena *get_arenas(size_t n)
 	return (arenas[i]);
 }
 
-// Creates a new arena when there isn't enough memory in current arenas. 
-// Free the old arena pointers, only the data matters. 
+// Creates a new arena when there isn't enough memory in current arenas.
+// Free the old arena pointers, only the data matters.
 
 t_arena **new_arena(t_arena **curr, int	count, size_t n)
 {
 	t_arena	**arenas;
 	int		i = 0;
 
-	arenas = malloc(sizeof(t_arena *) * (count + 1));
+	arenas = malloc(sizeof(t_arena *) * (count + 2));
 	if (!arenas)
 		exit(1);
 	while (i < count)
@@ -92,5 +93,28 @@ t_arena **new_arena(t_arena **curr, int	count, size_t n)
 		arenas[i] = init_arena(n);
 	else
 		arenas[i] = init_arena(ARENA_SIZE);
+	arenas[i + 1] = NULL;
 	return (arenas);
+}
+
+t_arena	**get_arenas(void)
+{
+	static t_arena **arenas;
+
+	return (arenas);
+}
+
+void	free_arenas()
+{
+	t_arena	**arenas;
+	int		i;
+
+	i = 0;
+	arenas = get_arenas();
+	while (arenas[i])
+	{
+		free(arenas[i]);
+		i++;
+	}
+	free(arenas);
 }
