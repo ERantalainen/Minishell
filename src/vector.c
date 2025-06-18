@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 16:48:14 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/18 17:47:52 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/18 17:52:05 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void	expand_vector(t_vector **vector, size_t elems)
 		i++;
 	}
 	dup->count = vector[0]->count;
-	free(vector[0]);
 	vector = &dup;
 }
 
