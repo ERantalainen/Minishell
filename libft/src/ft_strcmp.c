@@ -1,44 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parseinput.c                                       :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/18 18:56:03 by erantala         ###   ########.fr       */
+/*   Created: 2025/06/19 03:25:26 by erantala          #+#    #+#             */
+/*   Updated: 2025/06/19 03:28:50 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-t_token	create_token(char *s)
+int	ft_strcmp(const char *s1, const char *s2)
 {
-	t_token	*new;
+	size_t	i;
 
-	new = arena_malloc(sizeof(t_token));
-	
-}
-
-t_vector	*token_vector(char *s)
-{
-	int	i;
-	t_vector	*tokens;
-
-	tokens = new_vector(4);
 	i = 0;
-	while (s[i])
+	while ((s1[i] || s2[i]))
 	{
-		while(ft_isspace(s[i]))
-			i++;
-		create_token(s + i);
+		if ((unsigned char)s1[i] != (unsigned char)s2[i])
+			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+		i++;
 	}
-}
-t_vector	*token_string(char	*s)
-{
-	char	*s;
-	int		pos;
-	int		len;
-
-
+	return (0);
 }

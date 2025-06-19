@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:41:00 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/18 18:46:13 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/19 03:20:48 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,9 @@
 char	*ft_strndup(char *s, size_t n)
 {
 	size_t	pos;
-	int		len;
+	size_t	len;
 	char	*dup;
+	
 	if (!s)
 		return (NULL);
 	pos = 0;
