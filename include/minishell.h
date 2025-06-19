@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 16:05:32 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/19 03:19:40 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/19 18:03:31 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ typedef	struct s_variable
 typedef struct s_command
 {
 	char	*str;
+	t_type	type;
 	t_type	next;
 } t_cmd;
 
@@ -82,5 +83,8 @@ char	*token_string(char	*s);
 t_vector	*create_commands(t_vector *tokens);
 t_cmd	*make_command(t_vector *tokens, int *i);
 void	mini_append(char *s1, char *s2);
+size_t	word_len(char *s);
+
+char	*find_export(char *key);
 
 #endif
