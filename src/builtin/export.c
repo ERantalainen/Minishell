@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:12:54 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/19 18:16:45 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/19 19:33:10 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,18 @@ void	export(char *key, char *expansion)
 	return ;
 }
 
+// Exports a new variable with key and expansion.
+
 t_vector	*get_vars()
 {
-	static t_vector *variables;
+	static t_vector *variables = NULL;
 
 	if (!variables)
 		variables = new_vector(10);
 	return (variables);
 }
+
+// Return a vector of expanded variables.
 
 char	*find_export(char *key)
 {
@@ -52,3 +56,5 @@ char	*find_export(char *key)
 	}
 	return ("");
 }
+
+// Finds an exported variable by searching its key.

@@ -6,11 +6,14 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/19 18:15:51 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/19 19:31:03 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+// ADJUST ADJUST ADJUST ADJUST ADJUST WHICH FUNCTION IS BEING CALLED AND WHEN !!!!
+// https://www.gnu.org/software/bash/manual/bash.html#Shell-Syntax
 
 t_token	*create_token(char *s, int *i)
 {
@@ -43,7 +46,7 @@ t_vector	*token_vector(char *s)
 	i = 0;
 	while (s[i])
 	{
-		token = create_token(s, i);
+		token = create_token(s, &i);
 		add_elem(tokens, token);
 		while (ft_isspace(s[i]) == 1 && s[i])
 			i++;
@@ -55,12 +58,13 @@ char	*token_string(char	*s, int	*i)
 	char	*token;
 	int		len;
 
-	if (s[(*i)++] == '\'' || s[(*i)++] == '"')
+	if (s[(*i)] == '\'' || s[(*i)] == '"')
 	{
-		return (quoted_token(s, s[(*i)++], i));
+		return (quoted_token(s, s[(*i)], i));
 	}
 	len = word_len(s);
 	token = mini_strndup(s, len, 1);
+	(*i) += len + 1;
 	return (token);
 }
 
@@ -126,7 +130,7 @@ char	*quoted_token(char *s, char quote, int *i)
 	{
 		while (s[pos] != '\'' && s[pos])
 			pos++;
-		str = mini_strndup(s, pos, 0);
+		str = mini_strndup(s + *i, pos);
 		(*i) += pos;
 		return (str);
 	}
@@ -134,32 +138,21 @@ char	*quoted_token(char *s, char quote, int *i)
 	{
 		while (s[pos] != '"' && s[pos])
 			pos++;
-		str = mini_strndup(s, pos, 1);
+		str = mini_strndup(s + *i, pos);
 		(*i) += pos;
 		return (str);
 	}
 }
 
-char	*mini_strndup(char *s, size_t n, int expand)
+// Creates a token with quotes
+
+char	*mini_strndup(char *s, size_t n)
 {
 	char	*dup;
-	char	*expand;
-	int		len;
 	size_t	i;
 
 	i = 0;
-	len = 0;
-	if (expand == 1)
-	{
-		while (s[i] && i < n)
-		{
-			if (s[i] == '$')
-				len += ft_strlen(find_export(s + i));
-			i++;
-		}
-	}
-	i = 0;
-	dup = arena_malloc(sizeof(n + len + 1));
+	dup = arena_malloc(sizeof(n + 1));
 	while (i < n)
 	{
 		dup[i] = s[i];
@@ -168,6 +161,8 @@ char	*mini_strndup(char *s, size_t n, int expand)
 	dup[i] = '\0';
 	return (dup);
 }
+
+// Simply makes a duplicate string with size N not considering expansions.
 
 size_t	word_len(char *s)
 {
@@ -178,3 +173,59 @@ size_t	word_len(char *s)
 		i++;
 	return (i);
 }
+
+// Counts the length of a single word.
+
+char	*expand_strndup(char *s, size_t n)
+{
+	char	*dup;
+	char	*expansion;
+	size_t	len;
+	size_t	i;
+	size_t	pos;
+
+	pos = 0;
+	i = 0;
+	len = expanded_length(s, n);
+	dup = arena_malloc(sizeof(len + 1));
+	while (i < len)
+	{
+		if (s[i] == '$')
+		{
+			expansion = find_export(s + i);
+			i += word_len(s + i);
+			ft_strlcat(dup, expansion, ft_strlen(expansion) + pos);
+			pos += ft_strlen(expansion);
+			if (i >= len)
+				break ;
+		}
+		dup[pos++] = s[i++];
+	}
+	dup[pos] = '\0';
+	return (dup);
+}
+
+// Get the total length of dup once expanded. If an expansion ($) is detected
+// Find the expansion, cat it onto the new string and adjust positions.
+// Null terminate and return the result
+
+size_t	expanded_length(char *s, size_t n)
+{
+	size_t	i;
+	size_t	total;
+
+	i = 0;
+	total = 0;
+	while (s[i] && i <  n)
+	{
+		if (s[i] == '$')
+		{
+			total += ft_strlen(find_export(s + i));
+			total -= word_len(s + i);
+		}
+		i++;
+	}
+	return (i + total);
+}
+
+// Get total length of a token with expansions.

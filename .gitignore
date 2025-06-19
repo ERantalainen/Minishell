@@ -4,3 +4,4 @@
 a.out
 src/vector_test.c
 src/inputtest.c
+src/parse_test.c
