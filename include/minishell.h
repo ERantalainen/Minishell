@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 16:05:32 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/20 04:05:03 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/20 15:01:49 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,13 @@ typedef struct s_arena
 	size_t	index;
 	char	data[];
 }	t_arena;
+
+// typedef	struct s_data
+// {
+// 	/* data */
+// }	t_data;
+// MAKE A STRUCT TO STORE ALL DATA FDS, COMMANDS ETC.s
+
 
 typedef enum e_type
 {
@@ -86,7 +93,8 @@ t_token		*create_token(char *s, size_t *i);
 t_vector	*token_vector(char *s);
 char		*token_string(char	*s, size_t	*i);
 t_vector	*create_commands(t_vector *tokens);
-t_cmd		*make_command(t_vector *tokens, size_t *i);
+t_cmd		*make_cmd_spc(t_vector *tokens, size_t *i);
+t_cmd		*make_cmd_str(t_vector *tokens, size_t *i);
 size_t		expanded_length(char *s, size_t n);
 
 int			check_specials(int	c);

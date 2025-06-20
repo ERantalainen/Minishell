@@ -6,13 +6,13 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/20 04:40:58 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/20 16:44:45 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// ADJUST ADJUST ADJUST ADJUST ADJUST WHICH FUNCTION IS BEING CALLED AND WHEN !!!!
+// MAKE EXCEPTONS FOR <<<A <>A ><A 
 // https://www.gnu.org/software/bash/manual/bash.html#Shell-Syntax
 
 t_token	*create_token(char *s, size_t *i)
@@ -21,7 +21,7 @@ t_token	*create_token(char *s, size_t *i)
 
 	new = arena_malloc(sizeof(t_token));
 	new->s = token_string(s, i);
-	printf("%s\n", new->s);
+	printf("->%s<-\n", new->s);
 	if (ft_strncmp(new->s, "|", 1) == 0)
 		new->t = PIPE;
 	else if (ft_strcmp(new->s, "<") == 0)
@@ -38,6 +38,8 @@ t_token	*create_token(char *s, size_t *i)
 	return (new);
 }
 
+// check for token type
+
 t_vector	*token_vector(char *s)
 {
 	size_t	i;
@@ -48,6 +50,8 @@ t_vector	*token_vector(char *s)
 	i = 0;
 	while (s[i])
 	{
+		while (s[i] && ft_isspace(s[i]) == 1)
+			i++;
 		token = create_token(s, &i);
 		if (token->s[0] != '\0')
 			add_elem(tokens, token);
@@ -63,7 +67,7 @@ char	*token_string(char	*s, size_t	*i)
 
 	if (s[(*i)] == '\'' || s[(*i)] == '"')
 		return (quoted_token(s + *i, s[(*i)], i));
-	len = word_len(s);
+	len = word_len(s + (*i));
 	token = expand_strndup(s + (*i), len);
 	(*i) += len;
 	return (token);
@@ -72,24 +76,64 @@ char	*token_string(char	*s, size_t	*i)
 t_vector	*create_commands(t_vector *tokens)
 {
 	t_vector	*commands;
+	t_token		*curr;
 	size_t		i;
 	int	j;
 
 	j = 0;
 	i = 0;
-	commands = new_vector(tokens->count);
+	commands = new_vector(tokens->count + 1);
 	while (i < tokens->count && tokens->data[i] != NULL)
 	{
-		commands->data[j] = make_command(tokens, &i);
-		j++;
+		curr = tokens->data[i];
+		if (curr->t == STRING)
+			add_elem(commands, make_cmd_str(tokens, &i));
+		else
+			add_elem(commands, make_cmd_spc(tokens, &i));
 	}
 	return (commands);
 }
 
-t_cmd	*make_command(t_vector *tokens, size_t *i)
+t_cmd	*make_cmd_str(t_vector *tokens, size_t *i)
 {
-	// MAKE FUNCTION SPECIFICALLY FOR HANDLING STRING COMMANDS
-	// SECOND ONE FOR HANDLING NON STRING TOKENS
+	t_token	*token;
+	t_cmd	*cmd;
+
+	cmd = arena_malloc(sizeof(t_cmd));
+	token = tokens->data[(*i)];
+	cmd->type = STRING;
+	cmd->str = "";
+	while ((*i) < tokens->count && token->t == STRING)
+	{
+		cmd->str = mini_append(cmd->str, token->s);
+		(*i)++;
+		token = tokens->data[(*i)];
+	}
+	if ((*i) < tokens->count)
+		cmd->next = token->t;
+	else
+		cmd->next = EMPTY;
+	return (cmd);
+}
+
+t_cmd	*make_cmd_spc(t_vector *tokens, size_t *i)
+{
+	t_token	*token;
+	t_cmd	*cmd;
+
+	cmd = arena_malloc(sizeof(t_cmd));
+	token = tokens->data[(*i)];
+	cmd->type = token->t;
+	cmd->str = token->s;
+	(*i)++;
+	if ((*i) < tokens->count)
+	{
+		token = tokens->data[(*i)];
+		cmd->next = token->t;
+	}
+	else
+		cmd->next = EMPTY;
+	return (cmd);
 }
 
 char	*mini_append(char *s1, char *s2)
@@ -113,7 +157,7 @@ char	*quoted_token(char *s, char quote, size_t *i)
 	pos = 1;
 	while (s[pos] && s[pos] != quote)
 		pos++;
-	str = mini_strndup(s, pos + 1);
+	str = mini_strndup(s + 1, pos);
 	if (s[pos] == quote)
 		pos++;
 	(*i) += pos;
@@ -153,7 +197,9 @@ size_t	word_len(char *s)
 		if (s[i] == '|')
 			return (1);
 		c = s[i];
-		while (s[i] == c)
+		if (s[i + 1] && s[i + 1] != c)
+			return (1);
+		while(s[i] && s[i] == c)
 			i++;
 	}
 	return (i);
@@ -179,8 +225,8 @@ char	*expand_strndup(char *s, size_t n)
 	pos = 0;
 	i = 0;
 	len = expanded_length(s, n);
-	dup = arena_malloc(sizeof(len + 1));
-	while (i < len)
+	dup = arena_malloc(len + 1);
+	while (i < len && !ft_isspace(s[i]))
 	{
 		if (s[i] == '$')
 		{

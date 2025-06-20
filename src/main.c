@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 18:29:23 by jpelline          #+#    #+#             */
-/*   Updated: 2025/06/20 03:37:32 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/20 15:23:36 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int main()
 	char	*input;
 	t_vector *commands;
 	t_cmd	*test;
-	// Infinite loop for shell prompt; replace with actual shell logic or exit condition as needed
+	// Infinite loop for shell prompt; replace with actual shell logic
 	while (1)
 	{
 		input = take_input();
@@ -26,6 +26,8 @@ int main()
 		free(input);
 		test = commands->data[0];
 		printf("%s\n", test->str);
-		break;
+		test = commands->data[1];
+		printf("%s\n", test->str);
+		// break;
 	}
 }
