@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/20 03:39:54 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/20 04:40:58 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ t_token	*create_token(char *s, size_t *i)
 
 	new = arena_malloc(sizeof(t_token));
 	new->s = token_string(s, i);
-	if (ft_strcmp(new->s, "|") == 0)
+	printf("%s\n", new->s);
+	if (ft_strncmp(new->s, "|", 1) == 0)
 		new->t = PIPE;
 	else if (ft_strcmp(new->s, "<") == 0)
 		new->t = INPUT;
@@ -33,6 +34,7 @@ t_token	*create_token(char *s, size_t *i)
 		new->t = APPEND;
 	else
 		new->t = STRING;
+	printf("%d\n", new->t);
 	return (new);
 }
 
@@ -47,7 +49,8 @@ t_vector	*token_vector(char *s)
 	while (s[i])
 	{
 		token = create_token(s, &i);
-		add_elem(tokens, token);
+		if (token->s[0] != '\0')
+			add_elem(tokens, token);
 		while (s[i] && ft_isspace(s[i]) == 1)
 			i++;
 	}
@@ -59,9 +62,7 @@ char	*token_string(char	*s, size_t	*i)
 	int		len;
 
 	if (s[(*i)] == '\'' || s[(*i)] == '"')
-	{
-		return (quoted_token(s, s[(*i)], i));
-	}
+		return (quoted_token(s + *i, s[(*i)], i));
 	len = word_len(s);
 	token = expand_strndup(s + (*i), len);
 	(*i) += len;
@@ -87,42 +88,20 @@ t_vector	*create_commands(t_vector *tokens)
 
 t_cmd	*make_command(t_vector *tokens, size_t *i)
 {
-	t_token	*token;
-	t_cmd	*command;
-
-	command = arena_malloc(sizeof(t_cmd));
-	token = tokens->data[*i];
-	command->type = token->t;
-	command->str = "";
-	while (token->t == STRING)
-	{
-		command->str = mini_append(command->str, token->s);
-		(*i)++;
-		if (*i >= tokens->count || tokens->data[*i] == NULL)
-			break;
-		token = tokens->data[*i];
-	}
-	if (command->str != 0 && *i < tokens->count)
-		command->next = token->t;
-	else if (*i < tokens->count)
-	{
-		command->str = token->s;
-		token = tokens->data[++(*i)];
-		command->next = token->t;
-	}
-	else
-		command->next = 0;
-	return (command);
+	// MAKE FUNCTION SPECIFICALLY FOR HANDLING STRING COMMANDS
+	// SECOND ONE FOR HANDLING NON STRING TOKENS
 }
 
 char	*mini_append(char *s1, char *s2)
 {
 	char	*dup;
 
-	dup = arena_malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
+	dup = arena_malloc(ft_strlen(s1) + ft_strlen(s2) + 2);
 	dup[0] = '\0';
 	ft_strlcat(dup, s1, ft_strlen(s1) + 1);
-	ft_strlcat(dup, s2, ft_strlen(s1) + ft_strlen(s2) + 1);
+	if (s1[0] != 0)
+		dup[ft_strlen(s1)] = ' ';
+	ft_strlcat(dup, s2, ft_strlen(s1) + ft_strlen(s2) + 2);
 	return (dup);
 }
 
@@ -131,23 +110,14 @@ char	*quoted_token(char *s, char quote, size_t *i)
 	char	*str;
 	int		pos;
 
-	pos = 0;
-	if (quote == '\'')
-	{
-		while (s[pos] != '\'' && s[pos])
-			pos++;
-		str = mini_strndup(s + *i, pos);
-		(*i) += pos;
-		return (str);
-	}
-	else
-	{
-		while (s[pos] != '"' && s[pos])
-			pos++;
-		str = mini_strndup(s + *i, pos);
-		(*i) += pos;
-		return (str);
-	}
+	pos = 1;
+	while (s[pos] && s[pos] != quote)
+		pos++;
+	str = mini_strndup(s, pos + 1);
+	if (s[pos] == quote)
+		pos++;
+	(*i) += pos;
+	return (str);
 }
 
 // Creates a token with quotes
