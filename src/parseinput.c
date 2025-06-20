@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/19 19:31:03 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/20 03:39:54 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 // ADJUST ADJUST ADJUST ADJUST ADJUST WHICH FUNCTION IS BEING CALLED AND WHEN !!!!
 // https://www.gnu.org/software/bash/manual/bash.html#Shell-Syntax
 
-t_token	*create_token(char *s, int *i)
+t_token	*create_token(char *s, size_t *i)
 {
 	t_token	*new;
 
@@ -27,9 +27,9 @@ t_token	*create_token(char *s, int *i)
 		new->t = INPUT;
 	else if (ft_strcmp(new->s, ">") == 0)
 		new->t = OUTPUT;
-	else if (ft_strcmp(new->s, "<<") == 0)
+	else if (ft_strncmp(new->s, "<<", 2) == 0)
 		new->t = HERE_DOC;
-	else if (ft_strcmp(new->s, ">>") == 0)
+	else if (ft_strncmp(new->s, ">>", 2) == 0)
 		new->t = APPEND;
 	else
 		new->t = STRING;
@@ -38,7 +38,7 @@ t_token	*create_token(char *s, int *i)
 
 t_vector	*token_vector(char *s)
 {
-	int	i;
+	size_t	i;
 	t_vector	*tokens;
 	t_token		*token;
 
@@ -48,12 +48,12 @@ t_vector	*token_vector(char *s)
 	{
 		token = create_token(s, &i);
 		add_elem(tokens, token);
-		while (ft_isspace(s[i]) == 1 && s[i])
+		while (s[i] && ft_isspace(s[i]) == 1)
 			i++;
 	}
 	return (tokens);
 }
-char	*token_string(char	*s, int	*i)
+char	*token_string(char	*s, size_t	*i)
 {
 	char	*token;
 	int		len;
@@ -63,21 +63,21 @@ char	*token_string(char	*s, int	*i)
 		return (quoted_token(s, s[(*i)], i));
 	}
 	len = word_len(s);
-	token = mini_strndup(s, len, 1);
-	(*i) += len + 1;
+	token = expand_strndup(s + (*i), len);
+	(*i) += len;
 	return (token);
 }
 
 t_vector	*create_commands(t_vector *tokens)
 {
 	t_vector	*commands;
-	int	i;
+	size_t		i;
 	int	j;
 
 	j = 0;
 	i = 0;
 	commands = new_vector(tokens->count);
-	while (i < tokens->count)
+	while (i < tokens->count && tokens->data[i] != NULL)
 	{
 		commands->data[j] = make_command(tokens, &i);
 		j++;
@@ -85,42 +85,48 @@ t_vector	*create_commands(t_vector *tokens)
 	return (commands);
 }
 
-t_cmd	*make_command(t_vector *tokens, int *i)
+t_cmd	*make_command(t_vector *tokens, size_t *i)
 {
 	t_token	*token;
 	t_cmd	*command;
 
-	command = arena_malloc(sizeof(command));
+	command = arena_malloc(sizeof(t_cmd));
 	token = tokens->data[*i];
 	command->type = token->t;
+	command->str = "";
 	while (token->t == STRING)
 	{
-		mini_append(command->str, token->s);
+		command->str = mini_append(command->str, token->s);
 		(*i)++;
+		if (*i >= tokens->count || tokens->data[*i] == NULL)
+			break;
 		token = tokens->data[*i];
 	}
-	if (command->str != 0)
+	if (command->str != 0 && *i < tokens->count)
 		command->next = token->t;
-	else
+	else if (*i < tokens->count)
 	{
 		command->str = token->s;
 		token = tokens->data[++(*i)];
 		command->next = token->t;
 	}
+	else
+		command->next = 0;
 	return (command);
 }
 
-void	mini_append(char *s1, char *s2)
+char	*mini_append(char *s1, char *s2)
 {
 	char	*dup;
 
-	dup = arena_malloc(ft_strlen(s1) && ft_strlen(s2) + 1);
-	ft_strlcat(dup, s1, ft_strlen(s1));
-	ft_strlcat(dup, s2, ft_strlen(dup) + ft_strlen(s2) + 1);
-	s1 = dup;
+	dup = arena_malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
+	dup[0] = '\0';
+	ft_strlcat(dup, s1, ft_strlen(s1) + 1);
+	ft_strlcat(dup, s2, ft_strlen(s1) + ft_strlen(s2) + 1);
+	return (dup);
 }
 
-char	*quoted_token(char *s, char quote, int *i)
+char	*quoted_token(char *s, char quote, size_t *i)
 {
 	char	*str;
 	int		pos;
@@ -152,7 +158,7 @@ char	*mini_strndup(char *s, size_t n)
 	size_t	i;
 
 	i = 0;
-	dup = arena_malloc(sizeof(n + 1));
+	dup = arena_malloc((n + 1) * sizeof(char));
 	while (i < n)
 	{
 		dup[i] = s[i];
@@ -166,12 +172,28 @@ char	*mini_strndup(char *s, size_t n)
 
 size_t	word_len(char *s)
 {
-	int	i;
+	int		i;
+	char	c;
 
 	i = 0;
-	while (s[i] && ft_isspace(s[i]) == 0)
+	while (s[i] && ft_isspace(s[i]) == 0 && !check_specials(s[i]))
 		i++;
+	if (i == 0 && check_specials(s[i]))
+	{
+		if (s[i] == '|')
+			return (1);
+		c = s[i];
+		while (s[i] == c)
+			i++;
+	}
 	return (i);
+}
+
+int	check_specials(int	c)
+{
+	if (c == '<' || c == '|' || c == '>')
+		return (1);
+	return (0);
 }
 
 // Counts the length of a single word.

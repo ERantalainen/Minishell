@@ -6,7 +6,7 @@
 #    By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/03 18:36:06 by jpelline          #+#    #+#              #
-#    Updated: 2025/06/19 18:23:38 by erantala         ###   ########.fr        #
+#    Updated: 2025/06/20 03:17:21 by erantala         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,11 +57,11 @@ RESET		:= $(shell tput sgr0)
 
 # ============================== SOURCE FILES ================================ #
 
-SRCS_MAIN	:= main.c memory_arena.c vector.c tokenizer/parseinput.c \
-			tokenizer/syntax_check.c
+SRCS_MAIN	:= main.c memory_arena.c vector.c parseinput.c \
+			syntax_check.c take_input.c export.c
 
-SRCS_PIPE	:= child_process.c cleanup_utils.c command_parser.c \
-		   main_pipe.c pipeline_manager.c
+# SRCS_PIPE	:= child_process.c cleanup_utils.c command_parser.c \
+# 		   main_pipe.c pipeline_manager.c
 
 SRCS_BUILTIN	:= cd.c echo.c export.c pwd.c builtin/export.c
 

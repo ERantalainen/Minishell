@@ -1,31 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   syntax_check.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/17 18:29:23 by jpelline          #+#    #+#             */
-/*   Updated: 2025/06/20 03:37:32 by erantala         ###   ########.fr       */
+/*   Created: 2025/06/19 15:48:23 by erantala          #+#    #+#             */
+/*   Updated: 2025/06/20 03:39:11 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int main()
+void	check_repeat(t_vector *tokens)
 {
-	char	*input;
-	t_vector *commands;
-	t_cmd	*test;
-	// Infinite loop for shell prompt; replace with actual shell logic or exit condition as needed
-	while (1)
+	size_t		i;
+	t_token	*token_curr;
+	t_token	*token_next;
+
+	i = 0;
+	while (i < tokens->count - 1)
 	{
-		input = take_input();
-		printf("%s\n", input);
-		commands = create_commands(token_vector(input));
-		free(input);
-		test = commands->data[0];
-		printf("%s\n", test->str);
-		break;
+		token_curr = tokens->data[i];
+		token_next = tokens->data[i + 1];
+		if (token_curr->t == PIPE && token_next->t == PIPE)
+			exit(1);
+		if (token_curr->t == INPUT && token_next->t != STRING)
+			exit(1);
+		if (token_curr->t == OUTPUT && token_next->t != STRING)
+			exit(1);
+		i++;
 	}
 }

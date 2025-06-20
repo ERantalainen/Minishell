@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 16:05:32 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/19 19:33:20 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/20 03:07:32 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # include <signal.h>
 # include <stdlib.h>
 # include "libft.h"
+# include <readline/readline.h>
+# include <readline/history.h>
 
 # define ARENA_SIZE 16384
 # define ALIGNMENT 8
@@ -77,14 +79,21 @@ void		expand_vector(t_vector **vector, size_t elems);
 int			add_elem(t_vector *vector, void *elem);
 void		change_data(t_vector *vector, void *elem, void *target);
 
-t_token		*create_token(char *s, int *i);
+char		*take_input();
+int			check_quotes(char *s);
+
+t_token		*create_token(char *s, size_t *i);
 t_vector	*token_vector(char *s);
-char		*token_string(char	*s, int	*i);
+char		*token_string(char	*s, size_t	*i);
 t_vector	*create_commands(t_vector *tokens);
-t_cmd		*make_command(t_vector *tokens, int *i);
+t_cmd		*make_command(t_vector *tokens, size_t *i);
+size_t		expanded_length(char *s, size_t n);
+
+int			check_specials(int	c);
+char		*expand_strndup(char *s, size_t n);
 void		mini_append(char *s1, char *s2);
 
-char		*quoted_token(char *s, char quote, int *i);
+char		*quoted_token(char *s, char quote, size_t *i);
 char		*mini_strndup(char *s, size_t n);
 size_t		word_len(char *s);
 

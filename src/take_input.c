@@ -1,31 +1,50 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   take_input.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/17 18:29:23 by jpelline          #+#    #+#             */
-/*   Updated: 2025/06/20 03:37:32 by erantala         ###   ########.fr       */
+/*   Created: 2025/06/20 02:49:43 by erantala          #+#    #+#             */
+/*   Updated: 2025/06/20 03:02:30 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int main()
+char	*take_input()
 {
 	char	*input;
-	t_vector *commands;
-	t_cmd	*test;
-	// Infinite loop for shell prompt; replace with actual shell logic or exit condition as needed
-	while (1)
+
+	input = readline("minishell>");
+	if (!input)
+		exit(1);
+	if (check_quotes(input))
 	{
-		input = take_input();
-		printf("%s\n", input);
-		commands = create_commands(token_vector(input));
 		free(input);
-		test = commands->data[0];
-		printf("%s\n", test->str);
-		break;
+		exit(2);
 	}
+	return (input);
+}
+
+int	check_quotes(char *s)
+{
+	int	sgl;
+	int	dbl;
+	int	i;
+
+	i = 0;
+	sgl = 0;
+	dbl = 0;
+	while (s[i])
+	{
+		if (s[i] == '\'')
+			sgl++;
+		if (s[i] == '"')
+			dbl++;
+		i++;
+	}
+	if (sgl % 2 != 0 || dbl % 2 != 0)
+		return (1);
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 16:48:14 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/19 02:58:35 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/20 03:04:47 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_vector	*new_vector(size_t elem)
 void	expand_vector(t_vector **vector, size_t elems)
 {
 	t_vector	*dup;
-	int			i;
+	size_t		i;
 
 	i = 0;
 	dup = new_vector(elems);
@@ -60,7 +60,7 @@ int	add_elem(t_vector *vector, void *elem)
 
 void	change_data(t_vector *vector, void *elem, void *target)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
 	while (i < vector->count && vector->data[i] != NULL)
