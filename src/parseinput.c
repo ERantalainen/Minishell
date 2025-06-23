@@ -6,13 +6,13 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/20 16:44:45 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/23 15:50:02 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// MAKE EXCEPTONS FOR <<<A <>A ><A 
+// MAKE EXCEPTONS FOR <<<A <>A ><A
 // https://www.gnu.org/software/bash/manual/bash.html#Shell-Syntax
 
 t_token	*create_token(char *s, size_t *i)
@@ -199,8 +199,8 @@ size_t	word_len(char *s)
 		c = s[i];
 		if (s[i + 1] && s[i + 1] != c)
 			return (1);
-		while(s[i] && s[i] == c)
-			i++;
+		else
+			return (2);
 	}
 	return (i);
 }

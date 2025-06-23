@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 16:05:32 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/20 15:01:49 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/23 15:53:08 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ typedef enum e_type
 	OUTPUT,
 	APPEND,
 	HERE_DOC,
-	STRING
+	STRING,
+	FILE
 }	t_type;
 
 typedef	struct s_token
