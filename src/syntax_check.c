@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 15:48:23 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/23 16:57:41 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/23 17:57:05 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,11 @@ int	check_heredoc(t_vector *tokens)
 	size_t	count;
 	t_token	*curr;
 	t_token	*next;
+	t_data	*data;
 
+	data = get_data();
 	count = 0;
+		printf("%s\n", "syntax check");
 	i = 0;
 	while (i < tokens->count - 1)
 	{
@@ -49,7 +52,7 @@ int	check_heredoc(t_vector *tokens)
 		next = tokens->data[i + 1];
 		if (curr->t == HERE_DOC)
 		{
-			if (next->t != STRING || next->t != INPUT)
+			if (next->t != STRING && next->t != INPUT)
 				exit(1);
 			count++;
 		}
@@ -59,16 +62,23 @@ int	check_heredoc(t_vector *tokens)
 		exit(1);
 	if (count > 0)
 	{
-		tokens->datapool.hd_count = count;
-		tokens->datapool.hdfd = arena_malloc(sizeof(int) * count);
+		data->hd_count = count;
+		data->hdfd = arena_malloc(sizeof(int) * count);
 	}
-	while (count > i)
+	i = 0;
+		printf("%s\n", "syntax check");
+	while (count > 0)
 	{
-		i = 0;
 		curr = tokens->data[i];
 		next = tokens->data[i + 1];
-		if (curr->t = HERE_DOC)
-			here_doc(tokens, next->s);
+		if (curr->t == HERE_DOC && next != NULL)
+		{
+			puts(next->s);
+			here_doc(tokens, next->s, count - 1);
+			count--;
+		}
+		i++;
 	}
+		printf("%s\n", "syntax check");
 	return (0);
 }

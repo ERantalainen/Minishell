@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 16:48:14 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/20 03:04:47 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/23 18:19:47 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,26 +23,25 @@ t_vector	*new_vector(size_t elem)
 	vector->count = 0;
 	vector->size = elem * 2;
 	vector->data[elem * 2] = NULL;
-
 	return (vector);
 }
 
 // Creates a new vector with elem * 2 space.
 
-void	expand_vector(t_vector **vector, size_t elems)
+t_vector	*expand_vector(t_vector *vector, size_t elems)
 {
 	t_vector	*dup;
 	size_t		i;
 
 	i = 0;
 	dup = new_vector(elems);
-	while(i < vector[0]->count && vector[0]->data[i] != NULL)
+	while(i < vector->count && vector->data[i] != NULL)
 	{
-		dup->data[i] = vector[0]->data[i];
+		dup->data[i] = vector->data[i];
 		i++;
 	}
-	dup->count = vector[0]->count;
-	vector = &dup;
+	dup->count = vector->count;
+	return (dup);
 }
 
 // Expands a vector to add space for more elements.
@@ -50,7 +49,7 @@ void	expand_vector(t_vector **vector, size_t elems)
 int	add_elem(t_vector *vector, void *elem)
 {
 	if (vector->count == vector->size)
-		expand_vector(&vector, vector->count + 1);
+		vector = expand_vector(vector, vector->count + 1);
 	vector->data[vector->count] = elem;
 	vector->count++;
 	return (vector->count);

@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/23 16:53:15 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/23 18:30:39 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ t_token	*create_token(char *s, size_t *i)
 
 	new = arena_malloc(sizeof(t_token));
 	new->s = token_string(s, i);
-	printf("->%s<-\n", new->s);
 	if (ft_strncmp(new->s, "|", 1) == 0)
 		new->t = PIPE;
 	else if (ft_strcmp(new->s, "<") == 0)
@@ -34,7 +33,6 @@ t_token	*create_token(char *s, size_t *i)
 		new->t = APPEND;
 	else
 		new->t = STRING;
-	printf("%d\n", new->t);
 	return (new);
 }
 
@@ -53,13 +51,16 @@ t_vector	*token_vector(char *s)
 		while (s[i] && ft_isspace(s[i]) == 1)
 			i++;
 		token = create_token(s, &i);
-		if (token->s[0] != '\0')
+		if (token->s)
 			add_elem(tokens, token);
 		while (s[i] && ft_isspace(s[i]) == 1)
 			i++;
 	}
+	check_heredoc(tokens);
 	return (tokens);
 }
+
+
 char	*token_string(char	*s, size_t	*i)
 {
 	char	*token;
@@ -82,6 +83,7 @@ t_vector	*create_commands(t_vector *tokens)
 
 	j = 0;
 	i = 0;
+		printf("%s\n", "command check");
 	commands = new_vector(tokens->count + 1);
 	while (i < tokens->count && tokens->data[i] != NULL)
 	{
@@ -91,6 +93,7 @@ t_vector	*create_commands(t_vector *tokens)
 		else
 			add_elem(commands, make_cmd_spc(tokens, &i));
 	}
+	printf("HERE\n");
 	return (commands);
 }
 
@@ -110,13 +113,13 @@ t_cmd	*make_cmd_str(t_vector *tokens, size_t *i)
 			cmd->str = mini_append(cmd->str, token->s);
 			(*i)++;
 			token = tokens->data[(*i)];
-			if (access(token->s, R_OK | W_OK) == 0)
+			if (token && access(token->s, R_OK | W_OK) == 0)
 				break ;
 		}
 	}
 	else
 	{
-		cmd->type = FILE;
+		cmd->type = FILES;
 		cmd->str = token->s;
 	}
 	if ((*i) < tokens->count)
@@ -236,15 +239,15 @@ char	*expand_strndup(char *s, size_t n)
 	i = 0;
 	len = expanded_length(s, n);
 	dup = arena_malloc(len + 1);
-	while (i < len && !ft_isspace(s[i]))
+	while (s[i] && i < n && !ft_isspace(s[i]))
 	{
 		if (s[i] == '$')
 		{
 			expansion = find_export(s + i);
 			i += word_len(s + i);
-			ft_strlcat(dup, expansion, ft_strlen(expansion) + pos);
+			ft_strlcat(dup, expansion, ft_strlen(expansion) + 1 + pos);
 			pos += ft_strlen(expansion);
-			if (i >= len)
+			if (i >= n)
 				break ;
 		}
 		dup[pos++] = s[i++];

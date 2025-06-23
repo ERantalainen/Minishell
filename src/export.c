@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:12:54 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/20 03:17:43 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/23 18:13:32 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ char	*find_export(char *key)
 	while (i < vars->count && vars->data[i] != NULL)
 	{
 		search = (t_var *)vars->data[i];
-		if (ft_strncmp(search->key, key, key_len) == 0)
+		if (ft_strcmp(search->key, key) == 0)
 			return (search->expansion);
 		i++;
 	}

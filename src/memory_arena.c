@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 16:05:04 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/23 14:49:12 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/23 18:28:16 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,8 @@ t_arena **new_arena(t_arena **curr, int	count, size_t n)
 	t_arena	**arenas;
 	int		i = 0;
 
-	arenas = malloc(sizeof(t_arena *) * (count + 2));
+
+	arenas = ft_calloc(sizeof(t_arena *), count + 2);
 	if (!arenas)
 		exit(1);
 	while (i < count)
@@ -80,14 +81,16 @@ t_arena **new_arena(t_arena **curr, int	count, size_t n)
 		arenas[i] = curr[i];
 		i++;
 	}
-	free (curr);
 	if (n > ARENA_SIZE)
 		arenas[i] = init_arena(n);
 	else
 		arenas[i] = init_arena(ARENA_SIZE);
 	arenas[i + 1] = NULL;
+	curr = arenas;
 	return (arenas);
 }
+
+// ALLOW VALUE TO BE CHANGED!! OR MAKE IT A POINTER ***
 
 t_arena	**get_arenas(void)
 {
@@ -101,7 +104,6 @@ t_arena	**get_arenas(void)
 		arenas = new_arena(arenas, 0, ARENA_SIZE);
 		arenas = new_arena(arenas, 1, ARENA_SIZE);
 	}
-
 	return (arenas);
 }
 
