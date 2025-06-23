@@ -14,7 +14,7 @@
 
 void	check_repeat(t_vector *tokens)
 {
-	size_t		i;
+	size_t	i;
 	t_token	*token_curr;
 	t_token	*token_next;
 
@@ -34,18 +34,19 @@ void	check_repeat(t_vector *tokens)
 }
 
 // ENSURE NO SYNTAX ERROR WITH REPEAT SYMBOLS
-
-int	check_heredoc(t_vector	*tokens)
+int	check_heredoc(t_vector *tokens)
 {
 	size_t	i;
 	size_t	count;
 	t_token	*curr;
 	t_token	*next;
 
+	count = 0;
+	i = 0;
 	while (i < tokens->count - 1)
 	{
 		curr = tokens->data[i];
-		next = tokens->data[i];
+		next = tokens->data[i + 1];
 		if (curr->t == HERE_DOC)
 		{
 			if (next->t != STRING)
@@ -59,13 +60,9 @@ int	check_heredoc(t_vector	*tokens)
 	if (count > 16)
 		exit(1);
 	if (count > 0)
-		here_doc(tokens);
-}
-
-// CHECK heredoc validity by ensuring a delimiter found after every heredoc
-// and heredoc count.
-
-char	*here_doc(t_vector	*tokens)
-{
-	// TAKE HEREDOC INPUT
+	{
+		tokens->datapool.hd_count = count;
+		tokens->datapool.hdfd = arena_malloc(sizeof(int) * count);
+	}
+	return (0);
 }

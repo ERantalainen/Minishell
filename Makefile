@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+         #
+#    By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/03 18:36:06 by jpelline          #+#    #+#              #
-#    Updated: 2025/06/18 19:34:54 by jpelline         ###   ########.fr        #
+#    Updated: 2025/06/23 14:44:31 by jpelline         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,7 +58,7 @@ RESET		:= $(shell tput sgr0)
 # ============================== SOURCE FILES ================================ #
 
 SRCS_MAIN	:= main.c memory_arena.c vector.c parseinput.c take_input.c \
-		   syntax_check.c
+		   syntax_check.c heredoc.c
 
 SRCS_PIPE	:= child_process.c cleanup_utils.c command_parser.c \
 		   main_pipe.c pipeline_manager.c

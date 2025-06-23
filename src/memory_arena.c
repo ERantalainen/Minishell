@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 16:05:04 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/20 16:02:47 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/23 14:49:12 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,23 +45,14 @@ t_arena *init_arena(size_t size)
 
 t_arena *find_arena(size_t n)
 {
-	static int	arena_count = 0;
+	static int	arena_count = 2;
 	int		i = 0;
 	t_arena	**arenas;
 
 	arenas = get_arenas();
-	if (arena_count < 2)
-	{
-		arenas = malloc(sizeof(t_arena *) * 2);
-		if (!arenas)
-			exit(1);
-		arenas = new_arena(arenas, 0, ARENA_SIZE);
-		arenas = new_arena(arenas, 1, ARENA_SIZE);
-		arena_count = 2;
-	}
 	while (i < arena_count)
 	{
-		if (arenas[i]->max - arenas[i]->index >= n)
+		if (arenas[i] && arenas[i]->max - arenas[i]->index >= n)
 			return (arenas[i]);
 		i++;
 	}
@@ -100,7 +91,16 @@ t_arena **new_arena(t_arena **curr, int	count, size_t n)
 
 t_arena	**get_arenas(void)
 {
-	static t_arena **arenas;
+	static t_arena **arenas = NULL;
+
+	if(!arenas)
+	{
+		arenas = ft_calloc(sizeof(t_arena *), 2);
+		if (!arenas)
+			exit(1);
+		arenas = new_arena(arenas, 0, ARENA_SIZE);
+		arenas = new_arena(arenas, 1, ARENA_SIZE);
+	}
 
 	return (arenas);
 }
