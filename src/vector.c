@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 16:48:14 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/18 17:52:05 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/20 03:04:47 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,12 @@ t_vector	*new_vector(size_t elem)
 	return (vector);
 }
 
+// Creates a new vector with elem * 2 space.
+
 void	expand_vector(t_vector **vector, size_t elems)
 {
 	t_vector	*dup;
-	int			i;
+	size_t		i;
 
 	i = 0;
 	dup = new_vector(elems);
@@ -43,6 +45,8 @@ void	expand_vector(t_vector **vector, size_t elems)
 	vector = &dup;
 }
 
+// Expands a vector to add space for more elements.
+
 int	add_elem(t_vector *vector, void *elem)
 {
 	if (vector->count == vector->size)
@@ -52,9 +56,11 @@ int	add_elem(t_vector *vector, void *elem)
 	return (vector->count);
 }
 
+// Adds a new element to the end of the vector and expands the vector if needed.
+
 void	change_data(t_vector *vector, void *elem, void *target)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
 	while (i < vector->count && vector->data[i] != NULL)
@@ -67,3 +73,5 @@ void	change_data(t_vector *vector, void *elem, void *target)
 		i++;
 	}
 }
+
+// Finds element target and replaces it with elem in the designated vector.

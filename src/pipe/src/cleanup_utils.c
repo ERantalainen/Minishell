@@ -36,7 +36,7 @@ static void	free_struct(t_pipex *p)
 		}
 		if (p->is_heredoc == true)
 			if (unlink("./heredoc_.txt") == -1)
-				ft_fprintf(STDERR_FILENO, "unlink failed\n");
+				ft_printf(STDERR_FILENO, "unlink failed\n");
 		free(p);
 	}
 }
@@ -50,11 +50,11 @@ void	exit_handler(int code, char *param1, void *param2)
 	if (param1)
 	{
 		if (code == 21 && ft_strchr(param1, '/'))
-			ft_fprintf(STDERR_FILENO, "%s: Is a directory\n", param1);
+			ft_printf(STDERR_FILENO, "%s: Is a directory\n", param1);
 		else if (code == 127)
-			ft_fprintf(STDERR_FILENO, "%s: command not found\n", param1);
+			ft_printf(STDERR_FILENO, "%s: command not found\n", param1);
 		else
-			ft_fprintf(STDERR_FILENO, "%s\n", param1);
+			ft_printf(STDERR_FILENO, "%s\n", param1);
 	}
 	exit(code);
 }

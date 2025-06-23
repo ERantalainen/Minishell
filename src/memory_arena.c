@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 16:05:04 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/18 17:32:43 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/20 16:02:47 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ t_arena *find_arena(size_t n)
 			exit(1);
 		arenas = new_arena(arenas, 0, ARENA_SIZE);
 		arenas = new_arena(arenas, 1, ARENA_SIZE);
+		arena_count = 2;
 	}
 	while (i < arena_count)
 	{

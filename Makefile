@@ -57,7 +57,8 @@ RESET		:= $(shell tput sgr0)
 
 # ============================== SOURCE FILES ================================ #
 
-SRCS_MAIN	:= main.c memory_arena.c vector.c parseinput.c
+SRCS_MAIN	:= main.c memory_arena.c vector.c parseinput.c take_input.c \
+		   syntax_check.c
 
 SRCS_PIPE	:= child_process.c cleanup_utils.c command_parser.c \
 		   main_pipe.c pipeline_manager.c
@@ -66,7 +67,7 @@ SRCS_BUILTIN	:= cd.c echo.c export.c pwd.c
 
 SRCS_BONUS	:= \
 
-SRCS		:= $(SRCS_MAIN) $(SRCS_PIPE)
+SRCS		:= $(SRCS_MAIN) $(SRCS_PIPE) $(SRCS_BUILTIN)
 
 # ============================== PROGRESS TRACKING =========================== #
 

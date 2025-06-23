@@ -18,14 +18,14 @@ static void	open_handler(t_pipex *p, char *av)
 	if (p->fd_cmd < 0)
 	{
 		if (errno == EISDIR)
-			ft_fprintf(STDERR_FILENO, "%s: Is a directory\n", av);
+			ft_printf(STDERR_FILENO, "%s: Is a directory\n", av);
 		else if (errno == ENOTDIR)
-			ft_fprintf(STDERR_FILENO, "%s: Not a directory\n", av);
+			ft_printf(STDERR_FILENO, "%s: Not a directory\n", av);
 		else if (errno == EACCES)
-			ft_fprintf(STDERR_FILENO, "%s: Permission denied\n", av);
+			ft_printf(STDERR_FILENO, "%s: Permission denied\n", av);
 		else if (errno == ENOENT && (ft_strchr(av, '/') || ft_strchr(av, '\\')))
 		{
-			ft_fprintf(STDERR_FILENO, "%s: No such file or directory\n", av);
+			ft_printf(STDERR_FILENO, "%s: No such file or directory\n", av);
 			exit_handler(1, NULL, p);
 		}
 	}

@@ -1,33 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/17 18:29:23 by jpelline          #+#    #+#             */
-/*   Updated: 2025/06/20 15:23:36 by erantala         ###   ########.fr       */
+/*   Created: 2025/06/19 03:25:26 by erantala          #+#    #+#             */
+/*   Updated: 2025/06/19 03:28:50 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int main()
+int	ft_strcmp(const char *s1, const char *s2)
 {
-	char	*input;
-	t_vector *commands;
-	t_cmd	*test;
-	// Infinite loop for shell prompt; replace with actual shell logic
-	while (1)
+	size_t	i;
+
+	i = 0;
+	while ((s1[i] || s2[i]))
 	{
-		input = take_input();
-		printf("%s\n", input);
-		commands = create_commands(token_vector(input));
-		free(input);
-		test = commands->data[0];
-		printf("%s\n", test->str);
-		test = commands->data[1];
-		printf("%s\n", test->str);
-		// break;
+		if ((unsigned char)s1[i] != (unsigned char)s2[i])
+			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+		i++;
 	}
+	return (0);
 }
