@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 16:05:32 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/23 15:53:08 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/23 17:10:58 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,10 @@ typedef struct s_arena
 
 typedef	struct s_data
 {
-	int	*hdfd;
-	int	hd_count;
+	int			*hdfd;
+	int			hd_count;
+	t_cmd		*commands;
+	t_vector	*envv;
 }	t_data;
 
 typedef enum e_type
@@ -50,14 +52,9 @@ typedef enum e_type
 	OUTPUT,
 	APPEND,
 	HERE_DOC,
-<<<<<<< HEAD
 	STRING,
 	FILE
 }	t_type;
-=======
-	STRING
-}			t_type;
->>>>>>> 8edfda1 (added t_data struct to .h file for heredoc)
 
 typedef struct s_token
 {
@@ -120,7 +117,8 @@ char		*find_export(char *key);
 void		export(char *key, char *expansion);
 t_vector	*get_vars(void);
 
-void	here_doc(t_vector *tokens, char *limiter, int index);
-
+void		here_doc(t_vector *tokens, char *limiter, int index);
+char		*name_join(char const *s1, char const *s2);
+t_data		*get_data();
 
 #endif

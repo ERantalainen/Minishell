@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/23 15:50:02 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/23 16:53:15 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,11 +103,21 @@ t_cmd	*make_cmd_str(t_vector *tokens, size_t *i)
 	token = tokens->data[(*i)];
 	cmd->type = STRING;
 	cmd->str = "";
-	while ((*i) < tokens->count && token->t == STRING)
+	if (access(token->s, R_OK | W_OK) != 0)
 	{
-		cmd->str = mini_append(cmd->str, token->s);
-		(*i)++;
-		token = tokens->data[(*i)];
+		while ((*i) < tokens->count && token->t == STRING)
+		{
+			cmd->str = mini_append(cmd->str, token->s);
+			(*i)++;
+			token = tokens->data[(*i)];
+			if (access(token->s, R_OK | W_OK) == 0)
+				break ;
+		}
+	}
+	else
+	{
+		cmd->type = FILE;
+		cmd->str = token->s;
 	}
 	if ((*i) < tokens->count)
 		cmd->next = token->t;

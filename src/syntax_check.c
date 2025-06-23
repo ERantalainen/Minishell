@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 15:48:23 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/23 15:54:07 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/23 16:57:41 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,14 @@ int	check_heredoc(t_vector *tokens)
 	{
 		tokens->datapool.hd_count = count;
 		tokens->datapool.hdfd = arena_malloc(sizeof(int) * count);
+	}
+	while (count > i)
+	{
+		i = 0;
+		curr = tokens->data[i];
+		next = tokens->data[i + 1];
+		if (curr->t = HERE_DOC)
+			here_doc(tokens, next->s);
 	}
 	return (0);
 }
