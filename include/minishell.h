@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 16:05:32 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/23 18:19:00 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/24 01:30:51 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ typedef	struct s_data
 
 t_arena		*init_arena(size_t size);
 void		*arena_malloc(size_t n);
-t_arena		**get_arenas(void);
+t_arena		**get_arenas(t_arena **new);
 t_arena		*find_arena(size_t n);
 t_arena		**new_arena(t_arena **curr, int count, size_t n);
 

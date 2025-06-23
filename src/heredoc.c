@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 15:44:11 by jpelline          #+#    #+#             */
-/*   Updated: 2025/06/23 17:53:18 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/24 01:32:10 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,10 @@
 static void	write_to_tmpfile(t_vector *tokens, char *limiter, int index)
 {
 	char	*input;
-	int		limiter_len;
 	t_data	*data;
 
 	(void)tokens;
 	data = get_data();
-	limiter_len = ft_strlen(limiter);
 	while (true)
 	{
 		printf("%s\n", limiter);

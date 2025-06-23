@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:12:54 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/23 18:13:32 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/24 01:31:50 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,7 @@ char	*find_export(char *key)
 	t_vector *vars;
 	size_t		i;
 	t_var	*search;
-	int		key_len;
 
-	key_len = word_len(key);
 	vars = get_vars();
 	i = 0;
 	while (i < vars->count && vars->data[i] != NULL)

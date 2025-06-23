@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 16:05:04 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/23 18:28:16 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/24 01:31:16 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ t_arena *find_arena(size_t n)
 	int		i = 0;
 	t_arena	**arenas;
 
-	arenas = get_arenas();
+	arenas = get_arenas(NULL);
 	while (i < arena_count)
 	{
 		if (arenas[i] && arenas[i]->max - arenas[i]->index >= n)
@@ -72,7 +72,6 @@ t_arena **new_arena(t_arena **curr, int	count, size_t n)
 	t_arena	**arenas;
 	int		i = 0;
 
-
 	arenas = ft_calloc(sizeof(t_arena *), count + 2);
 	if (!arenas)
 		exit(1);
@@ -86,13 +85,13 @@ t_arena **new_arena(t_arena **curr, int	count, size_t n)
 	else
 		arenas[i] = init_arena(ARENA_SIZE);
 	arenas[i + 1] = NULL;
-	curr = arenas;
+	get_arenas(arenas);
 	return (arenas);
 }
 
 // ALLOW VALUE TO BE CHANGED!! OR MAKE IT A POINTER ***
 
-t_arena	**get_arenas(void)
+t_arena	**get_arenas(t_arena **new)
 {
 	static t_arena **arenas = NULL;
 
@@ -104,6 +103,8 @@ t_arena	**get_arenas(void)
 		arenas = new_arena(arenas, 0, ARENA_SIZE);
 		arenas = new_arena(arenas, 1, ARENA_SIZE);
 	}
+	if (new)
+		arenas = new;
 	return (arenas);
 }
 
@@ -113,7 +114,7 @@ void	free_arenas()
 	int		i;
 
 	i = 0;
-	arenas = get_arenas();
+	arenas = get_arenas(NULL);
 	while (arenas[i])
 	{
 		free(arenas[i]);
