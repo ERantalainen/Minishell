@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:12:54 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/24 17:30:46 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/24 19:07:06 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ char	*find_export(char *key)
 	if (key[0] == '$')
 		key += 1;
 	printf("Checking expansion for: >%s<\n", key);
-	while (i < vars->count && vars->data[i] != NULL)
+	while (i < vars->count)
 	{
 		search = (t_var *)vars->data[i];
 		if (ft_strcmp(search->key, key) == 0)
@@ -82,6 +82,29 @@ void	make_export(t_vector *cmds, size_t i)
 		pos++;
 	expansion = (mini_strndup(command, pos));
 	export(key, expansion);
+}
+
+void	unset(char	*key)
+{
+	t_vector *vars;
+	size_t		i;
+	t_var	*search;
+
+	vars = get_vars();
+	i = 0;
+	if (key[0] == '$')
+		key += 1;
+	while (i < vars->count)
+	{
+		search = (t_var *)vars->data[i];
+		if (ft_strcmp(search->key, key) == 0)
+		{
+			vars->data[i] = NULL;
+			return ;
+		}
+		i++;
+	}
+	return ;
 }
 
 // Finds an exported variable by searching its key.

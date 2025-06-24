@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:12:49 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/24 18:27:26 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/24 19:08:34 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,6 @@ size_t		word_len(char *s);
 char		*find_export(char *key);
 void		export(char *key, char *expansion);
 t_vector	*get_vars(void);
-void		make_export(t_vector *cmds, size_t i);
 
 int			check_heredoc(t_vector *tokens);
 char		*here_doc(t_vector *tokens, char *limiter, int index);
@@ -148,12 +147,11 @@ void		ft_exit(char *s, int code);
 char	*get_bin_path(char *cmd, char **env);
 char	**get_cmd_args(char *cmd, char *path);
 
-// Echo
+// Built Ins
 
 void	echo(t_vector *commands, int i);
-
-// Pwd
-
 void	pwd(void);
+void	unset(char	*key);
+void		make_export(t_vector *cmds, size_t i);
 
 #endif
