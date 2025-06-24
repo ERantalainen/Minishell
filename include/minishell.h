@@ -5,14 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/17 16:05:32 by erantala          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/06/24 01:30:51 by erantala         ###   ########.fr       */
-=======
-/*   Updated: 2025/06/23 18:19:00 by erantala         ###   ########.fr       */
->>>>>>> a33bec3 (pipe files)
+/*   Created: 2025/06/24 14:12:49 by erantala          #+#    #+#             */
+/*   Updated: 2025/06/24 14:12:50 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -128,7 +125,7 @@ void		export(char *key, char *expansion);
 t_vector	*get_vars(void);
 
 int			check_heredoc(t_vector *tokens);
-void		here_doc(t_vector *tokens, char *limiter, int index);
+char		*here_doc(t_vector *tokens, char *limiter, int index);
 char		*name_join(char const *s1, char const *s2);
 t_data		*get_data();
 
