@@ -6,7 +6,11 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 16:05:32 by erantala          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/06/24 01:30:51 by erantala         ###   ########.fr       */
+=======
+/*   Updated: 2025/06/23 18:19:00 by erantala         ###   ########.fr       */
+>>>>>>> a33bec3 (pipe files)
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +32,12 @@
 
 # define ARENA_SIZE 16384
 # define ALIGNMENT 8
+
+enum	e_pipe
+{
+	READ,
+	WRITE
+};
 
 typedef struct s_arena
 {
@@ -122,4 +132,7 @@ void		here_doc(t_vector *tokens, char *limiter, int index);
 char		*name_join(char const *s1, char const *s2);
 t_data		*get_data();
 
+//pipe
+char	*get_bin_path(char *cmd, char **env);
+char	**get_cmd_args(char *cmd, char *path);
 #endif
