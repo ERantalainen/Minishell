@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:02:28 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/24 15:37:32 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/24 18:56:58 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	ft_exit(char *s, int code)
 	i = 0;
 	data = get_data();
 	free_arenas();
+	rl_clear_history();
 	while (i < data->fds->count)
 	{
 		fd = (int *)data->fds->data[i];

@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 18:29:23 by jpelline          #+#    #+#             */
-/*   Updated: 2025/06/24 18:28:07 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/24 18:54:44 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,16 @@
 
 int main()
 {
-	char	*input;
-	t_vector *commands;
-	t_cmd	*test;
-
+	char			*input;
+	t_vector		 *commands;
+	t_cmd			*test;
 	export("$w", "Hello world");
 	// Infinite loop for shell prompt; replace with actual shell logic
 	while (1)
 	{
 
 		input = take_input();
+		add_history(input);
 		commands = create_commands(token_vector(input));
 		free(input);
 		for (size_t i = 0; i < commands->count; i++)
