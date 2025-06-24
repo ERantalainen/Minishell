@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 18:29:23 by jpelline          #+#    #+#             */
-/*   Updated: 2025/06/24 17:07:17 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/24 17:57:47 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ int main()
 	t_vector *commands;
 	t_cmd	*test;
 
-	export("$world", "hello there");
 	// Infinite loop for shell prompt; replace with actual shell logic
 	while (1)
 	{
@@ -33,6 +32,7 @@ int main()
 			test = commands->data[i];
 			printf("%zu: %s type: %d\n", i, test->str, test->type);
 		}
+		echo(commands, 0);
 		if (g_sig == SIGINT)
 			break ;
 		while (g_sig == SIGUSR1)

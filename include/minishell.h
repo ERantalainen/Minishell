@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:12:49 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/24 17:04:52 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/24 17:57:33 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include <stdlib.h>
 # include <string.h>
 # include <sys/wait.h>
+# include <stdbool.h>
 
 # define ARENA_SIZE 16384
 # define ALIGNMENT 8
@@ -130,6 +131,7 @@ size_t		word_len(char *s);
 char		*find_export(char *key);
 void		export(char *key, char *expansion);
 t_vector	*get_vars(void);
+void		make_export(t_vector *cmds, size_t i);
 
 int			check_heredoc(t_vector *tokens);
 char		*here_doc(t_vector *tokens, char *limiter, int index);
@@ -145,4 +147,9 @@ void		ft_exit(char *s, int code);
 //pipe
 char	*get_bin_path(char *cmd, char **env);
 char	**get_cmd_args(char *cmd, char *path);
+
+// Echo
+
+void	echo(t_vector *commands, int i);
+
 #endif

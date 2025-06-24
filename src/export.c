@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:12:54 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/24 16:20:27 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/24 17:30:46 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	export(char *key, char *expansion)
 	t_vector	*vars;
 	t_var		*new;
 
+	printf("Adding export: %s with %s\n", key, expansion);
 	vars = get_vars();
 	new = arena_malloc(sizeof(t_var));
 	new->expansion = expansion;
@@ -59,12 +60,28 @@ char	*find_export(char *key)
 	return ("");
 }
 
-// void	make_export(t_vector *cmds)
-// {
-// 	char	*key;
-// 	char	*expansion;
-// 	char	*command;
-// 	t_cmd	*cmd;
-// }
+void	make_export(t_vector *cmds, size_t i)
+{
+	char	*key;
+	char	*expansion;
+	char	*command;
+	t_cmd	*cmd;
+	size_t	pos;
+
+	pos = 0;
+	cmd = cmds->data[i];
+	command = cmd->str + 7;
+	while (command[pos] && command[pos] != '=')
+		pos++;
+	key = mini_strndup(command, pos);
+	if (command[pos] == '=')
+		pos++;
+	command += pos;
+	pos = 0;
+	while (command[pos])
+		pos++;
+	expansion = (mini_strndup(command, pos));
+	export(key, expansion);
+}
 
 // Finds an exported variable by searching its key.
