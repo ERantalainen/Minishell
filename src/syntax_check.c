@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 15:48:23 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/24 14:33:26 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/24 14:47:38 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ int	check_heredoc(t_vector *tokens)
 		next = tokens->data[i + 1];
 		if (curr->t == HERE_DOC && next != NULL)
 		{
-			puts(next->s);
 			next->s = here_doc(tokens, next->s, count - 1);
 			next->t = FILES;
 			count--;

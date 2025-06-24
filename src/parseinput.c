@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/24 01:33:49 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/24 15:13:12 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,9 +140,33 @@ t_cmd	*make_cmd_spc(t_vector *tokens, size_t *i)
 		token = tokens->data[(*i)];
 		cmd->next = token->t;
 	}
+	if (cmd->type == INPUT || cmd->type == OUTPUT)
 	else
 		cmd->next = EMPTY;
 	return (cmd);
+}
+
+t_cmd *check_redirect(t_cmd *cmd, t_token *token)
+{
+	if (token->t != STRING)
+		ft_exit("Invalid file name", 1);
+	if (cmd->type == INPUT)
+	{
+		if (access(token->s, R_OK) != 0)
+			exit(1);
+		else
+		{
+			token->t = FILES;
+			cmd->next = FILES;
+		}
+	}
+	if (cmd->type == OUTPUT)
+	{
+		cmd->next = FILES;
+		token->t = FILES;
+	}
+	return (cmd);
+
 }
 
 char	*mini_append(char *s1, char *s2)

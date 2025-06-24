@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:12:49 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/24 14:33:47 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/24 15:09:59 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,10 @@ typedef	struct s_data
 	int			hd_count;
 	t_cmd		*commands;
 	t_vector	*envv;
+	t_vector	*fds;
 }	t_data;
 
+void	ft_exit(char *s, int code);
 
 t_arena		*init_arena(size_t size);
 void		*arena_malloc(size_t n);
@@ -96,10 +98,14 @@ t_arena		**get_arenas(t_arena **new);
 t_arena		*find_arena(size_t n);
 t_arena		**new_arena(t_arena **curr, int count, size_t n);
 
+// Memory arena
+
 t_vector	*new_vector(size_t elem);
 t_vector	*expand_vector(t_vector *vector, size_t elems);
 int			add_elem(t_vector *vector, void *elem);
 void		change_data(t_vector *vector, void *elem, void *target);
+
+// Vectors
 
 char		*take_input(void);
 int			check_quotes(char *s);
@@ -127,6 +133,9 @@ t_vector	*get_vars(void);
 int			check_heredoc(t_vector *tokens);
 char		*here_doc(t_vector *tokens, char *limiter, int index);
 char		*name_join(char const *s1, char const *s2);
+
+// Parsing
+
 t_data		*get_data();
 
 //pipe

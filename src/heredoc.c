@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 15:44:11 by jpelline          #+#    #+#             */
-/*   Updated: 2025/06/24 14:30:42 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/24 14:36:39 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ static void	write_to_tmpfile(t_vector *tokens, char *limiter, int index)
 			free(input);
 			break ;
 		}
+		input = name_join(input, "\n");
 		if (write(data->hdfd[index], input, ft_strlen(input)) < 0)
 			exit(1);
 		free(input);
