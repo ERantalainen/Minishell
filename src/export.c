@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:12:54 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/24 19:07:06 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/24 22:23:22 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	export(char *key, char *expansion)
 	new = arena_malloc(sizeof(t_var));
 	new->expansion = expansion;
 	new->key = key + 1;
-	add_elem(vars, (void *)new);
+	vars = add_elem(vars, (void *)new);
 	return ;
 }
 

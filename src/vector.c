@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 16:48:14 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/23 18:19:47 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/24 22:27:09 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,13 @@ t_vector	*expand_vector(t_vector *vector, size_t elems)
 
 // Expands a vector to add space for more elements.
 
-int	add_elem(t_vector *vector, void *elem)
+t_vector	*add_elem(t_vector *vector, void *elem)
 {
-	if (vector->count == vector->size)
+	if (vector->count == vector->size - 1)
 		vector = expand_vector(vector, vector->count + 1);
 	vector->data[vector->count] = elem;
 	vector->count++;
-	return (vector->count);
+	return (vector);
 }
 
 // Adds a new element to the end of the vector and expands the vector if needed.
