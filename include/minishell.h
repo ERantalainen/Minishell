@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:12:49 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/24 16:15:09 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/24 17:04:52 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,8 @@ typedef	struct s_data
 	t_vector	*envv;
 	t_vector	*fds;
 }	t_data;
+
+extern sig_atomic_t g_sig;
 
 t_arena		*init_arena(size_t size);
 void		*arena_malloc(size_t n);

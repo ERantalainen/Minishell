@@ -6,9 +6,11 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 18:29:23 by jpelline          #+#    #+#             */
-/*   Updated: 2025/06/24 01:47:37 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/24 17:07:17 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+
 
 #include "minishell.h"
 
@@ -31,6 +33,10 @@ int main()
 			test = commands->data[i];
 			printf("%zu: %s type: %d\n", i, test->str, test->type);
 		}
-		// break;
+		if (g_sig == SIGINT)
+			break ;
+		while (g_sig == SIGUSR1)
+		{
+		}
 	}
 }

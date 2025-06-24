@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 02:49:43 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/20 03:02:30 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/24 16:58:13 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,21 @@ char	*take_input()
 {
 	char	*input;
 
-	input = readline("minishell>");
-	if (!input)
-		exit(1);
-	if (check_quotes(input))
+	while (1)
 	{
-		free(input);
-		exit(2);
+		input = readline("minishell>");
+		if (!input)
+			exit(1);
+		if (input[0] != 0)
+		{
+			if (check_quotes(input))
+			{
+				free(input);
+				exit(2);
+			}
+			return (input);
+		}
 	}
-	return (input);
 }
 
 int	check_quotes(char *s)
