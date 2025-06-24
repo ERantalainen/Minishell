@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 15:44:11 by jpelline          #+#    #+#             */
-/*   Updated: 2025/06/24 01:32:10 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/24 01:47:00 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,18 +35,16 @@ static void	write_to_tmpfile(t_vector *tokens, char *limiter, int index)
 			exit(1);
 		free(input);
 	}
-	puts("hello");
 }
 
 // Heredoc execution, takes the limiter and index of heredoc (if multiple)
-void	here_doc(t_vector *tokens, char *limiter, int index)
+char	*here_doc(t_vector *tokens, char *limiter, int index)
 {
 	const char	*base = "._heredoc_.";
 	static int	filecount = 0;
 	char		*name;
 	t_data		*data;
-
-	printf("%s\n", "in heredoc");
+	
 	data = get_data();
 	while (access(name_join(base, ft_itoa(filecount)), F_OK) == 0)
 		filecount++;
@@ -59,6 +57,7 @@ void	here_doc(t_vector *tokens, char *limiter, int index)
 	data->hdfd[index] = open(name, O_RDONLY);
 	if (data->hdfd[index] < 0)
 		exit(1);
+	return (name);
 }
 
 char	*name_join(char const *s1, char const *s2)

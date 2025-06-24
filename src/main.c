@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 18:29:23 by jpelline          #+#    #+#             */
-/*   Updated: 2025/06/23 17:59:22 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/24 01:47:37 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,12 @@ int main()
 	{
 
 		input = take_input();
-		printf("%s\n", input);
 		commands = create_commands(token_vector(input));
-		printf("%s\n", input);
 		free(input);
-		printf("%s\n", "main");
 		for (size_t i = 0; i < commands->count; i++)
 		{
 			test = commands->data[i];
-			printf("%zu: %s\n", i, test->str);
+			printf("%zu: %s type: %d\n", i, test->str, test->type);
 		}
 		// break;
 	}
