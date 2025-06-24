@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 16:05:04 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/24 01:31:16 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/24 14:33:31 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,6 @@ t_arena **new_arena(t_arena **curr, int	count, size_t n)
 	get_arenas(arenas);
 	return (arenas);
 }
-
-// ALLOW VALUE TO BE CHANGED!! OR MAKE IT A POINTER ***
 
 t_arena	**get_arenas(t_arena **new)
 {

@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 15:48:23 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/23 17:57:05 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/24 14:33:26 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ int	check_heredoc(t_vector *tokens)
 
 	data = get_data();
 	count = 0;
-		printf("%s\n", "syntax check");
 	i = 0;
 	while (i < tokens->count - 1)
 	{
@@ -66,7 +65,6 @@ int	check_heredoc(t_vector *tokens)
 		data->hdfd = arena_malloc(sizeof(int) * count);
 	}
 	i = 0;
-		printf("%s\n", "syntax check");
 	while (count > 0)
 	{
 		curr = tokens->data[i];
@@ -74,11 +72,11 @@ int	check_heredoc(t_vector *tokens)
 		if (curr->t == HERE_DOC && next != NULL)
 		{
 			puts(next->s);
-			here_doc(tokens, next->s, count - 1);
+			next->s = here_doc(tokens, next->s, count - 1);
+			next->t = FILES;
 			count--;
 		}
 		i++;
 	}
-		printf("%s\n", "syntax check");
 	return (0);
 }
