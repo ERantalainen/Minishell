@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:12:49 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/24 23:26:10 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/25 00:28:40 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ typedef struct s_command
 typedef	struct s_data
 {
 	int			*hdfd;
+	char		*directory;
 	int			hd_count;
 	t_cmd		*commands;
 	t_vector	*envv;
@@ -92,6 +93,11 @@ typedef	struct s_data
 }	t_data;
 
 extern sig_atomic_t g_sig;
+
+void	init_data(void);
+char	*get_pwd();
+
+// Helpers
 
 t_arena		*init_arena(size_t size);
 void		*arena_malloc(size_t n);
@@ -152,6 +158,7 @@ char	**get_cmd_args(char *cmd, char *path);
 void	echo(t_vector *commands, int i);
 void	pwd(void);
 void	unset(char	*key);
-void		make_export(t_vector *cmds, size_t i);
+void	make_export(t_vector *cmds, size_t i);
+void	cd(char *path);
 
 #endif
