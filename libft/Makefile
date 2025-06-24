@@ -41,13 +41,14 @@ RESET		:= $(shell tput sgr0)
 
 # Character classification and conversion functions
 CHAR_SRCS	:= ft_isalpha.c ft_isdigit.c ft_isalnum.c ft_isascii.c \
-			ft_isprint.c ft_toupper.c ft_tolower.c
+			ft_isprint.c ft_toupper.c ft_tolower.c ft_isspace.c
 
 # String manipulation functions
 STR_SRCS	:= ft_strlen.c ft_strlcpy.c ft_strlcat.c ft_strchr.c \
 			ft_strrchr.c ft_strncmp.c ft_strnstr.c ft_strdup.c \
 			ft_substr.c ft_strjoin.c ft_strtrim.c ft_split.c \
-			ft_strmapi.c ft_striteri.c ft_reverse_string.c
+			ft_strmapi.c ft_striteri.c ft_reverse_string.c \
+			ft_strcmp.c
 
 # Memory management functions
 MEM_SRCS	:= ft_memset.c ft_bzero.c ft_memcpy.c ft_memmove.c \

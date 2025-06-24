@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 15:02:54 by jpelline          #+#    #+#             */
-/*   Updated: 2025/05/02 14:54:44 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/06/23 13:52:11 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ bool				ft_atoib(const char *nptr);
 void				*ft_calloc(size_t nmemb, size_t size);
 char				*ft_strdup(const char *s);
 
+int	ft_strcmp(const char *s1, const char *s2);
+int	ft_isspace(int c);
 // PART 2
 char				*ft_substr(char const *s, unsigned int start, size_t len);
 char				*ft_strjoin(char const *s1, char const *s2);
