@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/24 22:23:51 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/24 23:25:31 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ t_vector	*token_vector(char *s)
 			i++;
 		token = create_token(s, &i);
 		if (token->s)
-			tokens = add_elem(tokens, token);
+			add_elem(tokens, token);
 		while (s[i] && ft_isspace(s[i]) == 1)
 			i++;
 	}
@@ -89,9 +89,9 @@ t_vector	*create_commands(t_vector *tokens)
 	{
 		curr = tokens->data[i];
 		if (curr->t == STRING)
-			commands = add_elem(commands, make_cmd_str(tokens, &i));
+			add_elem(commands, make_cmd_str(tokens, &i));
 		else
-			commands = add_elem(commands, make_cmd_spc(tokens, &i));
+			add_elem(commands, make_cmd_spc(tokens, &i));
 	}
 	return (commands);
 }

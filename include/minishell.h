@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:12:49 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/24 22:27:23 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/24 23:26:10 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,8 @@ t_arena		**new_arena(t_arena **curr, int count, size_t n);
 // Memory arena
 
 t_vector	*new_vector(size_t elem);
-t_vector	*expand_vector(t_vector *vector, size_t elems);
-t_vector	*add_elem(t_vector *vector, void *elem);
+void		expand_vector(t_vector *vector);
+void		add_elem(t_vector *vector, void *elem);
 void		change_data(t_vector *vector, void *elem, void *target);
 
 // Vectors
