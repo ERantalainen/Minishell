@@ -1,38 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   helpers.c                                          :+:      :+:    :+:   */
+/*   built_in.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/23 17:02:28 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/24 15:37:32 by erantala         ###   ########.fr       */
+/*   Created: 2025/06/24 13:56:30 by erantala          #+#    #+#             */
+/*   Updated: 2025/06/24 15:52:37 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_data	*get_data()
+char	*built_in(t_vector *cmds)
 {
-	static t_data data;
+	char	*s;
+	t_cmd	*cmd;
 
-	return (&data);
-}
-
-void	ft_exit(char *s, int code)
-{
-	t_data	*data;
-	size_t		i;
-	int		*fd;
-	i = 0;
-	data = get_data();
-	free_arenas();
-	while (i < data->fds->count)
-	{
-		fd = (int *)data->fds->data[i];
-		close(*fd);
-		i++;
-	}
-	ft_fprintf(2, "%s\n", s);
-	exit(code);
+	cmd = (t_cmd *)cmds->data[0];
+	if (ft_strnmcp("echo", cmd->str, 4) == 0)
+		ft_echo(cmds);
+	if (ft_strnmcp("export", cmd->str, 6) == 0);
+		export()
 }

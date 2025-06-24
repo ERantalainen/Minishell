@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:12:49 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/24 14:33:47 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/24 16:15:09 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,8 @@ typedef	struct s_data
 	int			hd_count;
 	t_cmd		*commands;
 	t_vector	*envv;
+	t_vector	*fds;
 }	t_data;
-
 
 t_arena		*init_arena(size_t size);
 void		*arena_malloc(size_t n);
@@ -96,10 +96,14 @@ t_arena		**get_arenas(t_arena **new);
 t_arena		*find_arena(size_t n);
 t_arena		**new_arena(t_arena **curr, int count, size_t n);
 
+// Memory arena
+
 t_vector	*new_vector(size_t elem);
 t_vector	*expand_vector(t_vector *vector, size_t elems);
 int			add_elem(t_vector *vector, void *elem);
 void		change_data(t_vector *vector, void *elem, void *target);
+
+// Vectors
 
 char		*take_input(void);
 int			check_quotes(char *s);
@@ -118,6 +122,7 @@ char		*mini_append(char *s1, char *s2);
 
 char		*quoted_token(char *s, char quote, size_t *i);
 char		*mini_strndup(char *s, size_t n);
+t_cmd *check_redirect(t_cmd *cmd, t_token *token);
 size_t		word_len(char *s);
 
 char		*find_export(char *key);
@@ -127,7 +132,13 @@ t_vector	*get_vars(void);
 int			check_heredoc(t_vector *tokens);
 char		*here_doc(t_vector *tokens, char *limiter, int index);
 char		*name_join(char const *s1, char const *s2);
+size_t		quote_len(char *s, char quote);
+
+// Parsing
+
 t_data		*get_data();
+void		free_arenas();
+void		ft_exit(char *s, int code);
 
 //pipe
 char	*get_bin_path(char *cmd, char **env);

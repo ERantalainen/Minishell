@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:12:54 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/20 03:17:43 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/24 16:20:27 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	export(char *key, char *expansion)
 	vars = get_vars();
 	new = arena_malloc(sizeof(t_var));
 	new->expansion = expansion;
-	new->key = key;
+	new->key = key + 1;
 	add_elem(vars, (void *)new);
 	return ;
 }
@@ -43,19 +43,28 @@ char	*find_export(char *key)
 	t_vector *vars;
 	size_t		i;
 	t_var	*search;
-	int		key_len;
 
-	key_len = word_len(key);
 	vars = get_vars();
 	i = 0;
+	if (key[0] == '$')
+		key += 1;
+	printf("Checking expansion for: >%s<\n", key);
 	while (i < vars->count && vars->data[i] != NULL)
 	{
 		search = (t_var *)vars->data[i];
-		if (ft_strncmp(search->key, key, key_len) == 0)
+		if (ft_strcmp(search->key, key) == 0)
 			return (search->expansion);
 		i++;
 	}
 	return ("");
 }
+
+// void	make_export(t_vector *cmds)
+// {
+// 	char	*key;
+// 	char	*expansion;
+// 	char	*command;
+// 	t_cmd	*cmd;
+// }
 
 // Finds an exported variable by searching its key.

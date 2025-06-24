@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+         #
+#    By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/03 18:36:06 by jpelline          #+#    #+#              #
-#    Updated: 2025/06/23 14:44:31 by jpelline         ###   ########.fr        #
+#    Updated: 2025/06/24 15:55:35 by erantala         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ endif
 
 PROGRAM_NAME	:= minishell
 CC		:= cc
-CFLAGS		:= -Wextra -Wall -Werror 
+CFLAGS		:= -Wextra -Wall -Werror
 DEBUG_FLAGS	:= -g3 -fsanitize=address -fsanitize=undefined
 OPTFLAGS	:= -O2
 
@@ -57,17 +57,18 @@ RESET		:= $(shell tput sgr0)
 
 # ============================== SOURCE FILES ================================ #
 
-SRCS_MAIN	:= main.c memory_arena.c vector.c parseinput.c take_input.c \
-		   syntax_check.c heredoc.c
+SRCS_MAIN	:= main.c memory_arena.c vector.c parse_input.c \
+			syntax_check.c take_input.c export.c helpers.c heredoc.c \
+			parse_additions.c parse_helpers.c pipe_utils.c
 
-SRCS_PIPE	:= child_process.c cleanup_utils.c command_parser.c \
-		   main_pipe.c pipeline_manager.c
+# SRCS_PIPE	:= child_process.c cleanup_utils.c command_parser.c \
+# 		   main_pipe.c pipeline_manager.c
 
-SRCS_BUILTIN	:= cd.c echo.c export.c pwd.c
+SRCS_BUILTIN	:= cd.c echo.c export.c pwd.c builtin/export.c
 
 SRCS_BONUS	:= \
 
-SRCS		:= $(SRCS_MAIN) $(SRCS_PIPE) $(SRCS_BUILTIN)
+SRCS		:= $(SRCS_MAIN) $(SRCS_PIPE)
 
 # ============================== PROGRESS TRACKING =========================== #
 
