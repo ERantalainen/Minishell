@@ -1,43 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/17 18:29:23 by jpelline          #+#    #+#             */
-/*   Updated: 2025/06/24 18:28:07 by erantala         ###   ########.fr       */
+/*   Created: 2025/06/24 18:23:27 by erantala          #+#    #+#             */
+/*   Updated: 2025/06/24 18:32:12 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
-
 #include "minishell.h"
 
-int main()
+void	pwd(void)
 {
-	char	*input;
-	t_vector *commands;
-	t_cmd	*test;
+	char	*path;
+	int		len;
 
-	export("$w", "Hello world");
-	// Infinite loop for shell prompt; replace with actual shell logic
+	len = 100;
 	while (1)
 	{
-
-		input = take_input();
-		commands = create_commands(token_vector(input));
-		free(input);
-		for (size_t i = 0; i < commands->count; i++)
+		path = arena_malloc(len);
+		path = getcwd(path, 100);
+		if (!path && errno == ERANGE)
+			len += 25;
+		else if (!path)
+			ft_exit("Can't get path", errno);
+		else
 		{
-			test = commands->data[i];
-			printf("%zu: %s type: %d\n", i, test->str, test->type);
-		}
-		echo(commands, 0);
-		if (g_sig == SIGINT)
+			ft_putendl_fd(path, 1);
 			break ;
-		while (g_sig == SIGUSR1)
-		{
 		}
 	}
 }

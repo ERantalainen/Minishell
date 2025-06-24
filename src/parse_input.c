@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/24 16:33:37 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/24 18:36:11 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ t_vector	*token_vector(char *s)
 	return (tokens);
 }
 
+// Create token vector
 
 char	*token_string(char	*s, size_t	*i)
 {
@@ -73,6 +74,8 @@ char	*token_string(char	*s, size_t	*i)
 	(*i) += len;
 	return (token);
 }
+
+// Create a string for the token
 
 t_vector	*create_commands(t_vector *tokens)
 {
@@ -92,6 +95,8 @@ t_vector	*create_commands(t_vector *tokens)
 	}
 	return (commands);
 }
+
+// Combine tokens into commands.
 
 t_cmd	*make_cmd_str(t_vector *tokens, size_t *i)
 {
@@ -128,6 +133,8 @@ t_cmd	*make_cmd_str(t_vector *tokens, size_t *i)
 	return (cmd);
 }
 
+// Make a command of type FILES or STRING
+
 t_cmd	*make_cmd_spc(t_vector *tokens, size_t *i)
 {
 	t_token	*token;
@@ -149,3 +156,5 @@ t_cmd	*make_cmd_spc(t_vector *tokens, size_t *i)
 		cmd->next = EMPTY;
 	return (cmd);
 }
+
+// Make a redirect or pipe command

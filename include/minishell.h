@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:12:49 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/24 17:57:33 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/24 18:27:26 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,5 +151,9 @@ char	**get_cmd_args(char *cmd, char *path);
 // Echo
 
 void	echo(t_vector *commands, int i);
+
+// Pwd
+
+void	pwd(void);
 
 #endif

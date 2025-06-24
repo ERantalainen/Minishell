@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 15:48:23 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/24 14:47:38 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/24 18:40:07 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ int	check_heredoc(t_vector *tokens)
 		{
 			if (next->t != STRING && next->t != INPUT)
 				exit(1);
+			if (next->t == INPUT)
+				return (0);
 			count++;
 		}
 		i++;

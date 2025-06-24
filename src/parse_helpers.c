@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 15:43:47 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/24 16:17:49 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/24 18:36:44 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,16 @@ size_t	word_len(char *s)
 	return (i);
 }
 
+// Count the lenght of a word
+
 int	check_specials(int	c)
 {
 	if (c == '<' || c == '|' || c == '>')
 		return (1);
 	return (0);
 }
+
+// Check for redirect or pipe character
 
 // Counts the length of a single word.
 
@@ -54,7 +58,7 @@ char	*expand_strndup(char *s, size_t n)
 	i = 0;
 	len = expanded_length(s, n);
 	dup = arena_malloc(len + 1);
-	while (s[i] && i < n && !ft_isspace(s[i]))
+	while (s[i] && i < n)
 	{
 		if (s[i] == '$')
 		{
