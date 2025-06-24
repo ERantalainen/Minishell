@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 16:05:32 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/20 15:01:49 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/23 18:19:00 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,18 @@
 # define ARENA_SIZE 16384
 # define ALIGNMENT 8
 
+enum	e_pipe
+{
+	READ,
+	WRITE
+};
+
 typedef struct s_arena
 {
 	size_t	max;
 	size_t	index;
 	char	data[];
 }			t_arena;
-
-typedef	struct s_data
-{
-	int	*hdfd;
-	int	hd_count;
-}	t_data;
 
 typedef enum e_type
 {
@@ -50,8 +50,9 @@ typedef enum e_type
 	OUTPUT,
 	APPEND,
 	HERE_DOC,
-	STRING
-}			t_type;
+	STRING,
+	FILES
+}	t_type;
 
 typedef struct s_token
 {
@@ -64,7 +65,6 @@ typedef struct s_vector
 	size_t	count;
 	size_t	size;
 	void	**data;
-	t_data	datapool;
 }			t_vector;
 
 typedef struct s_variable
@@ -80,6 +80,15 @@ typedef struct s_command
 	t_type	next;
 }			t_cmd;
 
+typedef	struct s_data
+{
+	int			*hdfd;
+	int			hd_count;
+	t_cmd		*commands;
+	t_vector	*envv;
+}	t_data;
+
+
 t_arena		*init_arena(size_t size);
 void		*arena_malloc(size_t n);
 t_arena		**get_arenas(void);
@@ -87,7 +96,7 @@ t_arena		*find_arena(size_t n);
 t_arena		**new_arena(t_arena **curr, int count, size_t n);
 
 t_vector	*new_vector(size_t elem);
-void		expand_vector(t_vector **vector, size_t elems);
+t_vector	*expand_vector(t_vector *vector, size_t elems);
 int			add_elem(t_vector *vector, void *elem);
 void		change_data(t_vector *vector, void *elem, void *target);
 
@@ -114,7 +123,12 @@ char		*find_export(char *key);
 void		export(char *key, char *expansion);
 t_vector	*get_vars(void);
 
-void	here_doc(t_vector *tokens, char *limiter, int index);
+int			check_heredoc(t_vector *tokens);
+void		here_doc(t_vector *tokens, char *limiter, int index);
+char		*name_join(char const *s1, char const *s2);
+t_data		*get_data();
 
-
+//pipe
+char	*get_bin_path(char *cmd, char **env);
+char	**get_cmd_args(char *cmd, char *path);
 #endif
