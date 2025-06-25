@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/25 17:51:26 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/25 19:23:24 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,16 +43,22 @@ t_vector	*token_vector(char *s)
 	size_t	i;
 	t_vector	*tokens;
 	t_token		*token;
+	size_t		len;
 
+	len = ft_strlen(s);
 	tokens = new_vector(4);
 	i = 0;
 	while (s[i])
 	{
 		while (s[i] && ft_isspace(s[i]) == 1)
 			i++;
+		if (!s[i])
+			break ;
 		token = create_token(s, &i);
 		if (token->s)
 			add_elem(tokens, token);
+		if (i >= len)
+			break ;
 		while (s[i] && ft_isspace(s[i]) == 1)
 			i++;
 	}
@@ -87,6 +93,7 @@ t_vector	*create_commands(t_vector *tokens)
 	commands = new_vector(tokens->count + 1);
 	while (i < tokens->count && tokens->data[i] != NULL)
 	{
+		printf("%zu out of %zu\n", i, tokens->count);
 		curr = tokens->data[i];
 		if (curr->t == STRING)
 			add_elem(commands, make_cmd_str(tokens, &i));
@@ -130,6 +137,7 @@ t_cmd	*make_cmd_str(t_vector *tokens, size_t *i)
 		cmd->next = token->t;
 	else
 		cmd->next = EMPTY;
+	printf("%zu\n", tokens->count);
 	built_in(cmd);
 	return (cmd);
 }

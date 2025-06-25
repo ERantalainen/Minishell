@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 13:56:30 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/25 18:13:22 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/25 18:52:28 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	build_handler(t_vector	*cmds)
 			if (ft_strncmp("export", cmd->str, 6) == 0)
 				make_export(cmds, i);
 			if (ft_strncmp("unset", cmd->str, 5) == 0)
-				unset("h");
+				unset(cmd->str + 6);
 			if (ft_strncmp("env", cmd->str, 3) == 0)
 				printf("");
 			// ENV does not exist yet
