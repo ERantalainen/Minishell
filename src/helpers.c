@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:02:28 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/25 00:31:28 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/25 03:16:30 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,4 +78,18 @@ char	*get_pwd()
 			break ;
 	}
 	return (path);
+}
+
+char	*absolute_path(char *relative)
+{
+	char	*path;
+	char	*absolut;
+
+	path = get_pwd();
+	if (!pwd)
+		exit(1);
+	absolut = arena_malloc(ft_strlen(path) + ft_strlen(relative) + 1);
+	ft_strlcat(absolut, path, ft_strlen(path) + 1);
+	ft_strlcat(absolut, relative, ft_strlen(absolut + ft_strlen(relative))+ 1);
+	return (absolut);
 }
