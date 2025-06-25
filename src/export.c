@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:12:54 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/24 23:25:17 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/25 18:24:59 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,10 @@ void	export(char *key, char *expansion)
 	t_vector	*vars;
 	t_var		*new;
 
-	printf("Adding export: %s with %s\n", key, expansion);
 	vars = get_vars();
 	new = arena_malloc(sizeof(t_var));
 	new->expansion = expansion;
-	new->key = key + 1;
+	new->key = mini_strndup(key, word_len(key));
 	add_elem(vars, (void *)new);
 	return ;
 }
@@ -49,7 +48,6 @@ char	*find_export(char *key)
 	i = 0;
 	if (key[0] == '$')
 		key += 1;
-	printf("Checking expansion for: >%s<\n", key);
 	while (i < vars->count)
 	{
 		search = (t_var *)vars->data[i];

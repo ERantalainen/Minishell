@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/24 23:25:31 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/25 17:51:26 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,7 @@ t_cmd	*make_cmd_str(t_vector *tokens, size_t *i)
 		cmd->next = token->t;
 	else
 		cmd->next = EMPTY;
+	built_in(cmd);
 	return (cmd);
 }
 

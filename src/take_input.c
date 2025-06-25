@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 02:49:43 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/24 16:58:13 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/25 16:47:59 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@ char	*take_input()
 	{
 		input = readline("minishell>");
 		if (!input)
-			exit(1);
+		{
+			ft_putendl_fd("exit", 1);
+			exit(0);
+		}
 		if (input[0] != 0)
 		{
 			if (check_quotes(input))
