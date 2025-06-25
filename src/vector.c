@@ -6,10 +6,10 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 16:48:14 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/25 19:03:37 by erantala         ###   ########.fr       */
-/*   Updated: 2025/06/25 16:24:25 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/25 23:02:52 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "minishell.h"
 
@@ -74,11 +74,15 @@ void	change_data(t_vector *vector, void *elem, void *target)
 	}
 }
 
-int	get_element(t_vector *vector, int i)
+void	array_to_vec(t_vector *vec, void **arr)
 {
-	int *res;
-
-	res = vector->data[i];
-	return (*res);
+	size_t	i;
+	
+	i = 0;
+	while (arr[i])
+	{
+		add_elem(vec, arr[i]);
+		i++;
+	}
 }
 // Finds element target and replaces it with elem in the designated vector.

@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 15:43:47 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/24 18:36:44 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/25 22:34:31 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,3 +118,18 @@ char	*mini_strndup(char *s, size_t n)
 
 // Simply makes a duplicate string with size N not considering expansions.
 
+char	*mini_strdup(char *s)
+{
+	char	*dup;
+	size_t	i;
+
+	i = 0;
+	dup = arena_malloc((ft_strlen(s)) * sizeof(char));
+	while (s[i])
+	{
+		dup[i] = s[i];
+		i++;
+	}
+	dup[i] = '\0';
+	return (dup);
+}

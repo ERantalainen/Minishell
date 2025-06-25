@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:12:49 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/25 22:23:43 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/26 00:45:12 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,11 +91,13 @@ typedef struct s_data
 	t_vector	*envv;
 	t_vector	*fds;
 	char		**environ;
+	t_vector	*env_vec;
+	int			shell;
 }	t_data;
 
 extern sig_atomic_t	g_sig;
 
-void				init_data(void);
+void				init_data(char	**env);
 char				*get_pwd(void);
 
 // Helpers
@@ -112,6 +114,7 @@ t_vector			*new_vector(size_t elem);
 void				expand_vector(t_vector *vector);
 void				add_elem(t_vector *vector, void *elem);
 void				change_data(t_vector *vector, void *elem, void *target);
+void				array_to_vec(t_vector *vec, void **arr);
 
 // Vectors
 
@@ -135,11 +138,6 @@ char				*mini_strndup(char *s, size_t n);
 char				*mini_strdup(char *s);
 t_cmd				*check_redirect(t_cmd *cmd, t_token *token);
 size_t				word_len(char *s);
-
-char				*find_export(char *key);
-void				export(char *key, char *expansion);
-t_vector			*get_vars(void);
-int					get_element(t_vector *vector, int i);
 
 int					check_heredoc(t_vector *tokens);
 char				*here_doc(t_vector *tokens, char *limiter, int index);
@@ -167,16 +165,15 @@ void	make_export(t_vector *cmds, size_t i);
 void	cd(t_cmd *cmd);
 void	env(void);
 
+void	export(char *export);
+char	*find_export(char *key);
+size_t	key_len(char *s);
+void	make_export(t_vector *cmds, size_t i);
+void	replace_export(char *key);
+
 // Signals
 
-void	catcher();
-void				built_in(t_cmd *cmd);
-void				build_handler(t_vector *cmds);
-void				echo(t_vector *commands, int i);
-void				pwd(void);
-void				unset(char *key);
-void				make_export(t_vector *cmds, size_t i);
-void				cd(t_cmd *cmd);
+void				catcher();
 
 // Signals
 

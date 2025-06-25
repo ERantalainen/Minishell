@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:02:28 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/25 15:03:16 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/26 00:46:11 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,26 +38,26 @@ void	ft_exit(char *s, int code)
 	exit(code);
 }
 
-void	init_data(void)
+size_t	ft_stralen(char **s)
+{
+	size_t	i;
+
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
+}
+
+void	init_data(char	**env)
 {
 	t_data	*data;
-	char	*path;
-	int		len;
 
 	data = get_data();
-	len = 100;
-	while (1)
-	{
-		path = arena_malloc(len);
-		path = getcwd(path, 100);
-		if (!path && errno == ERANGE)
-			len += 25;
-		else if (!path)
-			ft_exit("Can't get path", errno);
-		else
-			break ;
-	}
-	data->directory = path;
+	data->directory = get_pwd();
+	data->environ = env;
+	data->env_vec = new_vector(ft_stralen(env));
+	array_to_vec(data->env_vec, (void **)env);
+
 }
 
 char	*get_pwd()

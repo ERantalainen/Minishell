@@ -1,29 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/25 21:19:17 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/26 00:48:26 by erantala         ###   ########.fr       */
+/*   Created: 2025/06/25 22:37:46 by erantala          #+#    #+#             */
+/*   Updated: 2025/06/26 00:47:24 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	env(void)
+void	unset(char	*key)
 {
 	t_data	*data;
-	char	*line;
-	size_t	i;
+	size_t		i;
+	char	*var;
 
-	i = 0;
 	data = get_data();
-	while(i < data->env_vec->count)
+	i = 0;
+	if (key[0] == '$')
+		key += 1;
+	while (i < data->env_vec->count)
 	{
-		line = data->env_vec->data[i];
-		printf("%s\n", line);
+		var = data->env_vec->data[i];
+		if (ft_strncmp(key, var, key_len(var)) == 0)
+		{
+			data->env_vec->data[i] = NULL;
+		}
 		i++;
 	}
+	return ;
 }
