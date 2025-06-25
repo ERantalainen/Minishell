@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 18:29:23 by jpelline          #+#    #+#             */
-/*   Updated: 2025/06/25 17:47:54 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/25 19:43:34 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,7 @@ int	main(int ac, char **av, char **env)
 {
 	char		*input;
 	t_vector	*commands;
-
+	// t_cmd		*test;
 	catcher();
 	(void)ac;
 	(void)av;
@@ -162,6 +162,11 @@ int	main(int ac, char **av, char **env)
 		if (*input)
 		{
 			commands = create_commands(token_vector(input));
+			// for (size_t i = 0; i < commands->count; i++)
+			// {
+			// 	test = commands->data[i];
+			// 	printf("%s, %d, %d\n", test->str, test->type, test->next);
+			// }
 			build_handler(commands);
 			execution(commands, env);
 		}
