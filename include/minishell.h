@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:12:49 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/25 18:10:40 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/25 22:23:43 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,13 +84,14 @@ typedef struct s_command
 
 typedef struct s_data
 {
-	int				*hdfd;
-	char			*directory;
-	int				hd_count;
-	t_cmd			*commands;
-	t_vector		*envv;
-	t_vector		*fds;
-}					t_data;
+	int			*hdfd;
+	char		*directory;
+	int			hd_count;
+	t_cmd		*commands;
+	t_vector	*envv;
+	t_vector	*fds;
+	char		**environ;
+}	t_data;
 
 extern sig_atomic_t	g_sig;
 
@@ -164,6 +165,7 @@ void	pwd(void);
 void	unset(char	*key);
 void	make_export(t_vector *cmds, size_t i);
 void	cd(t_cmd *cmd);
+void	env(void);
 
 // Signals
 
