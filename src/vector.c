@@ -73,4 +73,11 @@ void	change_data(t_vector *vector, void *elem, void *target)
 	}
 }
 
+int	get_element(t_vector *vector, int i)
+{
+	int *res;
+
+	res = vector->data[i];
+	return (*res);
+}
 // Finds element target and replaces it with elem in the designated vector.
