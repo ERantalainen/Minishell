@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 16:48:14 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/24 23:26:39 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/25 16:24:25 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,9 @@ t_vector	*new_vector(size_t elem)
 	vector = arena_malloc(sizeof(t_vector));
 	if (!vector)
 		exit(1);
-	vector->data = arena_malloc(sizeof(void *) * (elem * 2 + 1));
+	vector->data = arena_malloc(sizeof(void *) * (elem * 2));
 	vector->count = 0;
 	vector->size = elem * 2;
-	vector->data[elem * 2] = NULL;
 	return (vector);
 }
 
@@ -34,18 +33,17 @@ void	expand_vector(t_vector *vector)
 	size_t	i;
 
 	i = 0;
-	if (vector->count == vector->size)
+	new = arena_malloc(sizeof(void *) * (vector->size * 2 + 1));
+	while (i < vector->count)
 	{
-		vector->size *= 2;
-		new = arena_malloc(sizeof(void *) * (vector->size));
-		while (i < vector->count)
-		{
-			new[i] = vector->data[i];
-			i++;
-		}
-		vector->data = new;
+		new[i] = vector->data[i];
+		i++;
 	}
+	vector->data = new;
+	vector->size *= 2;
+	vector->data[vector->size] = NULL;
 }
+
 
 // Expands a vector to add space for more elements.
 
