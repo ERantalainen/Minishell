@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/24 23:25:31 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/25 19:44:00 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,16 +43,22 @@ t_vector	*token_vector(char *s)
 	size_t	i;
 	t_vector	*tokens;
 	t_token		*token;
+	size_t		len;
 
+	len = ft_strlen(s);
 	tokens = new_vector(4);
 	i = 0;
 	while (s[i])
 	{
 		while (s[i] && ft_isspace(s[i]) == 1)
 			i++;
+		if (!s[i])
+			break ;
 		token = create_token(s, &i);
 		if (token->s)
 			add_elem(tokens, token);
+		if (i >= len)
+			break ;
 		while (s[i] && ft_isspace(s[i]) == 1)
 			i++;
 	}
@@ -130,6 +136,7 @@ t_cmd	*make_cmd_str(t_vector *tokens, size_t *i)
 		cmd->next = token->t;
 	else
 		cmd->next = EMPTY;
+	built_in(cmd);
 	return (cmd);
 }
 
@@ -148,13 +155,16 @@ t_cmd	*make_cmd_spc(t_vector *tokens, size_t *i)
 	if ((*i) < tokens->count)
 	{
 		token = tokens->data[(*i)];
-		cmd->next = token->t;
+		if (cmd->type == INPUT || cmd->type == OUTPUT)
+			check_redirect(cmd, token);
+		else
+			cmd->next = token->t;
 	}
-	if (cmd->type == INPUT || cmd->type == OUTPUT)
-		check_redirect(cmd, token);
 	else
 		cmd->next = EMPTY;
 	return (cmd);
 }
 
 // Make a redirect or pipe command
+
+

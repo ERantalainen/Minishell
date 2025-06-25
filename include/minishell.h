@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:12:49 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/25 00:28:40 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/25 18:10:40 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ typedef enum e_type
 	APPEND,
 	HERE_DOC,
 	STRING,
-	FILES
+	FILES,
+	BUILTIN
 }	t_type;
 
 typedef struct s_token
@@ -155,10 +156,16 @@ char	**get_cmd_args(char *cmd, char *path);
 
 // Built Ins
 
+void	built_in(t_cmd *cmd);
+void	build_handler(t_vector	*cmds);
 void	echo(t_vector *commands, int i);
 void	pwd(void);
 void	unset(char	*key);
 void	make_export(t_vector *cmds, size_t i);
-void	cd(char *path);
+void	cd(t_cmd *cmd);
+
+// Signals
+
+void	catcher();
 
 #endif
