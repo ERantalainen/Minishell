@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 16:48:14 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/23 18:19:47 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/24 23:26:39 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,31 +28,33 @@ t_vector	*new_vector(size_t elem)
 
 // Creates a new vector with elem * 2 space.
 
-t_vector	*expand_vector(t_vector *vector, size_t elems)
+void	expand_vector(t_vector *vector)
 {
-	t_vector	*dup;
-	size_t		i;
+	void	**new;
+	size_t	i;
 
 	i = 0;
-	dup = new_vector(elems);
-	while(i < vector->count && vector->data[i] != NULL)
+	if (vector->count == vector->size)
 	{
-		dup->data[i] = vector->data[i];
-		i++;
+		vector->size *= 2;
+		new = arena_malloc(sizeof(void *) * (vector->size));
+		while (i < vector->count)
+		{
+			new[i] = vector->data[i];
+			i++;
+		}
+		vector->data = new;
 	}
-	dup->count = vector->count;
-	return (dup);
 }
 
 // Expands a vector to add space for more elements.
 
-int	add_elem(t_vector *vector, void *elem)
+void	add_elem(t_vector *vector, void *elem)
 {
-	if (vector->count == vector->size)
-		vector = expand_vector(vector, vector->count + 1);
+	if (vector->count == vector->size - 1)
+		expand_vector(vector);
 	vector->data[vector->count] = elem;
 	vector->count++;
-	return (vector->count);
 }
 
 // Adds a new element to the end of the vector and expands the vector if needed.

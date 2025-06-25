@@ -68,55 +68,44 @@ void	exec_input(t_cmd **cmd, char **env)
 	char	**cmd_args;
 	char	*path;
 	char	**ptr;
+	int		size;
+	int		i;
 
 	pid = fork();
 	if (pid == 0)
 	{
 		cmd_args = ft_split(cmd[2]->str, ' ');
+		if (!cmd_args)
+			exit(1);
 		fd = open(cmd[1]->str, O_RDONLY);
-		dup2(fd, STDIN_FILENO);
+		if (fd < 0)
+			exit(1);
+		if (dup2(fd, STDIN_FILENO) < 0)
+			exit(1);
 		path = get_bin_path(cmd_args[0], env);
-		if (ft_strcmp(cmd_args[0], "grep") == 0)
+		if (!path)
+			exit(1);
+		size = 0;
+		while (cmd[size + 2]->next != EMPTY)
+			size++;
+		ptr = arena_malloc((size + 2) * sizeof(char *));
+		if (!ptr)
+			exit(1);
+		ptr[0] = ft_strdup(cmd_args[0]);
+		if (!ptr[0])
+			exit(1);
+		i = 0;
+		while (cmd[i + 2]->next != EMPTY)
 		{
-			ptr = cmd_args;
-			ptr[1] = cmd[3]->str;
-			ptr[2] = NULL;
-			int pid2 = fork();
-			if (pid2 == 0)
-			{
-				int i = 1;
-				while (cmd[i + 1]->next != EMPTY)
-				{
-					ptr[2] = cmd[i + 3]->str;
-					ptr[3] = NULL;
-					int pid3 = fork();
-					if (pid3 == 0)
-					{
-						if (execve(path, ptr, env) < 0)
-							perror("error");
-					}
-					else
-						waitpid(pid3, &status, 0);
-					i++;
-				}
-				exit(1);
-			}
-			else
-			{	
-				waitpid(pid2, &status, 0);
-				if (cmd[3]->next == EMPTY)
-					execve(path, ptr, env);
-				exit(1);
-			}
+			ptr[i + 1] = ft_strdup(cmd[i + 3]->str);
+			i++;
 		}
-		execve(path, cmd_args, env);
+		ptr[i + 1] = NULL;
+		execve(path, ptr, env);
 		exit(1);
 	}
-	else
-	{
-		if (waitpid(pid, &status, 0) < 0)
-			exit(1);
-	}
+	if (waitpid(pid, &status, 0) < 0)
+		exit(1);
 }
 
 void	exec_output(t_cmd **cmd, char **env)

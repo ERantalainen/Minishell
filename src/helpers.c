@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:02:28 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/24 15:37:32 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/25 03:16:30 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	ft_exit(char *s, int code)
 	i = 0;
 	data = get_data();
 	free_arenas();
+	rl_clear_history();
 	while (i < data->fds->count)
 	{
 		fd = (int *)data->fds->data[i];
@@ -35,4 +36,60 @@ void	ft_exit(char *s, int code)
 	}
 	ft_fprintf(2, "%s\n", s);
 	exit(code);
+}
+
+void	init_data(void)
+{
+	t_data	*data;
+	char	*path;
+	int		len;
+
+	data = get_data();
+	len = 100;
+	while (1)
+	{
+		path = arena_malloc(len);
+		path = getcwd(path, 100);
+		if (!path && errno == ERANGE)
+			len += 25;
+		else if (!path)
+			ft_exit("Can't get path", errno);
+		else
+			break ;
+	}
+	data->directory = path;
+}
+
+char	*get_pwd()
+{
+	char	*path;
+	int		len;
+
+	len = 100;
+	while (1)
+	{
+		path = arena_malloc(len);
+		path = getcwd(path, 100);
+		if (!path && errno == ERANGE)
+			len += 25;
+		else if (!path)
+			return (NULL);
+		else
+			break ;
+	}
+	return (path);
+}
+
+char	*absolute_path(char *relative)
+{
+	char	*path;
+	char	*absolut;
+
+	path = get_pwd();
+	if (!pwd)
+		exit(1);
+	absolut = arena_malloc(ft_strlen(path) + ft_strlen(relative) + 1);
+	ft_strlcat(absolut, path, ft_strlen(path) + 1);
+	ft_strlcat(absolut, relative, ft_strlen(absolut + ft_strlen(relative))+ 1);
+	return (absolut);
 }
