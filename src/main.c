@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 18:29:23 by jpelline          #+#    #+#             */
-/*   Updated: 2025/06/26 00:50:04 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/26 01:09:09 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,12 +208,15 @@ int	main(int ac, char **av, char **env)
 	char		*input;
 	t_vector	*commands;
 	t_cmd		*test;
+	t_data		*data;
 
+	data = get_data();
 	init_data(env);
 	catcher();
 	(void)ac;
 	(void)av;
 	printf("launched\n");
+	increase_shell_lvl();
 	while (1)
 	{
 		input = take_input();
@@ -227,7 +230,7 @@ int	main(int ac, char **av, char **env)
 				printf("%s, %d, %d\n", test->str, test->type, test->next);
 			}
 			build_handler(commands);
-			// execution(commands, env);
+			execution(commands, vec_to_array(data->env_vec));
 		}
 		free(input);
 	}

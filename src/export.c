@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:12:54 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/26 00:44:50 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/26 01:05:07 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,7 @@ void	replace_export(char *key)
 	{
 		var = data->env_vec->data[i];
 		if (ft_strncmp(key, var, key_len(var)) == 0)
-		{
 			data->env_vec->data[i] = key;
-		}
 		i++;
 	}
 }

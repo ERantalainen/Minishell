@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:12:49 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/26 00:45:12 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/26 01:08:25 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ void				expand_vector(t_vector *vector);
 void				add_elem(t_vector *vector, void *elem);
 void				change_data(t_vector *vector, void *elem, void *target);
 void				array_to_vec(t_vector *vec, void **arr);
+char				**vec_to_array(t_vector *vec);
 
 // Vectors
 
@@ -170,6 +171,9 @@ char	*find_export(char *key);
 size_t	key_len(char *s);
 void	make_export(t_vector *cmds, size_t i);
 void	replace_export(char *key);
+
+void	increase_shell_lvl();
+char	*mini_join(char const *s1, char const *s2);
 
 // Signals
 
