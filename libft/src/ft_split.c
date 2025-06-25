@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <unistd.h>
 
 static size_t	ft_get_word_len(const char *arr, char c)
 {
@@ -44,7 +43,7 @@ static size_t	ft_words_in_s(const char *s, char c)
 	}
 	count = 0;
 	i = 0;
-	if (s[i] && s[i] != c)
+	if (s[i] && s[i + 1] && s[i] != c)
 		count++;
 	while (s[i])
 	{

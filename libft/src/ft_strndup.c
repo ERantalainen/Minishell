@@ -1,44 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parseinput.c                                       :+:      :+:    :+:   */
+/*   ft_strndup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/18 18:56:03 by erantala         ###   ########.fr       */
+/*   Created: 2025/06/18 18:41:00 by erantala          #+#    #+#             */
+/*   Updated: 2025/06/19 03:20:48 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-t_token	create_token(char *s)
+char	*ft_strndup(char *s, size_t n)
 {
-	t_token	*new;
-
-	new = arena_malloc(sizeof(t_token));
+	size_t	pos;
+	size_t	len;
+	char	*dup;
 	
-}
-
-t_vector	*token_vector(char *s)
-{
-	int	i;
-	t_vector	*tokens;
-
-	tokens = new_vector(4);
-	i = 0;
-	while (s[i])
+	if (!s)
+		return (NULL);
+	pos = 0;
+	len = ft_strlen(s);
+	if (len > n)
+		dup = malloc(sizeof(char) * n + 1);
+	else
+		dup = malloc(sizeof(char) * len + 1);
+	if (!dup)
+		return (NULL);
+	while (s[pos] && pos < n)
 	{
-		while(ft_isspace(s[i]))
-			i++;
-		create_token(s + i);
+		dup[pos] = s[pos];
+		pos++;
 	}
-}
-t_vector	*token_string(char	*s)
-{
-	char	*s;
-	int		pos;
-	int		len;
-
-
+	dup[pos] = '\0';
+	return (dup);
 }

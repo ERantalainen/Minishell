@@ -86,7 +86,7 @@ char	*absolute_path(char *relative)
 	char	*absolut;
 
 	path = get_pwd();
-	if (!pwd)
+	if (!path)
 		exit(1);
 	absolut = arena_malloc(ft_strlen(path) + ft_strlen(relative) + 1);
 	ft_strlcat(absolut, path, ft_strlen(path) + 1);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 15:02:54 by jpelline          #+#    #+#             */
-/*   Updated: 2025/06/23 13:52:11 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/06/20 02:26:28 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int					ft_isdigit(int c);
 int					ft_isalnum(int c);
 int					ft_isascii(int c);
 int					ft_isprint(int arg);
+int					ft_isspace(int c);
 size_t				ft_strlen(const char *s);
 void				*ft_memset(void *s, int c, size_t n);
 void				ft_bzero(void *s, size_t n);
@@ -54,9 +55,10 @@ double				ft_atof(const char *nptr);
 bool				ft_atoib(const char *nptr);
 void				*ft_calloc(size_t nmemb, size_t size);
 char				*ft_strdup(const char *s);
+char				*ft_strndup(char *s, size_t n);
+int					ft_strcmp(const char *s1, const char *s2);
+int					ft_countchar(char *s, int c);
 
-int	ft_strcmp(const char *s1, const char *s2);
-int	ft_isspace(int c);
 // PART 2
 char				*ft_substr(char const *s, unsigned int start, size_t len);
 char				*ft_strjoin(char const *s1, char const *s2);
