@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <stdlib.h>
-#include <unistd.h>
 
 // Exec with pipes
 void	exec_with_pipes(t_cmd **cmd, char **env)
@@ -30,7 +28,7 @@ t_vector	*check_redirects(t_cmd **cmd)
 	int			*fd;
 
 	i = 0;
-	fd_vector = new_vector(5);
+	fd_vector = new_vector(1);
 	fd = arena_malloc(sizeof(int));
 	while (cmd[i])
 	{
@@ -62,6 +60,7 @@ void	exec_single_cmd(t_cmd **cmd, char **env)
 	size_t		i;
 	t_vector	*fd_vector;
 	int			*output_fd;
+	int			stdout_copy;
 
 	cmd_args = ft_split(cmd[0]->str, ' ');
 	size = 0;
@@ -88,7 +87,6 @@ void	exec_single_cmd(t_cmd **cmd, char **env)
 	}
 	ptr[j] = NULL;
 	fd_vector = check_redirects(cmd);
-	int stdout_copy;
 	if (fd_vector->data[0])
 	{
 		output_fd = fd_vector->data[fd_vector->count - 1];
@@ -108,7 +106,7 @@ void	exec_single_cmd(t_cmd **cmd, char **env)
 				i++;
 			}
 		}
-		dup2(STDOUT_FILENO, stdout_copy);
+		dup2(stdout_copy, STDOUT_FILENO);
 		return ;
 	}
 	pid = fork();
@@ -153,17 +151,18 @@ void	exec_input(t_cmd **cmd, char **env)
 	char		*path;
 	char		**ptr;
 	int			size;
-	size_t			i;
+	size_t		i;
 	int			j;
 	t_vector	*fd_vector;
 	int			*output_fd;
+	int			stdout_copy;
 
 	fd = open(cmd[1]->str, O_RDONLY);
 	if (fd < 0 || cmd[1]->next == EMPTY)
-		exit(1);
+		return ;
 	cmd_args = ft_split(cmd[2]->str, ' ');
 	if (dup2(fd, STDIN_FILENO) < 0)
-		exit(1);
+		return ;
 	size = 0;
 	while (cmd[size + 2]->next != EMPTY)
 		size++;
@@ -185,11 +184,24 @@ void	exec_input(t_cmd **cmd, char **env)
 	if (fd_vector->data[0])
 	{
 		output_fd = fd_vector->data[fd_vector->count - 1];
+		stdout_copy = dup(STDOUT_FILENO);
 		dup2(*output_fd, STDOUT_FILENO);
+		close(*output_fd);
 	}
 	if (cmd[0]->type == BUILTIN)
 	{
 		build_handler(cmd);
+		if (fd_vector->data[0])
+		{
+			i = 0;
+			while (i < fd_vector->count)
+			{
+				close(*(int *)fd_vector->data[i]);
+				i++;
+			}
+		}
+		close(fd);
+		dup2(stdout_copy, STDOUT_FILENO);
 		return ;
 	}
 	pid = fork();
@@ -214,10 +226,15 @@ void	exec_input(t_cmd **cmd, char **env)
 		{
 			i = 0;
 			while (i < fd_vector->count)
+			{
 				close(*(int *)fd_vector->data[i]);
+				i++;
+			}
 		}
+		dup2(STDOUT_FILENO, stdout_copy);
 		if (waitpid(pid, &status, 0) < 0)
-			exit(1);
+			return ;
+		puts("end");
 	}
 }
 
@@ -233,7 +250,7 @@ void	normal_exec(t_cmd **cmd, char **env)
 	if (cmd[0]->type == INPUT)
 	{
 		if (cmd[0]->next == EMPTY)
-			exit(1);
+			return ;
 		exec_input(cmd, env);
 	}
 	else if (cmd[0]->type == OUTPUT)
@@ -267,11 +284,11 @@ int	main(int ac, char **av, char **env)
 	t_vector	*commands;
 	t_data		*data;
 
+	(void)ac;
+	(void)av;
 	data = get_data();
 	init_data(env);
 	catcher();
-	(void)ac;
-	(void)av;
 	increase_shell_lvl();
 	while (1)
 	{
