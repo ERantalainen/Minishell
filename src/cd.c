@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:34:05 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/25 21:07:17 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/26 03:04:22 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	cd(t_cmd *cmd)
 	data = get_data();
 
 	if (cmd == NULL)
-		path = getenv("HOME");
+		path = find_export("HOME");
 	else
 		path = cmd->str;
 	if (chdir(path) == -1)
