@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:12:49 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/26 18:31:34 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/26 18:49:15 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,18 +159,17 @@ char				**get_cmd_args(char *cmd, char *path);
 // Built Ins
 
 void	built_in(t_cmd *cmd);
-void	build_handler(t_vector	*cmds);
-void	echo(t_vector *commands, int i);
+void	build_handler(t_cmd	**cmds);
+void	echo(t_cmd *cmd);
 void	pwd(void);
 void	unset(char	*key);
-void	make_export(t_vector *cmds, size_t i);
 void	cd(t_cmd *cmd);
 void	env(void);
 
 void	export(char *export);
 char	*find_export(char *key);
 size_t	key_len(char *s);
-void	make_export(t_vector *cmds, size_t i);
+void	make_export(t_cmd *cmd);
 void	replace_export(char *key);
 
 void	increase_shell_lvl();
@@ -181,6 +180,6 @@ char	*mini_join(char const *s1, char const *s2);
 void	catcher();
 void	ignore();
 void	reset_sig();
-void	child_sig();
+void	handler(int sig, siginfo_t *a, void *b);
 
 #endif

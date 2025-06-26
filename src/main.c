@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 18:29:23 by jpelline          #+#    #+#             */
-/*   Updated: 2025/06/26 18:31:11 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/26 18:50:24 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void	exec_single_cmd(t_cmd **cmd, char **env)
 	}
 	if (cmd[0]->type == BUILTIN)
 	{
-		build_handler(cmd);
+		// build_handler(cmd);
 		if (fd_vector->data[0])
 		{
 			i = 0;
@@ -111,6 +111,7 @@ void	exec_single_cmd(t_cmd **cmd, char **env)
 		dup2(STDOUT_FILENO, stdout_copy);
 		return ;
 	}
+	reset_sig();
 	pid = fork();
 	if (pid == 0)
 	{
@@ -137,9 +138,17 @@ void	exec_single_cmd(t_cmd **cmd, char **env)
 				i++;
 			}
 		}
+		ignore();
 		dup2(stdout_copy, STDOUT_FILENO);
 		if (waitpid(pid, &status, 0) < 0)
 			exit(1);
+		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+		{
+			write(1, "\n", 1);
+			rl_replace_line("", 0);
+			rl_done = 1;
+		}
+		catcher();
 	}
 }
 
@@ -192,6 +201,7 @@ void	exec_input(t_cmd **cmd, char **env)
 		build_handler(cmd);
 		return ;
 	}
+	reset_sig();
 	pid = fork();
 	if (pid == 0)
 	{
@@ -216,8 +226,16 @@ void	exec_input(t_cmd **cmd, char **env)
 			while (i < fd_vector->count)
 				close(*(int *)fd_vector->data[i]);
 		}
+		ignore();
 		if (waitpid(pid, &status, 0) < 0)
 			exit(1);
+		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+		{
+			write(1, "\n", 1);
+			rl_replace_line("", 0);
+			rl_done = 1;
+		}
+		catcher();
 	}
 }
 

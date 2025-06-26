@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 16:48:14 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/26 18:31:22 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/26 18:48:04 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,32 +103,4 @@ char	**vec_to_array(t_vector *vec)
 	return (res);
 }
 
-int	get_element(t_vector *vector, int i)
-{
-	size_t	i;
-
-	i = 0;
-	while (arr[i])
-	{
-		add_elem(vec, arr[i]);
-		i++;
-	}
-}
-
-char	**vec_to_array(t_vector *vec)
-{
-	size_t	i;
-	char	**res;
-	char	*str;
-	i = 0;
-	res = arena_malloc(sizeof(char *) * (vec->count + 1));
-	while (i < vec->count)
-	{
-		str = vec->data[i];
-		res[i] = str;
-		i++;
-	}
-	res[i] = NULL;
-	return (res);
-}
 // Finds element target and replaces it with elem in the designated vector.
