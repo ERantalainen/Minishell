@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 15:48:23 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/24 18:40:07 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/27 00:29:26 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,22 @@ void	check_repeat(t_vector *tokens)
 	size_t	i;
 	t_token	*token_curr;
 	t_token	*token_next;
+	t_data	*data;
 
+	data = get_data();
 	i = 0;
 	while (i < tokens->count - 1)
 	{
 		token_curr = tokens->data[i];
 		token_next = tokens->data[i + 1];
 		if (token_curr->t == PIPE && token_next->t == PIPE)
-			exit(1);
+			data->valid = 0;
 		if (token_curr->t == INPUT && token_next->t != STRING)
-			exit(1);
+			data->valid = 0;
 		if (token_curr->t == OUTPUT && token_next->t != STRING)
-			exit(1);
+			data->valid = 0;
+		if (data->valid == 0)
+			return ;
 		i++;
 	}
 }
@@ -74,6 +78,8 @@ int	check_heredoc(t_vector *tokens)
 		if (curr->t == HERE_DOC && next != NULL)
 		{
 			next->s = here_doc(tokens, next->s, count - 1);
+			if (!data->valid)
+				return (0);
 			next->t = FILES;
 			count--;
 		}

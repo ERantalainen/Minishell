@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 18:29:23 by jpelline          #+#    #+#             */
-/*   Updated: 2025/06/26 23:26:43 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/27 01:27:31 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,13 +139,14 @@ void	exec_single_cmd(t_cmd **cmd, char **env)
 		path = get_bin_path(cmd_args[0], env);
 		if (execve(path, ptr, env) < 0)
 			exit(1);
-		child_died(status);
-		catcher();
 	}
+	ignore();
 	close_handler_vector(fd_vector);
 	dup2(stdout_copy, STDOUT_FILENO);
 	dup2(stdin_copy, STDIN_FILENO);
 	waitpid(pid, &status, 0);
+	child_died(status);
+	catcher();
 }
 
 // exec with input <
@@ -222,14 +223,15 @@ void	exec_input(t_cmd **cmd, char **env)
 		path = get_bin_path(cmd_args[0], env);
 		if (execve(path, ptr, env) < 0)
 			exit(1);
-		child_died(status);
-		catcher();
 	}
+	ignore();
 	close(fd);
 	close_handler_vector(fd_vector);
 	dup2(stdout_copy, STDOUT_FILENO);
 	dup2(stdin_copy, STDIN_FILENO);
 	waitpid(pid, &status, 0);
+	child_died(status);
+	catcher();
 }
 
 void	exec_output(t_cmd **cmd, char **env)
@@ -280,27 +282,29 @@ int	main(int ac, char **av, char **env)
 
 	data = get_data();
 	init_data(env);
+	catcher();
+	increase_shell_lvl();
 	if (ac > 1)
 		non_interactive(av, ac);
 	else
 	{
-		catcher();
-		increase_shell_lvl();
 		while (1)
 		{
-			input = take_input();
-			add_history(input);
-			if (*input)
+			if (1)
 			{
+				data->valid = 1;
+				input = take_input();
+				add_history(input);
 				commands = create_commands(token_vector(input));
-				// for (size_t i = 0; i < commands->count; i++)
-				// {
-				// 	t_cmd cmd = commands->data[i];
-				// 	printf("%zu %s\n", i, cmd->str);
-				// }
-				execution(commands, vec_to_array(data->env_vec));
+				if (data->valid == 1)
+					execution(commands, vec_to_array(data->env_vec));
+					// for (size_t i = 0; i < commands->count; i++)
+					// {
+					// 	t_cmd cmd = commands->data[i];
+					// 	printf("%zu %s\n", i, cmd->str);
+					// }
+				free(input);
 			}
-			free(input);
 		}
 	}
 }

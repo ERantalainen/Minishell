@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 17:07:20 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/26 23:17:01 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/27 01:47:40 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	handler(int sig, siginfo_t *a, void *b)
 	g_sig = sig;
 	if (sig == SIGINT)
 	{
-		g_sig = SIGINT;
 		int k = write(1, "\n", 1);
 		(void)k;
 		rl_replace_line("", 0);
@@ -38,9 +37,11 @@ void	catcher()
 	ft_memset(&s_sig, 0, sizeof(sigaction));
 	ft_memset(&ign, 0, sizeof(sigaction));
 	ign.sa_handler = SIG_IGN;
+	s_sig.sa_flags = SA_SIGINFO;
 	s_sig.sa_sigaction = &handler;
 	sigaction(SIGINT, &s_sig, NULL);
 	sigaction(SIGQUIT, &ign, NULL);
+	rl_event_hook = NULL;
 	return ;
 }
 
@@ -59,9 +60,36 @@ void	reset_sig()
 {
 	struct sigaction	s_sig;
 
+	ft_memset(&s_sig, 0, sizeof(s_sig));
 	s_sig.sa_handler = SIG_DFL;
 	sigaction(SIGINT, &s_sig, NULL);
 	sigaction(SIGQUIT, &s_sig, NULL);
 	return ;
+}
+
+void	heredoc_handler(int sig)
+{
+	if (sig == SIGINT)
+		g_sig = SIGINT;
+}
+
+int	check_signal(void)
+{
+	if (g_sig == SIGINT)
+	{
+		rl_done = 1;
+		return (1);
+	}
+	return (0);
+}
+
+void	heredoc_signal(void)
+{
+	struct sigaction	s_sig;
+		
+	ft_memset(&s_sig, 0, sizeof(s_sig));
+	s_sig.sa_handler = heredoc_handler;
+	sigaction(SIGINT, &s_sig, NULL);
+	rl_event_hook = &check_signal;
 }
 

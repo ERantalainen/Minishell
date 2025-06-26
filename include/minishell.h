@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:12:49 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/26 23:16:45 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/27 01:31:17 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,9 @@
 
 # define ARENA_SIZE 16384
 # define ALIGNMENT 8
+
+# define EOF1 "minishell: warning: here-document at line "
+# define EOF2 "delimited by end-of-file"
 
 enum				e_pipe
 {
@@ -89,10 +92,12 @@ typedef struct s_data
 	int			hd_count;
 	t_cmd		*commands;
 	t_vector	*envv;
+	t_vector	*heredocs;
 	t_vector	*fds;
 	char		**environ;
 	t_vector	*env_vec;
 	int			shell;
+	bool		valid;
 }	t_data;
 
 extern sig_atomic_t	g_sig;
@@ -144,6 +149,7 @@ char				*mini_strdup(char *s);
 t_cmd				*check_redirect(t_cmd *cmd, t_token *token);
 size_t				word_len(char *s);
 
+void				check_repeat(t_vector *tokens);
 int					check_heredoc(t_vector *tokens);
 char				*here_doc(t_vector *tokens, char *limiter, int index);
 char				*name_join(char const *s1, char const *s2);
@@ -183,7 +189,9 @@ char	*mini_join(char const *s1, char const *s2);
 void	catcher();
 void	ignore();
 void	reset_sig();
+void	here_catcher();
 void	handler(int sig, siginfo_t *a, void *b);
+void	heredoc_signal(void);
 
 // Non interactive mode
 

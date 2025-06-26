@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:02:28 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/26 23:26:46 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/27 01:51:14 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,12 @@ void	ft_exit(char *s, int code)
 		close(*fd);
 		i++;
 	}
+	i = 0;
+	while (i < data->heredocs->count)
+	{
+		unlink((char *)data->heredocs->data[i]);
+		i++;
+	}
 	ft_fprintf(2, "%s\n", s);
 	exit(code);
 }
@@ -56,8 +62,10 @@ void	init_data(char	**env)
 	mini_name = get_pwd();
 	data = get_data();
 	data->directory = get_pwd();
+	data->fds = new_vector(5);
 	data->environ = env;
 	data->env_vec = new_vector(ft_stralen(env));
+	data->heredocs = new_vector(2);
 	array_to_vec(data->env_vec, (void **)env);
 	mini_name = mini_join("SHELL=", mini_name);
 	replace_export(mini_name);

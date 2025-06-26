@@ -6,35 +6,51 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 15:44:11 by jpelline          #+#    #+#             */
-/*   Updated: 2025/06/24 14:36:39 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/27 01:50:01 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // Writes to heredoc tmp file until LIMITER is encountered
+
+char	*here_eof(int line)
+{
+	char	*eof_msg;
+
+	if (line < 10)
+		line = 10;
+	eof_msg = mini_join(EOF1, ft_itoa(line));
+	eof_msg = mini_append(eof_msg, EOF2);
+	return (eof_msg);
+}
+
 static void	write_to_tmpfile(t_vector *tokens, char *limiter, int index)
 {
 	char	*input;
+	int		line;
 	t_data	*data;
 
 	(void)tokens;
+	line = 0;
 	data = get_data();
 	while (true)
 	{
-		printf("%s\n", limiter);
 		input = readline("heredoc>");
-		if (!input)
-			break ;
-		if (ft_strcmp(input, limiter) == 0)
+		if (g_sig == SIGINT || !input)
 		{
-			free(input);
-			break ;
+			if (g_sig == SIGINT)
+				data->valid = 0;
+			else if (!input)
+				ft_fprintf(STDERR_FILENO, "%s\n", here_eof(line));
+			return ;
 		}
+		if (ft_strcmp(input, limiter) == 0)
+			break ;
 		input = name_join(input, "\n");
 		if (write(data->hdfd[index], input, ft_strlen(input)) < 0)
 			exit(1);
-		free(input);
+		line++;
 	}
 }
 
@@ -53,11 +69,17 @@ char	*here_doc(t_vector *tokens, char *limiter, int index)
 	data->hdfd[index] = open(name, O_RDWR | O_CREAT | O_EXCL, 0600);
 	if (data->hdfd[index] < 0)
 		exit(1);
+	add_elem(data->fds, &data->hdfd[index]);
+	heredoc_signal();
 	write_to_tmpfile(tokens, limiter, index);
+	catcher();
+	if (g_sig != 0)
+		g_sig = 0;
 	close(data->hdfd[index]);
 	data->hdfd[index] = open(name, O_RDONLY);
 	if (data->hdfd[index] < 0)
 		exit(1);
+	add_elem(data->heredocs, name);
 	return (name);
 }
 

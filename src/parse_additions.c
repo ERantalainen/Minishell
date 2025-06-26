@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 15:44:37 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/25 19:42:22 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/27 01:55:19 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_cmd *check_redirect(t_cmd *cmd, t_token *token)
 	if (cmd->type == INPUT)
 	{
 		if (access(token->s, R_OK) != 0)
-			puts("no file lol");
+			perror("");
 		else
 		{
 			cmd->next = FILES;
