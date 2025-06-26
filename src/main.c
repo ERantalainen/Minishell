@@ -6,12 +6,11 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 18:29:23 by jpelline          #+#    #+#             */
-/*   Updated: 2025/06/26 22:56:29 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/26 23:15:26 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <stdlib.h>
 #include <unistd.h>
 
 // Exec with pipes
@@ -22,6 +21,21 @@ void	exec_with_pipes(t_cmd **cmd, char **env)
 	puts("pipe");
 }
 
+void	close_handler_vector(t_vector *fd_vector)
+{
+	size_t	i;
+
+	if (fd_vector->data[0])
+	{
+		i = 0;
+		while (i < fd_vector->count)
+		{
+			close(*(int *)fd_vector->data[i]);
+			i++;
+		}
+	}
+}
+
 // create vector for fds
 t_vector	*check_redirects(t_cmd **cmd)
 {
@@ -30,19 +44,21 @@ t_vector	*check_redirects(t_cmd **cmd)
 	int			*fd;
 
 	i = 0;
-	fd_vector = new_vector(5);
+	fd_vector = new_vector(1);
 	fd = arena_malloc(sizeof(int));
 	while (cmd[i])
 	{
-		if (cmd[i]->type == OUTPUT)
+		if (cmd[i]->type == OUTPUT && cmd[i]->next != EMPTY)
 		{
 			*fd = open(cmd[i + 1]->str, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 			add_elem(fd_vector, fd);
+			fd = arena_malloc(sizeof(int));
 		}
 		if (cmd[i]->type == APPEND)
 		{
 			*fd = open(cmd[i + 1]->str, O_WRONLY | O_APPEND | O_CREAT, 0644);
 			add_elem(fd_vector, fd);
+			fd = arena_malloc(sizeof(int));
 		}
 		i++;
 	}
@@ -60,9 +76,13 @@ void	exec_single_cmd(t_cmd **cmd, char **env)
 	int			size;
 	int			j;
 	size_t		i;
+	int			fd;
+	int			stdin_copy;
 	t_vector	*fd_vector;
 	int			*output_fd;
+	int			stdout_copy;
 
+	stdin_copy = dup(STDIN_FILENO);
 	cmd_args = mini_split(cmd[0]->str, ' ');
 	size = 0;
 	while (cmd[size]->next != EMPTY)
@@ -80,15 +100,20 @@ void	exec_single_cmd(t_cmd **cmd, char **env)
 	i = 0;
 	while (cmd[i]->next != EMPTY)
 	{
-		if (cmd[i + 1]->type == OUTPUT)
+		if (cmd[i + 1]->type == INPUT)
+		{
+			fd = open(cmd[i + 1]->str, O_RDONLY);
+			dup2(fd, STDIN_FILENO);
+			close(fd);
+		}
+		if (cmd[i + 1]->type != STRING && cmd[i + 1]->type != FILES)
 			break ;
-		ptr[j] = ft_strdup(cmd[i + 1]->str);
+		ptr[j] = mini_strdup(cmd[i + 1]->str);
 		j++;
 		i++;
 	}
 	ptr[j] = NULL;
 	fd_vector = check_redirects(cmd);
-	int stdout_copy = 0;
 	if (fd_vector->data[0])
 	{
 		output_fd = fd_vector->data[fd_vector->count - 1];
@@ -98,17 +123,10 @@ void	exec_single_cmd(t_cmd **cmd, char **env)
 	}
 	if (cmd[0]->type == BUILTIN)
 	{
-		// build_handler(cmd);
-		if (fd_vector->data[0])
-		{
-			i = 0;
-			while (i < fd_vector->count)
-			{
-				close(*(int *)fd_vector->data[i]);
-				i++;
-			}
-		}
-		dup2(STDOUT_FILENO, stdout_copy);
+		build_handler(cmd);
+		close_handler_vector(fd_vector);
+		dup2(stdout_copy, STDOUT_FILENO);
+		dup2(stdin_copy, STDIN_FILENO);
 		return ;
 	}
 	reset_sig();
@@ -116,35 +134,18 @@ void	exec_single_cmd(t_cmd **cmd, char **env)
 	if (pid == 0)
 	{
 		if (access(cmd_args[0], X_OK) >= 0)
-		{
 			if (execve(cmd_args[0], ptr, env) < 0)
 				exit(1);
-		}
-		else
-		{
-			path = get_bin_path(cmd_args[0], env);
-			if (execve(path, ptr, env) < 0)
-				exit(1);
-		}
-	}
-	else
-	{
-		if (fd_vector->data[0])
-		{
-			i = 0;
-			while (i < fd_vector->count)
-			{
-				close(*(int *)fd_vector->data[i]);
-				i++;
-			}
-		}
-		ignore();
-		dup2(stdout_copy, STDOUT_FILENO);
-		if (waitpid(pid, &status, 0) < 0)
+		path = get_bin_path(cmd_args[0], env);
+		if (execve(path, ptr, env) < 0)
 			exit(1);
 		child_died(status);
 		catcher();
 	}
+	close_handler_vector(fd_vector);
+	dup2(stdout_copy, STDOUT_FILENO);
+	dup2(stdin_copy, STDIN_FILENO);
+	waitpid(pid, &status, 0);
 }
 
 // exec with input <
@@ -157,17 +158,20 @@ void	exec_input(t_cmd **cmd, char **env)
 	char		*path;
 	char		**ptr;
 	int			size;
-	size_t			i;
+	size_t		i;
 	int			j;
 	t_vector	*fd_vector;
 	int			*output_fd;
+	int			stdout_copy;
+	int			stdin_copy;
 
+	stdin_copy = dup(STDIN_FILENO);
 	fd = open(cmd[1]->str, O_RDONLY);
 	if (fd < 0 || cmd[1]->next == EMPTY)
-		exit(1);
+		return ;
 	cmd_args = mini_split(cmd[2]->str, ' ');
 	if (dup2(fd, STDIN_FILENO) < 0)
-		exit(1);
+		return ;
 	size = 0;
 	while (cmd[size + 2]->next != EMPTY)
 		size++;
@@ -183,17 +187,29 @@ void	exec_input(t_cmd **cmd, char **env)
 	}
 	i = 0;
 	while (cmd[i + 2]->next != EMPTY)
-		ptr[j++ + 1] = mini_strdup(cmd[i++ + 3]->str);
-	ptr[j + 1] = NULL;
+	{
+		if (cmd[i + 3]->type != STRING || cmd[i + 3]->type != FILES)
+			break ;
+		ptr[j] = mini_strdup(cmd[i + 3]->str);
+		i++;
+		j++;
+	}
+	ptr[j] = NULL;
 	fd_vector = check_redirects(cmd);
 	if (fd_vector->data[0])
 	{
 		output_fd = fd_vector->data[fd_vector->count - 1];
+		stdout_copy = dup(STDOUT_FILENO);
 		dup2(*output_fd, STDOUT_FILENO);
+		close(*output_fd);
 	}
 	if (cmd[0]->type == BUILTIN)
 	{
 		build_handler(cmd);
+		close_handler_vector(fd_vector);
+		close(fd);
+		dup2(stdout_copy, STDOUT_FILENO);
+		dup2(stdin_copy, STDIN_FILENO);
 		return ;
 	}
 	reset_sig();
@@ -201,32 +217,19 @@ void	exec_input(t_cmd **cmd, char **env)
 	if (pid == 0)
 	{
 		if (access(cmd_args[0], X_OK) >= 0)
-		{
 			if (execve(cmd_args[0], ptr, env) < 0)
 				exit(1);
-		}
-		else
-		{
-			path = get_bin_path(cmd_args[0], env);
-			if (execve(path, ptr, env) < 0)
-				exit(1);
-		}
-	}
-	else
-	{
-		close(fd);
-		if (fd_vector->data[0])
-		{
-			i = 0;
-			while (i < fd_vector->count)
-				close(*(int *)fd_vector->data[i]);
-		}
-		ignore();
-		if (waitpid(pid, &status, 0) < 0)
+		path = get_bin_path(cmd_args[0], env);
+		if (execve(path, ptr, env) < 0)
 			exit(1);
 		child_died(status);
 		catcher();
 	}
+	close(fd);
+	close_handler_vector(fd_vector);
+	dup2(stdout_copy, STDOUT_FILENO);
+	dup2(stdin_copy, STDIN_FILENO);
+	waitpid(pid, &status, 0);
 }
 
 void	exec_output(t_cmd **cmd, char **env)
@@ -241,7 +244,7 @@ void	normal_exec(t_cmd **cmd, char **env)
 	if (cmd[0]->type == INPUT)
 	{
 		if (cmd[0]->next == EMPTY)
-			exit(1);
+			return ;
 		exec_input(cmd, env);
 	}
 	else if (cmd[0]->type == OUTPUT)
@@ -290,9 +293,14 @@ int	main(int ac, char **av, char **env)
 			if (*input)
 			{
 				commands = create_commands(token_vector(input));
+				// for (size_t i = 0; i < commands->count; i++)
+				// {
+				// 	t_cmd cmd = commands->data[i];
+				// 	printf("%zu %s\n", i, cmd->str);
+				// }
 				execution(commands, vec_to_array(data->env_vec));
 			}
 			free(input);
-	}
+		}
 	}
 }

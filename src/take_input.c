@@ -18,11 +18,11 @@ char	*take_input()
 
 	while (1)
 	{
-		input = readline("minishell>");
+		input = readline("\001\033[0;36m\002minishell>\001\033[0m\002 ");
 		if (!input)
 		{
 			ft_putendl_fd("exit", 1);
-			exit(0);
+			exit(42);
 		}
 		if (input[0] != 0)
 		{
