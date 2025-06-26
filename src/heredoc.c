@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 15:44:11 by jpelline          #+#    #+#             */
-/*   Updated: 2025/06/27 01:50:01 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/27 02:24:08 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 // Writes to heredoc tmp file until LIMITER is encountered
 
-char	*here_eof(int line)
+char	*here_eof()
 {
-	char	*eof_msg;
+	char		*eof_msg;
+	t_data		*data;
 
-	if (line < 10)
-		line = 10;
-	eof_msg = mini_join(EOF1, ft_itoa(line));
+	data = get_data();
+	eof_msg = mini_join(EOF1, ft_itoa(data->line));
 	eof_msg = mini_append(eof_msg, EOF2);
 	return (eof_msg);
 }
@@ -28,21 +28,19 @@ char	*here_eof(int line)
 static void	write_to_tmpfile(t_vector *tokens, char *limiter, int index)
 {
 	char	*input;
-	int		line;
 	t_data	*data;
 
 	(void)tokens;
-	line = 0;
 	data = get_data();
 	while (true)
 	{
-		input = readline("heredoc>");
+		input = readline("\001\033[1;32m\002heredoc>\001\033[0m\002 ");
 		if (g_sig == SIGINT || !input)
 		{
 			if (g_sig == SIGINT)
 				data->valid = 0;
 			else if (!input)
-				ft_fprintf(STDERR_FILENO, "%s\n", here_eof(line));
+				ft_fprintf(STDERR_FILENO, "%s\n", here_eof());
 			return ;
 		}
 		if (ft_strcmp(input, limiter) == 0)
@@ -50,7 +48,6 @@ static void	write_to_tmpfile(t_vector *tokens, char *limiter, int index)
 		input = name_join(input, "\n");
 		if (write(data->hdfd[index], input, ft_strlen(input)) < 0)
 			exit(1);
-		line++;
 	}
 }
 

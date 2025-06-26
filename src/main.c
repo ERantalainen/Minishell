@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 18:29:23 by jpelline          #+#    #+#             */
-/*   Updated: 2025/06/27 01:27:31 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/27 02:24:29 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -304,6 +304,7 @@ int	main(int ac, char **av, char **env)
 					// 	printf("%zu %s\n", i, cmd->str);
 					// }
 				free(input);
+				data->line++;
 			}
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:12:49 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/27 01:31:17 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/27 02:23:13 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ typedef struct s_command
 typedef struct s_data
 {
 	int			*hdfd;
+	int			line;
 	char		*directory;
 	int			hd_count;
 	t_cmd		*commands;
