@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <stdlib.h>
 #include <unistd.h>
 
 // Exec with pipes
@@ -20,6 +19,21 @@ void	exec_with_pipes(t_cmd **cmd, char **env)
 	(void)cmd;
 	(void)env;
 	puts("pipe");
+}
+
+void	close_handler_vector(t_vector *fd_vector)
+{
+	size_t	i;
+
+	if (fd_vector->data[0])
+	{
+		i = 0;
+		while (i < fd_vector->count)
+		{
+			close(*(int *)fd_vector->data[i]);
+			i++;
+		}
+	}
 }
 
 // create vector for fds
@@ -62,10 +76,13 @@ void	exec_single_cmd(t_cmd **cmd, char **env)
 	int			size;
 	int			j;
 	size_t		i;
+	int			fd;
+	int			stdin_copy;
 	t_vector	*fd_vector;
 	int			*output_fd;
 	int			stdout_copy;
 
+	stdin_copy = dup(STDIN_FILENO);
 	cmd_args = ft_split(cmd[0]->str, ' ');
 	size = 0;
 	while (cmd[size]->next != EMPTY)
@@ -83,9 +100,15 @@ void	exec_single_cmd(t_cmd **cmd, char **env)
 	i = 0;
 	while (cmd[i]->next != EMPTY)
 	{
-		if (cmd[i + 1]->type == OUTPUT)
+		if (cmd[i + 1]->type == INPUT)
+		{
+			fd = open(cmd[i + 1]->str, O_RDONLY);
+			dup2(fd, STDIN_FILENO);
+			close(fd);
+		}
+		if (cmd[i + 1]->type != STRING && cmd[i + 1]->type != FILES)
 			break ;
-		ptr[j] = ft_strdup(cmd[i + 1]->str);
+		ptr[j] = mini_strdup(cmd[i + 1]->str);
 		j++;
 		i++;
 	}
@@ -101,48 +124,29 @@ void	exec_single_cmd(t_cmd **cmd, char **env)
 	if (cmd[0]->type == BUILTIN)
 	{
 		build_handler(cmd);
-		if (fd_vector->data[0])
-		{
-			i = 0;
-			while (i < fd_vector->count)
-			{
-				close(*(int *)fd_vector->data[i]);
-				i++;
-			}
-		}
+		close_handler_vector(fd_vector);
 		dup2(stdout_copy, STDOUT_FILENO);
+		dup2(stdin_copy, STDIN_FILENO);
+		close(stdin_copy);
+		close(stdout_copy);
 		return ;
 	}
 	pid = fork();
 	if (pid == 0)
 	{
 		if (access(cmd_args[0], X_OK) >= 0)
-		{
 			if (execve(cmd_args[0], ptr, env) < 0)
 				exit(1);
-		}
-		else
-		{
-			path = get_bin_path(cmd_args[0], env);
-			if (execve(path, ptr, env) < 0)
-				exit(1);
-		}
-	}
-	else
-	{
-		if (fd_vector->data[0])
-		{
-			i = 0;
-			while (i < fd_vector->count)
-			{
-				close(*(int *)fd_vector->data[i]);
-				i++;
-			}
-		}
-		dup2(stdout_copy, STDOUT_FILENO);
-		if (waitpid(pid, &status, 0) < 0)
+		path = get_bin_path(cmd_args[0], env);
+		if (execve(path, ptr, env) < 0)
 			exit(1);
 	}
+	close_handler_vector(fd_vector);
+	dup2(stdout_copy, STDOUT_FILENO);
+	dup2(stdin_copy, STDIN_FILENO);
+	close(stdin_copy);
+	close(stdout_copy);
+	waitpid(pid, &status, 0);
 }
 
 // exec with input <
@@ -160,7 +164,9 @@ void	exec_input(t_cmd **cmd, char **env)
 	t_vector	*fd_vector;
 	int			*output_fd;
 	int			stdout_copy;
+	int			stdin_copy;
 
+	stdin_copy = dup(STDIN_FILENO);
 	fd = open(cmd[1]->str, O_RDONLY);
 	if (fd < 0 || cmd[1]->next == EMPTY)
 		return ;
@@ -181,9 +187,11 @@ void	exec_input(t_cmd **cmd, char **env)
 		j++;
 	}
 	i = 0;
-	while (cmd[i + 2]->next != EMPTY && cmd[i + 2]->next != OUTPUT)
+	while (cmd[i + 2]->next != EMPTY)
 	{
-		ptr[j] = ft_strdup(cmd[i + 3]->str);
+		if (cmd[i + 3]->type != STRING || cmd[i + 3]->type != FILES)
+			break ;
+		ptr[j] = mini_strdup(cmd[i + 3]->str);
 		i++;
 		j++;
 	}
@@ -199,53 +207,31 @@ void	exec_input(t_cmd **cmd, char **env)
 	if (cmd[0]->type == BUILTIN)
 	{
 		build_handler(cmd);
-		if (fd_vector->data[0])
-		{
-			i = 0;
-			while (i < fd_vector->count)
-			{
-				close(*(int *)fd_vector->data[i]);
-				i++;
-			}
-		}
+		close_handler_vector(fd_vector);
 		close(fd);
 		dup2(stdout_copy, STDOUT_FILENO);
+		dup2(stdin_copy, STDIN_FILENO);
+		close(stdin_copy);
+		close(stdout_copy);
 		return ;
 	}
 	pid = fork();
 	if (pid == 0)
 	{
 		if (access(cmd_args[0], X_OK) >= 0)
-		{
 			if (execve(cmd_args[0], ptr, env) < 0)
 				exit(1);
-		}
-		else
-		{
-			path = get_bin_path(cmd_args[0], env);
-			if (execve(path, ptr, env) < 0)
-				exit(42);
-		}
+		path = get_bin_path(cmd_args[0], env);
+		if (execve(path, ptr, env) < 0)
+			exit(1);
 	}
-	else
-	{
-		close(fd);
-		if (fd_vector->data[0])
-		{
-			i = 0;
-			while (i < fd_vector->count)
-			{
-				close(*(int *)fd_vector->data[i]);
-				i++;
-			}
-		}
-		ft_fprintf(STDERR_FILENO, "test\n");
-		if (waitpid(pid, &status, 0) < 0)
-			return ;
-		// exit(WEXITSTATUS(status));
-		dup2(stdout_copy, STDOUT_FILENO);
-		puts("hi");
-	}
+	close(fd);
+	close_handler_vector(fd_vector);
+	dup2(stdout_copy, STDOUT_FILENO);
+	dup2(stdin_copy, STDIN_FILENO);
+	close(stdin_copy);
+	close(stdout_copy);
+	waitpid(pid, &status, 0);
 }
 
 void	exec_output(t_cmd **cmd, char **env)
@@ -293,12 +279,13 @@ int	main(int ac, char **av, char **env)
 	char		*input;
 	t_vector	*commands;
 	t_data		*data;
+	t_cmd		*cmd;
 
 	(void)ac;
 	(void)av;
-	data = get_data();
-	init_data(env);
 	catcher();
+	init_data(env);
+	data = get_data();
 	increase_shell_lvl();
 	while (1)
 	{
@@ -306,18 +293,15 @@ int	main(int ac, char **av, char **env)
 		{
 			input = take_input();
 			add_history(input);
-			ft_fprintf(STDERR_FILENO, "main\n");
 			if (*input)
 			{
 				commands = create_commands(token_vector(input));
 				for (size_t i = 0; i < commands->count; i++)
 				{
-					t_cmd *cmd = commands->data[i];
+					cmd = commands->data[i];
 					printf("%zu %s\n", i, cmd->str);
 				}
 				execution(commands, vec_to_array(data->env_vec));
-				ft_fprintf(STDERR_FILENO, "main\n");
-				
 			}
 			free(input);
 		}

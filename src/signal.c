@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 17:07:20 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/25 17:04:05 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/26 19:49:12 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,16 @@
 
 sig_atomic_t g_sig = 0;
 
-void	handler(int sig, siginfo_t *info, void *empty)
+void	handler(int sig, siginfo_t *a, void *b)
 {
-	(void)info;
-	(void)empty;
+	(void)a;
+	(void)b;
 	g_sig = sig;
 	if (sig == SIGINT)
 	{
 		g_sig = SIGINT;
-		printf("\n");
-		rl_done = 1;
+		write(1, "\n", 1);
+		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
 	}
@@ -32,13 +32,35 @@ void	handler(int sig, siginfo_t *info, void *empty)
 void	catcher()
 {
 	struct sigaction	s_sig;
+	struct sigaction	ign;
 
+	ft_memset(&s_sig, 0, sizeof(sigaction));
+	ft_memset(&ign, 0, sizeof(sigaction));
+	ign.sa_handler = SIG_IGN;
 	s_sig.sa_sigaction = &handler;
-	if (sigemptyset(&s_sig.sa_mask) == -1)
-		exit (3);
-	if (sigaddset(&s_sig.sa_mask, SIGINT) == -1)
-		exit (4);
-	if (sigaction(SIGINT, &s_sig, NULL) == -1)
-		exit(2);
+	sigaction(SIGINT, &s_sig, NULL);
+	sigaction(SIGQUIT, &ign, NULL);
 	return ;
 }
+
+void	ignore()
+{
+	struct sigaction	s_sig;
+
+	ft_memset(&s_sig, 0, sizeof(s_sig));
+	s_sig.sa_handler = SIG_IGN;
+	sigaction(SIGINT, &s_sig, NULL);
+	sigaction(SIGQUIT, &s_sig, NULL);
+	return ;
+}
+
+void	reset_sig()
+{
+	struct sigaction	s_sig;
+
+	s_sig.sa_handler = SIG_DFL;
+	sigaction(SIGINT, &s_sig, NULL);
+	sigaction(SIGQUIT, &s_sig, NULL);
+	return ;
+}
+
