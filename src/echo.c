@@ -12,17 +12,15 @@
 
 #include "minishell.h"
 
-void	echo(t_vector *commands, int i)
+void	echo(t_cmd *commands)
 {
-	t_cmd	*cmd;
 	char	*command;
 	char	*output;
 	bool	newline;
 	size_t	pos;
 
 	pos = 0;
-	cmd = commands->data[i];
-	command = cmd->str + 5;
+	command = commands->str + 5;
 	newline = 1;
 	if (command[pos] == '-' && command[pos + 1] == 'n')
 	{

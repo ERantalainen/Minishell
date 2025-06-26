@@ -29,30 +29,28 @@ void	built_in(t_cmd *cmd)
 	}
 }
 
-void	build_handler(t_vector	*cmds)
+void	build_handler(t_cmd	**cmds)
 {
 	size_t		i;
-	t_cmd	*cmd;
 
 	i = 0;
-	while (i < cmds->count)
+	while (cmds[i])
 	{
-		cmd = cmds->data[i];
-		if (cmd->type == BUILTIN)
+		if (cmds[i]->type == BUILTIN)
 		{
-			if (ft_strncmp("echo", cmd->str, 4) == 0)
-				echo(cmds, i);
-			if (ft_strncmp("exit", cmd->str, 4) == 0)
+			if (ft_strncmp("echo", cmds[i]->str, 4) == 0)
+				echo(cmds[i]);
+			if (ft_strncmp("exit", cmds[i]->str, 4) == 0)
 				ft_exit("exit", 0);
-			if (ft_strncmp("cd", cmd->str, 2) == 0)
-				cd(cmds->data[i + 1]);
-			if (ft_strncmp("pwd", cmd->str, 3) == 0)
+			if (ft_strncmp("cd", cmds[i]->str, 2) == 0)
+				cd(cmds[i + 1]);
+			if (ft_strncmp("pwd", cmds[i]->str, 3) == 0)
 				pwd();
-			if (ft_strncmp("export", cmd->str, 6) == 0)
-				make_export(cmds, i);
-			if (ft_strncmp("unset", cmd->str, 5) == 0)
-				unset(cmd->str + 6);
-			if (ft_strncmp("env", cmd->str, 3) == 0)
+			if (ft_strncmp("export", cmds[i]->str, 6) == 0)
+				make_export(cmds[i]);
+			if (ft_strncmp("unset", cmds[i]->str, 5) == 0)
+				unset(cmds[i]->str + 6);
+			if (ft_strncmp("env", cmds[i]->str, 3) == 0)
 				env();
 		}
 		i++;

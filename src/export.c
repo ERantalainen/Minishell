@@ -58,12 +58,10 @@ size_t	key_len(char *s)
 
 // Finds an exported variable by searching its key.
 
-void	make_export(t_vector *cmds, size_t i)
+void	make_export(t_cmd *cmd)
 {
 	char	*command;
-	t_cmd	*cmd;
 
-	cmd = cmds->data[i];
 	command = cmd->str + 7;
 	if (ft_strcmp("", find_export(command)) != 0)
 		replace_export(command);
