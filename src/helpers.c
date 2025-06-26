@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:02:28 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/26 19:10:36 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/26 23:03:53 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,9 @@ void	child_died(int status)
 
 	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
 	{
-
-		write(1, "\n", 1);
+		// temp
+		int j = write(1, "\n", 1);
+		(void)j;
 		rl_replace_line("", 0);
 		rl_done = 1;
 		exit_export = mini_join(exit_code, mini_itoa(WTERMSIG(status) + 128));

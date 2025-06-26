@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 18:29:23 by jpelline          #+#    #+#             */
-/*   Updated: 2025/06/26 19:29:08 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/26 22:56:29 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void	exec_single_cmd(t_cmd **cmd, char **env)
 	}
 	ptr[j] = NULL;
 	fd_vector = check_redirects(cmd);
-	int stdout_copy;
+	int stdout_copy = 0;
 	if (fd_vector->data[0])
 	{
 		output_fd = fd_vector->data[fd_vector->count - 1];
@@ -277,19 +277,22 @@ int	main(int ac, char **av, char **env)
 
 	data = get_data();
 	init_data(env);
-	catcher();
-	(void)ac;
-	(void)av;
-	increase_shell_lvl();
-	while (1)
+	if (ac > 1)
+		non_interactive(av, ac);
+	else
 	{
-		input = take_input();
-		add_history(input);
-		if (*input)
+		catcher();
+		increase_shell_lvl();
+		while (1)
 		{
-			commands = create_commands(token_vector(input));
-			execution(commands, vec_to_array(data->env_vec));
-		}
-		free(input);
+			input = take_input();
+			add_history(input);
+			if (*input)
+			{
+				commands = create_commands(token_vector(input));
+				execution(commands, vec_to_array(data->env_vec));
+			}
+			free(input);
+	}
 	}
 }

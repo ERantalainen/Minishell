@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:12:49 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/26 19:05:27 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/26 23:08:25 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,5 +184,20 @@ void	catcher();
 void	ignore();
 void	reset_sig();
 void	handler(int sig, siginfo_t *a, void *b);
+
+// Non interactive mode
+
+void	non_interactive(char **argv, int argc);
+char	*get_input(char **argv, int argc);
+
+// Execution
+
+void	exec_with_pipes(t_cmd **cmd, char **env);
+t_vector	*check_redirects(t_cmd **cmd);
+void	exec_single_cmd(t_cmd **cmd, char **env);
+void	exec_input(t_cmd **cmd, char **env);
+void	exec_output(t_cmd **cmd, char **env);
+void	normal_exec(t_cmd **cmd, char **env);
+void	execution(t_vector *tokens, char **env);
 
 #endif

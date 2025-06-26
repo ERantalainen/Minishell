@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 17:07:20 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/26 19:49:12 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/26 23:04:12 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ void	handler(int sig, siginfo_t *a, void *b)
 	if (sig == SIGINT)
 	{
 		g_sig = SIGINT;
-		write(1, "\n", 1);
+		int k = write(1, "\n", 1);
+		(void)k;
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
