@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <stdlib.h>
+#include <unistd.h>
 
 // Exec with pipes
 void	exec_with_pipes(t_cmd **cmd, char **env)
@@ -32,15 +34,17 @@ t_vector	*check_redirects(t_cmd **cmd)
 	fd = arena_malloc(sizeof(int));
 	while (cmd[i])
 	{
-		if (cmd[i]->type == OUTPUT)
+		if (cmd[i]->type == OUTPUT && cmd[i]->next != EMPTY)
 		{
 			*fd = open(cmd[i + 1]->str, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 			add_elem(fd_vector, fd);
+			fd = arena_malloc(sizeof(int));
 		}
 		if (cmd[i]->type == APPEND)
 		{
 			*fd = open(cmd[i + 1]->str, O_WRONLY | O_APPEND | O_CREAT, 0644);
 			add_elem(fd_vector, fd);
+			fd = arena_malloc(sizeof(int));
 		}
 		i++;
 	}
@@ -177,15 +181,13 @@ void	exec_input(t_cmd **cmd, char **env)
 		j++;
 	}
 	i = 0;
-	while (cmd[i + 2]->next != EMPTY)
+	while (cmd[i + 2]->next != EMPTY && cmd[i + 2]->next != OUTPUT)
 	{
-		if (cmd[i + 2]->type == OUTPUT)
-			break ;
-		ptr[j + 1] = ft_strdup(cmd[i + 3]->str);
+		ptr[j] = ft_strdup(cmd[i + 3]->str);
 		i++;
 		j++;
 	}
-	ptr[j + 1] = NULL;
+	ptr[j] = NULL;
 	fd_vector = check_redirects(cmd);
 	if (fd_vector->data[0])
 	{
@@ -222,7 +224,7 @@ void	exec_input(t_cmd **cmd, char **env)
 		{
 			path = get_bin_path(cmd_args[0], env);
 			if (execve(path, ptr, env) < 0)
-				exit(1);
+				exit(42);
 		}
 	}
 	else
@@ -237,10 +239,12 @@ void	exec_input(t_cmd **cmd, char **env)
 				i++;
 			}
 		}
-		dup2(STDOUT_FILENO, stdout_copy);
+		ft_fprintf(STDERR_FILENO, "test\n");
 		if (waitpid(pid, &status, 0) < 0)
 			return ;
-		puts("end");
+		// exit(WEXITSTATUS(status));
+		dup2(stdout_copy, STDOUT_FILENO);
+		puts("hi");
 	}
 }
 
@@ -298,13 +302,24 @@ int	main(int ac, char **av, char **env)
 	increase_shell_lvl();
 	while (1)
 	{
-		input = take_input();
-		add_history(input);
-		if (*input)
+		if (isatty(STDOUT_FILENO))
 		{
-			commands = create_commands(token_vector(input));
-			execution(commands, vec_to_array(data->env_vec));
+			input = take_input();
+			add_history(input);
+			ft_fprintf(STDERR_FILENO, "main\n");
+			if (*input)
+			{
+				commands = create_commands(token_vector(input));
+				for (size_t i = 0; i < commands->count; i++)
+				{
+					t_cmd *cmd = commands->data[i];
+					printf("%zu %s\n", i, cmd->str);
+				}
+				execution(commands, vec_to_array(data->env_vec));
+				ft_fprintf(STDERR_FILENO, "main\n");
+				
+			}
+			free(input);
 		}
-		free(input);
 	}
 }
