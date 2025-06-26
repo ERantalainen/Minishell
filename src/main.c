@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 18:29:23 by jpelline          #+#    #+#             */
-/*   Updated: 2025/06/26 19:07:00 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/26 19:29:08 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	exec_single_cmd(t_cmd **cmd, char **env)
 	t_vector	*fd_vector;
 	int			*output_fd;
 
-	cmd_args = ft_split(cmd[0]->str, ' ');
+	cmd_args = mini_split(cmd[0]->str, ' ');
 	size = 0;
 	while (cmd[size]->next != EMPTY)
 		size++;
@@ -165,7 +165,7 @@ void	exec_input(t_cmd **cmd, char **env)
 	fd = open(cmd[1]->str, O_RDONLY);
 	if (fd < 0 || cmd[1]->next == EMPTY)
 		exit(1);
-	cmd_args = ft_split(cmd[2]->str, ' ');
+	cmd_args = mini_split(cmd[2]->str, ' ');
 	if (dup2(fd, STDIN_FILENO) < 0)
 		exit(1);
 	size = 0;

@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 18:55:30 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/26 18:56:39 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/26 19:30:13 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,21 +54,6 @@ static size_t	ft_words_in_s(const char *s, char c)
 	return (count);
 }
 
-static void	ft_free(char **arr)
-{
-	size_t	i;
-
-	if (!arr)
-		return ;
-	i = 0;
-	while (arr[i])
-	{
-		free(arr[i]);
-		i++;
-	}
-	free(arr);
-}
-
 static char	*ft_find_char(const char **arr, char c)
 {
 	char	*buffer;
@@ -77,7 +62,7 @@ static char	*ft_find_char(const char **arr, char c)
 	while (**arr != '\0' && **arr == c)
 		(*arr)++;
 	i = ft_get_word_len(*arr, c);
-	buffer = area_malloc(i + 1);
+	buffer = arena_malloc(i + 1);
 	i = 0;
 	while (**arr != '\0' && **arr != c)
 	{
