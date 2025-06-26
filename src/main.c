@@ -127,8 +127,6 @@ void	exec_single_cmd(t_cmd **cmd, char **env)
 		close_handler_vector(fd_vector);
 		dup2(stdout_copy, STDOUT_FILENO);
 		dup2(stdin_copy, STDIN_FILENO);
-		close(stdin_copy);
-		close(stdout_copy);
 		return ;
 	}
 	pid = fork();
@@ -144,8 +142,6 @@ void	exec_single_cmd(t_cmd **cmd, char **env)
 	close_handler_vector(fd_vector);
 	dup2(stdout_copy, STDOUT_FILENO);
 	dup2(stdin_copy, STDIN_FILENO);
-	close(stdin_copy);
-	close(stdout_copy);
 	waitpid(pid, &status, 0);
 }
 
@@ -211,8 +207,6 @@ void	exec_input(t_cmd **cmd, char **env)
 		close(fd);
 		dup2(stdout_copy, STDOUT_FILENO);
 		dup2(stdin_copy, STDIN_FILENO);
-		close(stdin_copy);
-		close(stdout_copy);
 		return ;
 	}
 	pid = fork();
@@ -229,8 +223,6 @@ void	exec_input(t_cmd **cmd, char **env)
 	close_handler_vector(fd_vector);
 	dup2(stdout_copy, STDOUT_FILENO);
 	dup2(stdin_copy, STDIN_FILENO);
-	close(stdin_copy);
-	close(stdout_copy);
 	waitpid(pid, &status, 0);
 }
 
@@ -279,7 +271,6 @@ int	main(int ac, char **av, char **env)
 	char		*input;
 	t_vector	*commands;
 	t_data		*data;
-	t_cmd		*cmd;
 
 	(void)ac;
 	(void)av;
@@ -296,11 +287,11 @@ int	main(int ac, char **av, char **env)
 			if (*input)
 			{
 				commands = create_commands(token_vector(input));
-				for (size_t i = 0; i < commands->count; i++)
-				{
-					cmd = commands->data[i];
-					printf("%zu %s\n", i, cmd->str);
-				}
+				// for (size_t i = 0; i < commands->count; i++)
+				// {
+				// 	t_cmd cmd = commands->data[i];
+				// 	printf("%zu %s\n", i, cmd->str);
+				// }
 				execution(commands, vec_to_array(data->env_vec));
 			}
 			free(input);
