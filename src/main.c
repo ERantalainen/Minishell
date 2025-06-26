@@ -178,7 +178,13 @@ void	exec_input(t_cmd **cmd, char **env)
 	}
 	i = 0;
 	while (cmd[i + 2]->next != EMPTY)
-		ptr[j++ + 1] = mini_strdup(cmd[i++ + 3]->str);
+	{
+		if (cmd[i + 2]->type == OUTPUT)
+			break ;
+		ptr[j + 1] = ft_strdup(cmd[i + 3]->str);
+		i++;
+		j++;
+	}
 	ptr[j + 1] = NULL;
 	fd_vector = check_redirects(cmd);
 	if (fd_vector->data[0])
