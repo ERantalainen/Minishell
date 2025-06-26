@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 17:07:20 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/26 19:12:08 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/26 19:49:12 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	catcher()
 	ign.sa_handler = SIG_IGN;
 	s_sig.sa_sigaction = &handler;
 	sigaction(SIGINT, &s_sig, NULL);
-	sigaction(SIGQUIT, &s_sig, NULL);
+	sigaction(SIGQUIT, &ign, NULL);
 	return ;
 }
 
