@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 15:43:47 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/24 18:36:44 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/26 15:36:56 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,12 +63,19 @@ char	*expand_strndup(char *s, size_t n)
 		if (s[i] == '$')
 		{
 			expansion = find_export(mini_strndup(s + i + 1, quote_len(s + i, '"')));
+			if (ft_strcmp(expansion, "") == 0 && (s[i + 1] == '\'' || s[i + 1] == '"'))
+				i++;
+			else
+			{
 			i += word_len(s + i);
 			ft_strlcat(dup, expansion, ft_strlen(expansion) + 1 + pos);
 			pos += ft_strlen(expansion);
 			if (i >= n)
 				break ;
+			}
 		}
+		if (s[i] == '"' || s[i] == '\'')
+			i++;
 		dup[pos++] = s[i++];
 	}
 	dup[pos] = '\0';
@@ -118,3 +125,18 @@ char	*mini_strndup(char *s, size_t n)
 
 // Simply makes a duplicate string with size N not considering expansions.
 
+char	*mini_strdup(char *s)
+{
+	char	*dup;
+	size_t	i;
+
+	i = 0;
+	dup = arena_malloc((ft_strlen(s)) * sizeof(char));
+	while (s[i])
+	{
+		dup[i] = s[i];
+		i++;
+	}
+	dup[i] = '\0';
+	return (dup);
+}
