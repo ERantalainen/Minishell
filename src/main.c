@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 18:29:23 by jpelline          #+#    #+#             */
-/*   Updated: 2025/06/26 18:50:24 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/26 19:07:00 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,12 +142,7 @@ void	exec_single_cmd(t_cmd **cmd, char **env)
 		dup2(stdout_copy, STDOUT_FILENO);
 		if (waitpid(pid, &status, 0) < 0)
 			exit(1);
-		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
-		{
-			write(1, "\n", 1);
-			rl_replace_line("", 0);
-			rl_done = 1;
-		}
+		child_died(status);
 		catcher();
 	}
 }
@@ -229,12 +224,7 @@ void	exec_input(t_cmd **cmd, char **env)
 		ignore();
 		if (waitpid(pid, &status, 0) < 0)
 			exit(1);
-		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
-		{
-			write(1, "\n", 1);
-			rl_replace_line("", 0);
-			rl_done = 1;
-		}
+		child_died(status);
 		catcher();
 	}
 }

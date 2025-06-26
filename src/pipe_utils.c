@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 18:35:04 by jpelline          #+#    #+#             */
-/*   Updated: 2025/06/23 18:46:39 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/06/26 18:55:08 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	**get_cmd_args(char *cmd, char *path)
 	i = 0;
 	while (args[i])
 		i++;
-	cmd_args = ft_calloc(i + 1, sizeof(char *));
+	cmd_args = arena_malloc((i + 1) * sizeof(char *));
 	cmd_args[0] = ft_strdup(path);
 	i = 1;
 	while (args[i])

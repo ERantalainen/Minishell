@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:02:28 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/26 01:16:55 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/26 19:10:36 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,4 +96,27 @@ char	*absolute_path(char *relative)
 	ft_strlcat(absolut, path, ft_strlen(path) + 1);
 	ft_strlcat(absolut, relative, ft_strlen(absolut + ft_strlen(relative))+ 1);
 	return (absolut);
+}
+
+void	child_died(int status)
+{
+	const char	*exit_code = "?=";
+	char		*exit_export;
+
+	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+	{
+
+		write(1, "\n", 1);
+		rl_replace_line("", 0);
+		rl_done = 1;
+		exit_export = mini_join(exit_code, mini_itoa(WTERMSIG(status) + 128));
+		if (ft_strcmp(find_export("?"), "") == 0)
+			export(exit_export);
+		else
+			replace_export(exit_export);
+	}
+	else if (ft_strcmp(find_export("?"), "") == 0)
+			export(mini_join(exit_code, mini_itoa(WEXITSTATUS(status))));
+	else
+		replace_export(mini_join(exit_code, mini_itoa(WEXITSTATUS(status))));
 }

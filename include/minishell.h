@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:12:49 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/26 18:49:15 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/26 19:05:27 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,9 @@ void				*arena_malloc(size_t n);
 t_arena				**get_arenas(t_arena **new);
 t_arena				*find_arena(size_t n);
 t_arena				**new_arena(t_arena **curr, int count, size_t n);
+char				**mini_split(const char *s, char c);
+char				*mini_itoa(int n);
+void				child_died(int status);
 
 // Memory arena
 

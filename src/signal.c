@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 17:07:20 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/26 18:06:09 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/26 19:12:08 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ void	catcher()
 	struct sigaction	s_sig;
 	struct sigaction	ign;
 
-	ft_memset(&s_sig, 0, sizeof(s_sig));
-	ft_memset(&ign, 0, sizeof(ign));
+	ft_memset(&s_sig, 0, sizeof(sigaction));
+	ft_memset(&ign, 0, sizeof(sigaction));
 	ign.sa_handler = SIG_IGN;
 	s_sig.sa_sigaction = &handler;
 	sigaction(SIGINT, &s_sig, NULL);
