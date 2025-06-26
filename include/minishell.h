@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:12:49 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/26 15:23:47 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/26 17:39:41 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,10 +178,9 @@ char	*mini_join(char const *s1, char const *s2);
 
 // Signals
 
-void				catcher();
-
-// Signals
-
-void				catcher(void);
+void	catcher();
+void	ignore();
+void	reset_sig();
+void	child_sig();
 
 #endif

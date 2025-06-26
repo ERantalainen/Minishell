@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 18:29:23 by jpelline          #+#    #+#             */
-/*   Updated: 2025/06/26 01:19:24 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/26 18:13:42 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void	exec_single_cmd(t_cmd **cmd, char **env)
 	ptr[j] = NULL;
 	if (access(cmd_args[0], X_OK) >= 0)
 	{
+		reset_sig();
 		pid = fork();
 		if (pid == 0)
 		{
@@ -63,6 +64,7 @@ void	exec_single_cmd(t_cmd **cmd, char **env)
 	}
 	else
 	{
+		reset_sig();
 		pid = fork();
 		if (pid == 0)
 		{
@@ -72,8 +74,10 @@ void	exec_single_cmd(t_cmd **cmd, char **env)
 		}
 		else
 		{
+			ignore();
 			if (waitpid(pid, &status, 0) < 0)
 				exit(1);
+			catcher();
 		}
 	}
 }
@@ -119,6 +123,7 @@ void	exec_input(t_cmd **cmd, char **env)
 	t_vector	*fd_vector;
 	int			*output_fd;
 
+	reset_sig();
 	pid = fork();
 	if (pid == 0)
 	{
@@ -163,8 +168,10 @@ void	exec_input(t_cmd **cmd, char **env)
 				exit(1);
 		}
 	}
+	ignore();
 	if (waitpid(pid, &status, 0) < 0)
 		exit(1);
+	catcher();
 }
 
 void	exec_output(t_cmd **cmd, char **env)
