@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 13:56:30 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/26 23:13:32 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/26 23:25:08 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	built_in(t_cmd *cmd)
 	"env", "exit", NULL};
 
 	i = 0;
-	if (cmd->type != STRING)
+	if (cmd->type != STRING || cmd->type != FILES)
 		return ;
 	while (i < 7)
 	{
@@ -38,6 +38,7 @@ void	build_handler(t_cmd	**cmds)
 	{
 		if (cmds[i]->type == BUILTIN)
 		{
+			puts(cmds[i]->str);
 			if (ft_strncmp("echo", cmds[i]->str, 4) == 0)
 				echo(cmds[i]);
 			if (ft_strncmp("exit", cmds[i]->str, 4) == 0)

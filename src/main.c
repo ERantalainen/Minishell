@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 18:29:23 by jpelline          #+#    #+#             */
-/*   Updated: 2025/06/26 23:15:26 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/26 23:26:43 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,10 @@ void	exec_single_cmd(t_cmd **cmd, char **env)
 	int			j;
 	size_t		i;
 	int			fd;
-	int			stdin_copy;
+	int			stdin_copy = 0;
 	t_vector	*fd_vector;
 	int			*output_fd;
-	int			stdout_copy;
+	int			stdout_copy = 0;
 
 	stdin_copy = dup(STDIN_FILENO);
 	cmd_args = mini_split(cmd[0]->str, ' ');
@@ -162,8 +162,8 @@ void	exec_input(t_cmd **cmd, char **env)
 	int			j;
 	t_vector	*fd_vector;
 	int			*output_fd;
-	int			stdout_copy;
-	int			stdin_copy;
+	int			stdout_copy = 0;
+	int			stdin_copy = 0;
 
 	stdin_copy = dup(STDIN_FILENO);
 	fd = open(cmd[1]->str, O_RDONLY);

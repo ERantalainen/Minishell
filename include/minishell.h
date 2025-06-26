@@ -6,11 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:12:49 by erantala          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/06/26 23:08:25 by erantala         ###   ########.fr       */
-=======
-/*   Updated: 2025/06/26 19:05:27 by erantala         ###   ########.fr       */
->>>>>>> origin/usva
+/*   Updated: 2025/06/26 23:16:45 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,7 +184,6 @@ void	catcher();
 void	ignore();
 void	reset_sig();
 void	handler(int sig, siginfo_t *a, void *b);
-<<<<<<< HEAD
 
 // Non interactive mode
 
@@ -204,7 +199,5 @@ void	exec_input(t_cmd **cmd, char **env);
 void	exec_output(t_cmd **cmd, char **env);
 void	normal_exec(t_cmd **cmd, char **env);
 void	execution(t_vector *tokens, char **env);
-=======
->>>>>>> origin/usva
 
 #endif

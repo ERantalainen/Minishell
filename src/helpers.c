@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:02:28 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/26 23:03:53 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/26 23:26:46 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ void	init_data(char	**env)
 	t_data	*data;
 	char	*mini_name;
 
-	puts("here");
 	mini_name = get_pwd();
 	data = get_data();
 	data->directory = get_pwd();
