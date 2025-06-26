@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 15:44:11 by jpelline          #+#    #+#             */
-/*   Updated: 2025/06/27 02:24:08 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/27 02:31:39 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,16 @@
 
 // Writes to heredoc tmp file until LIMITER is encountered
 
-char	*here_eof()
+char	*here_eof(char *limiter)
 {
 	char		*eof_msg;
 	t_data		*data;
 
 	data = get_data();
 	eof_msg = mini_join(EOF1, ft_itoa(data->line));
-	eof_msg = mini_append(eof_msg, EOF2);
+	limiter = mini_join(limiter, "\')");
+	eof_msg = mini_join(eof_msg, EOF2);
+	eof_msg = mini_join(eof_msg, limiter);
 	return (eof_msg);
 }
 
@@ -40,7 +42,7 @@ static void	write_to_tmpfile(t_vector *tokens, char *limiter, int index)
 			if (g_sig == SIGINT)
 				data->valid = 0;
 			else if (!input)
-				ft_fprintf(STDERR_FILENO, "%s\n", here_eof());
+				ft_fprintf(STDERR_FILENO, "%s\n", here_eof(limiter));
 			return ;
 		}
 		if (ft_strcmp(input, limiter) == 0)

@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:12:49 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/27 02:23:13 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/27 02:29:56 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 # define ALIGNMENT 8
 
 # define EOF1 "minishell: warning: here-document at line "
-# define EOF2 "delimited by end-of-file"
+# define EOF2 " delimited by end-of-file (wanted `"
 
 enum				e_pipe
 {
