@@ -1,33 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cd.c                                               :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/18 18:34:05 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/26 03:04:22 by erantala         ###   ########.fr       */
+/*   Created: 2025/06/25 21:19:17 by erantala          #+#    #+#             */
+/*   Updated: 2025/06/26 00:48:26 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	cd(t_cmd *cmd)
+void	env(void)
 {
 	t_data	*data;
-	char	*path;
-	data = get_data();
+	char	*line;
+	size_t	i;
 
-	if (cmd == NULL)
-		path = find_export("HOME");
-	else
-		path = cmd->str;
-	if (chdir(path) == -1)
+	i = 0;
+	data = get_data();
+	while(i < data->env_vec->count)
 	{
-		if (errno == ENOENT)
-			printf("File does not exist\n");
-		if (errno == EACCES)
-			printf("Permission deniend\n");
+		line = data->env_vec->data[i];
+		printf("%s\n", line);
+		i++;
 	}
-	data->directory = get_pwd();
 }
