@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 17:07:45 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/27 17:13:15 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/27 19:07:46 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	clean_heredoc()
 	while (i < data->heredocs->count)
 	{
 		if (unlink((char *)data->heredocs->data[i]) == -1)
-			perror("minisell: ");
+			perror("minishell: ");
 		i++;
 	}
 }
