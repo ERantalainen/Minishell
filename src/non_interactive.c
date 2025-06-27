@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 22:53:35 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/26 23:26:00 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/27 18:03:02 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	non_interactive(char **argv, int argc)
 	input = "";
 	while (1)
 	{
+		data->valid = 1;
 		while (1)
 		{
 			add = get_input(argv, argc);
@@ -31,6 +32,11 @@ void	non_interactive(char **argv, int argc)
 			input = mini_append(input, add);
 		}
 		commands = create_commands(token_vector(input));
+		for (size_t i = 0; i < commands->count; i++)
+		{
+			t_cmd *cmd = commands->data[i];
+			puts(cmd->str);
+		}
 		execution(commands, vec_to_array(data->env_vec));
 		break ;
 	}
