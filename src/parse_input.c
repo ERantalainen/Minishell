@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/27 17:48:38 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/27 17:58:59 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ t_cmd	*make_cmd_str(t_vector *tokens, size_t *i)
 	token = tokens->data[(*i)];
 	cmd->type = STRING;
 	cmd->str = "";
-	if (access(token->s, R_OK | W_OK) != 0 || (*i != 0))
+	if (access(token->s, R_OK | W_OK) != 0 || (*i == 0))
 	{
 		while ((*i) < tokens->count && token->t == STRING)
 		{
