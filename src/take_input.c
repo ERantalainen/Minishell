@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 02:49:43 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/25 16:47:59 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/27 15:26:41 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,7 @@ char	*take_input()
 		input = readline("\001\033[0;36m\002minishell>\001\033[0m\002 ");
 		if (!input)
 		{
-			ft_putendl_fd("exit", 1);
-			exit(42);
+			ft_exit("exit", 0);
 		}
 		if (input[0] != 0)
 		{

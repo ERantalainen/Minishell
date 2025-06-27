@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 17:07:20 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/27 01:47:40 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/27 15:21:41 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,7 @@ void	handler(int sig, siginfo_t *a, void *b)
 	g_sig = sig;
 	if (sig == SIGINT)
 	{
-		int k = write(1, "\n", 1);
-		(void)k;
+		write(1, "\n", 1);
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
@@ -86,7 +85,7 @@ int	check_signal(void)
 void	heredoc_signal(void)
 {
 	struct sigaction	s_sig;
-		
+
 	ft_memset(&s_sig, 0, sizeof(s_sig));
 	s_sig.sa_handler = heredoc_handler;
 	sigaction(SIGINT, &s_sig, NULL);

@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 13:56:30 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/26 23:25:08 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/27 15:24:59 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	built_in(t_cmd *cmd)
 	"env", "exit", NULL};
 
 	i = 0;
-	if (cmd->type != STRING || cmd->type != FILES)
+	if (cmd->type != STRING && cmd->type != FILES)
 		return ;
 	while (i < 7)
 	{
