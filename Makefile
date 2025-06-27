@@ -6,7 +6,7 @@
 #    By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/03 18:36:06 by jpelline          #+#    #+#              #
-#    Updated: 2025/06/26 22:59:17 by erantala         ###   ########.fr        #
+#    Updated: 2025/06/27 17:12:43 by erantala         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,7 +61,7 @@ SRCS_MAIN	:= main.c memory_arena.c vector.c parse_input.c \
 			syntax_check.c take_input.c export.c helpers.c heredoc.c \
 			parse_additions.c parse_helpers.c signal.c echo.c pwd.c cd.c \
 			pipe_utils.c built_in.c env.c unset.c shlv.c vector_helpers.c \
-			mini_split.c non_interactive.c
+			mini_split.c non_interactive.c cleanup.c
 
 # SRCS_PIPE	:= child_process.c cleanup_utils.c command_parser.c \
 # 		   main_pipe.c pipeline_manager.c

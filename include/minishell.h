@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:12:49 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/27 02:29:56 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/27 17:12:29 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,5 +208,9 @@ void	exec_input(t_cmd **cmd, char **env);
 void	exec_output(t_cmd **cmd, char **env);
 void	normal_exec(t_cmd **cmd, char **env);
 void	execution(t_vector *tokens, char **env);
+
+// Cleaner
+
+void	clean_heredoc(void);
 
 #endif

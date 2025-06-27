@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:02:28 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/27 15:32:59 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/27 17:13:12 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,33 +17,6 @@ t_data	*get_data()
 	static t_data data;
 
 	return (&data);
-}
-
-void	ft_exit(char *s, int code)
-{
-	t_data	*data;
-	size_t		i;
-	int		*fd;
-	i = 0;
-	data = get_data();
-	free_arenas();
-	rl_clear_history();
-	while (i < data->fds->count)
-	{
-		fd = (int *)data->fds->data[i];
-		close(*fd);
-		i++;
-	}
-	i = 0;
-	while (i < data->heredocs->count)
-	{
-		puts((char *)data->heredocs->data[i]);
-		if (unlink((char *)data->heredocs->data[i]) == -1)
-			perror("minisell: ");
-		i++;
-	}
-	ft_fprintf(2, "%s\n", s);
-	exit(code);
 }
 
 size_t	ft_stralen(char **s)
