@@ -39,6 +39,13 @@ enum				e_pipe
 	WRITE
 };
 
+enum				e_open
+{
+	OUTPUT_CONF = O_WRONLY | O_TRUNC | O_CREAT,
+	APPEND_CONF = O_WRONLY | O_APPEND | O_CREAT,
+	INPUT_CONF = O_RDONLY
+};
+
 typedef struct s_arena
 {
 	size_t			max;
@@ -57,7 +64,7 @@ typedef enum e_type
 	STRING,
 	FILES,
 	BUILTIN
-}	t_type;
+}					t_type;
 
 typedef struct s_token
 {
@@ -87,23 +94,39 @@ typedef struct s_command
 
 typedef struct s_data
 {
-	int			*hdfd;
-	int			line;
-	char		*directory;
-	int			hd_count;
-	t_cmd		*commands;
-	t_vector	*envv;
-	t_vector	*heredocs;
-	t_vector	*fds;
-	char		**environ;
-	t_vector	*env_vec;
-	int			shell;
-	bool		valid;
-}	t_data;
+	int				*hdfd;
+	int				line;
+	char			*directory;
+	int				hd_count;
+	t_cmd			*commands;
+	t_vector		*envv;
+	t_vector		*heredocs;
+	t_vector		*fds;
+	char			**environ;
+	t_vector		*env_vec;
+	int				shell;
+	bool			valid;
+}					t_data;
+
+typedef struct s_pipedata
+{
+	int				stdout_copy;
+	int				stdin_copy;
+	int				outfile;
+	int				infile;
+	int				pipe_count;
+	int				pipe_index;
+	int				pipe_old[2];
+	int				pipe_new[2];
+	int				**pipefd;
+	char			**cmd_args;
+	size_t			cmd_index;
+	int				index;
+}					t_pipedata;
 
 extern sig_atomic_t	g_sig;
 
-void				init_data(char	**env);
+void				init_data(char **env);
 char				*get_pwd(void);
 
 // Helpers
@@ -168,45 +191,45 @@ char				**get_cmd_args(char *cmd, char *path);
 
 // Built Ins
 
-void	built_in(t_cmd *cmd);
-void	build_handler(t_cmd	**cmds);
-void	echo(t_cmd *cmd);
-void	pwd(void);
-void	unset(char	*key);
-void	cd(t_cmd *cmd);
-void	env(void);
+void				built_in(t_cmd *cmd);
+void				build_handler(t_cmd **cmds);
+void				echo(t_cmd *cmd);
+void				pwd(void);
+void				unset(char *key);
+void				cd(t_cmd *cmd);
+void				env(void);
 
-void	export(char *export);
-char	*find_export(char *key);
-size_t	key_len(char *s);
-void	make_export(t_cmd *cmd);
-void	replace_export(char *key);
+void				export(char *export);
+char				*find_export(char *key);
+size_t				key_len(char *s);
+void				make_export(t_cmd *cmd);
+void				replace_export(char *key);
 
-void	increase_shell_lvl();
-char	*mini_join(char const *s1, char const *s2);
+void				increase_shell_lvl(void);
+char				*mini_join(char const *s1, char const *s2);
 
 // Signals
 
-void	catcher();
-void	ignore();
-void	reset_sig();
-void	here_catcher();
-void	handler(int sig, siginfo_t *a, void *b);
-void	heredoc_signal(void);
+void				catcher(void);
+void				ignore(void);
+void				reset_sig(void);
+void				here_catcher(void);
+void				handler(int sig, siginfo_t *a, void *b);
+void				heredoc_signal(void);
 
 // Non interactive mode
 
-void	non_interactive(char **argv, int argc);
-char	*get_input(char **argv, int argc);
+void				non_interactive(char **argv, int argc);
+char				*get_input(char **argv, int argc);
 
 // Execution
 
-void	exec_with_pipes(t_cmd **cmd, char **env);
-t_vector	*check_redirects(t_cmd **cmd);
-void	exec_single_cmd(t_cmd **cmd, char **env);
-void	exec_input(t_cmd **cmd, char **env);
-void	exec_output(t_cmd **cmd, char **env);
-void	normal_exec(t_cmd **cmd, char **env);
-void	execution(t_vector *tokens, char **env);
+t_vector			*check_redirects(t_cmd **cmd);
+void				exec_single_cmd(t_cmd **cmd, char **env);
+void				exec_input(t_cmd **cmd, char **env);
+void				exec_output(t_cmd **cmd, char **env);
+void				normal_exec(t_cmd **cmd, char **env);
+void				execution(t_vector *tokens, char **env);
 
+void	setup_pipeline(t_cmd **tokens, char **env);
 #endif

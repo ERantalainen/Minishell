@@ -24,8 +24,10 @@ void	echo(t_cmd *commands)
 	newline = 1;
 	if (command[pos] == '-' && command[pos + 1] == 'n')
 	{
+		while (command[pos + 1] == 'n')
+			pos++;
 		newline = 0;
-		command += 3;
+		command += pos + 2;
 	}
 	output = mini_strndup(command, ft_strlen(command));
 	if (newline == 1)

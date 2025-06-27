@@ -61,7 +61,7 @@ SRCS_MAIN	:= main.c memory_arena.c vector.c parse_input.c \
 			syntax_check.c take_input.c export.c helpers.c heredoc.c \
 			parse_additions.c parse_helpers.c signal.c echo.c pwd.c cd.c \
 			pipe_utils.c built_in.c env.c unset.c shlv.c vector_helpers.c \
-			mini_split.c non_interactive.c
+			mini_split.c non_interactive.c execution.c
 
 # SRCS_PIPE	:= child_process.c cleanup_utils.c command_parser.c \
 # 		   main_pipe.c pipeline_manager.c
