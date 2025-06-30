@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 15:48:23 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/30 18:51:23 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/30 18:52:29 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,21 +15,21 @@
 void	check_repeat(t_vector *tokens)
 {
 	size_t	i;
-	t_token	*token_curr;
-	t_token	*token_next;
+	t_token	*cur;
+	t_token	*nx;
 	t_data	*data;
 
 	data = get_data();
 	i = 0;
 	while (i < tokens->count - 1)
 	{
-		token_curr = tokens->data[i];
-		token_next = tokens->data[i + 1];
-		if (token_curr->t == PIPE && token_next->t == PIPE)
+		cur = tokens->data[i];
+		nx = tokens->data[i + 1];
+		if (cur->t == PIPE && nx->t == PIPE)
 			data->valid = 0;
-		if (token_curr->t == INPUT && token_next->t != STRING && token_next->t != FILES)
+		if (cur->t == INPUT && nx->t != STRING && nx->t != FILES)
 			data->valid = 0;
-		if (token_curr->t == OUTPUT && token_next->t != STRING && token_next->t != FILES)
+		if (cur->t == OUTPUT && nx->t != STRING && nx->t != FILES)
 			data->valid = 0;
 		if (data->valid == 0)
 			return ;
