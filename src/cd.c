@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:34:05 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/30 18:42:12 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/30 18:47:17 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	cd(t_cmd **cmd, int i)
 	else
 		path = cmd[i]->str += 3;
 	if (chdir(path) == -1)
-		perror("minishell ");
+		perror((mini_join("minishell", "path")));
 	else
 	{
 		data->directory = get_pwd();

@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 15:48:23 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/27 00:29:26 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/30 18:50:11 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ void	check_repeat(t_vector *tokens)
 		token_next = tokens->data[i + 1];
 		if (token_curr->t == PIPE && token_next->t == PIPE)
 			data->valid = 0;
-		if (token_curr->t == INPUT && token_next->t != STRING)
+		if (token_curr->t == INPUT && token_next->t != STRING || token_next->t != FILES)
 			data->valid = 0;
-		if (token_curr->t == OUTPUT && token_next->t != STRING)
+		if (token_curr->t == OUTPUT && token_next->t != STRING || token_next->t != FILES)
 			data->valid = 0;
 		if (data->valid == 0)
 			return ;
