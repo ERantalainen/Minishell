@@ -6,28 +6,30 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:34:05 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/26 03:04:22 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/30 18:17:01 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	cd(t_cmd *cmd)
+void	cd(t_cmd **cmd, int i)
 {
 	t_data	*data;
 	char	*path;
 	data = get_data();
 
-	if (cmd == NULL)
+
+	if (cmd[i]->next != FILES || STRING)
 		path = find_export("HOME");
+	else if (cmd[i]->next == FILES)
+			path = cmd[i + 1]->str;
 	else
-		path = cmd->str;
+		path = cmd[i]->str += 3;
 	if (chdir(path) == -1)
+		perror("minishell ");
+	else
 	{
-		if (errno == ENOENT)
-			printf("File does not exist\n");
-		if (errno == EACCES)
-			printf("Permission deniend\n");
+		data->directory = get_pwd();
+		replace_export(mini_join("PWD=", get_pwd()));
 	}
-	data->directory = get_pwd();
 }

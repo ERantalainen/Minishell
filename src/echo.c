@@ -6,30 +6,37 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:34:01 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/27 15:32:06 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/30 17:41:37 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	echo(t_cmd *commands)
+void	echo(t_cmd **commands, int i)
 {
 	char	*command;
-	char	*output;
 	bool	newline;
 	size_t	pos;
 
 	pos = 0;
-	command = commands->str + 5;
+	command = commands[i]->str + 5;;
+	while (commands[i]->next == FILES || commands[i]->next == STRING)
+	{
+		command = mini_join(command, commands[i + 1]->str);
+		i++;
+	}
 	newline = 1;
 	if (command[pos] == '-' && command[pos + 1] == 'n')
 	{
+		pos++;
+		while (command[pos] == 'n')
+			pos++;
 		newline = 0;
-		command += 3;
+		if (command[pos] == ' ')
+			command += pos + 1;
 	}
-	output = mini_strndup(command, ft_strlen(command));
 	if (newline == 1)
-		ft_putendl_fd(output, 1);
+		ft_putendl_fd((mini_strndup(command, ft_strlen(command))), 1);
 	else
-		ft_putstr_fd(output, 1);
+		ft_putstr_fd((mini_strndup(command, ft_strlen(command))), 1);
 }

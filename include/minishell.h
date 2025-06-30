@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:12:49 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/27 17:12:29 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/30 17:30:16 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,8 +136,10 @@ t_token				*create_token(char *s, size_t *i);
 t_vector			*token_vector(char *s);
 char				*token_string(char *s, size_t *i);
 t_vector			*create_commands(t_vector *tokens);
+void				cmd_help(t_vector *tks, size_t *i, t_token *tk, t_cmd *cm);
 t_cmd				*make_cmd_spc(t_vector *tokens, size_t *i);
 t_cmd				*make_cmd_str(t_vector *tokens, size_t *i);
+char				*expans_help(char *s,  char *dup, size_t *i, size_t *pos);
 size_t				expanded_length(char *s, size_t n);
 
 int					check_specials(int c);
@@ -170,7 +172,7 @@ char				**get_cmd_args(char *cmd, char *path);
 
 void	built_in(t_cmd *cmd);
 void	build_handler(t_cmd	**cmds);
-void	echo(t_cmd *cmd);
+void	echo(t_cmd **cmd, int i);
 void	pwd(void);
 void	unset(char	*key);
 void	cd(t_cmd *cmd);
@@ -179,7 +181,7 @@ void	env(void);
 void	export(char *export);
 char	*find_export(char *key);
 size_t	key_len(char *s);
-void	make_export(t_cmd *cmd);
+void	make_export(char *cmd);
 void	replace_export(char *key);
 
 void	increase_shell_lvl();
