@@ -1,25 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   command_help.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/24 18:23:27 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/30 17:00:34 by erantala         ###   ########.fr       */
+/*   Created: 2025/06/30 18:33:04 by erantala          #+#    #+#             */
+/*   Updated: 2025/06/30 18:39:48 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	pwd(void)
+t_vector	*next_check(t_vector *commands)
 {
-	char *output;
+	t_cmd	*curr;
+	t_cmd	*next;
+	size_t	i;
 
-	output = get_pwd();
-	if (output == NULL)
-		exit (1);
-	else
-		ft_putendl_fd(output, 1);
+	i = 0;
+	while (i < commands->count - 1)
+	{
+		curr = commands->data[i];
+		next = commands->data[i + 1];
+		curr->next = next->type;
+		i++;
+	}
+	return (commands);
 }
-

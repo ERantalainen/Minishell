@@ -116,11 +116,10 @@ typedef struct s_pipedata
 	int				infile;
 	int				pipe_count;
 	int				pipe_index;
-	int				pipe_old[2];
-	int				pipe_new[2];
 	int				**pipefd;
 	char			**cmd_args;
 	size_t			cmd_index;
+	int				cmd_count;
 	int				index;
 }					t_pipedata;
 
@@ -130,6 +129,9 @@ void				init_data(char **env);
 char				*get_pwd(void);
 
 // Helpers
+
+
+void				cmd_help(t_vector *tokens, size_t *i, t_token *token, t_cmd *cmd);
 
 t_arena				*init_arena(size_t size);
 void				*arena_malloc(size_t n);
@@ -193,17 +195,20 @@ char				**get_cmd_args(char *cmd, char *path);
 
 void				built_in(t_cmd *cmd);
 void				build_handler(t_cmd **cmds);
-void				echo(t_cmd *cmd);
+void				echo(t_cmd **cmd, int i);
+
 void				pwd(void);
 void				unset(char *key);
-void				cd(t_cmd *cmd);
+void				cd(t_cmd **cmd, int i);
 void				env(void);
 
 void				export(char *export);
 char				*find_export(char *key);
 size_t				key_len(char *s);
-void				make_export(t_cmd *cmd);
+void	make_export(char	*command);
 void				replace_export(char *key);
+
+char    *expans_help(char *s, char *dup, size_t *i, size_t *pos);
 
 void				increase_shell_lvl(void);
 char				*mini_join(char const *s1, char const *s2);
@@ -232,4 +237,5 @@ void				normal_exec(t_cmd **cmd, char **env);
 void				execution(t_vector *tokens, char **env);
 
 void	setup_pipeline(t_cmd **tokens, char **env);
+t_vector	*next_check(t_vector *commands);
 #endif

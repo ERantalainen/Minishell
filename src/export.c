@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:12:54 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/26 01:05:07 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/30 16:22:53 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ char	*find_export(char *key)
 	char	*var;
 	data = get_data();
 
+	if (!key)
+		return ("");
 	i = 0;
 	if (key[0] == '$')
 		key += 1;
@@ -49,7 +51,7 @@ char	*find_export(char *key)
 size_t	key_len(char *s)
 {
 	size_t	i;
-	
+
 	i = 0;
 	while (s[i] && s[i] != '=' && !ft_isspace(s[i]))
 		i++;
@@ -58,11 +60,8 @@ size_t	key_len(char *s)
 
 // Finds an exported variable by searching its key.
 
-void	make_export(t_cmd *cmd)
+void	make_export(char	*command)
 {
-	char	*command;
-
-	command = cmd->str + 7;
 	if (ft_strcmp("", find_export(command)) != 0)
 		replace_export(command);
 	else

@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/27 17:58:59 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/30 18:37:34 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ t_token	*create_token(char *s, size_t *i)
 		new->t = HERE_DOC;
 	else if (ft_strncmp(new->s, ">>", 2) == 0)
 		new->t = APPEND;
+	else if (access(new->s, F_OK) == 0)
+		new->t = FILES;
 	else
 		new->t = STRING;
 	return (new);
@@ -99,11 +101,12 @@ t_vector	*create_commands(t_vector *tokens)
 	while (i < tokens->count && tokens->data[i] != NULL)
 	{
 		curr = tokens->data[i];
-		if (curr->t == STRING)
+		if (curr->t == STRING || curr->t == FILES)
 			add_elem(commands, make_cmd_str(tokens, &i));
 		else
 			add_elem(commands, make_cmd_spc(tokens, &i));
 	}
+	next_check(commands);
 	return (commands);
 }
 
@@ -119,18 +122,7 @@ t_cmd	*make_cmd_str(t_vector *tokens, size_t *i)
 	cmd->type = STRING;
 	cmd->str = "";
 	if (access(token->s, R_OK | W_OK) != 0 || (*i == 0))
-	{
-		while ((*i) < tokens->count && token->t == STRING)
-		{
-			cmd->str = mini_append(cmd->str, token->s);
-			(*i)++;
-			if (*i >= tokens->count)
-				break ;
-			token = tokens->data[(*i)];
-			if (token && access(token->s, R_OK | W_OK) == 0)
-				break ;
-		}
-	}
+		cmd_help(tokens, i, token, cmd);
 	else
 	{
 		cmd->type = FILES;

@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 15:43:47 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/26 15:36:56 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/30 17:24:54 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ int	check_specials(int	c)
 char	*expand_strndup(char *s, size_t n)
 {
 	char	*dup;
-	char	*expansion;
 	size_t	len;
 	size_t	i;
 	size_t	pos;
@@ -60,26 +59,32 @@ char	*expand_strndup(char *s, size_t n)
 	dup = arena_malloc(len + 1);
 	while (s[i] && i < n)
 	{
-		if (s[i] == '$')
-		{
-			expansion = find_export(mini_strndup(s + i + 1, quote_len(s + i, '"')));
-			if (ft_strcmp(expansion, "") == 0 && (s[i + 1] == '\'' || s[i + 1] == '"'))
-				i++;
-			else
-			{
-			i += word_len(s + i);
-			ft_strlcat(dup, expansion, ft_strlen(expansion) + 1 + pos);
-			pos += ft_strlen(expansion);
-			if (i >= n)
-				break ;
-			}
-		}
+		if (s[i] == '$' && s[i + 1])
+			expans_help(s, dup, &i, &pos);
+		if (i >= n)
+			break ;
 		if (s[i] == '"' || s[i] == '\'')
 			i++;
 		dup[pos++] = s[i++];
 	}
 	dup[pos] = '\0';
 	return (dup);
+}
+
+char	*expans_help(char *s, char *dup, size_t *i, size_t *pos)
+{
+	char	*expansion;
+
+	expansion = find_export(mini_strndup((s + (*i) + 1), quote_len(s + (*i) + 1, '"')));
+	if (ft_strcmp(expansion, "") == 0 && (s[(*i) + 1] == '\'' || s[(*i) + 1] == '"'))
+	(*i)++;
+	else
+	{
+		(*i) += word_len(s + (*i));
+		ft_strlcat(dup, expansion, ft_strlen(expansion) + 1 + (*pos));
+		(*pos) += ft_strlen(expansion);
+	}
+	return (expansion);
 }
 
 // Get the total length of dup once expanded. If an expansion ($) is detected

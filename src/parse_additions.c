@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 15:44:37 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/27 17:49:44 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/30 18:54:39 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_cmd *check_redirect(t_cmd *cmd, t_token *token)
 {
-	if (token->t != STRING)
+	if (token->t != STRING && token->t != FILES)
 		puts("dw about it");
 	if (cmd->type == INPUT)
 	{
@@ -73,11 +73,29 @@ size_t	quote_len(char *s, char quote)
 	size_t	pos;
 
 	pos = 0;
+	if (s[pos] == '$')
+		s += 1;
+	if (s[pos] == '"')
+		s += 1;
 	while (s[pos] && ft_isspace(s[pos]) == 0 && s[pos] != quote)
 		pos++;
-	pos--;
 	return (pos);
 }
 
 // Creates a token with quotes
 
+void	cmd_help(t_vector *tokens, size_t *i, t_token *token, t_cmd *cmd)
+{
+	while ((*i) < tokens->count && token->t == STRING)
+	{
+		cmd->str = mini_append(cmd->str, token->s);
+		(*i)++;
+		if (*i >= tokens->count)
+			break ;
+		token = tokens->data[(*i)];
+		if (token && access(token->s, R_OK | W_OK) == 0)
+			break ;
+	}
+}
+
+// Helper function for command parsing.

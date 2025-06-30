@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	check_redirects_pipe(t_cmd **tokens, t_pipedata *p)
+static void	check_redirects_pipe(t_cmd **tokens, t_pipedata *p)
 {
 	while (tokens[p->index] && tokens[p->index]->type != PIPE)
 	{
@@ -33,16 +33,33 @@ void	check_redirects_pipe(t_cmd **tokens, t_pipedata *p)
 			if (p->infile)
 				close(p->infile);
 			p->infile = open(tokens[p->index + 1]->str, INPUT_CONF);
+			if (p->infile < 0)
+				perror("open");
 		}
 		p->index++;
 	}
 }
+
+// static void	close_pipes(t_pipedata *p)
+// {
+// 	int	i;
+//
+// 	i = 0;
+// 	while (i < p->pipe_count)
+// 	{
+// 		close(p->pipefd[i][WRITE]);
+// 		close(p->pipefd[i][READ]);
+// 		i++;
+// 	}
+// }
+//
 // fix cat cat etc
-void	setup_cmd_to_execute(t_cmd **tokens, t_pipedata *p)
+static void	setup_cmd_to_execute(t_cmd **tokens, t_pipedata *p)
 {
 	char	**cmd;
 	size_t	size;
 	size_t	i;
+	size_t	arg_index;
 
 	while (tokens[p->cmd_index])
 	{
@@ -52,61 +69,71 @@ void	setup_cmd_to_execute(t_cmd **tokens, t_pipedata *p)
 	}
 	cmd = mini_split(tokens[p->cmd_index]->str, ' ');
 	size = p->cmd_index;
-	while (tokens[size]->next == FILES || tokens[size]->next == STRING)
+	while (tokens[size] && (tokens[size]->type == FILES
+			|| tokens[size]->type == STRING))
 		size++;
+	size -= p->cmd_index;
 	i = 0;
 	while (cmd[i++] != NULL)
 		size++;
-	p->cmd_args = arena_malloc(size * sizeof(char *));
+	p->cmd_args = arena_malloc((size) * sizeof(char *));
 	i = 0;
 	while (cmd[i] != NULL)
 	{
 		p->cmd_args[i] = mini_strdup(cmd[i]);
 		i++;
 	}
-	while (tokens[p->cmd_index] && tokens[p->cmd_index + 1])
+	arg_index = p->cmd_index;
+	if (tokens[arg_index]->next == FILES)
+		arg_index++;
+	while (tokens[arg_index] && tokens[arg_index]->type == FILES)
 	{
-		if (tokens[p->cmd_index + 1]->type != FILES)
-			break ;
-		p->cmd_args[i++] = mini_strdup(tokens[p->cmd_index + 1]->str);
-		p->cmd_index++;
+		p->cmd_args[i] = mini_strdup(tokens[arg_index]->str);
+		arg_index++;
+		i++;
 	}
 	p->cmd_args[i] = NULL;
 }
 
-void	child_process(t_cmd **tokens, t_pipedata *p, char **env)
+static void	child_process(t_cmd **tokens, t_pipedata *p, char **env)
 {
 	char	*path;
 
+	printf("DEBUG: pipe_index=%d, infile=%d, outfile=%d\n", p->pipe_index,
+		p->infile, p->outfile);
 	if (p->pipe_index == 0)
 	{
-		if (p->infile)
-			dup2(p->infile, STDIN_FILENO);
-		dup2(p->pipefd[0][WRITE], STDOUT_FILENO);
+		if (dup2(p->infile, STDIN_FILENO) < 0)
+			perror("dup2");
+		if (p->infile != STDIN_FILENO)
+			close(p->infile);
+		if (dup2(p->pipefd[p->pipe_index][WRITE], STDOUT_FILENO) < 0)
+			perror("dup2");
 	}
 	else if (p->pipe_index == p->pipe_count)
 	{
-		if (p->pipe_count == 1)
-			dup2(p->pipefd[0][READ], STDIN_FILENO);
-		else
-			dup2(p->pipefd[1][READ], STDIN_FILENO);
-		if (p->outfile)
-			dup2(p->outfile, STDOUT_FILENO);
+		if (dup2(p->pipefd[p->pipe_index - 1][READ], STDIN_FILENO) < 0)
+			perror("dup2");
+		if (dup2(p->outfile, STDOUT_FILENO) < 0)
+			perror("dup2");
+		if (p->outfile != STDOUT_FILENO)
+			close(p->outfile);
 	}
 	else
 	{
-		dup2(p->pipefd[0][READ], STDIN_FILENO);
-		dup2(p->pipefd[1][WRITE], STDOUT_FILENO);
+		if (dup2(p->pipefd[p->pipe_index - 1][READ], STDIN_FILENO) < 0)
+			perror("dup2");
+		if (dup2(p->pipefd[p->pipe_index][WRITE], STDOUT_FILENO) < 0)
+			perror("dup2");
 	}
-	close(p->pipefd[0][0]);
-	close(p->pipefd[0][1]);
-	close(p->pipefd[1][0]);
-	close(p->pipefd[1][1]);
-	ft_fprintf(STDERR_FILENO, "%s\n", p->cmd_args[0]);
+	if (p->pipe_index > 0)
+		close(p->pipefd[p->pipe_index - 1][READ]);
+	if (p->pipe_index < p->pipe_count)
+		close(p->pipefd[p->pipe_index][WRITE]);
+	path = get_bin_path(tokens[p->cmd_index]->str, env);
 	if (access(p->cmd_args[0], X_OK) >= 0)
 		if (execve(p->cmd_args[0], p->cmd_args, env) < 0)
 			exit(1);
-	path = get_bin_path(tokens[p->cmd_index]->str, env);
 	if (execve(path, p->cmd_args, env) < 0)
 		exit(1);
 }
@@ -134,16 +161,16 @@ void	exec_pipeline(t_cmd **tokens, t_pipedata *p, char **env)
 	int			i;
 	t_pipedata	local_p;
 
-	status = 0;
-	p->pipefd = arena_malloc(sizeof(int *) * 2);
-	p->pipefd[0] = arena_malloc(sizeof(int) * 2);
-	p->pipefd[1] = arena_malloc(sizeof(int) * 2);
-	pipe(p->pipefd[0]);
-	pipe(p->pipefd[1]);
 	pids = arena_malloc(sizeof(int) * (p->pipe_count + 1));
+	status = 0;
 	i = 0;
 	while (i < p->pipe_count + 1)
 	{
+		if (i < p->pipe_count)
+		{
+			if (pipe(p->pipefd[i]) < 0)
+				perror("pipe");
+		}
 		reset_sig();
 		pids[i] = fork();
 		if (pids[i] == 0)
@@ -156,36 +183,51 @@ void	exec_pipeline(t_cmd **tokens, t_pipedata *p, char **env)
 			setup_cmd_to_execute(tokens, &local_p);
 			child_process(tokens, &local_p, env);
 		}
+		if (i > 0)
+			close(p->pipefd[i - 1][READ]);
+		if (i < p->pipe_count)
+			close(p->pipefd[i][WRITE]);
 		while (tokens[p->index] && tokens[p->index]->type != PIPE)
 			p->index++;
-		if (tokens[p->index] && tokens[p->index]->type == PIPE)
+		while (tokens[p->index] && tokens[p->index]->type == PIPE)
 			p->index++;
 		p->pipe_index++;
 		i++;
 	}
-	close(p->pipefd[0][0]);
-	close(p->pipefd[0][1]);
-	close(p->pipefd[1][0]);
-	close(p->pipefd[1][1]);
+	// close_pipes(p);
 	wait_for_children(p, status, pids);
 }
 
+static void	init_pipes(t_pipedata *p)
+{
+	int	i;
+
+	p->pipefd = arena_malloc(sizeof(int *) * (p->pipe_count));
+	i = 0;
+	while (i < p->pipe_count)
+	{
+		p->pipefd[i] = arena_malloc(sizeof(int) * 2);
+		i++;
+	}
+}
+
+// < Makefile cat | grep "echo" > outfile SEGFAULT
 void	setup_pipeline(t_cmd **tokens, char **env)
 {
 	t_pipedata	*p;
 	int			i;
 
 	p = arena_malloc(sizeof(t_pipedata));
-	p->stdout_copy = dup(STDOUT_FILENO);
-	p->stdin_copy = dup(STDIN_FILENO);
-	// p->outfile = dup(STDOUT_FILENO);
-	// p->infile = dup(STDIN_FILENO);
 	p->index = 0;
+	p->pipe_count = 0;
+	p->cmd_index = 0;
+	p->pipe_index = 0;
+	p->infile = dup(STDIN_FILENO);
+	p->outfile = dup(STDOUT_FILENO);
 	i = 0;
 	while (tokens[i])
 		if (tokens[i++]->type == PIPE)
 			p->pipe_count++;
+	init_pipes(p);
 	exec_pipeline(tokens, p, env);
-	dup2(p->stdin_copy, STDIN_FILENO);
-	dup2(p->stdout_copy, STDOUT_FILENO);
 }
