@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:02:28 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/30 16:59:37 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/30 19:34:06 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,11 +83,11 @@ void	child_died(int status)
 	const char	*exit_code = "?=";
 	char		*exit_export;
 
-	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+	if (WIFSIGNALED(status))
 	{
-		// temp
-		int j = write(1, "\n", 1);
-		(void)j;
+		if (WTERMSIG(status) == SIGQUIT)
+			ft_fprintf(STDERR_FILENO, "%s", QUIT);
+		write(1, "\n", 1);
 		rl_replace_line("", 0);
 		rl_done = 1;
 		exit_export = mini_join(exit_code, mini_itoa(WTERMSIG(status) + 128));

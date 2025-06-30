@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:12:49 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/30 18:37:17 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/30 19:33:33 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@
 
 # define EOF1 "minishell: warning: here-document at line "
 # define EOF2 " delimited by end-of-file (wanted `"
+
+# define QUIT "Quit (core dumped)"
 
 enum				e_pipe
 {

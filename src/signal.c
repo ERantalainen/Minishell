@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 17:07:20 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/30 17:58:30 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/30 19:30:28 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ void	handler(int sig, siginfo_t *a, void *b)
 {
 	(void)a;
 	(void)b;
-	g_sig = sig;
 	if (sig == SIGINT)
 	{
+		replace_export("?=130");
 		write(1, "\n", 1);
 		rl_replace_line("", 0);
 		rl_on_new_line();
