@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:12:49 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/30 19:33:33 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/01 02:51:02 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,13 @@ enum				e_pipe
 	WRITE
 };
 
+enum				e_open
+{
+	OUTPUT_CONF = O_WRONLY | O_TRUNC | O_CREAT,
+	APPEND_CONF = O_WRONLY | O_APPEND | O_CREAT,
+	INPUT_CONF = O_RDONLY
+};
+
 typedef struct s_arena
 {
 	size_t			max;
@@ -59,7 +66,7 @@ typedef enum e_type
 	STRING,
 	FILES,
 	BUILTIN
-}	t_type;
+}					t_type;
 
 typedef struct s_token
 {
@@ -89,26 +96,44 @@ typedef struct s_command
 
 typedef struct s_data
 {
-	int			*hdfd;
-	int			line;
-	char		*directory;
-	int			hd_count;
-	t_cmd		*commands;
-	t_vector	*envv;
-	t_vector	*heredocs;
-	t_vector	*fds;
-	char		**environ;
-	t_vector	*env_vec;
-	int			shell;
-	bool		valid;
-}	t_data;
+	int				*hdfd;
+	int				line;
+	char			*directory;
+	int				hd_count;
+	t_cmd			*commands;
+	t_vector		*envv;
+	t_vector		*heredocs;
+	t_vector		*fds;
+	char			**environ;
+	t_vector		*env_vec;
+	int				shell;
+	bool			valid;
+}					t_data;
+
+typedef struct s_pipedata
+{
+	int				stdout_copy;
+	int				stdin_copy;
+	int				outfile;
+	int				infile;
+	int				pipe_count;
+	int				pipe_index;
+	int				**pipefd;
+	char			**cmd_args;
+	size_t			cmd_index;
+	int				cmd_count;
+	int				index;
+}					t_pipedata;
 
 extern sig_atomic_t	g_sig;
 
-void				init_data(char	**env);
+void				init_data(char **env);
 char				*get_pwd(void);
 
 // Helpers
+
+
+void				cmd_help(t_vector *tokens, size_t *i, t_token *token, t_cmd *cmd);
 
 t_arena				*init_arena(size_t size);
 void				*arena_malloc(size_t n);
@@ -187,35 +212,44 @@ size_t	key_len(char *s);
 void	make_export(char *cmd);
 void	replace_export(char *key);
 
-void	increase_shell_lvl();
-char	*mini_join(char const *s1, char const *s2);
+void				export(char *export);
+char				*find_export(char *key);
+size_t				key_len(char *s);
+void	make_export(char	*command);
+void				replace_export(char *key);
+
+char    *expans_help(char *s, char *dup, size_t *i, size_t *pos);
+
+void				increase_shell_lvl(void);
+char				*mini_join(char const *s1, char const *s2);
 
 // Signals
 
-void	catcher();
-void	ignore();
-void	reset_sig();
-void	here_catcher();
-void	handler(int sig, siginfo_t *a, void *b);
-void	heredoc_signal(void);
+void				catcher(void);
+void				ignore(void);
+void				reset_sig(void);
+void				here_catcher(void);
+void				handler(int sig, siginfo_t *a, void *b);
+void				heredoc_signal(void);
 
 // Non interactive mode
 
-void	non_interactive(char **argv, int argc);
-char	*get_input(char **argv, int argc);
+void				non_interactive(char **argv, int argc);
+char				*get_input(char **argv, int argc);
 
 // Execution
 
-void	exec_with_pipes(t_cmd **cmd, char **env);
-t_vector	*check_redirects(t_cmd **cmd);
-void	exec_single_cmd(t_cmd **cmd, char **env);
-void	exec_input(t_cmd **cmd, char **env);
-void	exec_output(t_cmd **cmd, char **env);
-void	normal_exec(t_cmd **cmd, char **env);
-void	execution(t_vector *tokens, char **env);
+t_vector			*check_redirects(t_cmd **cmd);
+void				exec_single_cmd(t_cmd **cmd, char **env);
+void				exec_input(t_cmd **cmd, char **env);
+void				exec_output(t_cmd **cmd, char **env);
+void				normal_exec(t_cmd **cmd, char **env);
+void				execution(t_vector *tokens, char **env);
 
 // Cleaner
 
 void	clean_heredoc(void);
 
+void	setup_pipeline(t_cmd **tokens, char **env);
+t_vector	*next_check(t_vector *commands);
 #endif

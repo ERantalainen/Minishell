@@ -6,20 +6,11 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 18:29:23 by jpelline          #+#    #+#             */
-/*   Updated: 2025/06/30 18:58:12 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/01 02:51:47 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <unistd.h>
-
-// Exec with pipes
-void	exec_with_pipes(t_cmd **cmd, char **env)
-{
-	(void)cmd;
-	(void)env;
-	puts("pipe");
-}
 
 void	close_handler_vector(t_vector *fd_vector)
 {
@@ -77,11 +68,13 @@ void	exec_single_cmd(t_cmd **cmd, char **env)
 	int			j;
 	size_t		i;
 	int			fd;
-	int			stdin_copy = 0;
+	int			stdin_copy;
 	t_vector	*fd_vector;
 	int			*output_fd;
-	int			stdout_copy = 0;
+	int			stdout_copy;
 
+	stdin_copy = 0;
+	stdout_copy = 0;
 	stdin_copy = dup(STDIN_FILENO);
 	cmd_args = mini_split(cmd[0]->str, ' ');
 	size = 0;
@@ -163,9 +156,11 @@ void	exec_input(t_cmd **cmd, char **env)
 	int			j;
 	t_vector	*fd_vector;
 	int			*output_fd;
-	int			stdout_copy = 0;
-	int			stdin_copy = 0;
+	int			stdout_copy;
+	int			stdin_copy;
 
+	stdout_copy = 0;
+	stdin_copy = 0;
 	stdin_copy = dup(STDIN_FILENO);
 	fd = open(cmd[1]->str, O_RDONLY);
 	if (fd < 0 || cmd[1]->next == EMPTY)
@@ -234,23 +229,15 @@ void	exec_input(t_cmd **cmd, char **env)
 	catcher();
 }
 
-void	exec_output(t_cmd **cmd, char **env)
-{
-	(void)cmd;
-	(void)env;
-}
-
 // Without pipes
 void	normal_exec(t_cmd **cmd, char **env)
 {
-	if (cmd[0]->type == INPUT)
+	if (cmd[0]->type == INPUT || cmd[0]->type == OUTPUT)
 	{
 		if (cmd[0]->next == EMPTY)
 			return ;
 		exec_input(cmd, env);
 	}
-	else if (cmd[0]->type == OUTPUT)
-		exec_output(cmd, env);
 	else
 		exec_single_cmd(cmd, env);
 }
@@ -263,13 +250,14 @@ void	execution(t_vector *tokens, char **env)
 
 	i = 0;
 	cmd = (t_cmd **)tokens->data;
-	while (cmd[i]->next != EMPTY)
+	while (cmd[i])
 	{
-		if (cmd[i++]->type == PIPE)
+		if (cmd[i]->type == PIPE && cmd[i]->next != EMPTY)
 		{
-			exec_with_pipes(cmd, env);
+			setup_pipeline(cmd, env);
 			return ;
 		}
+		i++;
 	}
 	normal_exec(cmd, env);
 }
@@ -296,6 +284,11 @@ int	main(int ac, char **av, char **env)
 				input = take_input();
 				add_history(input);
 				commands = create_commands(token_vector(input));
+				// for (size_t i = 0; i < commands->count; i++)
+				// {
+				// 	t_cmd *cmd = commands->data[i];
+				// 	printf("%zu %s %d next->%d\n", i, cmd->str, cmd->type, cmd->next);
+				// }
 				if (data->valid == 1)
 				{
 					for(size_t i = 0; i < commands->count; i++)
