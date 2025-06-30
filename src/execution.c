@@ -40,20 +40,6 @@ static void	check_redirects_pipe(t_cmd **tokens, t_pipedata *p)
 	}
 }
 
-// static void	close_pipes(t_pipedata *p)
-// {
-// 	int	i;
-//
-// 	i = 0;
-// 	while (i < p->pipe_count)
-// 	{
-// 		close(p->pipefd[i][WRITE]);
-// 		close(p->pipefd[i][READ]);
-// 		i++;
-// 	}
-// }
-//
-// fix cat cat etc
 static void	setup_cmd_to_execute(t_cmd **tokens, t_pipedata *p)
 {
 	char	**cmd;
@@ -61,37 +47,26 @@ static void	setup_cmd_to_execute(t_cmd **tokens, t_pipedata *p)
 	size_t	i;
 	size_t	arg_index;
 
-	while (tokens[p->cmd_index])
-	{
-		if (tokens[p->cmd_index]->type == STRING)
-			break ;
+	while (tokens[p->cmd_index] && tokens[p->cmd_index]->type != STRING)
 		p->cmd_index++;
-	}
 	cmd = mini_split(tokens[p->cmd_index]->str, ' ');
 	size = p->cmd_index;
-	while (tokens[size] && (tokens[size]->type == FILES
-			|| tokens[size]->type == STRING))
+	while (tokens[size] && tokens[size]->type == FILES)
 		size++;
 	size -= p->cmd_index;
 	i = 0;
-	while (cmd[i++] != NULL)
+	while (cmd[i++])
 		size++;
 	p->cmd_args = arena_malloc((size) * sizeof(char *));
 	i = 0;
-	while (cmd[i] != NULL)
-	{
-		p->cmd_args[i] = mini_strdup(cmd[i]);
-		i++;
-	}
+	arg_index = 0;
+	while (cmd[i])
+		p->cmd_args[i++] = mini_strdup(cmd[arg_index++]);
 	arg_index = p->cmd_index;
 	if (tokens[arg_index]->next == FILES)
 		arg_index++;
 	while (tokens[arg_index] && tokens[arg_index]->type == FILES)
-	{
-		p->cmd_args[i] = mini_strdup(tokens[arg_index]->str);
-		arg_index++;
-		i++;
-	}
+		p->cmd_args[i++] = mini_strdup(tokens[arg_index++]->str);
 	p->cmd_args[i] = NULL;
 }
 
@@ -99,8 +74,6 @@ static void	child_process(t_cmd **tokens, t_pipedata *p, char **env)
 {
 	char	*path;
 
-	printf("DEBUG: pipe_index=%d, infile=%d, outfile=%d\n", p->pipe_index,
-		p->infile, p->outfile);
 	if (p->pipe_index == 0)
 	{
 		if (dup2(p->infile, STDIN_FILENO) < 0)
@@ -194,7 +167,6 @@ void	exec_pipeline(t_cmd **tokens, t_pipedata *p, char **env)
 		p->pipe_index++;
 		i++;
 	}
-	// close_pipes(p);
 	wait_for_children(p, status, pids);
 }
 
@@ -211,7 +183,6 @@ static void	init_pipes(t_pipedata *p)
 	}
 }
 
-// < Makefile cat | grep "echo" > outfile SEGFAULT
 void	setup_pipeline(t_cmd **tokens, char **env)
 {
 	t_pipedata	*p;
