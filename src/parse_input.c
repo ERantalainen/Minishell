@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/30 17:45:27 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/30 18:37:34 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ t_vector	*create_commands(t_vector *tokens)
 		else
 			add_elem(commands, make_cmd_spc(tokens, &i));
 	}
+	next_check(commands);
 	return (commands);
 }
 

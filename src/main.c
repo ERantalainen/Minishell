@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 18:29:23 by jpelline          #+#    #+#             */
-/*   Updated: 2025/06/30 18:12:38 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/30 18:38:55 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -301,7 +301,7 @@ int	main(int ac, char **av, char **env)
 					for(size_t i = 0; i < commands->count; i++)
 					{
 						t_cmd *test = commands->data[i];
-						printf("%zu, %s, %d\n", i, test->str, test->type);
+						printf("%zu, %s, Curr: %d Next: %d\n", i, test->str, test->type, test->next);
 					}
 					execution(commands, vec_to_array(data->env_vec));
 					clean_heredoc();

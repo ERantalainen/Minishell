@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:12:49 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/30 17:30:16 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/30 18:37:17 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,7 @@ char				*mini_strndup(char *s, size_t n);
 char				*mini_strdup(char *s);
 t_cmd				*check_redirect(t_cmd *cmd, t_token *token);
 size_t				word_len(char *s);
+t_vector			*next_check(t_vector *commands);
 
 void				check_repeat(t_vector *tokens);
 int					check_heredoc(t_vector *tokens);
@@ -175,7 +176,7 @@ void	build_handler(t_cmd	**cmds);
 void	echo(t_cmd **cmd, int i);
 void	pwd(void);
 void	unset(char	*key);
-void	cd(t_cmd *cmd);
+void	cd(t_cmd **cmd, int i);
 void	env(void);
 
 void	export(char *export);

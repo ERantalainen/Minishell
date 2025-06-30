@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:34:05 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/30 18:17:01 by erantala         ###   ########.fr       */
+/*   Updated: 2025/06/30 18:42:12 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,9 @@ void	cd(t_cmd **cmd, int i)
 	data = get_data();
 
 
-	if (cmd[i]->next != FILES || STRING)
-		path = find_export("HOME");
+	if ((cmd[i]->next != FILES || cmd[i]->next != STRING)
+		&& ft_strlen(cmd[i]->str) == 2)
+			path = find_export("HOME");
 	else if (cmd[i]->next == FILES)
 			path = cmd[i + 1]->str;
 	else
