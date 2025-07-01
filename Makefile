@@ -6,7 +6,7 @@
 #    By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/03 18:36:06 by jpelline          #+#    #+#              #
-#    Updated: 2025/07/01 02:50:34 by erantala         ###   ########.fr        #
+#    Updated: 2025/07/01 02:54:45 by erantala         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ endif
 
 PROGRAM_NAME	:= minishell
 CC		:= cc
-CFLAGS		:= -Wextra -Wall -Werror
+CFLAGS		:=
 DEBUG_FLAGS	:= -g3 -fsanitize=address -fsanitize=undefined
 OPTFLAGS	:= -O2
 

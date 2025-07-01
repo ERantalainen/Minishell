@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:02:28 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/01 02:51:33 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/01 02:58:41 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,10 @@ char	*get_pwd()
 		if (!path && errno == ERANGE)
 			len += 25;
 		else if (!path)
+		{
+			perror("minishell: pwd: ");
 			return (NULL);
+		}
 		else
 			break ;
 	}

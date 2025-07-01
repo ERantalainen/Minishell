@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:12:49 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/01 02:51:02 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/01 03:32:37 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,10 @@
 # define EOF2 " delimited by end-of-file (wanted `"
 
 # define QUIT "Quit (core dumped)"
+# define INV "': not a valid identifier"
+# define SHLVL "minishell: warning: shell level (%d) too high, resetting to 1\n"
+# define TOKEN "minishell: syntax error near unexpected token `"
+# define HRLIM "minishell: maximum here-document count exceeded\n"
 
 enum				e_pipe
 {
@@ -206,21 +210,16 @@ void	unset(char	*key);
 void	cd(t_cmd **cmd, int i);
 void	env(void);
 
-void	export(char *export);
-char	*find_export(char *key);
-size_t	key_len(char *s);
-void	make_export(char *cmd);
-void	replace_export(char *key);
-
 void				export(char *export);
 char				*find_export(char *key);
 size_t				key_len(char *s);
-void	make_export(char	*command);
+void				make_export(char	*command);
 void				replace_export(char *key);
 
-char    *expans_help(char *s, char *dup, size_t *i, size_t *pos);
+char				*expans_help(char *s, char *dup, size_t *i, size_t *pos);
 
 void				increase_shell_lvl(void);
+int					exit_calci(char *cmd);
 char				*mini_join(char const *s1, char const *s2);
 
 // Signals

@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 22:35:51 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/26 01:04:14 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/01 03:36:08 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,20 @@ void	increase_shell_lvl()
 	int		nbr;
 
 	level = find_export("SHLVL");
-	nbr = ft_atoi(level);
+	if (ft_strcmp(level, "") == 0)
+		nbr = 0;
+	else
+		nbr = ft_atoi(level);
 	nbr++;
+	if (nbr > 999)
+	{
+		ft_fprintf(2, SHLVL, nbr);
+		replace_export("SHLVL=1");
+		return ;
+	}
+	if (nbr < 0)
+		nbr = 0;
 	level = ft_itoa(nbr);
-	printf("Shell level is %d\n", nbr);
 	res = mini_join("SHLVL=", level);
 	free(level);
 	printf("Now %s\n", res);
@@ -36,7 +46,7 @@ char	*mini_join(char const *s1, char const *s2)
 
 	if (!s1 || !s2)
 		return (NULL);
-	jstr =arena_malloc((sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1)));
+	jstr = arena_malloc((sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1)));
 	i = 0;
 	while (*s1)
 		jstr[i++] = *(char *)s1++;

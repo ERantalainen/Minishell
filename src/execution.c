@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 16:20:20 by jpelline          #+#    #+#             */
-/*   Updated: 2025/06/27 20:56:40 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/01 02:55:31 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,7 @@ static void	child_process(t_cmd **tokens, t_pipedata *p, char **env)
 		exit(1);
 }
 
-static void setup_child(t_cmd **tokens, t_pipedata *p, **env)
+static void setup_child(t_cmd **tokens, t_pipedata *p, char **env)
 {
 	t_pipedata	local_p;
 	
@@ -180,7 +180,7 @@ static void	exec_pipeline(t_cmd **tokens, t_pipedata *p, char **env)
 		reset_sig();
 		pids[i] = fork();
 		if (pids[i] == 0)
-			setup_child(tokens, p, env)
+			setup_child(tokens, p, env);
 		close_unused_pipes(p, i);
 		while (tokens[p->index] && tokens[p->index]->type != PIPE)
 			p->index++;

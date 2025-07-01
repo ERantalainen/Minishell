@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 13:56:30 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/30 18:15:20 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/01 03:14:28 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	build_handler(t_cmd	**cmds)
 			if (ft_strncmp("echo", cmds[i]->str, 4) == 0)
 				echo(cmds, i);
 			if (ft_strncmp("exit", cmds[i]->str, 4) == 0)
-				ft_exit("exit", 0);
+				ft_exit("exit", exit_calci(cmds[i]->str));
 			if (ft_strncmp("cd", cmds[i]->str, 2) == 0)
 				cd(cmds, i);
 			if (ft_strncmp("pwd", cmds[i]->str, 3) == 0)
@@ -55,4 +55,45 @@ void	build_handler(t_cmd	**cmds)
 		}
 		i++;
 	}
+}
+
+int	mini_atoi(const char *nptr)
+{
+	long	result;
+	int		neg;
+
+	result = 0;
+	neg = 1;
+	while (*nptr == ' ' || (*nptr >= '\a' && *nptr <= '\r'))
+		nptr++;
+	if (*nptr == '-' || *nptr == '+')
+	{
+		if (*nptr == '-')
+			neg = -1;
+		nptr++;
+	}
+	while (*nptr >= '0' && *nptr <= '9')
+	{
+		result = result * 10 + (*nptr - '0');
+		if (result > INT_MAX)
+			break ;
+		nptr++;
+	}
+	if (result > INT_MAX)
+		return (-(result - INT_MAX));
+	return ((int)(result *= neg));
+}
+
+int	exit_calci(char *cmd)
+{
+	int	res;
+
+	cmd += 5;
+	res = atoi(cmd);
+	if (res < 0)
+		res = -res;
+	if (res > 255)
+		return (res % 255);
+	else
+		return (res);
 }
