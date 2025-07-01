@@ -37,7 +37,7 @@ void	non_interactive(char **argv, int argc)
 			t_cmd *cmd = commands->data[i];
 			puts(cmd->str);
 		}
-		execution(commands, vec_to_array(data->env_vec));
+		execution((t_cmd **)commands->data, vec_to_array(data->env_vec));
 		break ;
 	}
 }

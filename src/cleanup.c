@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 17:07:45 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/27 19:07:46 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/01 14:41:01 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	clean_heredoc()
 			perror("minishell: ");
 		i++;
 	}
+	data->heredocs->count = 0;
 }
 
 void	ft_exit(char *s, int code)

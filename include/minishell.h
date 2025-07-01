@@ -136,8 +136,8 @@ char				*get_pwd(void);
 
 // Helpers
 
-
-void				cmd_help(t_vector *tokens, size_t *i, t_token *token, t_cmd *cmd);
+void				cmd_help(t_vector *tokens, size_t *i, t_token *token,
+						t_cmd *cmd);
 
 t_arena				*init_arena(size_t size);
 void				*arena_malloc(size_t n);
@@ -170,7 +170,7 @@ t_vector			*create_commands(t_vector *tokens);
 void				cmd_help(t_vector *tks, size_t *i, t_token *tk, t_cmd *cm);
 t_cmd				*make_cmd_spc(t_vector *tokens, size_t *i);
 t_cmd				*make_cmd_str(t_vector *tokens, size_t *i);
-char				*expans_help(char *s,  char *dup, size_t *i, size_t *pos);
+char				*expans_help(char *s, char *dup, size_t *i, size_t *pos);
 size_t				expanded_length(char *s, size_t n);
 
 int					check_specials(int c);
@@ -202,18 +202,18 @@ char				**get_cmd_args(char *cmd, char *path);
 
 // Built Ins
 
-void	built_in(t_cmd *cmd);
-void	build_handler(t_cmd	**cmds);
-void	echo(t_cmd **cmd, int i);
-void	pwd(void);
-void	unset(char	*key);
-void	cd(t_cmd **cmd, int i);
-void	env(void);
+void				built_in(t_cmd *cmd);
+void				build_handler(t_cmd **cmds);
+void				echo(t_cmd **cmd, int i);
+void				pwd(void);
+void				unset(char *key);
+void				cd(t_cmd **cmd, int i);
+void				env(void);
 
 void				export(char *export);
 char				*find_export(char *key);
 size_t				key_len(char *s);
-void				make_export(char	*command);
+void				make_export(char *command);
 void				replace_export(char *key);
 
 char				*expans_help(char *s, char *dup, size_t *i, size_t *pos);
@@ -243,12 +243,12 @@ void				exec_single_cmd(t_cmd **cmd, char **env);
 void				exec_input(t_cmd **cmd, char **env);
 void				exec_output(t_cmd **cmd, char **env);
 void				normal_exec(t_cmd **cmd, char **env);
-void				execution(t_vector *tokens, char **env);
+void				execution(t_cmd **tokens, char **env);
 
 // Cleaner
 
-void	clean_heredoc(void);
+void				clean_heredoc(void);
 
-void	setup_pipeline(t_cmd **tokens, char **env);
-t_vector	*next_check(t_vector *commands);
+void				setup_pipeline(t_cmd **tokens, char **env);
+t_vector			*next_check(t_vector *commands);
 #endif

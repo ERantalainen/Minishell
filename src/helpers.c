@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:02:28 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/01 14:34:46 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/01 15:08:25 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	init_data(char	**env)
 	data->env_vec = new_vector(ft_stralen(env));
 	data->heredocs = new_vector(2);
 	array_to_vec(data->env_vec, (void **)env);
-	add_elem(data->env_vec, "?=0");
+	add_elem(data->env_vec, mini_strdup("?=0"));
 }
 
 char	*get_pwd()
