@@ -163,6 +163,14 @@ static void setup_child(t_cmd **tokens, t_pipedata *p, char **env)
 	child_process(tokens, &local_p, env);
 }
 
+static void find_next_cmd_index(t_cmd **tokens, t_pipeline *p)
+{
+    while (tokens[p->index] && tokens[p->index]->type != PIPE)
+			p->index++;
+		while (tokens[p->index] && tokens[p->index]->type == PIPE)
+			p->index++;
+}
+
 static void	exec_pipeline(t_cmd **tokens, t_pipedata *p, char **env)
 {
 	int			status;
@@ -182,10 +190,7 @@ static void	exec_pipeline(t_cmd **tokens, t_pipedata *p, char **env)
 		if (pids[i] == 0)
 			setup_child(tokens, p, env);
 		close_unused_pipes(p, i);
-		while (tokens[p->index] && tokens[p->index]->type != PIPE)
-			p->index++;
-		while (tokens[p->index] && tokens[p->index]->type == PIPE)
-			p->index++;
+		find_next_cmd_index(tokens, p);
 		p->pipe_index++;
 		i++;
 	}
