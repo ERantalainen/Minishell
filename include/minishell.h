@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:12:49 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/01 03:32:37 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/01 20:41:56 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ typedef struct s_token
 {
 	t_type			t;
 	char			*s;
+	bool			space;
 }					t_token;
 
 typedef struct s_vector

@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 15:44:11 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/01 19:17:11 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/01 20:40:53 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,7 @@ char	*mini_itoa(int n)
 	return (result);
 }
 
-char	*here_expand(int fd, t_data *data)
+char	**here_check(int fd, t_data *data)
 {
 	char		**file;
 	char		*line;
@@ -181,16 +181,19 @@ char	*here_expand(int fd, t_data *data)
 		add_elem(lines, line);
 	}
 	file = vec_to_array(lines);
-	while (file[i])
+	while (file[i++])
 	{
+		j = 0;
 		while (file[i][j++])
 			if (file[i][j] == '$')
-		i++;
+				line = here_expansion(line, j);
 	}
-	return (line);
+	fix_lines(file);
 }
 
-char	*make_here_expand(char *ln, size_t i)
+// write new heredoc file.
+
+char	*here_expansion(char *ln, size_t i)
 {
 	char	*expansion;
 	size_t	len;
@@ -201,8 +204,6 @@ char	*make_here_expand(char *ln, size_t i)
 	expan_len = ft_strlen(expansion);
 	expansion = mini_join(mini_strndup(ln, i - 1), expansion);
 	if (len - expan_len > 0)
-	{
 		mini_join(expansion, ln + (len - expan_len));
-	}
 	return (expansion);
 }

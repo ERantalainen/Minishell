@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/01 19:11:23 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/01 20:42:40 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ t_vector	*token_vector(char *s)
 	{
 		while (s[i] && ft_isspace(s[i]) == 1)
 			i++;
+			// IF STRING INTERRUPTED BY NON SPACE CHARACTER MAKE BOOL SPACE 1 ELSE 0 AND ADD TO COMMAND CREATION BOOL CHECK
 		if (!s[i])
 			break ;
 		token = create_token(s, &i);
