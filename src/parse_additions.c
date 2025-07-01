@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 15:44:37 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/01 02:51:51 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/01 19:12:18 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_cmd *check_redirect(t_cmd *cmd, t_token *token)
 	{
 		if (access(token->s, R_OK) != 0)
 		{
-			perror("minishell");
+			perror("minishell: ");
 		}
 		else
 		{
@@ -86,7 +86,7 @@ size_t	quote_len(char *s, char quote)
 
 void	cmd_help(t_vector *tokens, size_t *i, t_token *token, t_cmd *cmd)
 {
-	while ((*i) < tokens->count && token->t == STRING)
+	while ((*i) < tokens->count && token->t == STRING || token->t == FILES)
 	{
 		cmd->str = mini_append(cmd->str, token->s);
 		(*i)++;

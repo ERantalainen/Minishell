@@ -22,10 +22,12 @@ static void	open_file(t_cmd **tokens, t_pipedata *p, int settings, int file)
 		file = open(tokens[p->index + 1]->str, settings, 0644);
 }
 
-static void	check_redirects_pipe(t_cmd **tokens, t_pipedata *p)
+static void	check_for_redirects(t_cmd **tokens, t_pipedata *p)
 {
-	while (tokens[p->index] && tokens[p->index]->type != PIPE)
+	while (tokens[p->index])
 	{
+		if (tokens[p->index]->type == PIPE)
+			return ;
 		if (tokens[p->index]->type == OUTPUT)
 			open_file(tokens, p, OUTPUT_CONF, p->outfile);
 		else if (tokens[p->index]->type == APPEND)
@@ -38,7 +40,7 @@ static void	check_redirects_pipe(t_cmd **tokens, t_pipedata *p)
 	}
 }
 
-static void	wait_for_children(t_pipedata *p, int status, int *pids)
+static void	wait_for_children(t_pipedata *p, int status)
 {
 	int	i;
 
@@ -46,8 +48,8 @@ static void	wait_for_children(t_pipedata *p, int status, int *pids)
 	while (i < p->pipe_count + 1)
 	{
 		ignore();
-		if (waitpid(pids[i], &status, 0) < 0)
-			exit(1);
+		if (waitpid(p->pids[i], &status, 0) < 0)
+			exit(100);
 		child_died(status);
 		catcher();
 		i++;
@@ -75,15 +77,21 @@ static void	init_pipes(t_pipedata *p)
 	}
 }
 
-static void	setup_cmd_to_execute(t_cmd **tokens, t_pipedata *p)
+static int	setup_cmd_to_execute(t_cmd **tokens, t_pipedata *p)
 {
 	char	**split_cmd;
 	size_t	arg_total_count;
 	size_t	args_array_index;
 	size_t	token_index;
 
-	while (tokens[p->cmd_index] && tokens[p->cmd_index]->type != STRING && tokens[p->cmd_index]->type != BUILTIN)
+	p->is_builtin = false;
+	while (tokens[p->cmd_index] && tokens[p->cmd_index]->type != STRING
+		&& tokens[p->cmd_index]->type != BUILTIN)
 		p->cmd_index++;
+	if (tokens[p->cmd_index]->type == BUILTIN)
+		p->is_builtin = true;
+	if (!tokens[p->cmd_index])
+		return (-1);
 	split_cmd = mini_split(tokens[p->cmd_index]->str, ' ');
 	arg_total_count = p->cmd_index + 1;
 	while (tokens[arg_total_count] && tokens[arg_total_count]->type == FILES)
@@ -91,7 +99,8 @@ static void	setup_cmd_to_execute(t_cmd **tokens, t_pipedata *p)
 	args_array_index = 0;
 	while (split_cmd[args_array_index++])
 		arg_total_count++;
-	p->cmd_args = arena_malloc((arg_total_count - p->cmd_index) * sizeof(char *));
+	p->cmd_args = arena_malloc((arg_total_count - p->cmd_index)
+			* sizeof(char *));
 	args_array_index = 0;
 	token_index = 0;
 	while (split_cmd[args_array_index])
@@ -102,6 +111,7 @@ static void	setup_cmd_to_execute(t_cmd **tokens, t_pipedata *p)
 	while (tokens[token_index] && tokens[token_index]->type == FILES)
 		p->cmd_args[args_array_index++] = mini_strdup(tokens[token_index++]->str);
 	p->cmd_args[args_array_index] = NULL;
+	return (0);
 }
 
 static void	setup_pipes(int in, int out, int close_in, int close_out)
@@ -127,12 +137,16 @@ static void	child_process(t_cmd **tokens, t_pipedata *p, char **env)
 	else if (p->pipe_index == p->pipe_count)
 		setup_pipes(p->pipefd[p->pipe_index - 1][READ], p->outfile, 0, 1);
 	else
-		setup_pipes(p->pipefd[p->pipe_index - 1][READ], p->pipefd[p->pipe_index][WRITE], 0, 0);
-	close_unused_pipes(p, p->pipe_index);
-	if (tokens[p->cmd_index]->type == BUILTIN)
+		setup_pipes(p->pipefd[p->pipe_index - 1][READ],
+			p->pipefd[p->pipe_index][WRITE], 0, 0);
+	if (p->pipe_count > 0)
+		close_unused_pipes(p, p->pipe_index);
+	if (p->is_builtin == true)
 	{
 		build_handler(tokens);
-		exit(1);
+		if (p->pipe_count > 0)
+			exit(1);
+		return ;
 	}
 	if (access(p->cmd_args[0], X_OK) >= 0)
 		if (execve(p->cmd_args[0], p->cmd_args, env) < 0)
@@ -144,15 +158,38 @@ static void	child_process(t_cmd **tokens, t_pipedata *p, char **env)
 
 static void	setup_child(t_cmd **tokens, t_pipedata *p, char **env, int i)
 {
-	t_pipedata	local_p;
+	t_pipedata *local_p;
 
-	local_p = *p;
-	local_p.index = p->index;
-	local_p.cmd_index = p->index;
-	local_p.pipe_index = i;
-	check_redirects_pipe(tokens, &local_p);
-	setup_cmd_to_execute(tokens, &local_p);
-	child_process(tokens, &local_p, env);
+	p->pids[i] = fork();
+	if (p->pids[i] == 0)
+	{
+		local_p = p;
+		local_p->cmd_index = p->index;
+		check_for_redirects(tokens, local_p);
+		if (setup_cmd_to_execute(tokens, local_p) < 0)
+			return ;
+		child_process(tokens, local_p, env);
+	}
+}
+
+static void	exec_builtin(t_cmd **tokens, t_pipedata *p, char **env)
+{
+	check_for_redirects(tokens, p);
+	if (setup_cmd_to_execute(tokens, p) < 0)
+		return ;
+	child_process(tokens, p, env);
+}
+
+static bool check_for_builtin(t_cmd **tokens)
+{
+	int i = 0;
+	while (tokens[i])
+	{
+		if (tokens[i]->type == BUILTIN)
+			return (true);
+		i++;
+	}
+	return (false);
 }
 
 static void	find_next_cmd_index(t_cmd **tokens, t_pipedata *p)
@@ -166,10 +203,9 @@ static void	find_next_cmd_index(t_cmd **tokens, t_pipedata *p)
 static void	exec_pipeline(t_cmd **tokens, t_pipedata *p, char **env)
 {
 	int	status;
-	int	*pids;
 	int	i;
 
-	pids = arena_malloc(sizeof(int) * (p->pipe_count + 1));
+	p->pids = arena_malloc(sizeof(int) * (p->pipe_count + 1));
 	status = 0;
 	i = 0;
 	while (i < p->pipe_count + 1)
@@ -178,15 +214,20 @@ static void	exec_pipeline(t_cmd **tokens, t_pipedata *p, char **env)
 			if (pipe(p->pipefd[i]) < 0)
 				perror("pipe");
 		reset_sig();
-		pids[i] = fork();
-		if (pids[i] == 0)
+		if (p->pipe_count == 0 && check_for_builtin(tokens))
+			exec_builtin(tokens, p, env);
+		else
 			setup_child(tokens, p, env, i);
-		find_next_cmd_index(tokens, p);
-		close_unused_pipes(p, i);
+		if (p->pipe_count > 0)
+		{
+			find_next_cmd_index(tokens, p);
+			close_unused_pipes(p, i);
+		}
 		p->pipe_index++;
 		i++;
 	}
-	wait_for_children(p, status, pids);
+	if (p->pids[0])
+		wait_for_children(p, status);
 }
 
 void	execution(t_cmd **tokens, char **env)
@@ -205,6 +246,7 @@ void	execution(t_cmd **tokens, char **env)
 	while (tokens[i])
 		if (tokens[i++]->type == PIPE)
 			p->pipe_count++;
-	init_pipes(p);
+	if (p->pipe_count > 0)
+		init_pipes(p);
 	exec_pipeline(tokens, p, env);
 }

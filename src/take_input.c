@@ -12,13 +12,13 @@
 
 #include "minishell.h"
 
-char	*take_input()
+char	*take_input(void)
 {
 	char	*input;
 
 	while (1)
 	{
-		input = readline("\001\033[0;36m\002minishell>\001\033[0m\002 ");
+		input = readline(RDPROMPT);
 		if (!input)
 		{
 			ft_exit("exit", 0);

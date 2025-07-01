@@ -16,8 +16,8 @@
 
 char	*here_eof(char *limiter)
 {
-	char		*eof_msg;
-	t_data		*data;
+	char	*eof_msg;
+	t_data	*data;
 
 	data = get_data();
 	eof_msg = mini_join(EOF1, ft_itoa(data->line));
@@ -27,16 +27,15 @@ char	*here_eof(char *limiter)
 	return (eof_msg);
 }
 
-static void	write_to_tmpfile(t_vector *tokens, char *limiter, int index)
+static void	write_to_tmpfile(char *limiter, int index)
 {
 	char	*input;
 	t_data	*data;
 
-	(void)tokens;
 	data = get_data();
 	while (true)
 	{
-		input = readline("\001\033[1;32m\002heredoc>\001\033[0m\002 ");
+		input = readline(HDPROMPT);
 		if (g_sig == SIGINT || !input)
 		{
 			if (g_sig == SIGINT)
@@ -54,7 +53,7 @@ static void	write_to_tmpfile(t_vector *tokens, char *limiter, int index)
 }
 
 // Heredoc execution, takes the limiter and index of heredoc (if multiple)
-char	*here_doc(t_vector *tokens, char *limiter, int index)
+char	*here_doc(char *limiter, int index)
 {
 	const char	*base = "._heredoc_.";
 	static int	filecount = 0;
@@ -70,7 +69,7 @@ char	*here_doc(t_vector *tokens, char *limiter, int index)
 		exit(1);
 	add_elem(data->fds, &data->hdfd[index]);
 	heredoc_signal();
-	write_to_tmpfile(tokens, limiter, index);
+	write_to_tmpfile(limiter, index);
 	catcher();
 	if (g_sig != 0)
 		g_sig = 0;
