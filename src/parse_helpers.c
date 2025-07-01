@@ -118,7 +118,7 @@ char	*mini_strndup(char *s, size_t n)
 	size_t	i;
 
 	i = 0;
-	dup = arena_malloc((n + 1) * sizeof(char));
+	dup = arena_malloc(n + 1);
 	while (i < n)
 	{
 		dup[i] = s[i];
@@ -136,7 +136,7 @@ char	*mini_strdup(char *s)
 	size_t	i;
 
 	i = 0;
-	dup = arena_malloc((ft_strlen(s)) * sizeof(char));
+	dup = arena_malloc(ft_strlen(s) + 1);
 	while (s[i])
 	{
 		dup[i] = s[i];
