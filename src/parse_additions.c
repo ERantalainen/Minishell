@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 15:44:37 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/01 23:57:29 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/02 00:42:27 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ size_t	quote_len(char *s, char quote)
 
 void	cmd_help(t_vector *tokens, size_t *i, t_token *token, t_cmd *cmd)
 {
-	while ((*i) < tokens->count && token->t == STRING || token->t == FILES)
+	while ((*i) < tokens->count && (token->t == STRING || token->t == FILES))
 	{
 		if (token->space == 1)
 			cmd->str = mini_append(cmd->str, token->s);

@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 16:20:20 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/01 14:30:57 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/02 00:37:57 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ static int	setup_cmd_to_execute(t_cmd **tokens, t_pipedata *p)
 	while (tokens[p->cmd_index] && tokens[p->cmd_index]->type != STRING
 		&& tokens[p->cmd_index]->type != BUILTIN)
 		p->cmd_index++;
-	if (tokens[p->cmd_index]->type == BUILTIN)
+	if (!tokens[p->cmd_index] && tokens[p->cmd_index]->type == BUILTIN)
 		p->is_builtin = true;
 	if (!tokens[p->cmd_index])
 		return (-1);

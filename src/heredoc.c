@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 15:44:11 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/02 00:19:26 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/02 00:42:01 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,6 +215,7 @@ void	fix_lines(char **file, size_t index, char *name, t_data *data)
 	int fd;
 	size_t	i;
 
+	fd = data->hdfd[index];
 	i = 0;
 	close(fd);
 	fd = open(name, O_WRONLY);
