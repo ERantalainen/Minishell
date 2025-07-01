@@ -6,7 +6,7 @@
 #    By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/03 18:36:06 by jpelline          #+#    #+#              #
-#    Updated: 2025/07/02 00:25:31 by erantala         ###   ########.fr        #
+#    Updated: 2025/07/02 01:27:33 by erantala         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,7 +62,7 @@ SRCS_MAIN	:= main.c memory_arena.c vector.c parse_input.c \
 		parse_additions.c parse_helpers.c signal.c echo.c pwd.c cd.c \
 		exec_parse_utils.c built_in.c env.c unset.c shlv.c \
 		vector_helpers.c mini_split.c non_interactive.c cleanup.c \
-		command_help.c execution.c
+		command_help.c execution.c empty_exp.c
 
 SRCS		:= $(SRCS_MAIN)
 

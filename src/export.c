@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:12:54 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/02 00:02:34 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/02 01:26:36 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,13 @@ void	make_export(char	*command)
 	size_t	i;
 
 	i  = 0;
+	if (ft_strcmp(command, "") == 0)
+		empty_export();
 	while (command[i])
 	{
-		if ((ft_isalnum(command[i]) == 0 && command[i] != '=') && command[i])
+		if (command[i] != '=')
+			break ;
+		if ((ft_isalnum(command[i]) == 0) && command[i])
 		{
 			ft_fprintf(2, "minishell: export: `%s", mini_join(command, INV));
 			replace_export("?=1");
@@ -78,9 +82,14 @@ void	make_export(char	*command)
 	if (ft_strcmp("", find_export(command)) != 0)
 		replace_export(command);
 	else
+	{
 		export(command);
+		init_export();
+	}
 	replace_export("?=0");
 }
+
+
 
 // Makes an export by builting the key and expansion.
 

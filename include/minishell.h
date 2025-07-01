@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:12:49 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/02 00:22:15 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/02 01:26:09 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,7 @@ typedef struct s_data
 	t_vector		*fds;
 	char			**environ;
 	t_vector		*env_vec;
+	t_vector		*exp;
 	int				shell;
 	bool			valid;
 }					t_data;
@@ -139,9 +140,16 @@ extern sig_atomic_t	g_sig;
 
 void				init_data(char **env);
 char				*get_pwd(void);
+size_t				ft_stralen(char **s);
 
 // Helpers
 
+void	init_export();
+void	sort_export(size_t count, t_data *data, char **exps);
+void	empty_export();
+char	**strarm(char **s, size_t i);
+
+// Export sort
 void				cmd_help(t_vector *tokens, size_t *i, t_token *token,
 						t_cmd *cmd);
 
