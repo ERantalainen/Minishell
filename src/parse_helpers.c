@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 15:43:47 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/30 17:24:54 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/01 15:02:28 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ size_t	word_len(char *s)
 
 int	check_specials(int	c)
 {
-	if (c == '<' || c == '|' || c == '>')
+	if (c == '<' || c == '|' || c == '>' || c == '\'' || c == '"')
 		return (1);
 	return (0);
 }

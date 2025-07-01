@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/30 18:37:34 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/01 15:02:05 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ char	*token_string(char	*s, size_t	*i)
 {
 	char	*token;
 	int		len;
+
 
 	if (s[(*i)] == '\'' || s[(*i)] == '"')
 		return (quoted_token(s + *i, s[(*i)], i));

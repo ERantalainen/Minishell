@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 15:44:11 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/01 14:36:21 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/01 15:05:38 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,5 +164,5 @@ char	*mini_itoa(int n)
 
 char	*here_expand(int fd)
 {
-	
+	printf
 }
