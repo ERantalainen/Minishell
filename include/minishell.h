@@ -39,6 +39,9 @@
 # define TOKEN "minishell: syntax error near unexpected token `"
 # define HRLIM "minishell: maximum here-document count exceeded\n"
 
+# define HDPROMPT "\001\033[0;32m\002heredoc>\001\033[0m\002 "
+# define RDPROMPT "\001\033[0;36m\002minishell>\001\033[0m\002 "
+
 enum				e_pipe
 {
 	READ,
@@ -125,9 +128,11 @@ typedef struct s_pipedata
 	int				pipe_index;
 	int				**pipefd;
 	char			**cmd_args;
+	int				*pids;
 	size_t			cmd_index;
 	int				cmd_count;
 	int				index;
+	bool			is_builtin;
 }					t_pipedata;
 
 extern sig_atomic_t	g_sig;
@@ -181,13 +186,12 @@ char				*mini_append(char *s1, char *s2);
 char				*quoted_token(char *s, char quote, size_t *i);
 char				*mini_strndup(char *s, size_t n);
 char				*mini_strdup(char *s);
-t_cmd				*check_redirect(t_cmd *cmd, t_token *token);
 size_t				word_len(char *s);
 t_vector			*next_check(t_vector *commands);
 
 void				check_repeat(t_vector *tokens);
 int					check_heredoc(t_vector *tokens);
-char				*here_doc(t_vector *tokens, char *limiter, int index);
+char				*here_doc(char *limiter, int index);
 char				*name_join(char const *s1, char const *s2);
 size_t				quote_len(char *s, char quote);
 
@@ -239,7 +243,6 @@ char				*get_input(char **argv, int argc);
 
 // Execution
 
-t_vector			*check_redirects(t_cmd **cmd);
 void				exec_single_cmd(t_cmd **cmd, char **env);
 void				exec_input(t_cmd **cmd, char **env);
 void				exec_output(t_cmd **cmd, char **env);
