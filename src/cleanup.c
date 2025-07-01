@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 17:07:45 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/01 14:41:01 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/02 00:22:57 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	clean_heredoc()
 	i = 0;
 	while (i < data->heredocs->count)
 	{
+		close(data->hdfd[i]);
 		if (unlink((char *)data->heredocs->data[i]) == -1)
 			perror("minishell: ");
 		i++;

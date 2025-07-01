@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:12:54 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/01 14:34:08 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/02 00:02:34 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	make_export(char	*command)
 	i  = 0;
 	while (command[i])
 	{
-		if (ft_isalnum(command[i]) == 0 && command[i])
+		if ((ft_isalnum(command[i]) == 0 && command[i] != '=') && command[i])
 		{
 			ft_fprintf(2, "minishell: export: `%s", mini_join(command, INV));
 			replace_export("?=1");

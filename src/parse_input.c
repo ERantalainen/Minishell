@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/01 22:59:54 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/02 00:00:52 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,10 @@
 t_token	*create_token(char *s, size_t *i)
 {
 	t_token	*new;
-
+	
 	new = arena_malloc(sizeof(t_token));
 	new->s = token_string(s, i);
+	new->space = 1;
 	if (ft_strncmp(new->s, "|", 1) == 0)
 		new->t = PIPE;
 	else if (ft_strcmp(new->s, "<") == 0)
@@ -54,12 +55,11 @@ t_vector	*token_vector(char *s)
 	{
 		while (s[i] && ft_isspace(s[i]) == 1)
 			i++;
-			// IF STRING INTERRUPTED BY NON SPACE CHARACTER MAKE BOOL SPACE 1 ELSE 0 AND ADD TO COMMAND CREATION BOOL CHECK
-		if (!s[i])
-			break ;
 		token = create_token(s, &i);
 		if (token->s)
 			add_elem(tokens, token);
+		if (s[i] && !ft_isspace(s[i]))
+			token->space = 0;
 		if (i >= len)
 			break ;
 	}
@@ -76,7 +76,6 @@ char	*token_string(char	*s, size_t	*i)
 {
 	char	*token;
 	int		len;
-
 
 	if (s[(*i)] == '\'' || s[(*i)] == '"')
 		return (quoted_token(s + *i, s[(*i)], i));

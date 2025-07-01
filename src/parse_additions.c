@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 15:44:37 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/01 19:12:18 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/01 23:57:29 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,10 @@ void	cmd_help(t_vector *tokens, size_t *i, t_token *token, t_cmd *cmd)
 {
 	while ((*i) < tokens->count && token->t == STRING || token->t == FILES)
 	{
-		cmd->str = mini_append(cmd->str, token->s);
+		if (token->space == 1)
+			cmd->str = mini_append(cmd->str, token->s);
+		else
+			cmd->str = mini_join(cmd->str, token->s);
 		(*i)++;
 		if (*i >= tokens->count)
 			break ;

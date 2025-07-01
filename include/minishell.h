@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:12:49 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/01 20:41:56 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/02 00:22:15 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,9 +190,7 @@ size_t				word_len(char *s);
 t_vector			*next_check(t_vector *commands);
 
 void				check_repeat(t_vector *tokens);
-int					check_heredoc(t_vector *tokens);
-char				*here_doc(char *limiter, int index);
-char				*name_join(char const *s1, char const *s2);
+t_cmd 				*check_redirect(t_cmd *cmd, t_token *token);
 size_t				quote_len(char *s, char quote);
 
 // Parsing
@@ -200,6 +198,15 @@ size_t				quote_len(char *s, char quote);
 t_data				*get_data(void);
 void				free_arenas(void);
 void				ft_exit(char *s, int code);
+
+// Heredoc
+
+void				here_check(int fd, char *name, t_data *data, size_t i);
+char				*here_expansion(char *ln, size_t i);
+int					check_heredoc(t_vector *tokens);
+char				*here_doc(char *limiter, int index);
+char				*name_join(char const *s1, char const *s2);
+void				fix_lines(char **file, size_t i , char *name, t_data *data);
 
 // pipe
 char				*get_bin_path(char *cmd, char **env);
