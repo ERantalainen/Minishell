@@ -24,7 +24,7 @@ CFLAGS		:=
 DEBUG_FLAGS	:= -g3 -fsanitize=address -fsanitize=undefined
 OPTFLAGS	:= -O2
 
-VPATH		:= src:src/pipe/src:src/builtin:src/tokenizer
+VPATH		:= src:src/builtin:src/tokenizer:src/execution
 
 ifeq ($(MAKECMDGOALS),bonus)
 SRC_DIR		:= src_bonus
@@ -58,15 +58,13 @@ RESET		:= $(shell tput sgr0)
 # ============================== SOURCE FILES ================================ #
 
 SRCS_MAIN	:= main.c memory_arena.c vector.c parse_input.c \
-			syntax_check.c take_input.c export.c helpers.c heredoc.c \
-			parse_additions.c parse_helpers.c signal.c echo.c pwd.c cd.c \
-			pipe_utils.c built_in.c env.c unset.c shlv.c vector_helpers.c \
-			mini_split.c non_interactive.c cleanup.c command_help.c \
-			execution.c
+		syntax_check.c take_input.c export.c helpers.c heredoc.c \
+		parse_additions.c parse_helpers.c signal.c echo.c pwd.c cd.c \
+		exec_parse_utils.c built_in.c env.c unset.c shlv.c \
+		vector_helpers.c mini_split.c non_interactive.c cleanup.c \
+		command_help.c execution.c
 
-SRCS_BUILTIN	:= cd.c echo.c export.c pwd.c builtin/export.c
-
-SRCS		:= $(SRCS_MAIN) $(SRCS_PIPE)
+SRCS		:= $(SRCS_MAIN)
 
 # ============================== PROGRESS TRACKING =========================== #
 
