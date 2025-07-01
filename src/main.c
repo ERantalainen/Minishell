@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 18:29:23 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/01 02:51:47 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/01 14:35:22 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -284,18 +284,13 @@ int	main(int ac, char **av, char **env)
 				input = take_input();
 				add_history(input);
 				commands = create_commands(token_vector(input));
-				// for (size_t i = 0; i < commands->count; i++)
-				// {
-				// 	t_cmd *cmd = commands->data[i];
-				// 	printf("%zu %s %d next->%d\n", i, cmd->str, cmd->type, cmd->next);
-				// }
 				if (data->valid == 1)
 				{
-					for(size_t i = 0; i < commands->count; i++)
-					{
-						t_cmd *test = commands->data[i];
-						printf("%zu, %s, Curr: %d Next: %d\n", i, test->str, test->type, test->next);
-					}
+					// for(size_t i = 0; i < commands->count; i++)
+					// {
+					// 	t_cmd *test = commands->data[i];
+					// 	printf("%zu, %s, Curr: %d Next: %d\n", i, test->str, test->type, test->next);
+					// }
 					execution(commands, vec_to_array(data->env_vec));
 					clean_heredoc();
 				}

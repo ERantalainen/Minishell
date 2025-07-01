@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 16:20:20 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/01 02:55:31 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/01 14:30:57 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,10 +150,10 @@ static void	child_process(t_cmd **tokens, t_pipedata *p, char **env)
 		exit(1);
 }
 
-static void setup_child(t_cmd **tokens, t_pipedata *p, char **env)
+static void setup_child(t_cmd **tokens, t_pipedata *p, char **env, int i)
 {
 	t_pipedata	local_p;
-	
+
 	local_p = *p;
 	local_p.index = p->index;
 	local_p.cmd_index = p->index;
@@ -163,7 +163,7 @@ static void setup_child(t_cmd **tokens, t_pipedata *p, char **env)
 	child_process(tokens, &local_p, env);
 }
 
-static void find_next_cmd_index(t_cmd **tokens, t_pipeline *p)
+static void find_next_cmd_index(t_cmd **tokens, t_pipedata *p)
 {
     while (tokens[p->index] && tokens[p->index]->type != PIPE)
 			p->index++;
@@ -188,7 +188,7 @@ static void	exec_pipeline(t_cmd **tokens, t_pipedata *p, char **env)
 		reset_sig();
 		pids[i] = fork();
 		if (pids[i] == 0)
-			setup_child(tokens, p, env);
+			setup_child(tokens, p, env, i);
 		close_unused_pipes(p, i);
 		find_next_cmd_index(tokens, p);
 		p->pipe_index++;

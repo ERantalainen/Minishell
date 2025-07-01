@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:12:54 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/01 03:27:17 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/01 14:34:08 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	make_export(char	*command)
 		replace_export(command);
 	else
 		export(command);
-	replace_export("?=0");	
+	replace_export("?=0");
 }
 
 // Makes an export by builting the key and expansion.

@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 22:35:51 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/01 03:36:08 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/01 14:33:26 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void	increase_shell_lvl()
 	level = ft_itoa(nbr);
 	res = mini_join("SHLVL=", level);
 	free(level);
-	printf("Now %s\n", res);
 	replace_export(res);
 }
 

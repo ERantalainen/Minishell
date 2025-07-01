@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:34:05 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/30 20:15:45 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/01 14:33:04 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,14 @@ void	cd(t_cmd **cmd, int i)
 	char	*path;
 	data = get_data();
 
-
-	if ((cmd[i]->next != FILES || cmd[i]->next != STRING)
+	if ((cmd[i]->next != FILES && cmd[i]->next != STRING)
 		&& ft_strlen(cmd[i]->str) == 2)
 			path = find_export("HOME");
 	else if (cmd[i]->next == FILES)
 			path = cmd[i + 1]->str;
 	else
 		path = cmd[i]->str += 3;
+	puts(path);
 	if (chdir(path) == -1)
 	{
 		perror((mini_join("minishell: cd: ", path)));
