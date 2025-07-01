@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 15:44:11 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/01 15:05:38 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/01 15:44:28 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,47 @@ char	*mini_itoa(int n)
 	return (result);
 }
 
-char	*here_expand(int fd)
+char	*here_expand(int fd, t_data *data)
 {
-	printf
+	char		**file;
+	char		*line;
+	t_vector	*lines;
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	lines = new_vector(4);
+	while(1)
+	{
+		line = get_next_line(fd);
+		if (!line)
+			break ;
+		add_elem(lines, line);
+	}
+	file = vec_to_array(lines);
+	while (file[i])
+	{
+		while (file[i][j++])
+			if (file[i][j] == '$')
+		i++;
+	}
+
+	return (line);
+}
+
+char	*make_here_expand(char *ln, size_t i)
+{
+	char	*expansion;
+	size_t	len;
+	size_t	expan_len;
+
+	expansion = (find_export(mini_strndup((ln + i), word_len(ln + i))));
+	len = ft_strlen(ln);
+	expan_len = ft_strlen(expansion);
+	expansion = mini_join(mini_strndup(ln, i - 1), expansion);
+	if (len - expan_len > 0)
+	{
+		mini_join(expansion, ln + (len - expan_len));
+	}
+	return (expansion);
 }

@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/01 15:02:05 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/01 15:45:01 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,9 @@ t_vector	*token_vector(char *s)
 			add_elem(tokens, token);
 		if (i >= len)
 			break ;
-		while (s[i] && ft_isspace(s[i]) == 1)
-			i++;
 	}
+	if (tokens->count == 0)
+		return (NULL);
 	check_heredoc(tokens);
 	check_repeat(tokens);
 	return (tokens);
@@ -95,7 +95,7 @@ t_vector	*create_commands(t_vector *tokens)
 	t_data		*data;
 
 	data = get_data();
-	if (data->valid == 0)
+	if (data->valid == 0 || !tokens)
 		return (NULL);
 	i = 0;
 	commands = new_vector(tokens->count + 1);

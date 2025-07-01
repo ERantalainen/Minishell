@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 18:29:23 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/01 14:35:22 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/01 15:45:30 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -284,7 +284,7 @@ int	main(int ac, char **av, char **env)
 				input = take_input();
 				add_history(input);
 				commands = create_commands(token_vector(input));
-				if (data->valid == 1)
+				if (data->valid == 1 && commands)
 				{
 					// for(size_t i = 0; i < commands->count; i++)
 					// {
