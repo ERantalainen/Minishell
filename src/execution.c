@@ -79,12 +79,11 @@ static void	init_pipes(t_pipedata *p)
 
 static int	setup_cmd_to_execute(t_cmd **tokens, t_pipedata *p)
 {
-	char	**split_cmd;
-	size_t	arg_total_count;
-	size_t	args_array_index;
-	size_t	token_index;
+	char	**split;
+	size_t	total_args;
+	size_t	arg_i;
+	size_t	tok_i;
 
-	p->is_builtin = false;
 	while (tokens[p->cmd_index] && tokens[p->cmd_index]->type != STRING
 		&& tokens[p->cmd_index]->type != BUILTIN)
 		p->cmd_index++;
@@ -92,25 +91,24 @@ static int	setup_cmd_to_execute(t_cmd **tokens, t_pipedata *p)
 		p->is_builtin = true;
 	if (!tokens[p->cmd_index])
 		return (-1);
-	split_cmd = mini_split(tokens[p->cmd_index]->str, ' ');
-	arg_total_count = p->cmd_index + 1;
-	while (tokens[arg_total_count] && tokens[arg_total_count]->type == FILES)
-		arg_total_count++;
-	args_array_index = 0;
-	while (split_cmd[args_array_index++])
-		arg_total_count++;
-	p->cmd_args = arena_malloc((arg_total_count - p->cmd_index)
-			* sizeof(char *));
-	args_array_index = 0;
-	token_index = 0;
-	while (split_cmd[args_array_index])
-		p->cmd_args[args_array_index++] = mini_strdup(split_cmd[token_index++]);
-	token_index = p->cmd_index;
-	if (tokens[token_index]->next == FILES)
-		token_index++;
-	while (tokens[token_index] && tokens[token_index]->type == FILES)
-		p->cmd_args[args_array_index++] = mini_strdup(tokens[token_index++]->str);
-	p->cmd_args[args_array_index] = NULL;
+	split = mini_split(tokens[p->cmd_index]->str, ' ');
+	total_args = p->cmd_index + 1;
+	while (tokens[total_args] && tokens[total_args]->type == FILES)
+		total_args++;
+	arg_i = 0;
+	while (split[arg_i++])
+		total_args++;
+	p->cmd_args = arena_malloc((total_args - p->cmd_index) * sizeof(char *));
+	arg_i = 0;
+	tok_i = 0;
+	while (split[tok_i])
+		p->cmd_args[arg_i++] = mini_strdup(split[tok_i++]);
+	tok_i = p->cmd_index;
+	if (tokens[tok_i]->next == FILES)
+		tok_i++;
+	while (tokens[tok_i] && tokens[tok_i]->type == FILES)
+		p->cmd_args[arg_i++] = mini_strdup(tokens[tok_i++]->str);
+	p->cmd_args[arg_i] = NULL;
 	return (0);
 }
 
@@ -124,6 +122,29 @@ static void	setup_pipes(int in, int out, int close_in, int close_out)
 		perror("dup2");
 	if (close_out && out != STDOUT_FILENO)
 		close(out);
+}
+
+static void	open_handler(t_pipedata *p, const char *path)
+{
+	int	fd;
+
+	fd = open(p->cmd_args[0], O_RDONLY);
+	if (fd < 0)
+	{
+		if (errno == EISDIR)
+			ft_fprintf(2, "%s: Is a directory\n", p->cmd_args[0]);
+		else if (errno == ENOTDIR)
+			ft_fprintf(2, "%s: Not a directory\n", p->cmd_args[0]);
+		else if (errno == EACCES)
+			ft_fprintf(2, "%s: Permission denied\n", p->cmd_args[0]);
+		else if (errno == ENOENT && access(path, X_OK) < 0
+			&& (ft_strchr(p->cmd_args[0], '/') || ft_strchr(p->cmd_args[0],
+					'\\')))
+		{
+			ft_fprintf(2, "%s: No such file or directory\n", p->cmd_args[0]);
+			exit(1);
+		}
+	}
 }
 
 static void	child_process(t_cmd **tokens, t_pipedata *p, char **env)
@@ -148,18 +169,21 @@ static void	child_process(t_cmd **tokens, t_pipedata *p, char **env)
 			exit(1);
 		return ;
 	}
+	path = get_bin_path(tokens[p->cmd_index]->str, env);
+	ft_fprintf(2, "cmd: %s\n", p->cmd_args[0]);
+	open_handler(p, path);
 	if (access(p->cmd_args[0], X_OK) >= 0)
 		if (execve(p->cmd_args[0], p->cmd_args, env) < 0)
 			exit(1);
-	path = get_bin_path(tokens[p->cmd_index]->str, env);
 	if (execve(path, p->cmd_args, env) < 0)
 		exit(1);
 }
 
 static void	setup_child(t_cmd **tokens, t_pipedata *p, char **env, int i)
 {
-	t_pipedata *local_p;
+	t_pipedata	*local_p;
 
+	p->is_builtin = false;
 	p->pids[i] = fork();
 	if (p->pids[i] == 0)
 	{
@@ -180,9 +204,11 @@ static void	exec_builtin(t_cmd **tokens, t_pipedata *p, char **env)
 	child_process(tokens, p, env);
 }
 
-static bool check_for_builtin(t_cmd **tokens)
+static bool	check_for_builtin(t_cmd **tokens)
 {
-	int i = 0;
+	int	i;
+
+	i = 0;
 	while (tokens[i])
 	{
 		if (tokens[i]->type == BUILTIN)
