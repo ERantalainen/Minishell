@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 15:44:11 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/01 15:44:28 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/01 19:17:11 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ static void	write_to_tmpfile(t_vector *tokens, char *limiter, int index)
 		}
 		if (ft_strcmp(input, limiter) == 0)
 			break ;
-		input = name_join(input, "\n");
+		puts("here");
+		input = mini_join(input, "\n");
 		if (write(data->hdfd[index], input, ft_strlen(input)) < 0)
 			exit(1);
 	}
@@ -186,7 +187,6 @@ char	*here_expand(int fd, t_data *data)
 			if (file[i][j] == '$')
 		i++;
 	}
-
 	return (line);
 }
 

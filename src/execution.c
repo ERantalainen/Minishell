@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 16:20:20 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/01 14:30:57 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/01 19:36:32 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,8 @@ static void	setup_cmd_to_execute(t_cmd **tokens, t_pipedata *p)
 
 	while (tokens[p->cmd_index] && tokens[p->cmd_index]->type != STRING && tokens[p->cmd_index]->type != BUILTIN)
 		p->cmd_index++;
+	if (!tokens[p->cmd_index])
+		return ;
 	split_cmd = mini_split(tokens[p->cmd_index]->str, ' ');
 	arg_total_count = p->cmd_index + 1;
 	while (tokens[arg_total_count] && tokens[arg_total_count]->type == FILES)
@@ -152,6 +154,8 @@ static void	setup_child(t_cmd **tokens, t_pipedata *p, char **env, int i)
 	local_p.pipe_index = i;
 	check_redirects_pipe(tokens, &local_p);
 	setup_cmd_to_execute(tokens, &local_p);
+	if (!tokens[local_p.cmd_index])
+		return ;
 	child_process(tokens, &local_p, env);
 }
 

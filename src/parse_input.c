@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/01 15:45:01 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/01 19:11:23 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,6 @@ t_cmd	*make_cmd_str(t_vector *tokens, size_t *i)
 		cmd->str = token->s;
 		(*i)++;
 	}
-
 	if ((*i) < tokens->count)
 		cmd->next = token->t;
 	else
