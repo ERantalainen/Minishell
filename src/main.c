@@ -12,11 +12,33 @@
 
 #include "minishell.h"
 
+static void	parse_and_execute(t_data *data)
+{
+	t_vector	*tokens;
+	char		*input;
+
+	while (true)
+	{
+		if (isatty(0))
+		{
+			data->valid = 1;
+			input = take_input();
+			add_history(input);
+			tokens = create_commands(token_vector(input));
+			if (data->valid == 1 && tokens)
+			{
+				execution((t_cmd **)tokens->data, vec_to_array(data->env_vec));
+				clean_heredoc();
+			}
+			free(input);
+			data->line++;
+		}
+	}
+}
+
 int	main(int ac, char **av, char **env)
 {
-	char		*input;
-	t_vector	*tokens;
-	t_data		*data;
+	t_data	*data;
 
 	data = get_data();
 	init_data(env);
@@ -25,28 +47,5 @@ int	main(int ac, char **av, char **env)
 	if (ac > 1)
 		non_interactive(av, ac);
 	else
-	{
-		while (1)
-		{
-			if (1)
-			{
-				data->valid = 1;
-				input = take_input();
-				add_history(input);
-				tokens = create_commands(token_vector(input));
-				if (data->valid == 1 && tokens)
-				{
-					// for(size_t i = 0; i < tokens->count; i++)
-					// {
-					// 	t_cmd *test = tokens->data[i];
-					// 	printf("%zu, %s, Curr: %d Next: %d\n", i, test->str, test->type, test->next);
-					// }
-					execution((t_cmd **)tokens->data, vec_to_array(data->env_vec));
-					clean_heredoc();
-				}
-				free(input);
-				data->line++;
-			}
-		}
-	}
+		parse_and_execute(data);
 }
