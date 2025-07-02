@@ -84,7 +84,9 @@ SRCS_EXEC := \
 	non_interactive.c \
 	cleanup.c \
 	command_help.c \
-	execution.c
+	execution.c \
+	exec_utility.c \
+	exec_utility2.c
 
 # Main and other sources
 SRCS_OTHER := \
