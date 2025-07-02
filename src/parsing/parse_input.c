@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/02 22:31:00 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/02 23:08:48 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,11 @@
 // MAKE EXCEPTONS FOR <<<A <>A ><A
 // https://www.gnu.org/software/bash/manual/bash.html#Shell-Syntax
 
-t_token	*create_token(char *s, size_t *i, t_type last)
+t_token	*create_token(char *s, size_t *i, t_type last, t_data *data)
 {
 	t_token	*new;
 
+	data->last = EMPTY;
 	new = arena_malloc(sizeof(t_token));
 	new->s = token_string(s, i, last);
 	new->space = 0;
@@ -37,7 +38,7 @@ t_token	*create_token(char *s, size_t *i, t_type last)
 	else
 		new->t = STRING;
 	if ((last == HERE_DOC && new->t == STRING) && (s[(*i)] == '"'
-			|| s[(*i)] == '\''))
+			|| s[(*i)] == '\'' || data->last == HERE_NOEXP))
 		new->t = HERE_NOEXP;
 	return (new);
 }
@@ -47,13 +48,16 @@ t_token	*create_token(char *s, size_t *i, t_type last)
 t_vector	*token_vector(char *s)
 {
 	size_t		len;
+	t_data		*data;
 	t_vector	*tokens;
 	size_t		i;
 
+	data = get_data();
 	i = 0;
 	len = ft_strlen(s);
 	tokens = new_vector(4);
-	tokens = creator(s, len, i, tokens);
+	data->tokens = tokens;
+	tokens = creator(s, len, i, data);
 	if (tokens->count == 0)
 		return (NULL);
 	check_heredoc(tokens);
@@ -63,7 +67,7 @@ t_vector	*token_vector(char *s)
 
 // Create token vector
 
-t_vector	*creator(char *s, size_t len, size_t i, t_vector *tokens)
+t_vector	*creator(char *s, size_t len, size_t i, t_data *data)
 {
 	t_token	*token;
 	bool	space;
@@ -75,13 +79,13 @@ t_vector	*creator(char *s, size_t len, size_t i, t_vector *tokens)
 			space = 1;
 		while (s[i] && ft_isspace(s[i]) == 1)
 			i++;
-		if (tokens->count == 0)
-			token = create_token(s, &i, EMPTY);
+		if (data->tokens->count == 0)
+			token = create_token(s, &i, EMPTY, data);
 		else
-			token = create_token(s, &i, token->t);
+			token = create_token(s, &i, token->t, data);
 		if (token->s && ft_strcmp(token->s, "") != 0)
 		{
-			add_elem(tokens, token);
+			add_elem(data->tokens, token);
 			if (space == 1)
 			{
 				token->space = 1;
@@ -89,7 +93,7 @@ t_vector	*creator(char *s, size_t len, size_t i, t_vector *tokens)
 			}
 		}
 	}
-	return (tokens);
+	return (data->tokens);
 }
 
 char	*token_string(char *s, size_t *i, t_type last)
@@ -98,7 +102,7 @@ char	*token_string(char *s, size_t *i, t_type last)
 	int		len;
 
 	if (s[(*i)] == '\'' || s[(*i)] == '"' || last == HERE_DOC)
-		return (quoted_token(s + *i, s[(*i)], i));
+		return (quoted_token(s + *i, s[(*i)], i, last));
 	len = word_len(s + (*i), '"');
 	token = expand_strndup(s + (*i), len);
 	(*i) += len;

@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:12:49 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/02 22:30:55 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/02 23:09:23 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,11 +111,13 @@ typedef struct s_data
 	t_vector		*envv;
 	t_vector		*heredocs;
 	t_vector		*fds;
+	t_vector		*tokens;
 	char			**environ;
 	t_vector		*env_vec;
 	t_vector		*exp;
 	int				shell;
 	int				valid;
+	t_type			last;
 }					t_data;
 
 typedef struct s_pipedata
@@ -175,10 +177,10 @@ char				*take_input(void);
 int					check_quotes(char *s);
 
 // Input
-t_token				*create_token(char *s, size_t *i, t_type last);
+t_token				*create_token(char *s, size_t *i, t_type last, t_data *data);
 t_vector			*token_vector(char *s);
 char				*token_string(char *s, size_t *i, t_type last);
-t_vector			*creator(char *s, size_t len, size_t i, t_vector *tokens);
+t_vector			*creator(char *s, size_t len, size_t i, t_data *data);
 
 // Token creator
 t_vector			*create_commands(t_vector *tokens);
@@ -194,7 +196,7 @@ int					check_specials(int c, int quote);
 char				*expand_strndup(char *s, size_t n);
 char				*mini_append(char *s1, char *s2);
 
-char				*quoted_token(char *s, char quote, size_t *i);
+char				*quoted_token(char *s, char quote, size_t *i, t_type last);
 char				*mini_strndup(char *s, size_t n);
 char				*mini_strdup(char *s);
 size_t				word_len(char *s, int quote);

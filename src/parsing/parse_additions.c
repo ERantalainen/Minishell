@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 15:44:37 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/02 22:30:29 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/02 23:22:54 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,46 @@ char	*mini_append(char *s1, char *s2)
 	return (dup);
 }
 
-char	*quoted_token(char *s, char quote, size_t *i)
+char	*here_lim_token(char *s, size_t n, char quote)
+{
+	char	*dup;
+	size_t	i;
+	t_data	*data;
+
+	data = get_data();
+	i = 0;
+	dup = arena_malloc(n + 1);
+	while(quote != '\'' && quote != '"' && i < n)
+		quote = s[i++];
+	if (quote != '\'' && quote != '"')
+		quote = 0;
+	i = 0;
+	while (i < n)
+	{		
+		if (s[i] == quote)
+			s += 1;
+		if (!s[i] || i >= n)
+			break ;
+		dup[i] = s[i];
+		i++;
+	}
+	if (quote != 0)
+		data->last = HERE_NOEXP;
+	dup[i] = '\0';
+	return (dup);
+}
+
+// Makes the string for a heredoc delimiter.
+
+char	*quoted_token(char *s, char quote, size_t *i, t_type last)
 {
 	char	*str;
 	int		pos;
 
 	pos = 1;
-	if (quote != '\'' && quote != '"')
+	if (last == HERE_DOC)
 	{
-		str = mini_strndup(s, word_len(s, 0));
+		str = here_lim_token(s, word_len(s, 0), quote);
 		(*i) += word_len(s, 0);
 	}
 	else
