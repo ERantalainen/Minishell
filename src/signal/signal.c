@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-sig_atomic_t g_sig = 0;
+sig_atomic_t	g_sig = 0;
 
 void	handler(int sig, siginfo_t *a, void *b)
 {
@@ -28,7 +28,7 @@ void	handler(int sig, siginfo_t *a, void *b)
 	}
 }
 
-void	catcher()
+void	catcher(void)
 {
 	struct sigaction	s_sig;
 	struct sigaction	ign;
@@ -44,7 +44,7 @@ void	catcher()
 	return ;
 }
 
-void	ignore()
+void	ignore(void)
 {
 	struct sigaction	s_sig;
 
@@ -55,7 +55,7 @@ void	ignore()
 	return ;
 }
 
-void	reset_sig()
+void	reset_sig(void)
 {
 	struct sigaction	s_sig;
 
@@ -91,4 +91,3 @@ void	heredoc_signal(void)
 	sigaction(SIGINT, &s_sig, NULL);
 	rl_event_hook = &check_signal;
 }
-

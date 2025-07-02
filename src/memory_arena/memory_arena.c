@@ -29,7 +29,7 @@ void	*arena_malloc(size_t n)
 
 // gets the next available arena and returns a pointer to the free memory
 
-t_arena *init_arena(size_t size)
+t_arena	*init_arena(size_t size)
 {
 	t_arena	*arena;
 
@@ -43,12 +43,13 @@ t_arena *init_arena(size_t size)
 
 // Returns a free point in the arena, if arenas are full allocates more.
 
-t_arena *find_arena(size_t n)
+t_arena	*find_arena(size_t n)
 {
 	static int	arena_count = 2;
-	int		i = 0;
-	t_arena	**arenas;
+	int			i;
+	t_arena		**arenas;
 
+	i = 0;
 	arenas = get_arenas(NULL);
 	while (i < arena_count)
 	{
@@ -67,11 +68,12 @@ t_arena *find_arena(size_t n)
 // Creates a new arena when there isn't enough memory in current arenas.
 // Free the old arena pointers, only the data matters.
 
-t_arena **new_arena(t_arena **curr, int	count, size_t n)
+t_arena	**new_arena(t_arena **curr, int count, size_t n)
 {
 	t_arena	**arenas;
-	int		i = 0;
+	int		i;
 
+	i = 0;
 	arenas = ft_calloc(sizeof(t_arena *), count + 2);
 	if (!arenas)
 		exit(1);
@@ -91,9 +93,9 @@ t_arena **new_arena(t_arena **curr, int	count, size_t n)
 
 t_arena	**get_arenas(t_arena **new)
 {
-	static t_arena **arenas = NULL;
+	static t_arena	**arenas = NULL;
 
-	if(!arenas)
+	if (!arenas)
 	{
 		arenas = ft_calloc(sizeof(t_arena *), 2);
 		if (!arenas)
@@ -106,7 +108,7 @@ t_arena	**get_arenas(t_arena **new)
 	return (arenas);
 }
 
-void	free_arenas()
+void	free_arenas(void)
 {
 	t_arena	**arenas;
 	int		i;

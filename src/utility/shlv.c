@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	increase_shell_lvl()
+void	increase_shell_lvl(void)
 {
 	char	*level;
 	char	*res;
