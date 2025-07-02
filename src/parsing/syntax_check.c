@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 15:48:23 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/02 20:44:04 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/03 01:32:56 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	check_heredoc(t_vector *tokens)
 		next = tokens->data[i + 1];
 		if (curr->t == HERE_DOC)
 		{
-			if (next->t != STRING && next->t != INPUT && next->t != HERE_NOEXP)
+			if (next->t != STRING && next->t != HERE_NOEXP)
 			{
 				ft_fprintf(2, "%s'\n", mini_join(TOKEN, next->s));
 				data->valid = 0;

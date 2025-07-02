@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 15:43:47 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/02 18:42:36 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/03 01:31:32 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ size_t	word_len(char *s, int quote)
 		if (s[i] == '|')
 			return (1);
 		c = s[i];
-		if (s[i + 1] && s[i + 1] != c)
+		if (!s[i + 1] || (s[i + 1] && s[i + 1] != c))
 			return (1);
 		else
 			return (2);

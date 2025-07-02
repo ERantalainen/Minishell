@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/03 00:50:09 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/03 01:32:32 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ t_token	*create_token(char *s, size_t *i, t_type last, t_data *data)
 		new->t = FILES;
 	else
 		new->t = STRING;
-	if ((last == HERE_DOC && new->t == STRING) && (s[(*i)] == '"'
-			|| s[(*i)] == '\'' || data->last == HERE_NOEXP))
+	if (new->t == STRING && (last == HERE_DOC && (s[(*i)] == '"'
+			|| s[(*i)] == '\'' || data->last == HERE_NOEXP)))
 		new->t = HERE_NOEXP;
 	return (new);
 }
