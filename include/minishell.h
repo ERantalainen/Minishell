@@ -22,22 +22,22 @@
 # include <stdio.h>
 # include <sys/wait.h>
 
-// unused
-// # include <stdint.h>
-// # include <string.h>
-// # include <assert.h>
-
 # define ARENA_SIZE 16384
 # define ALIGNMENT 8
 
 # define EOF1 "minishell: warning: here-document at line "
 # define EOF2 " delimited by end-of-file (wanted `"
 
+# define MS "minishell: "
 # define QUIT "Quit (core dumped)"
 # define INV "': not a valid identifier"
 # define SHLVL "minishell: warning: shell level (%d) too high, resetting to 1\n"
 # define TOKEN "minishell: syntax error near unexpected token `"
 # define HRLIM "minishell: maximum here-document count exceeded\n"
+# define PRMD "minishell: Permission denied"
+# define NSFOD ": No such file or directory"
+
+# define MNSFOD mini_join(MS, mini_join(cmd, NSFOD))
 
 # define HDPROMPT "\001\033[0;32m\002heredoc>\001\033[0m\002 "
 # define RDPROMPT "\001\033[0;36m\002minishell>\001\033[0m\002 "
@@ -135,6 +135,7 @@ typedef struct s_pipedata
 	int				cmd_count;
 	int				index;
 	bool			is_builtin;
+	bool			cmd_found;
 }					t_pipedata;
 
 extern sig_atomic_t	g_sig;
@@ -252,4 +253,5 @@ char				**get_cmd_args(char *cmd, char *path);
 void				clean_heredoc(void);
 t_vector			*next_check(t_vector *commands);
 
+void	ft_exit_child(char *s, int code);
 #endif
