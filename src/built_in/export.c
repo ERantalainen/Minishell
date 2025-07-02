@@ -14,7 +14,7 @@
 
 void	export(char *export)
 {
-	t_data		*data;
+	t_data	*data;
 
 	data = get_data();
 	add_elem(data->env_vec, export);
@@ -23,16 +23,15 @@ void	export(char *export)
 
 // Exports a new variable with key and expansion.
 
-
 // Return a vector of expanded variables.
 
 char	*find_export(char *key)
 {
 	t_data	*data;
-	size_t		i;
+	size_t	i;
 	char	*var;
-	data = get_data();
 
+	data = get_data();
 	if (!key)
 		return ("");
 	i = 0;
@@ -60,11 +59,11 @@ size_t	key_len(char *s)
 
 // Finds an exported variable by searching its key.
 
-void	make_export(char	*command)
+void	make_export(char *command)
 {
 	size_t	i;
 
-	i  = 0;
+	i = 0;
 	if (ft_strcmp(command, "") == 0)
 		empty_export();
 	while (command[i])
@@ -89,14 +88,12 @@ void	make_export(char	*command)
 	replace_export("?=0");
 }
 
-
-
 // Makes an export by builting the key and expansion.
 
 void	replace_export(char *key)
 {
 	t_data	*data;
-	size_t		i;
+	size_t	i;
 	char	*var;
 
 	data = get_data();
@@ -111,4 +108,3 @@ void	replace_export(char *key)
 }
 
 // Replaces an already existing export when needed.
-

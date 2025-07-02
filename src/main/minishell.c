@@ -27,16 +27,16 @@ static void	parse_and_execute(t_data *data)
 			{
 				add_history(input);
 				tokens = create_commands(token_vector(input));
-
 				if (data->valid == 1 && tokens)
 				{
 					check_command_syntax(tokens, data);
-					execution((t_cmd **)tokens->data, vec_to_array(data->env_vec));
+					execution((t_cmd **)tokens->data,
+						vec_to_array(data->env_vec));
 					clean_heredoc();
 				}
 				free(input);
 			}
-						data->line++;
+			data->line++;
 		}
 	}
 }

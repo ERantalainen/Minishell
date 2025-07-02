@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	clean_heredoc()
+void	clean_heredoc(void)
 {
 	size_t	i;
 	t_data	*data;
@@ -32,8 +32,9 @@ void	clean_heredoc()
 void	ft_exit(char *s, int code)
 {
 	t_data	*data;
-	size_t		i;
+	size_t	i;
 	int		*fd;
+
 	i = 0;
 	data = get_data();
 	rl_clear_history();

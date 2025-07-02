@@ -64,10 +64,10 @@ int	check_heredoc(t_vector *tokens)
 		{
 			if (next->t != STRING && next->t != INPUT && next->t != HERE_NOEXP)
 			{
-					ft_fprintf(2, "%s'\n", mini_join(TOKEN, next->s));
-					data->valid = 0;
-					replace_export("?=2");
-					return (0);
+				ft_fprintf(2, "%s'\n", mini_join(TOKEN, next->s));
+				data->valid = 0;
+				replace_export("?=2");
+				return (0);
 			}
 			if (next->t == INPUT)
 				return (0);
@@ -115,7 +115,8 @@ void	check_command_syntax(t_vector *commands, t_data *data)
 			data->valid = -cmd->next;
 		if (cmd->type == OUTPUT && cmd->next == EMPTY)
 			data->valid = -1;
-		else if (cmd->type == OUTPUT && cmd->next != STRING && cmd->next != FILES)
+		else if (cmd->type == OUTPUT && cmd->next != STRING
+			&& cmd->next != FILES)
 			data->valid = -cmd->next;
 		if (data->valid == -1)
 			ft_fprintf(2, "%s'\n", mini_join(TOKEN, "newline"));

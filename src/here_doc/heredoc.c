@@ -167,12 +167,12 @@ void	here_check(int fd, char *name, t_data *data, size_t index)
 	char		**file;
 	char		*line;
 	t_vector	*lines;
-	size_t	i;
-	size_t	j;
+	size_t		i;
+	size_t		j;
 
 	i = 0;
 	lines = new_vector(4);
-	while(1)
+	while (1)
 	{
 		line = get_next_line(fd);
 		if (!line)
@@ -189,7 +189,7 @@ void	here_check(int fd, char *name, t_data *data, size_t index)
 				file[i] = here_expansion(file[i], &j);
 			j++;
 		}
-			i++;
+		i++;
 	}
 	fix_lines(file, index, name, data);
 }
@@ -202,7 +202,8 @@ char	*here_expansion(char *ln, size_t *i)
 	size_t	len;
 	size_t	expan_len;
 
-	expansion = (find_export(mini_strndup((ln + (*i)), word_len(ln + (*i), '"'))));
+	expansion = (find_export(mini_strndup((ln + (*i)), word_len(ln + (*i),
+						'"'))));
 	len = ft_strlen(ln);
 	expan_len = word_len(ln + (*i), '"');
 	expansion = mini_join(mini_strndup(ln, (*i)), expansion);
@@ -214,7 +215,7 @@ char	*here_expansion(char *ln, size_t *i)
 
 void	fix_lines(char **file, size_t index, char *name, t_data *data)
 {
-	int fd;
+	int		fd;
 	size_t	i;
 
 	fd = data->hdfd[index];
