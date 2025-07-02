@@ -225,7 +225,6 @@ void	fix_lines(char **file, size_t index, char *name, t_data *data)
 		perror("minishell:");
 	while (file[i])
 	{
-		ft_printf("Line is:%s\n", file[i]);
 		write(fd, file[i], ft_strlen(file[i]));
 		i++;
 	}
