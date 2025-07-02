@@ -50,6 +50,7 @@ void	ft_exit(char *s, int code)
 
 void	ft_exit_child(char *s, int code)
 {
-	ft_fprintf(2, "%s\n", s);
+	if (s)
+		ft_fprintf(2, "%s\n", s);
 	exit(code);
 }

@@ -118,11 +118,11 @@ static int	setup_cmd_to_execute(t_cmd **tokens, t_pipedata *p)
 static void	setup_pipes(int in, int out, int close_in, int close_out)
 {
 	if (dup2(in, STDIN_FILENO) < 0)
-		perror("dup2");
+		ft_exit_child(NULL, 1);
 	if (close_in && in != STDIN_FILENO)
 		close(in);
 	if (dup2(out, STDOUT_FILENO) < 0)
-		perror("dup2");
+		ft_exit_child("", 1);
 	if (close_out && out != STDOUT_FILENO)
 		close(out);
 }
@@ -175,7 +175,6 @@ static void	child_process(t_cmd **tokens, t_pipedata *p, char **env)
 	if (p->cmd_found == false)
 		exit(1);
 	path = get_bin_path(tokens[p->cmd_index]->str, env);
-	// ft_fprintf(2, "cmd: %s\n", p->cmd_args[0]);
 	open_handler(p, path);
 	if (access(p->cmd_args[0], X_OK) >= 0)
 		if (execve(p->cmd_args[0], p->cmd_args, env) < 0)

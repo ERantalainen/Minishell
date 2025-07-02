@@ -21,7 +21,7 @@ void	echo(t_cmd **commands, int i)
 	pos = 0;
 	command = commands[i]->str + 5;
 	while (commands[i]->next == FILES || commands[i]->next == STRING)
-		command = mini_join(command, commands[i++ + 1]->str);
+		command = mini_append(command, commands[i++ + 1]->str);
 	newline = 1;
 	if (command[pos] == '-' && command[pos + 1] == 'n')
 	{
