@@ -6,11 +6,57 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:34:01 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/02 19:48:45 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/03 01:20:10 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static int	option_quotes(t_data *data)
+{
+	char	*check;
+	size_t	j;
+
+	j = 0;
+	check = ft_strnstr(data->input, "echo", ft_strlen(data->input));
+	if (check)
+	{
+		check += 4;
+		while(check[j++])
+			if ((check[j] == '\'' && check[j + 1] && check[j + 1] == '\'')
+			|| (check[j] == '"' && check[j + 1] && check[j + 1] == '"'))
+			{
+				if (check[j + 2] && check[j + 2] == '-' 
+					&& check[j + 3] && check[j + 3] == 'n')
+						return (1);
+				else
+					return (0);
+			}
+		return (1);
+	}
+	return (1);
+}
+
+
+static	void options(char *command, int *i, bool *nl)
+{
+	t_data	*data;
+
+	data = get_data();
+	if (!option_quotes(data))
+		return ;
+	if ((command[*i] == '-' && command[*i + 1] == 'n'))
+	{
+		while ((command[*i] == 'n' && command[*i - 1] != ' ')
+			|| command[*i] == ' ' 
+			|| (command[*i] == '-' && command[*i + 1] != ' ' 
+				&& command[*i + 1] != '-'))
+			(*i)++;
+		*nl = 0;
+		if (command[*i] == ' ')
+			(*i)++;
+	}
+}
 
 void	echo(t_cmd **commands, int i)
 {
@@ -24,15 +70,7 @@ void	echo(t_cmd **commands, int i)
 	while (command[i] == ' ')
 		i++;
 	newline = 1;
-	if ((command[i] == '-' && command[i + 1] == 'n'))
-	{
-		while (command[i] == 'n' || command[i] == ' ' || (command[i] == '-'
-				&& command[i + 1] != ' ' && command[i + 1] != '-'))
-			i++;
-		newline = 0;
-		if (command[i] == ' ')
-			i++;
-	}
+	options(command, &i, &newline);
 	command += i;
 	if (newline == 1)
 		ft_putendl_fd((mini_strndup(command, ft_strlen(command))), 1);

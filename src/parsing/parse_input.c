@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/02 23:08:48 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/03 00:50:09 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ t_vector	*token_vector(char *s)
 	len = ft_strlen(s);
 	tokens = new_vector(4);
 	data->tokens = tokens;
+	data->input = mini_strdup(s);
 	tokens = creator(s, len, i, data);
 	if (tokens->count == 0)
 		return (NULL);

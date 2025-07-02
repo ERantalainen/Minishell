@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:12:49 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/02 23:09:23 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/03 00:49:42 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ typedef struct s_data
 	int				*hdfd;
 	int				line;
 	char			*directory;
+	char			*input;
 	int				hd_count;
 	t_cmd			*commands;
 	t_vector		*envv;
