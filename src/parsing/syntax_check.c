@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 15:48:23 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/01 23:59:35 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/02 16:05:58 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	check_heredoc(t_vector *tokens)
 		next = tokens->data[i + 1];
 		if (curr->t == HERE_DOC)
 		{
-			if (next->t != STRING && next->t != INPUT)
+			if (next->t != STRING && next->t != INPUT && next->t != HERE_NOEXP)
 				exit(1);
 			if (next->t == INPUT)
 				return (0);
@@ -64,7 +64,7 @@ int	check_heredoc(t_vector *tokens)
 		i++;
 	}
 	if (count > 16)
-		exit(1);
+		exit(5);
 	if (count > 0)
 	{
 		data->hd_count = count;
@@ -75,9 +75,9 @@ int	check_heredoc(t_vector *tokens)
 	{
 		curr = tokens->data[i];
 		next = tokens->data[i + 1];
-		if (curr->t == HERE_DOC && next != NULL)
+		if ((curr->t == HERE_DOC) && next != NULL)
 		{
-			next->s = here_doc(next->s, count - 1);
+			next->s = here_doc(next->s, count - 1, next->t);
 			if (!data->valid)
 				return (0);
 			next->t = FILES;

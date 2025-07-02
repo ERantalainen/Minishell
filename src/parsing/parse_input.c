@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/02 00:00:52 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/02 16:08:53 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 // MAKE EXCEPTONS FOR <<<A <>A ><A
 // https://www.gnu.org/software/bash/manual/bash.html#Shell-Syntax
 
-t_token	*create_token(char *s, size_t *i)
+t_token	*create_token(char *s, size_t *i, t_type last)
 {
 	t_token	*new;
-	
+
 	new = arena_malloc(sizeof(t_token));
 	new->s = token_string(s, i);
 	new->space = 1;
@@ -36,6 +36,9 @@ t_token	*create_token(char *s, size_t *i)
 		new->t = FILES;
 	else
 		new->t = STRING;
+	if ((last == HERE_DOC && new->t == STRING )
+		&& (s[(*i)] == '"' || s[(*i)] == '\''))
+			new->t = HERE_NOEXP;
 	return (new);
 }
 
@@ -43,7 +46,7 @@ t_token	*create_token(char *s, size_t *i)
 
 t_vector	*token_vector(char *s)
 {
-	size_t	i;
+	size_t		i;
 	t_vector	*tokens;
 	t_token		*token;
 	size_t		len;
@@ -55,7 +58,11 @@ t_vector	*token_vector(char *s)
 	{
 		while (s[i] && ft_isspace(s[i]) == 1)
 			i++;
-		token = create_token(s, &i);
+		if (tokens->count == 0)
+			token = create_token(s, &i, EMPTY);
+		else
+			token = create_token(s, &i, token->t);
+		printf("Token %zu: %s T: %d\n", tokens->count, token->s, token->t);
 		if (token->s)
 			add_elem(tokens, token);
 		if (s[i] && !ft_isspace(s[i]))

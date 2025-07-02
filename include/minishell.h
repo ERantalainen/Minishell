@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:12:49 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/02 01:26:09 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/02 16:01:12 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ typedef enum e_type
 	OUTPUT,
 	APPEND,
 	HERE_DOC,
+	HERE_NOEXP,
 	STRING,
 	FILES,
 	BUILTIN
@@ -141,6 +142,9 @@ extern sig_atomic_t	g_sig;
 void				init_data(char **env);
 char				*get_pwd(void);
 size_t				ft_stralen(char **s);
+char				*mini_substr(char const *s, unsigned int start, size_t len);
+char				**mini_split(const char *s, char c);
+char				*mini_itoa(int n);
 
 // Helpers
 void				init_export(void);
@@ -156,8 +160,6 @@ void				*arena_malloc(size_t n);
 t_arena				**get_arenas(t_arena **new);
 t_arena				*find_arena(size_t n);
 t_arena				**new_arena(t_arena **curr, int count, size_t n);
-char				**mini_split(const char *s, char c);
-char				*mini_itoa(int n);
 void				child_died(int status);
 
 // Memory arena
@@ -173,7 +175,7 @@ void				remove_elem(t_vector *vector, size_t i);
 char				*take_input(void);
 int					check_quotes(char *s);
 
-t_token				*create_token(char *s, size_t *i);
+t_token				*create_token(char *s, size_t *i, t_type last);
 t_vector			*token_vector(char *s);
 char				*token_string(char *s, size_t *i);
 t_vector			*create_commands(t_vector *tokens);
@@ -204,9 +206,9 @@ void				ft_exit(char *s, int code);
 
 // Heredoc
 void				here_check(int fd, char *name, t_data *data, size_t i);
-char				*here_expansion(char *ln, size_t i);
+char				*here_expansion(char *ln, size_t *i);
 int					check_heredoc(t_vector *tokens);
-char				*here_doc(char *limiter, int index);
+char				*here_doc(char *limiter, int index, t_type type);
 char				*name_join(char const *s1, char const *s2);
 void				fix_lines(char **file, size_t i, char *name, t_data *data);
 

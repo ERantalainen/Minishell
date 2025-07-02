@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 17:07:45 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/02 00:22:57 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/02 15:48:42 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	clean_heredoc()
 			perror("minishell: ");
 		i++;
 	}
-	data->heredocs->count = 0;
+	data->heredocs = new_vector(2);
 }
 
 void	ft_exit(char *s, int code)
@@ -44,7 +44,6 @@ void	ft_exit(char *s, int code)
 		close(*fd);
 		i++;
 	}
-
 	ft_fprintf(2, "%s\n", s);
 	exit(code);
 }
