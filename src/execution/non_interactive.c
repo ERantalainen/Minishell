@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	non_interactive()
+void	non_interactive(void)
 {
 	char		*line;
 	t_data		*data;
@@ -27,7 +27,8 @@ void	non_interactive()
 		{
 			commands = create_commands(token_vector(line));
 			if (data->valid == 1)
-				execution((t_cmd **)commands->data, vec_to_array(data->env_vec));
+				execution((t_cmd **)commands->data,
+					vec_to_array(data->env_vec));
 			clean_heredoc();
 			free(line);
 		}
@@ -36,7 +37,6 @@ void	non_interactive()
 	}
 	ft_exit("", 0);
 }
-
 
 // {
 // 	char		*input;

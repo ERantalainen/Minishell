@@ -35,7 +35,7 @@ size_t	word_len(char *s, int quote)
 
 // Count the lenght of a word
 
-int	check_specials(int	c, int quote)
+int	check_specials(int c, int quote)
 {
 	if (c == '<' || c == '|' || c == '>' || c == quote)
 		return (1);
@@ -77,9 +77,10 @@ char	*expans_help(char *s, char *dup, size_t *i, size_t *pos)
 {
 	char	*expansion;
 
-	expansion = find_export(mini_strndup((s + (*i) + 1), quote_len(s + (*i) + 1, '"')));
+	expansion = find_export(mini_strndup((s + (*i) + 1), quote_len(s + (*i) + 1,
+					'"')));
 	if (ft_strcmp(expansion, "") == 0 && s[(*i) + 1] == '"')
-	(*i)++;
+		(*i)++;
 	else
 	{
 		(*i) += word_len(s + (*i), '\'');
@@ -100,11 +101,12 @@ size_t	expanded_length(char *s, size_t n)
 
 	i = 0;
 	total = 0;
-	while (s[i] && i <  n)
+	while (s[i] && i < n)
 	{
 		if (s[i] == '$')
 		{
-			total += ft_strlen(find_export(mini_strndup(s + i + 1, quote_len(s + i, '"'))));
+			total += ft_strlen(find_export(mini_strndup(s + i + 1, quote_len(s
+								+ i, '"'))));
 			total -= word_len(s + i, '"');
 		}
 		i++;

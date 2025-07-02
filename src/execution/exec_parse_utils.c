@@ -72,7 +72,8 @@ char	*find_bin_in_path(char **env_paths, char *cmd)
 		{
 			if (open(current_path, O_RDONLY) >= 0)
 			{
-				ft_fprintf(2, "minishell: %s: Permission denied\n", current_path);
+				ft_fprintf(2, "minishell: %s: Permission denied\n",
+					current_path);
 				break ;
 			}
 			i++;

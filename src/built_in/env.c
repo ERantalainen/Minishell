@@ -20,7 +20,7 @@ void	env(void)
 
 	i = 0;
 	data = get_data();
-	while(i < data->env_vec->count)
+	while (i < data->env_vec->count)
 	{
 		line = data->env_vec->data[i];
 		if (ft_strncmp(line, "?=", 2) != 0)

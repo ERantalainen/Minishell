@@ -117,7 +117,7 @@ typedef struct s_data
 	t_vector		*env_vec;
 	t_vector		*exp;
 	int				shell;
-	int			valid;
+	int				valid;
 }					t_data;
 
 typedef struct s_pipedata
@@ -206,11 +206,10 @@ char				*mini_strdup(char *s);
 size_t				word_len(char *s, int quote);
 t_vector			*next_check(t_vector *commands);
 
-
 void				check_repeat(t_vector *tokens);
 t_cmd				*check_redirect(t_cmd *cmd, t_token *token);
 size_t				quote_len(char *s, char quote);
-void	check_command_syntax(t_vector *commands, t_data *data);
+void				check_command_syntax(t_vector *commands, t_data *data);
 
 // Syntax
 
@@ -255,7 +254,7 @@ void				handler(int sig, siginfo_t *a, void *b);
 void				heredoc_signal(void);
 
 // Non interactive mode
-void				non_interactive();
+void				non_interactive(void);
 char				*get_input(char **argv, int argc);
 
 // Execution
@@ -268,5 +267,5 @@ char				**get_cmd_args(char *cmd, char *path);
 void				clean_heredoc(void);
 t_vector			*next_check(t_vector *commands);
 
-void	ft_exit_child(char *s, int code);
+void				ft_exit_child(char *s, int code);
 #endif

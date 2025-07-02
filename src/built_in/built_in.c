@@ -15,8 +15,8 @@
 void	built_in(t_cmd *cmd)
 {
 	size_t		i;
-	const	char	*built[8] = { "echo", "cd", "pwd", "export", "unset",
-	"env", "exit", NULL};
+	const char	*built[8] = {"echo", "cd", "pwd", "export", "unset", "env",
+			"exit", NULL};
 
 	i = 0;
 	if (cmd->type != STRING && cmd->type != FILES)
@@ -29,9 +29,9 @@ void	built_in(t_cmd *cmd)
 	}
 }
 
-void	build_handler(t_cmd	**cmds)
+void	build_handler(t_cmd **cmds)
 {
-	size_t		i;
+	size_t	i;
 
 	i = 0;
 	while (cmds[i])

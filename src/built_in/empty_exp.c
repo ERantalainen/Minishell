@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	empty_export()
+void	empty_export(void)
 {
 	size_t	i;
 	size_t	pos;
@@ -38,13 +38,13 @@ void	empty_export()
 	}
 }
 
-void sort_export(size_t count, t_data *data, char **exps)
+void	sort_export(size_t count, t_data *data, char **exps)
 {
 	char	*line_1;
 	char	*line_2;
-	size_t		i;
-	size_t		lowest;
-	
+	size_t	i;
+	size_t	lowest;
+
 	while (count > 0)
 	{
 		lowest = 0;
@@ -64,7 +64,7 @@ void sort_export(size_t count, t_data *data, char **exps)
 	}
 }
 
-void init_export()
+void	init_export(void)
 {
 	char	**exports;
 	t_data	*data;

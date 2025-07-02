@@ -32,8 +32,8 @@ void	cd(t_cmd **cmd, int i)
 {
 	t_data	*data;
 	char	*path;
-	data = get_data();
 
+	data = get_data();
 	if ((cmd[i]->next != FILES && cmd[i]->next != STRING)
 		&& ft_strlen(cmd[i]->str) == 2)
 	{
@@ -45,9 +45,8 @@ void	cd(t_cmd **cmd, int i)
 		}
 	}
 	else if (cmd[i]->next == FILES)
-			path = cmd[i + 1]->str;
+		path = cmd[i + 1]->str;
 	else
 		path = cmd[i]->str += 3;
 	change_dir(path, data);
 }
-

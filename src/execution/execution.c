@@ -84,8 +84,7 @@ static int	setup_cmd_to_execute(t_cmd **tokens, t_pipedata *p)
 	size_t	arg_i;
 	size_t	tok_i;
 
-	while (tokens[p->cmd_index]
-		&& tokens[p->cmd_index]->type != STRING
+	while (tokens[p->cmd_index] && tokens[p->cmd_index]->type != STRING
 		&& tokens[p->cmd_index]->type != PIPE
 		&& tokens[p->cmd_index]->type != BUILTIN)
 		p->cmd_index++;

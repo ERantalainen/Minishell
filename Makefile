@@ -50,14 +50,55 @@ RESET		:= $(shell tput sgr0)
 
 # ============================== SOURCE FILES ================================ #
 
-SRCS_MAIN	:= minishell.c memory_arena.c vector.c parse_input.c \
-		syntax_check.c take_input.c export.c helpers.c heredoc.c \
-		parse_additions.c parse_helpers.c signal.c echo.c pwd.c cd.c \
-		exec_parse_utils.c built_in.c env.c unset.c shlv.c \
-		vector_helpers.c mini_split.c non_interactive.c cleanup.c \
-		command_help.c execution.c empty_exp.c
+# Parsing-related source files
+SRCS_PARSE := \
+	parse_input.c \
+	syntax_check.c \
+	parse_additions.c \
+	parse_helpers.c \
+	heredoc.c
 
-SRCS		:= $(SRCS_MAIN)
+# Built-in command source files
+SRCS_BUILTIN := \
+	echo.c \
+	pwd.c \
+	cd.c \
+	export.c \
+	built_in.c \
+	env.c \
+	unset.c \
+	shlv.c
+
+# Utility source files
+SRCS_UTILS := \
+	memory_arena.c \
+	vector.c \
+	vector_helpers.c \
+	mini_split.c \
+	helpers.c \
+	empty_exp.c
+
+# Execution and command source files
+SRCS_EXEC := \
+	exec_parse_utils.c \
+	non_interactive.c \
+	cleanup.c \
+	command_help.c \
+	execution.c
+
+# Main and other sources
+SRCS_OTHER := \
+	minishell.c \
+	take_input.c \
+	signal.c
+
+# Combine all file groups
+SRCS := \
+	$(SRCS_OTHER) \
+	$(SRCS_UTILS) \
+	$(SRCS_PARSE) \
+	$(SRCS_BUILTIN) \
+	$(SRCS_EXEC)
 
 # ============================== PROGRESS TRACKING =========================== #
 
@@ -156,14 +197,5 @@ re:
 	@$(MAKE) fclean --no-print-directory
 	@$(MAKE) $(NAME) --no-print-directory
 
-help:
-	@echo "$(BOLD)$(CYAN)Available targets:$(RESET)"
-	@echo "  $(GREEN)all$(RESET)     - Build the project (default)"
-	@echo "  $(GREEN)debug$(RESET)   - Build with debug flags and sanitizers"
-	@echo "  $(GREEN)clean$(RESET)   - Remove object files"
-	@echo "  $(GREEN)fclean$(RESET)  - Remove all generated files"
-	@echo "  $(GREEN)re$(RESET)      - Rebuild from scratch"
-	@echo "  $(GREEN)help$(RESET)    - Show this help message"
-
 .SECONDARY: $(OBJS)
-.PHONY: all debug clean fclean re help
+.PHONY: all debug clean fclean re

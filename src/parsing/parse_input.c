@@ -36,9 +36,9 @@ t_token	*create_token(char *s, size_t *i, t_type last)
 		new->t = FILES;
 	else
 		new->t = STRING;
-	if ((last == HERE_DOC && new->t == STRING )
-		&& (s[(*i)] == '"' || s[(*i)] == '\''))
-			new->t = HERE_NOEXP;
+	if ((last == HERE_DOC && new->t == STRING) && (s[(*i)] == '"'
+			|| s[(*i)] == '\''))
+		new->t = HERE_NOEXP;
 	return (new);
 }
 
@@ -65,8 +65,8 @@ t_vector	*token_vector(char *s)
 
 t_vector	*creator(char *s, size_t len, size_t i, t_vector *tokens)
 {
-	t_token		*token;
-	bool		space;
+	t_token	*token;
+	bool	space;
 
 	space = 0;
 	while (i < len && s[i])
@@ -92,7 +92,7 @@ t_vector	*creator(char *s, size_t len, size_t i, t_vector *tokens)
 	return (tokens);
 }
 
-char	*token_string(char	*s, size_t	*i)
+char	*token_string(char *s, size_t *i)
 {
 	char	*token;
 	int		len;
@@ -184,5 +184,3 @@ t_cmd	*make_cmd_spc(t_vector *tokens, size_t *i)
 }
 
 // Make a redirect or pipe command
-
-

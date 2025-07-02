@@ -12,12 +12,12 @@
 
 #include "minishell.h"
 
-t_cmd *check_redirect(t_cmd *cmd, t_token *token)
+t_cmd	*check_redirect(t_cmd *cmd, t_token *token)
 {
 	if (cmd->type == INPUT)
 	{
-			cmd->next = FILES;
-			token->t = FILES;
+		cmd->next = FILES;
+		token->t = FILES;
 	}
 	if (cmd->type == OUTPUT)
 	{
@@ -25,7 +25,6 @@ t_cmd *check_redirect(t_cmd *cmd, t_token *token)
 		cmd->next = FILES;
 	}
 	return (cmd);
-
 }
 
 char	*mini_append(char *s1, char *s2)

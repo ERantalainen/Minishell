@@ -21,13 +21,13 @@ void	echo(t_cmd **commands, int i)
 	while (commands[i]->next == FILES || commands[i]->next == STRING)
 		command = mini_append(command, commands[i++ + 1]->str);
 	i = 0;
-	while(command[i] == ' ')
+	while (command[i] == ' ')
 		i++;
 	newline = 1;
 	if ((command[i] == '-' && command[i + 1] == 'n'))
 	{
 		while (command[i] == 'n' || command[i] == ' ' || (command[i] == '-'
-			&& command[i + 1] != ' ' && command[i + 1] != '-'))
+				&& command[i + 1] != ' ' && command[i + 1] != '-'))
 			i++;
 		newline = 0;
 		if (command[i] == ' ')

@@ -12,9 +12,9 @@
 
 #include "minishell.h"
 
-t_data	*get_data()
+t_data	*get_data(void)
 {
-	static t_data data;
+	static t_data	data;
 
 	return (&data);
 }
@@ -29,7 +29,7 @@ size_t	ft_stralen(char **s)
 	return (i);
 }
 
-void	init_data(char	**env)
+void	init_data(char **env)
 {
 	t_data	*data;
 
@@ -45,7 +45,7 @@ void	init_data(char	**env)
 	init_export();
 }
 
-char	*get_pwd()
+char	*get_pwd(void)
 {
 	char	*path;
 	int		len;
@@ -78,7 +78,7 @@ char	*absolute_path(char *relative)
 		exit(1);
 	absolut = arena_malloc(ft_strlen(path) + ft_strlen(relative) + 1);
 	ft_strlcat(absolut, path, ft_strlen(path) + 1);
-	ft_strlcat(absolut, relative, ft_strlen(absolut + ft_strlen(relative))+ 1);
+	ft_strlcat(absolut, relative, ft_strlen(absolut + ft_strlen(relative)) + 1);
 	return (absolut);
 }
 
@@ -101,7 +101,7 @@ void	child_died(int status)
 			replace_export(exit_export);
 	}
 	else if (ft_strcmp(find_export("?"), "") == 0)
-			export(mini_join(exit_code, mini_itoa(WEXITSTATUS(status))));
+		export(mini_join(exit_code, mini_itoa(WEXITSTATUS(status))));
 	else
 		replace_export(mini_join(exit_code, mini_itoa(WEXITSTATUS(status))));
 }
