@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:34:01 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/02 17:20:06 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/02 19:07:26 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,14 @@ void	echo(t_cmd **commands, int i)
 	newline = 1;
 	if (command[pos] == '-' && command[pos + 1] == 'n')
 	{
-		pos++;
-		while (command[pos] == 'n')
+		while (command[pos] == 'n' || command[pos] == ' ' || (command[pos] == '-'
+			&& command[pos + 1] != ' ' && command[pos + 1] != '-'))
 			pos++;
 		newline = 0;
 		if (command[pos] == ' ')
-			command += pos + 1;
+			pos++;
 	}
+	command += pos;
 	if (newline == 1)
 		ft_putendl_fd((mini_strndup(command, ft_strlen(command))), 1);
 	else

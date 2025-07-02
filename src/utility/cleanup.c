@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 17:07:45 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/02 17:12:23 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/02 18:16:13 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ void	ft_exit(char *s, int code)
 		close(*fd);
 		i++;
 	}
-	ft_fprintf(2, "%s\n", s);
+	if (s[0] != 0)
+		ft_fprintf(2, "%s\n", s);
 	exit(code);
 }
 

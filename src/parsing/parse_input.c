@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/02 16:56:39 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/02 19:33:16 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_token	*create_token(char *s, size_t *i, t_type last)
 
 	new = arena_malloc(sizeof(t_token));
 	new->s = token_string(s, i);
-	new->space = 1;
+	new->space = 0;
 	if (ft_strncmp(new->s, "|", 1) == 0)
 		new->t = PIPE;
 	else if (ft_strcmp(new->s, "<") == 0)
@@ -46,29 +46,14 @@ t_token	*create_token(char *s, size_t *i, t_type last)
 
 t_vector	*token_vector(char *s)
 {
-	size_t		i;
-	t_vector	*tokens;
-	t_token		*token;
 	size_t		len;
+	t_vector	*tokens;
+	size_t		i;
 
+	i = 0;
 	len = ft_strlen(s);
 	tokens = new_vector(4);
-	i = 0;
-	while (s[i])
-	{
-		while (s[i] && ft_isspace(s[i]) == 1)
-			i++;
-		if (tokens->count == 0)
-			token = create_token(s, &i, EMPTY);
-		else
-			token = create_token(s, &i, token->t);
-		if (token->s)
-			add_elem(tokens, token);
-		if (s[i] && !ft_isspace(s[i]))
-			token->space = 0;
-		if (i >= len)
-			break ;
-	}
+	tokens = creator(s, len, i, tokens);
 	if (tokens->count == 0)
 		return (NULL);
 	check_heredoc(tokens);
@@ -78,6 +63,35 @@ t_vector	*token_vector(char *s)
 
 // Create token vector
 
+t_vector	*creator(char *s, size_t len, size_t i, t_vector *tokens)
+{
+	t_token		*token;
+	bool		space;
+
+	space = 0;
+	while (i < len && s[i])
+	{
+		if (ft_isspace(s[i]))
+			space = 1;
+		while (s[i] && ft_isspace(s[i]) == 1)
+			i++;
+		if (tokens->count == 0)
+			token = create_token(s, &i, EMPTY);
+		else
+			token = create_token(s, &i, token->t);
+		if (token->s && ft_strcmp(token->s, "") != 0)
+		{
+			add_elem(tokens, token);
+			if (space == 1)
+			{
+				token->space = 1;
+				space = 0;
+			}
+		}
+	}
+	return (tokens);
+}
+
 char	*token_string(char	*s, size_t	*i)
 {
 	char	*token;
@@ -85,7 +99,7 @@ char	*token_string(char	*s, size_t	*i)
 
 	if (s[(*i)] == '\'' || s[(*i)] == '"')
 		return (quoted_token(s + *i, s[(*i)], i));
-	len = word_len(s + (*i));
+	len = word_len(s + (*i), '"');
 	token = expand_strndup(s + (*i), len);
 	(*i) += len;
 	return (token);

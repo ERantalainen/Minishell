@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 18:29:23 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/02 16:55:55 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/02 18:46:37 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,18 @@ static void	parse_and_execute(t_data *data)
 		{
 			data->valid = 1;
 			input = take_input();
-			add_history(input);
-			tokens = create_commands(token_vector(input));
-			// for(size_t i = 0; i < tokens->count; i++)
-			// {
-			// 	t_cmd *cmd = tokens->data[i];
-			// 	ft_printf("%s, %d, %d\n", cmd->str, cmd->type, cmd->next);
-			// }
-			if (data->valid == 1 && tokens)
+			if (input)
 			{
-				execution((t_cmd **)tokens->data, vec_to_array(data->env_vec));
-				clean_heredoc();
+				add_history(input);
+				tokens = create_commands(token_vector(input));
+				if (data->valid == 1 && tokens)
+				{
+					execution((t_cmd **)tokens->data, vec_to_array(data->env_vec));
+					clean_heredoc();
+				}
+				free(input);
 			}
-			free(input);
-			data->line++;
+						data->line++;
 		}
 	}
 }
@@ -46,11 +44,13 @@ int	main(int ac, char **av, char **env)
 	t_data	*data;
 
 	data = get_data();
+	(void)ac;
+	(void)av;
 	init_data(env);
 	catcher();
 	increase_shell_lvl();
-	if (ac > 1)
-		non_interactive(av, ac);
+	if (!isatty(STDIN_FILENO))
+		non_interactive();
 	else
 		parse_and_execute(data);
 }

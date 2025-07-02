@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:12:49 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/02 16:01:12 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/02 19:30:10 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,27 +173,37 @@ char				**vec_to_array(t_vector *vec);
 void				remove_elem(t_vector *vector, size_t i);
 
 // Vectors
+
 char				*take_input(void);
 int					check_quotes(char *s);
+
+// Input
 
 t_token				*create_token(char *s, size_t *i, t_type last);
 t_vector			*token_vector(char *s);
 char				*token_string(char *s, size_t *i);
+t_vector			*creator(char *s, size_t len, size_t i, t_vector *tokens);
+
+// Token creator
+
 t_vector			*create_commands(t_vector *tokens);
 void				cmd_help(t_vector *tks, size_t *i, t_token *tk, t_cmd *cm);
 t_cmd				*make_cmd_spc(t_vector *tokens, size_t *i);
 t_cmd				*make_cmd_str(t_vector *tokens, size_t *i);
+
+// Command creator
+
 char				*expans_help(char *s, char *dup, size_t *i, size_t *pos);
 size_t				expanded_length(char *s, size_t n);
 
-int					check_specials(int c);
+int					check_specials(int c, int quote);
 char				*expand_strndup(char *s, size_t n);
 char				*mini_append(char *s1, char *s2);
 
 char				*quoted_token(char *s, char quote, size_t *i);
 char				*mini_strndup(char *s, size_t n);
 char				*mini_strdup(char *s);
-size_t				word_len(char *s);
+size_t				word_len(char *s, int quote);
 t_vector			*next_check(t_vector *commands);
 
 void				check_repeat(t_vector *tokens);
@@ -240,7 +250,7 @@ void				handler(int sig, siginfo_t *a, void *b);
 void				heredoc_signal(void);
 
 // Non interactive mode
-void				non_interactive(char **argv, int argc);
+void				non_interactive();
 char				*get_input(char **argv, int argc);
 
 // Execution

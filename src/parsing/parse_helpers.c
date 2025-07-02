@@ -6,21 +6,21 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 15:43:47 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/01 15:02:28 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/02 18:42:36 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-size_t	word_len(char *s)
+size_t	word_len(char *s, int quote)
 {
 	int		i;
 	char	c;
 
 	i = 0;
-	while (s[i] && ft_isspace(s[i]) == 0 && !check_specials(s[i]))
+	while (s[i] && ft_isspace(s[i]) == 0 && !check_specials(s[i], quote))
 		i++;
-	if (i == 0 && check_specials(s[i]))
+	if (i == 0 && check_specials(s[i], quote))
 	{
 		if (s[i] == '|')
 			return (1);
@@ -35,9 +35,9 @@ size_t	word_len(char *s)
 
 // Count the lenght of a word
 
-int	check_specials(int	c)
+int	check_specials(int	c, int quote)
 {
-	if (c == '<' || c == '|' || c == '>' || c == '\'' || c == '"')
+	if (c == '<' || c == '|' || c == '>' || c == quote)
 		return (1);
 	return (0);
 }
@@ -60,10 +60,12 @@ char	*expand_strndup(char *s, size_t n)
 	while (s[i] && i < n)
 	{
 		if (s[i] == '$' && s[i + 1])
+		{
 			expans_help(s, dup, &i, &pos);
+		}
 		if (i >= n)
 			break ;
-		if (s[i] == '"' || s[i] == '\'')
+		if (s[i] == '"')
 			i++;
 		dup[pos++] = s[i++];
 	}
@@ -76,11 +78,11 @@ char	*expans_help(char *s, char *dup, size_t *i, size_t *pos)
 	char	*expansion;
 
 	expansion = find_export(mini_strndup((s + (*i) + 1), quote_len(s + (*i) + 1, '"')));
-	if (ft_strcmp(expansion, "") == 0 && (s[(*i) + 1] == '\'' || s[(*i) + 1] == '"'))
+	if (ft_strcmp(expansion, "") == 0 && s[(*i) + 1] == '"')
 	(*i)++;
 	else
 	{
-		(*i) += word_len(s + (*i));
+		(*i) += word_len(s + (*i), '\'');
 		ft_strlcat(dup, expansion, ft_strlen(expansion) + 1 + (*pos));
 		(*pos) += ft_strlen(expansion);
 	}
@@ -103,7 +105,7 @@ size_t	expanded_length(char *s, size_t n)
 		if (s[i] == '$')
 		{
 			total += ft_strlen(find_export(mini_strndup(s + i + 1, quote_len(s + i, '"'))));
-			total -= word_len(s + i);
+			total -= word_len(s + i, '"');
 		}
 		i++;
 	}

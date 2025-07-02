@@ -6,36 +6,61 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 22:53:35 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/02 17:46:20 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/02 18:50:35 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	non_interactive(char **argv, int argc)
+void	non_interactive()
 {
-	char		*input;
-	char		*add;
+	char		*line;
 	t_data		*data;
 	t_vector	*commands;
 
 	data = get_data();
-	input = "";
-	while (1)
+	while (!isatty(STDIN_FILENO))
 	{
 		data->valid = 1;
-		while (1)
+		line = get_next_line(STDIN_FILENO);
+		if (line && check_quotes(line))
 		{
-			add = get_input(argv, argc);
-			if (add == NULL)
-				break ;
-			input = mini_append(input, add);
+			commands = create_commands(token_vector(line));
+			if (data->valid == 1)
+				execution((t_cmd **)commands->data, vec_to_array(data->env_vec));
+			clean_heredoc();
+			free(line);
 		}
-		commands = create_commands(token_vector(input));
-		execution((t_cmd **)commands->data, vec_to_array(data->env_vec));
-		break ;
+		else
+			break ;
 	}
+	ft_exit("", 0);
 }
+
+
+// {
+// 	char		*input;
+// 	char		*add;
+// 	t_data		*data;
+// 	t_vector	*commands;
+
+// 	data = get_data();
+// 	input = "";
+// 	while (1)
+// 	{
+// 		data->valid = 1;
+// 		while (1)
+// 		{
+// 			add = get_input(argv, argc);
+// 			if (add == NULL)
+// 				break ;
+// 			input = mini_append(input, add);
+// 		}
+// 		commands = create_commands(token_vector(input));
+// 		execution((t_cmd **)commands->data, vec_to_array(data->env_vec));
+// 		break ;
+// 	}
+// }
 
 char	*get_input(char **argv, int argc)
 {

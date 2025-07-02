@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 13:56:30 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/02 00:51:21 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/02 18:31:59 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	built_in(t_cmd *cmd)
 		return ;
 	while (i < 7)
 	{
-		if (ft_strncmp(cmd->str, built[i], word_len(cmd->str)) == 0)
+		if (ft_strncmp(cmd->str, built[i], word_len(cmd->str, '"')) == 0)
 			cmd->type = BUILTIN;
 		i++;
 	}

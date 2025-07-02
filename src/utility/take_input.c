@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 02:49:43 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/01 15:42:17 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/02 18:47:18 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	*take_input(void)
 			if (check_quotes(input))
 			{
 				free(input);
-				exit(2);
+				return (NULL);
 			}
 			return (input);
 		}
@@ -52,7 +52,8 @@ int	check_quotes(char *s)
 			dbl++;
 		i++;
 	}
-	if (sgl % 2 != 0 || dbl % 2 != 0)
-		return (1);
-	return (0);
+	if (sgl % 2 == 0 && dbl % 2 == 0)
+		return (0);
+	ft_fprintf(2, "Syntax error unclosed quotes\n");
+	return (1);
 }

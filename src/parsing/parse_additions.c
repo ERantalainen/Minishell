@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 15:44:37 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/02 17:46:10 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/02 19:35:14 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ void	cmd_help(t_vector *tokens, size_t *i, t_token *token, t_cmd *cmd)
 		if (*i >= tokens->count)
 			break ;
 		token = tokens->data[(*i)];
-		if (token && access(token->s, R_OK | W_OK) == 0)
+		if (token && access(token->s, R_OK) == 0)
 			break ;
 	}
 }

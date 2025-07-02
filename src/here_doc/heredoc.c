@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 15:44:11 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/02 16:05:27 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/02 18:31:07 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,9 +202,9 @@ char	*here_expansion(char *ln, size_t *i)
 	size_t	len;
 	size_t	expan_len;
 
-	expansion = (find_export(mini_strndup((ln + (*i)), word_len(ln + (*i)))));
+	expansion = (find_export(mini_strndup((ln + (*i)), word_len(ln + (*i), '"'))));
 	len = ft_strlen(ln);
-	expan_len = word_len(ln + (*i));
+	expan_len = word_len(ln + (*i), '"');
 	expansion = mini_join(mini_strndup(ln, (*i)), expansion);
 	(*i) += expan_len;
 	if ((*i) < len)

@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 15:48:23 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/02 16:05:58 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/02 17:58:42 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,10 @@ void	check_repeat(t_vector *tokens)
 		cur = tokens->data[i];
 		nx = tokens->data[i + 1];
 		if (cur->t == PIPE && nx->t == PIPE)
+		{
 			data->valid = 0;
+			ft_fprintf(STDERR_FILENO, "%s\n", mini_join(TOKEN, "|'"));
+		}
 		if (cur->t == INPUT && nx->t != STRING && nx->t != FILES)
 			data->valid = 0;
 		if (cur->t == OUTPUT && nx->t != STRING && nx->t != FILES)
