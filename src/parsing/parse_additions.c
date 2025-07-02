@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 15:44:37 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/02 00:42:27 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/02 17:46:10 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_cmd *check_redirect(t_cmd *cmd, t_token *token)
 	{
 		if (access(token->s, R_OK) != 0)
 		{
-			perror("minishell: ");
+			perror(mini_join(MS, token->s));
 		}
 		else
 		{
