@@ -47,6 +47,9 @@ void	cd(t_cmd **cmd, int i)
 	else if (cmd[i]->next == FILES)
 		path = cmd[i + 1]->str;
 	else
-		path = cmd[i]->str += 3;
+	{
+		cmd[i]->str += 3;
+		path = cmd[i]->str;
+	}
 	change_dir(path, data);
 }

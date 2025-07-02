@@ -17,7 +17,7 @@ char	*ft_strndup(char *s, size_t n)
 	size_t	pos;
 	size_t	len;
 	char	*dup;
-	
+
 	if (!s)
 		return (NULL);
 	pos = 0;
