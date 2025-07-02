@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 16:20:20 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/02 17:06:30 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/02 20:28:04 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -265,7 +265,11 @@ void	execution(t_cmd **tokens, char **env)
 {
 	t_pipedata	*p;
 	int			i;
+	t_data		*data;
 
+	data = get_data();
+	if (data->valid != 1)
+		return ;
 	p = arena_malloc(sizeof(t_pipedata));
 	p->index = 0;
 	p->pipe_count = 0;

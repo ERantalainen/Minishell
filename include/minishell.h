@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:12:49 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/02 19:30:10 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/02 20:32:33 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ typedef struct s_data
 	t_vector		*env_vec;
 	t_vector		*exp;
 	int				shell;
-	bool			valid;
+	int			valid;
 }					t_data;
 
 typedef struct s_pipedata
@@ -206,11 +206,16 @@ char				*mini_strdup(char *s);
 size_t				word_len(char *s, int quote);
 t_vector			*next_check(t_vector *commands);
 
+
 void				check_repeat(t_vector *tokens);
 t_cmd				*check_redirect(t_cmd *cmd, t_token *token);
 size_t				quote_len(char *s, char quote);
+void	check_command_syntax(t_vector *commands, t_data *data);
+
+// Syntax
 
 // Parsing
+
 t_data				*get_data(void);
 void				free_arenas(void);
 void				ft_exit(char *s, int code);

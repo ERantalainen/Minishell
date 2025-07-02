@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 16:05:04 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/02 18:04:01 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/02 20:05:13 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_arena	*init_arena(size_t size)
 {
 	t_arena	*arena;
 
-	arena = ft_calloc(size + (sizeof(t_arena)), 1);
+	arena = ft_calloc(1, size + (sizeof(t_arena)));
 	if (!arena)
 		exit(1);
 	arena->max = size;

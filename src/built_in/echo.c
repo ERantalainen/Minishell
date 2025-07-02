@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:34:01 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/02 19:07:26 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/02 19:48:45 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,23 +16,24 @@ void	echo(t_cmd **commands, int i)
 {
 	char	*command;
 	bool	newline;
-	size_t	pos;
 
-	pos = 0;
-	command = commands[i]->str + 5;
+	command = commands[i]->str + 4;
 	while (commands[i]->next == FILES || commands[i]->next == STRING)
 		command = mini_append(command, commands[i++ + 1]->str);
+	i = 0;
+	while(command[i] == ' ')
+		i++;
 	newline = 1;
-	if (command[pos] == '-' && command[pos + 1] == 'n')
+	if ((command[i] == '-' && command[i + 1] == 'n'))
 	{
-		while (command[pos] == 'n' || command[pos] == ' ' || (command[pos] == '-'
-			&& command[pos + 1] != ' ' && command[pos + 1] != '-'))
-			pos++;
+		while (command[i] == 'n' || command[i] == ' ' || (command[i] == '-'
+			&& command[i + 1] != ' ' && command[i + 1] != '-'))
+			i++;
 		newline = 0;
-		if (command[pos] == ' ')
-			pos++;
+		if (command[i] == ' ')
+			i++;
 	}
-	command += pos;
+	command += i;
 	if (newline == 1)
 		ft_putendl_fd((mini_strndup(command, ft_strlen(command))), 1);
 	else

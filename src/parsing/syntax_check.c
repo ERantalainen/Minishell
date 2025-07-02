@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 15:48:23 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/02 17:58:42 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/02 20:44:04 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,8 @@ void	check_repeat(t_vector *tokens)
 		if (cur->t == PIPE && nx->t == PIPE)
 		{
 			data->valid = 0;
-			ft_fprintf(STDERR_FILENO, "%s\n", mini_join(TOKEN, "|'"));
+			ft_fprintf(2, "%s\n", mini_join(TOKEN, "|'"));
 		}
-		if (cur->t == INPUT && nx->t != STRING && nx->t != FILES)
-			data->valid = 0;
-		if (cur->t == OUTPUT && nx->t != STRING && nx->t != FILES)
-			data->valid = 0;
 		if (data->valid == 0)
 			return ;
 		i++;
@@ -52,6 +48,14 @@ int	check_heredoc(t_vector *tokens)
 	data = get_data();
 	count = 0;
 	i = 0;
+	curr = tokens->data[i];
+	if (tokens->count == 1 && curr->t == HERE_DOC)
+	{
+		ft_fprintf(2, "%s'\n", mini_join(TOKEN, "newline"));
+		replace_export("?=2");
+		data->valid = 0;
+		return (0);
+	}
 	while (i < tokens->count - 1)
 	{
 		curr = tokens->data[i];
@@ -59,7 +63,12 @@ int	check_heredoc(t_vector *tokens)
 		if (curr->t == HERE_DOC)
 		{
 			if (next->t != STRING && next->t != INPUT && next->t != HERE_NOEXP)
-				exit(1);
+			{
+					ft_fprintf(2, "%s'\n", mini_join(TOKEN, next->s));
+					data->valid = 0;
+					replace_export("?=2");
+					return (0);
+			}
 			if (next->t == INPUT)
 				return (0);
 			count++;
@@ -67,7 +76,7 @@ int	check_heredoc(t_vector *tokens)
 		i++;
 	}
 	if (count > 16)
-		exit(5);
+		ft_exit("minishell: here document count exceeded", 2);
 	if (count > 0)
 	{
 		data->hd_count = count;
@@ -89,4 +98,34 @@ int	check_heredoc(t_vector *tokens)
 		i++;
 	}
 	return (0);
+}
+
+void	check_command_syntax(t_vector *commands, t_data *data)
+{
+	size_t	i;
+	t_cmd	*cmd;
+
+	i = 0;
+	while (i < commands->count)
+	{
+		cmd = commands->data[i];
+		if (cmd->type == INPUT && cmd->next == EMPTY)
+			data->valid = -1;
+		else if (cmd->type == INPUT && cmd->next != FILES)
+			data->valid = -cmd->next;
+		if (cmd->type == OUTPUT && cmd->next == EMPTY)
+			data->valid = -1;
+		else if (cmd->type == OUTPUT && cmd->next != STRING && cmd->next != FILES)
+			data->valid = -cmd->next;
+		if (data->valid == -1)
+			ft_fprintf(2, "%s'\n", mini_join(TOKEN, "newline"));
+		else if (data->valid != 1 && data->valid != -1)
+		{
+			cmd = commands->data[i + 1];
+			ft_fprintf(2, "%s'\n", mini_join(TOKEN, cmd->str));
+		}
+		if (data->valid != 1)
+			return ;
+		i++;
+	}
 }
