@@ -12,11 +12,7 @@
 
 # ============================== CONFIGURATION =============================== #
 
-ifeq ($(MAKECMDGOALS),bonus)
-NAME_BONUS	:= minishell_bonus
-else
 NAME		:= minishell_standard
-endif
 
 PROGRAM_NAME	:= minishell
 CC		:= cc
@@ -28,11 +24,7 @@ VPATH		:= src:src/built_in:src/execution:src/here_doc \
 		   :src/main:src/memory_arena:src/parsing:src/signal \
 		   :src/utility:src/vector
 
-ifeq ($(MAKECMDGOALS),bonus)
-SRC_DIR		:= src_bonus
-else
 SRC_DIR		:= src
-endif
 
 OBJ_DIR		:= obj
 
@@ -42,7 +34,6 @@ DEPFLAGS	= -MT $@ -MMD -MP -MF $(DEP_DIR)/$*.d
 LIBFT_DIR	:= libft
 LIBFT		:= $(LIBFT_DIR)/libft.a
 INC		:= -I./include -I$(LIBFT_DIR)/include -I./src/pipe/include
-INC_BONUS	:= -I./include_bonus -I$(LIBFT_DIR)/include
 
 LDFLAGS		:= -L$(LIBFT_DIR) -lft -lreadline
 
@@ -70,18 +61,11 @@ SRCS		:= $(SRCS_MAIN)
 
 # ============================== PROGRESS TRACKING =========================== #
 
-ifeq ($(MAKECMDGOALS),bonus)
-OBJS_BONUS	:= $(addprefix $(OBJ_DIR)/,$(SRCS_BONUS:.c=.o))
-TOTAL_SRCS	:= $(words $(SRCS_BONUS))
-else
 OBJS		:= $(addprefix $(OBJ_DIR)/,$(SRCS:.c=.o))
 TOTAL_SRCS	:= $(words $(SRCS))
-endif
 
 MARKER_STANDARD := .standard_build
-MARKER_BONUS	:= .bonus_build
 PROGRESS_FILE	:= $(OBJ_DIR)/.progress
-WAS_BONUS	:= $(shell [ -f "$(MARKER_BONUS)" ] && echo yes)
 LATEST_SRC	:= $(shell find src -name "*.c" | xargs ls -t 2>/dev/null | head -1)
 OBJ_FILES_EXIST := $(shell [ -n "$(wildcard $(OBJ_DIR)/*.o)" ] && echo yes)
 
@@ -94,17 +78,12 @@ is_up_to_date = \
 # ============================== BUILD TARGETS =============================== #
 
 all:
-	@if [ -f $(MARKER_BONUS) ] && $(is_up_to_date); then \
-		echo ">$(BOLD)$(WHITE) Cleaning bonus build...$(RESET)"; \
-		$(MAKE) -s clean; \
-	fi; \
-	if [ -f $(MARKER_STANDARD) ] && $(is_up_to_date) 2>/dev/null; then \
+	@if [ -f $(MARKER_STANDARD) ] && $(is_up_to_date) 2>/dev/null; then \
 		echo ">$(BOLD)$(YELLOW)  $(NAME) is already up to date.$(RESET)"; \
 	else \
 		echo ">$(BOLD)$(WHITE) Starting to build $(NAME)...$(RESET)"; \
 		$(MAKE) $(NAME) --no-print-directory; \
 		touch $(MARKER_STANDARD); \
-		rm -f $(MARKER_BONUS) ; \
 		echo ">$(BOLD)$(GREEN)  All components built successfully!$(RESET)"; \
 	fi
 
@@ -112,7 +91,6 @@ $(NAME): $(OBJS) $(LIBFT)
 	@echo ">$(BOLD)$(GREEN)  Linking $(NAME)...$(RESET)"
 	@$(CC) $(CFLAGS) -o $(PROGRAM_NAME) $(OBJS) $(LDFLAGS) $(OPTFLAGS)
 	@touch $(MARKER_STANDARD)
-	@rm -f $(MARKER_BONUS)
 	@rm -f $(PROGRESS_FILE)
 	@echo ">$(BOLD)$(GREEN)  $(NAME) successfully compiled!$(RESET)"
 
@@ -126,43 +104,6 @@ $(OBJ_DIR)/%.o: %.c | $(OBJ_DIR) $(DEP_DIR)
 	fi
 	@$(CC) $(CFLAGS) $(DEPFLAGS) $(OPTFLAGS) -c $< -o $@ $(INC)
 
-# ============================== BONUS TARGETS =============================== #
-
-bonus:
-	@if [ -f $(MARKER_STANDARD) ] && $(is_up_to_date); then \
-		echo ">$(BOLD)$(WHITE) Cleaning standard build...$(RESET)"; \
-		$(MAKE) -s clean MAKECMDGOALS=bonus; \
-	fi; \
-	if [ -f "$(MARKER_BONUS)" ] && $(is_up_to_date) 2>/dev/null; then \
-		echo ">$(BOLD)$(YELLOW)  $(NAME_BONUS) is already up to date.$(RESET)"; \
-	else \
-		echo ">$(BOLD)$(WHITE) Starting to build $(NAME_BONUS)...$(RESET)"; \
-		$(MAKE) $(NAME_BONUS) MAKECMDGOALS=bonus --no-print-directory; \
-		touch $(MARKER_BONUS); \
-		rm -f $(MARKER_STANDARD); \
-		echo ">$(BOLD)$(GREEN)  All components built successfully!$(RESET)"; \
-	fi
-
-$(NAME_BONUS): $(OBJS_BONUS) $(LIBFT)
-	@echo ">$(BOLD)$(GREEN)  Linking $(NAME_BONUS)...$(RESET)"
-	@$(CC) $(CFLAGS) -o $(PROGRAM_NAME) $(OBJS_BONUS) $(LDFLAGS) $(OPTFLAGS)
-	@touch $(MARKER_BONUS)
-	@rm -f $(MARKER_STANDARD)
-	@echo ">$(BOLD)$(GREEN)  $(NAME_BONUS) successfully compiled!$(RESET)"
-	@rm -f $(PROGRESS_FILE)
-
-ifeq ($(MAKECMDGOALS),bonus)
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR) $(DEP_DIR)
-	@touch $(PROGRESS_FILE)
-	@if [ -f $(PROGRESS_FILE) ]; then \
-		CURRENT=$$(cat $(PROGRESS_FILE)); \
-		NEXT=$$((CURRENT + 1)); \
-		echo "$$NEXT" > $(PROGRESS_FILE); \
-		printf ">   [%3d%%] $(CYAN)(%d/%d files) Compiling $<... $(RESET)\n" \
-			$$((NEXT*100/$(TOTAL_SRCS))) $$((NEXT)) $(TOTAL_SRCS); \
-	fi
-	@$(CC) $(CFLAGS) $(DEPFLAGS) $(OPTFLAGS) -c $< -o $@ $(INC_BONUS)
-endif
 
 # ============================== ADDITIONAL TARGETS =============================== #
 
@@ -194,19 +135,11 @@ clean:
 	else \
 		echo "> [ pipex ] $(BOLD)$(YELLOW) Nothing to be done with $(RESET)$(WHITE)clean$(RESET)"; \
 	fi
-	@if [ "$(MAKECMDGOALS)" != "bonus" ] && [ "$(WAS_BONUS)" != "yes" ]; then \
-		if [ -d $(LIBFT_DIR)/$(OBJ_DIR) ]; then \
-			$(MAKE) -C $(LIBFT_DIR) clean --no-print-directory; \
-		else \
-			echo "> [ libft ] $(BOLD)$(YELLOW) Nothing to be done with $(RESET)$(WHITE)clean$(RESET)"; \
-		fi; \
-	fi
 
 fclean: clean
 	@if [ -f $(PROGRAM_NAME) ]; then \
 		echo "> [ pipex ] $(YELLOW) Removing $(PROGRAM_NAME)...$(RESET)"; \
 		rm -f $(PROGRAM_NAME); \
-		rm -f $(MARKER_BONUS); \
 		rm -f $(MARKER_STANDARD); \
 		echo "            $(YELLOW) $(PROGRAM_NAME) removed!$(RESET)"; \
 	else \
@@ -218,17 +151,10 @@ fclean: clean
 		echo "> [ libft ] $(BOLD)$(YELLOW) Nothing to be done with $(RESET)$(WHITE)fclean$(RESET)"; \
 	fi
 
-ifeq ($(WAS_BONUS),yes)
-re:
-	@echo "> [ pipex ] $(BOLD)$(WHITE) Rebuilding from scratch...$(RESET)"
-	@$(MAKE) fclean --no-print-directory
-	@$(MAKE) bonus --no-print-directory
-else
 re:
 	@echo "> [ pipex ] $(BOLD)$(WHITE) Rebuilding from scratch...$(RESET)"
 	@$(MAKE) fclean --no-print-directory
 	@$(MAKE) $(NAME) --no-print-directory
-endif
 
 help:
 	@echo "$(BOLD)$(CYAN)Available targets:$(RESET)"
@@ -239,5 +165,5 @@ help:
 	@echo "  $(GREEN)re$(RESET)      - Rebuild from scratch"
 	@echo "  $(GREEN)help$(RESET)    - Show this help message"
 
-.SECONDARY: $(OBJS) $(OBJS_BONUS)
-.PHONY: all debug clean fclean re help bonus
+.SECONDARY: $(OBJS)
+.PHONY: all debug clean fclean re help
