@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 18:29:23 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/02 15:46:17 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/02 16:55:55 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@ static void	parse_and_execute(t_data *data)
 			input = take_input();
 			add_history(input);
 			tokens = create_commands(token_vector(input));
-			for(size_t i = 0; i < tokens->count; i++)
-			{
-				t_cmd *cmd = tokens->data[i];
-				ft_printf("%s, %d, %d\n", cmd->str, cmd->type, cmd->next);
-			}
+			// for(size_t i = 0; i < tokens->count; i++)
+			// {
+			// 	t_cmd *cmd = tokens->data[i];
+			// 	ft_printf("%s, %d, %d\n", cmd->str, cmd->type, cmd->next);
+			// }
 			if (data->valid == 1 && tokens)
 			{
 				execution((t_cmd **)tokens->data, vec_to_array(data->env_vec));

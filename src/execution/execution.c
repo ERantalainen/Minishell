@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 16:20:20 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/02 15:38:59 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/02 16:57:01 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,7 +170,7 @@ static void	child_process(t_cmd **tokens, t_pipedata *p, char **env)
 		return ;
 	}
 	path = get_bin_path(tokens[p->cmd_index]->str, env);
-	ft_fprintf(2, "cmd: %s\n", p->cmd_args[0]);
+	// ft_fprintf(2, "cmd: %s\n", p->cmd_args[0]);
 	open_handler(p, path);
 	if (access(p->cmd_args[0], X_OK) >= 0)
 		if (execve(p->cmd_args[0], p->cmd_args, env) < 0)

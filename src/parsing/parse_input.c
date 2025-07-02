@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/02 16:08:53 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/02 16:56:39 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ t_vector	*token_vector(char *s)
 			token = create_token(s, &i, EMPTY);
 		else
 			token = create_token(s, &i, token->t);
-		printf("Token %zu: %s T: %d\n", tokens->count, token->s, token->t);
 		if (token->s)
 			add_elem(tokens, token);
 		if (s[i] && !ft_isspace(s[i]))
