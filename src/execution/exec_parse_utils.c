@@ -69,7 +69,14 @@ char	*find_bin_in_path(char **env_paths, char *cmd)
 	{
 		current_path = ft_strjoin(env_paths[i], cmd);
 		if (access(current_path, X_OK) == -1)
+		{
+			if (open(current_path, O_RDONLY) >= 0)
+			{
+				ft_fprintf(2, "minishell: %s: Permission denied\n", current_path);
+				break ;
+			}
 			i++;
+		}
 		else
 		{
 			check = true;
@@ -96,7 +103,7 @@ char	*get_bin_path(char *cmd, char **env)
 	}
 	env_paths = parse_paths(env);
 	if (!env_paths)
-		exit(127);
+		ft_exit(MNSFOD, 127);
 	args = ft_split(cmd, ' ');
 	temp = ft_strjoin("/", args[0]);
 	path = find_bin_in_path(env_paths, temp);

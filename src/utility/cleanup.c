@@ -48,3 +48,9 @@ void	ft_exit(char *s, int code)
 	ft_fprintf(2, "%s\n", s);
 	exit(code);
 }
+
+void	ft_exit_child(char *s, int code)
+{
+	ft_fprintf(2, "%s\n", s);
+	exit(code);
+}

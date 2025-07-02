@@ -84,10 +84,12 @@ static int	setup_cmd_to_execute(t_cmd **tokens, t_pipedata *p)
 	size_t	arg_i;
 	size_t	tok_i;
 
-	while (tokens[p->cmd_index] && tokens[p->cmd_index]->type != STRING
+	while (tokens[p->cmd_index]
+		&& tokens[p->cmd_index]->type != STRING
+		&& tokens[p->cmd_index]->type != PIPE
 		&& tokens[p->cmd_index]->type != BUILTIN)
 		p->cmd_index++;
-	if (!tokens[p->cmd_index] && tokens[p->cmd_index]->type == BUILTIN)
+	if (tokens[p->cmd_index] && tokens[p->cmd_index]->type == BUILTIN)
 		p->is_builtin = true;
 	if (!tokens[p->cmd_index])
 		return (-1);
@@ -109,6 +111,7 @@ static int	setup_cmd_to_execute(t_cmd **tokens, t_pipedata *p)
 	while (tokens[tok_i] && tokens[tok_i]->type == FILES)
 		p->cmd_args[arg_i++] = mini_strdup(tokens[tok_i++]->str);
 	p->cmd_args[arg_i] = NULL;
+	p->cmd_found = true;
 	return (0);
 }
 
@@ -169,8 +172,9 @@ static void	child_process(t_cmd **tokens, t_pipedata *p, char **env)
 			exit(1);
 		return ;
 	}
+	if (p->cmd_found == false)
+		exit(1);
 	path = get_bin_path(tokens[p->cmd_index]->str, env);
-	ft_fprintf(2, "cmd: %s\n", p->cmd_args[0]);
 	open_handler(p, path);
 	if (access(p->cmd_args[0], X_OK) >= 0)
 		if (execve(p->cmd_args[0], p->cmd_args, env) < 0)
@@ -184,6 +188,7 @@ static void	setup_child(t_cmd **tokens, t_pipedata *p, char **env, int i)
 	t_pipedata	*local_p;
 
 	p->is_builtin = false;
+	p->cmd_found = false;
 	p->pids[i] = fork();
 	if (p->pids[i] == 0)
 	{
