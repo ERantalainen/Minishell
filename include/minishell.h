@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:12:49 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/02 20:32:33 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/02 22:30:55 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,7 +177,7 @@ int					check_quotes(char *s);
 // Input
 t_token				*create_token(char *s, size_t *i, t_type last);
 t_vector			*token_vector(char *s);
-char				*token_string(char *s, size_t *i);
+char				*token_string(char *s, size_t *i, t_type last);
 t_vector			*creator(char *s, size_t len, size_t i, t_vector *tokens);
 
 // Token creator

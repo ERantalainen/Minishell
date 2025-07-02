@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/02 20:32:13 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/02 22:31:00 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_token	*create_token(char *s, size_t *i, t_type last)
 	t_token	*new;
 
 	new = arena_malloc(sizeof(t_token));
-	new->s = token_string(s, i);
+	new->s = token_string(s, i, last);
 	new->space = 0;
 	if (ft_strncmp(new->s, "|", 1) == 0)
 		new->t = PIPE;
@@ -92,12 +92,12 @@ t_vector	*creator(char *s, size_t len, size_t i, t_vector *tokens)
 	return (tokens);
 }
 
-char	*token_string(char *s, size_t *i)
+char	*token_string(char *s, size_t *i, t_type last)
 {
 	char	*token;
 	int		len;
 
-	if (s[(*i)] == '\'' || s[(*i)] == '"')
+	if (s[(*i)] == '\'' || s[(*i)] == '"' || last == HERE_DOC)
 		return (quoted_token(s + *i, s[(*i)], i));
 	len = word_len(s + (*i), '"');
 	token = expand_strndup(s + (*i), len);
