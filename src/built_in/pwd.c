@@ -1,36 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   unset.c                                            :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/25 22:37:46 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/26 15:26:51 by erantala         ###   ########.fr       */
+/*   Created: 2025/06/24 18:23:27 by erantala          #+#    #+#             */
+/*   Updated: 2025/07/01 02:57:39 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	unset(char	*key)
+void	pwd(void)
 {
-	t_data	*data;
-	size_t		i;
-	char	*var;
+	char	*output;
 
-	data = get_data();
-	i = 0;
-	if (key[0] == '$')
-		key += 1;
-	while (i < data->env_vec->count)
-	{
-		var = data->env_vec->data[i];
-		if (ft_strncmp(key, var, key_len(var)) == 0)
-		{
-			remove_elem(data->env_vec, i);
-			break ;
-		}
-		i++;
-	}
-	return ;
+	output = get_pwd();
+	if (output == NULL)
+		make_export("?=1");
+	else
+		ft_putendl_fd(output, 1);
 }

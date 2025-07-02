@@ -24,7 +24,9 @@ CFLAGS		:= -Wall -Wextra -Werror
 DEBUG_FLAGS	:= -g3 -fsanitize=address -fsanitize=undefined
 OPTFLAGS	:= -O2
 
-VPATH		:= src:src/builtin:src/tokenizer:src/execution
+VPATH		:= src:src/built_in:src/execution:src/here_doc \
+		   :src/main:src/memory_arena:src/parsing:src/signal \
+		   :src/utility:src/vector
 
 ifeq ($(MAKECMDGOALS),bonus)
 SRC_DIR		:= src_bonus
@@ -57,7 +59,7 @@ RESET		:= $(shell tput sgr0)
 
 # ============================== SOURCE FILES ================================ #
 
-SRCS_MAIN	:= main.c memory_arena.c vector.c parse_input.c \
+SRCS_MAIN	:= minishell.c memory_arena.c vector.c parse_input.c \
 		syntax_check.c take_input.c export.c helpers.c heredoc.c \
 		parse_additions.c parse_helpers.c signal.c echo.c pwd.c cd.c \
 		exec_parse_utils.c built_in.c env.c unset.c shlv.c \

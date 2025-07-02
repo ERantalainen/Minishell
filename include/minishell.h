@@ -14,18 +14,18 @@
 # define MINISHELL_H
 
 # include "libft.h"
-# include <assert.h>
 # include <errno.h>
 # include <fcntl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
-# include <stdbool.h>
-# include <stdint.h>
 # include <stdio.h>
-# include <stdlib.h>
-# include <string.h>
 # include <sys/wait.h>
+
+// unused
+// # include <stdint.h>
+// # include <string.h>
+// # include <assert.h>
 
 # define ARENA_SIZE 16384
 # define ALIGNMENT 8
@@ -143,16 +143,14 @@ char				*get_pwd(void);
 size_t				ft_stralen(char **s);
 
 // Helpers
-
-void	init_export();
-void	sort_export(size_t count, t_data *data, char **exps);
-void	empty_export();
-char	**strarm(char **s, size_t i);
+void				init_export(void);
+void				sort_export(size_t count, t_data *data, char **exps);
+void				empty_export(void);
+char				**strarm(char **s, size_t i);
 
 // Export sort
 void				cmd_help(t_vector *tokens, size_t *i, t_token *token,
 						t_cmd *cmd);
-
 t_arena				*init_arena(size_t size);
 void				*arena_malloc(size_t n);
 t_arena				**get_arenas(t_arena **new);
@@ -163,7 +161,6 @@ char				*mini_itoa(int n);
 void				child_died(int status);
 
 // Memory arena
-
 t_vector			*new_vector(size_t elem);
 void				expand_vector(t_vector *vector);
 void				add_elem(t_vector *vector, void *elem);
@@ -173,7 +170,6 @@ char				**vec_to_array(t_vector *vec);
 void				remove_elem(t_vector *vector, size_t i);
 
 // Vectors
-
 char				*take_input(void);
 int					check_quotes(char *s);
 
@@ -198,30 +194,23 @@ size_t				word_len(char *s);
 t_vector			*next_check(t_vector *commands);
 
 void				check_repeat(t_vector *tokens);
-t_cmd 				*check_redirect(t_cmd *cmd, t_token *token);
+t_cmd				*check_redirect(t_cmd *cmd, t_token *token);
 size_t				quote_len(char *s, char quote);
 
 // Parsing
-
 t_data				*get_data(void);
 void				free_arenas(void);
 void				ft_exit(char *s, int code);
 
 // Heredoc
-
 void				here_check(int fd, char *name, t_data *data, size_t i);
 char				*here_expansion(char *ln, size_t i);
 int					check_heredoc(t_vector *tokens);
 char				*here_doc(char *limiter, int index);
 char				*name_join(char const *s1, char const *s2);
-void				fix_lines(char **file, size_t i , char *name, t_data *data);
-
-// pipe
-char				*get_bin_path(char *cmd, char **env);
-char				**get_cmd_args(char *cmd, char *path);
+void				fix_lines(char **file, size_t i, char *name, t_data *data);
 
 // Built Ins
-
 void				built_in(t_cmd *cmd);
 void				build_handler(t_cmd **cmds);
 void				echo(t_cmd **cmd, int i);
@@ -229,21 +218,17 @@ void				pwd(void);
 void				unset(char *key);
 void				cd(t_cmd **cmd, int i);
 void				env(void);
-
 void				export(char *export);
 char				*find_export(char *key);
 size_t				key_len(char *s);
 void				make_export(char *command);
 void				replace_export(char *key);
-
 char				*expans_help(char *s, char *dup, size_t *i, size_t *pos);
-
 void				increase_shell_lvl(void);
 int					exit_calci(char *cmd);
 char				*mini_join(char const *s1, char const *s2);
 
 // Signals
-
 void				catcher(void);
 void				ignore(void);
 void				reset_sig(void);
@@ -252,22 +237,17 @@ void				handler(int sig, siginfo_t *a, void *b);
 void				heredoc_signal(void);
 
 // Non interactive mode
-
 void				non_interactive(char **argv, int argc);
 char				*get_input(char **argv, int argc);
 
 // Execution
-
-void				exec_single_cmd(t_cmd **cmd, char **env);
-void				exec_input(t_cmd **cmd, char **env);
-void				exec_output(t_cmd **cmd, char **env);
-void				normal_exec(t_cmd **cmd, char **env);
 void				execution(t_cmd **tokens, char **env);
+void				setup_pipeline(t_cmd **tokens, char **env);
+char				*get_bin_path(char *cmd, char **env);
+char				**get_cmd_args(char *cmd, char *path);
 
 // Cleaner
-
 void				clean_heredoc(void);
-
-void				setup_pipeline(t_cmd **tokens, char **env);
 t_vector			*next_check(t_vector *commands);
+
 #endif

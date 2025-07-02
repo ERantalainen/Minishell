@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "minishell.h"
 
 t_vector	*new_vector(size_t elem)
@@ -44,7 +43,6 @@ void	expand_vector(t_vector *vector)
 	vector->size *= 2;
 	vector->data[vector->size] = NULL;
 }
-
 
 // Expands a vector to add space for more elements.
 
@@ -91,6 +89,7 @@ char	**vec_to_array(t_vector *vec)
 	size_t	i;
 	char	**res;
 	char	*str;
+
 	i = 0;
 	res = arena_malloc(sizeof(char *) * (vec->count + 1));
 	while (i < vec->count)

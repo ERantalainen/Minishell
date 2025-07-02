@@ -14,10 +14,11 @@
 
 void	non_interactive(char **argv, int argc)
 {
-	char			*input;
-	char			*add;
-	t_data			*data;
-	t_vector		*commands;
+	char		*input;
+	char		*add;
+	t_data		*data;
+	t_vector	*commands;
+	t_cmd		*cmd;
 
 	data = get_data();
 	input = "";
@@ -28,13 +29,13 @@ void	non_interactive(char **argv, int argc)
 		{
 			add = get_input(argv, argc);
 			if (add == NULL)
-				break;
+				break ;
 			input = mini_append(input, add);
 		}
 		commands = create_commands(token_vector(input));
 		for (size_t i = 0; i < commands->count; i++)
 		{
-			t_cmd *cmd = commands->data[i];
+			cmd = commands->data[i];
 			puts(cmd->str);
 		}
 		execution((t_cmd **)commands->data, vec_to_array(data->env_vec));

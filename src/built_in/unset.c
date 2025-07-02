@@ -1,27 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vector_helpers.c                                   :+:      :+:    :+:   */
+/*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/26 15:20:21 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/26 15:26:23 by erantala         ###   ########.fr       */
+/*   Created: 2025/06/25 22:37:46 by erantala          #+#    #+#             */
+/*   Updated: 2025/06/26 15:26:51 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	remove_elem(t_vector *vector, size_t i)
+void	unset(char *key)
 {
-	while (i < vector->count - 1)
+	t_data	*data;
+	size_t	i;
+	char	*var;
+
+	data = get_data();
+	i = 0;
+	if (key[0] == '$')
+		key += 1;
+	while (i < data->env_vec->count)
 	{
-		vector->data[i] = vector->data[i + 1];
+		var = data->env_vec->data[i];
+		if (ft_strncmp(key, var, key_len(var)) == 0)
+		{
+			remove_elem(data->env_vec, i);
+			break ;
+		}
 		i++;
 	}
-	if (i == vector->count - 1)
-	{
-		vector->data[i] = NULL;
-		vector->count--;
-	}
+	return ;
 }
