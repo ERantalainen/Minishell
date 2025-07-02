@@ -74,6 +74,7 @@ void	init_export(void)
 	exports = vec_to_array(data->env_vec);
 	sort_export(data->env_vec->count, data, exports);
 }
+
 char	**strarm(char **s, size_t i)
 {
 	size_t	max;

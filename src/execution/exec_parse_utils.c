@@ -104,7 +104,7 @@ char	*get_bin_path(char *cmd, char **env)
 	}
 	env_paths = parse_paths(env);
 	if (!env_paths)
-		ft_exit(MNSFOD, 127);
+		ft_exit(mini_join(MS, mini_join(cmd, NSFOD)), 127);
 	args = ft_split(cmd, ' ');
 	temp = ft_strjoin("/", args[0]);
 	path = find_bin_in_path(env_paths, temp);

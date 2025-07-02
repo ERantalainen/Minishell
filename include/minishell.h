@@ -37,8 +37,6 @@
 # define PRMD "minishell: Permission denied"
 # define NSFOD ": No such file or directory"
 
-# define MNSFOD mini_join(MS, mini_join(cmd, NSFOD))
-
 # define HDPROMPT "\001\033[0;32m\002heredoc>\001\033[0m\002 "
 # define RDPROMPT "\001\033[0;36m\002minishell>\001\033[0m\002 "
 
