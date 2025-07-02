@@ -171,26 +171,22 @@ char				**vec_to_array(t_vector *vec);
 void				remove_elem(t_vector *vector, size_t i);
 
 // Vectors
-
 char				*take_input(void);
 int					check_quotes(char *s);
 
 // Input
-
 t_token				*create_token(char *s, size_t *i, t_type last);
 t_vector			*token_vector(char *s);
 char				*token_string(char *s, size_t *i);
 t_vector			*creator(char *s, size_t len, size_t i, t_vector *tokens);
 
 // Token creator
-
 t_vector			*create_commands(t_vector *tokens);
 void				cmd_help(t_vector *tks, size_t *i, t_token *tk, t_cmd *cm);
 t_cmd				*make_cmd_spc(t_vector *tokens, size_t *i);
 t_cmd				*make_cmd_str(t_vector *tokens, size_t *i);
 
 // Command creator
-
 char				*expans_help(char *s, char *dup, size_t *i, size_t *pos);
 size_t				expanded_length(char *s, size_t n);
 
@@ -212,7 +208,6 @@ void				check_command_syntax(t_vector *commands, t_data *data);
 // Syntax
 
 // Parsing
-
 t_data				*get_data(void);
 void				free_arenas(void);
 void				ft_exit(char *s, int code);
@@ -260,10 +255,24 @@ void				execution(t_cmd **tokens, char **env);
 void				setup_pipeline(t_cmd **tokens, char **env);
 char				*get_bin_path(char *cmd, char **env);
 char				**get_cmd_args(char *cmd, char *path);
+bool				check_for_builtin(t_cmd **tokens);
+void				find_next_cmd_index(t_cmd **tokens, t_pipedata *p);
+void				wait_for_children(t_pipedata *p, int status);
+void				close_unused_pipes(t_pipedata *p, int index);
+void				init_pipes(t_pipedata *p);
+void				open_handler(t_pipedata *p, const char *path);
+void				open_file(t_cmd **tokens, t_pipedata *p, int settings,
+						int file);
+void				check_for_redirects(t_cmd **tokens, t_pipedata *p);
+void				setup_pipes(int in, int out, int close_in, int close_out);
+void				setup_child(t_cmd **tokens, t_pipedata *p, char **env,
+						int i);
+int					setup_cmd_to_execute(t_cmd **tokens, t_pipedata *p);
+void				child_process(t_cmd **tokens, t_pipedata *p, char **env);
 
 // Cleaner
 void				clean_heredoc(void);
 t_vector			*next_check(t_vector *commands);
-
 void				ft_exit_child(char *s, int code);
+
 #endif
