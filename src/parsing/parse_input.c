@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/03 04:17:10 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/03 04:34:21 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,6 @@ t_vector	*create_commands(t_vector *tokens)
 		return (NULL);
 	i = 0;
 	commands = new_vector(tokens->count + 1);
-	printf("%zu\n", tokens->count);
 	while (i < tokens->count && tokens->data[i] != NULL)
 	{
 		curr = tokens->data[i];

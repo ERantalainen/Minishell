@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:34:01 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/03 01:20:10 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/03 04:40:40 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ static	void options(char *command, int *i, bool *nl)
 	data = get_data();
 	if (!option_quotes(data))
 		return ;
+	while (command[*i] == ' ')
+		i++;
 	if ((command[*i] == '-' && command[*i + 1] == 'n'))
 	{
 		while ((command[*i] == 'n' && command[*i - 1] != ' ')
@@ -67,8 +69,6 @@ void	echo(t_cmd **commands, int i)
 	while (commands[i]->next == FILES || commands[i]->next == STRING)
 		command = mini_append(command, commands[i++ + 1]->str);
 	i = 0;
-	while (command[i] == ' ')
-		i++;
 	newline = 1;
 	options(command, &i, &newline);
 	command += i;
