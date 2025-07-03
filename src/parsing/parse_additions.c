@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 15:44:37 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/03 01:32:19 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/03 03:20:55 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_cmd	*check_redirect(t_cmd *cmd, t_token *token)
 		cmd->next = FILES;
 		token->t = FILES;
 	}
-	if (cmd->type == OUTPUT)
+	if (cmd->type == OUTPUT && cmd->type == STRING)
 	{
 		token->t = FILES;
 		cmd->next = FILES;
