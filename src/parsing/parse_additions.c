@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   parse_additions.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 15:44:37 by erantala          #+#    #+#             */
 /*   Updated: 2025/07/03 18:45:52 by erantala         ###   ########.fr       */

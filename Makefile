@@ -3,54 +3,60 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+         #
+#    By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/03 18:36:06 by jpelline          #+#    #+#              #
 #    Updated: 2025/07/02 01:27:33 by erantala         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-# ============================== CONFIGURATION =============================== #
+# ================================= SETTINGS ================================= #
 
-NAME		:= minishell_standard
+# Project configuration
+PROGRAM_NAME		:= minishell
+NAME			:= minishell_standard
+CC			:= cc
 
-PROGRAM_NAME	:= minishell
-CC		:= cc
-CFLAGS		:= -Wall -Wextra -Werror
-DEBUG_FLAGS	:= -g3 -fsanitize=address -fsanitize=undefined
-OPTFLAGS	:= -O2
+# Compiler flags
+CFLAGS			:= -Wall -Wextra -Werror
+DEBUG_FLAGS		:= -g3 -fsanitize=address -fsanitize=undefined
+OPTFLAGS		:= -O2
 
-VPATH		:= src:src/built_in:src/execution:src/here_doc \
-		   :src/main:src/memory_arena:src/parsing:src/signal \
-		   :src/utility:src/vector
+# Directory structure
+SRC_DIR			:= src
+OBJ_DIR			:= obj
+DEP_DIR			:= $(OBJ_DIR)/.deps
+LIBFT_DIR		:= libft
 
-SRC_DIR		:= src
+# Search paths for source files
+VPATH			:= $(SRC_DIR):$(SRC_DIR)/built_in:$(SRC_DIR)/execution \
+			:$(SRC_DIR)/here_doc:$(SRC_DIR)/main:$(SRC_DIR)/memory_arena \
+			:$(SRC_DIR)/parsing:$(SRC_DIR)/signal:$(SRC_DIR)/utility \
+			:$(SRC_DIR)/vector
 
-OBJ_DIR		:= obj
+# Include paths and libraries
+INC			:= -I./include -I$(LIBFT_DIR)/include -I./src/pipe/include
+LIBFT			:= $(LIBFT_DIR)/libft.a
+LDFLAGS			:= -L$(LIBFT_DIR) -lft -lreadline
 
-DEP_DIR		:= $(OBJ_DIR)/.deps
-DEPFLAGS	= -MT $@ -MMD -MP -MF $(DEP_DIR)/$*.d
-
-LIBFT_DIR	:= libft
-LIBFT		:= $(LIBFT_DIR)/libft.a
-INC		:= -I./include -I$(LIBFT_DIR)/include -I./src/pipe/include
-
-LDFLAGS		:= -L$(LIBFT_DIR) -lft -lreadline
+# Dependency generation flags
+DEPFLAGS		= -MT $@ -MMD -MP -MF $(DEP_DIR)/$*.d
 
 # ============================== VISUAL STYLING ============================== #
 
-BOLD		:= $(shell tput bold)
-GREEN		:= $(shell tput setaf 2)
-YELLOW		:= $(shell tput setaf 3)
-BLUE		:= $(shell tput setaf 4)
-MAGENTA		:= $(shell tput setaf 5)
-CYAN		:= $(shell tput setaf 6)
-WHITE		:= $(shell tput setaf 7)
-RESET		:= $(shell tput sgr0)
+# Terminal colors for build output
+BOLD			:= $(shell tput bold)
+GREEN			:= $(shell tput setaf 2)
+YELLOW			:= $(shell tput setaf 3)
+BLUE			:= $(shell tput setaf 4)
+MAGENTA			:= $(shell tput setaf 5)
+CYAN			:= $(shell tput setaf 6)
+WHITE			:= $(shell tput setaf 7)
+RESET			:= $(shell tput sgr0)
 
 # ============================== SOURCE FILES ================================ #
 
-# Parsing-related source files
+# Parsing and syntax analysis
 SRCS_PARSE := \
 	parse_input.c \
 	syntax_check.c \
@@ -58,7 +64,7 @@ SRCS_PARSE := \
 	parse_helpers.c \
 	heredoc.c
 
-# Built-in command source files
+# Built-in shell commands
 SRCS_BUILTIN := \
 	echo.c \
 	pwd.c \
@@ -69,32 +75,32 @@ SRCS_BUILTIN := \
 	unset.c \
 	shlv.c
 
-# Utility source files
+# Utility functions and helpers
 SRCS_UTILS := \
 	memory_arena.c \
 	vector.c \
 	vector_helpers.c \
+	command_help.c \
 	mini_split.c \
 	helpers.c \
-	empty_exp.c
+	empty_exp.c \
+	cleanup.c
 
-# Execution and command source files
+# Command execution and process management
 SRCS_EXEC := \
 	exec_parse_utils.c \
-	non_interactive.c \
-	cleanup.c \
-	command_help.c \
 	execution.c \
 	exec_utility.c \
 	exec_utility2.c
 
-# Main and other sources
+# Main program and entry point
 SRCS_OTHER := \
 	minishell.c \
+	non_interactive.c \
 	take_input.c \
 	signal.c
 
-# Combine all file groups
+# Combine all source files
 SRCS := \
 	$(SRCS_OTHER) \
 	$(SRCS_UTILS) \
@@ -102,16 +108,21 @@ SRCS := \
 	$(SRCS_BUILTIN) \
 	$(SRCS_EXEC)
 
-# ============================== PROGRESS TRACKING =========================== #
+# ============================== BUILD VARIABLES ============================= #
 
-OBJS		:= $(addprefix $(OBJ_DIR)/,$(SRCS:.c=.o))
-TOTAL_SRCS	:= $(words $(SRCS))
+# Object files and build tracking
+OBJS			:= $(addprefix $(OBJ_DIR)/,$(SRCS:.c=.o))
+TOTAL_SRCS		:= $(words $(SRCS))
 
-MARKER_STANDARD := .standard_build
-PROGRESS_FILE	:= $(OBJ_DIR)/.progress
-LATEST_SRC	:= $(shell find src -name "*.c" | xargs ls -t 2>/dev/null | head -1)
-OBJ_FILES_EXIST := $(shell [ -n "$(wildcard $(OBJ_DIR)/*.o)" ] && echo yes)
+# Build markers and progress tracking
+MARKER_STANDARD		:= .standard_build
+PROGRESS_FILE		:= $(OBJ_DIR)/.progress
 
+# Utility variables for build optimization
+LATEST_SRC		:= $(shell find src -name "*.c" | xargs ls -t 2>/dev/null | head -1)
+OBJ_FILES_EXIST		:= $(shell [ -n "$(wildcard $(OBJ_DIR)/*.o)" ] && echo yes)
+
+# Check if binary is up to date
 is_up_to_date = \
     [ -f $(PROGRAM_NAME) ] && \
     [ "$(PROGRAM_NAME)" -nt $(LATEST_SRC) ] && \
@@ -147,7 +158,6 @@ $(OBJ_DIR)/%.o: %.c | $(OBJ_DIR) $(DEP_DIR)
 	fi
 	@$(CC) $(CFLAGS) $(DEPFLAGS) $(OPTFLAGS) -c $< -o $@ $(INC)
 
-
 # ============================== ADDITIONAL TARGETS =============================== #
 
 $(OBJ_DIR):
@@ -172,21 +182,21 @@ $(LIBFT):
 
 clean:
 	@if [ -d $(OBJ_DIR) ]; then \
-		echo "> [ pipex ] $(YELLOW) Cleaning object files...$(RESET)"; \
+		echo "> [ minishell ] $(YELLOW) Cleaning object files...$(RESET)"; \
 		rm -rf $(OBJ_DIR); \
-		echo "            $(YELLOW) Object files cleaned!$(RESET)"; \
+		echo "                $(YELLOW) Object files cleaned!$(RESET)"; \
 	else \
-		echo "> [ pipex ] $(BOLD)$(YELLOW) Nothing to be done with $(RESET)$(WHITE)clean$(RESET)"; \
+		echo "> [ minishell ] $(BOLD)$(YELLOW) Nothing to be done with $(RESET)$(WHITE)clean$(RESET)"; \
 	fi
 
 fclean: clean
 	@if [ -f $(PROGRAM_NAME) ]; then \
-		echo "> [ pipex ] $(YELLOW) Removing $(PROGRAM_NAME)...$(RESET)"; \
+		echo "> [ minishell ] $(YELLOW) Removing $(PROGRAM_NAME)...$(RESET)"; \
 		rm -f $(PROGRAM_NAME); \
 		rm -f $(MARKER_STANDARD); \
-		echo "            $(YELLOW) $(PROGRAM_NAME) removed!$(RESET)"; \
+		echo "                $(YELLOW) $(PROGRAM_NAME) removed!$(RESET)"; \
 	else \
-		echo "> [ pipex ] $(BOLD)$(YELLOW) Nothing to be done with $(RESET)$(WHITE)fclean$(RESET)"; \
+		echo "> [ minishell ] $(BOLD)$(YELLOW) Nothing to be done with $(RESET)$(WHITE)fclean$(RESET)"; \
 	fi
 	@if [ -f $(LIBFT) ]; then \
 		$(MAKE) -C $(LIBFT_DIR) fclean --no-print-directory; \
@@ -195,7 +205,7 @@ fclean: clean
 	fi
 
 re:
-	@echo "> [ pipex ] $(BOLD)$(WHITE) Rebuilding from scratch...$(RESET)"
+	@echo "> [ minishell ] $(BOLD)$(WHITE) Rebuilding from scratch...$(RESET)"
 	@$(MAKE) fclean --no-print-directory
 	@$(MAKE) $(NAME) --no-print-directory
 
