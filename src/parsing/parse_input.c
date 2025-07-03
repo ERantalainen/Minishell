@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/03 04:34:21 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/03 04:57:18 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ t_token	*create_token(char *s, size_t *i, t_type last, t_data *data)
 	new = arena_malloc(sizeof(t_token));
 	new->s = token_string(s, i, last);
 	new->space = 0;
+	ft_printf("Str: %s\n", s + *i);
 	if (data->tokens->count == 0 && !ft_isspace(s[*i]))
 		new->t = STRING;
 	else if (ft_strncmp(new->s, "|", 1) == 0)
@@ -31,7 +32,7 @@ t_token	*create_token(char *s, size_t *i, t_type last, t_data *data)
 		new->t = INPUT;
 	else if (ft_strcmp(new->s, ">") == 0)
 		new->t = OUTPUT;
-	else if (ft_strncmp(new->s, "<<", 2) == 0)
+	if (ft_strncmp(new->s, "<<", 2) == 0)
 		new->t = HERE_DOC;
 	else if (ft_strncmp(new->s, ">>", 2) == 0)
 		new->t = APPEND;
@@ -86,6 +87,7 @@ t_vector	*creator(char *s, size_t len, size_t i, t_data *data)
 			token = create_token(s, &i, token->t, data);
 		if (token->s && ft_strcmp(token->s, "") != 0)
 		{
+			printf("Adding: %s\n", token->s);
 			add_elem(data->tokens, token);
 			if (space == 1)
 			{
@@ -101,11 +103,15 @@ char	*token_string(char *s, size_t *i, t_type last)
 {
 	char	*token;
 	int		len;
+	char	quote;
 
+	quote = 0;
 	if (s[(*i)] == '\'' || s[(*i)] == '"' || last == HERE_DOC)
 		return (quoted_token(s + *i, s[(*i)], i, last));
 	len = word_len(s + (*i), '"');
-	token = expand_strndup(s + (*i), len);
+	if (ft_strornchr(s, '\'', '"', word_len(s, 0)))
+		quote = *ft_strornchr(s, '\'', '"', word_len(s, 0));
+	token = expand_strndup(s + (*i), word_len(s, quote), quote);
 	(*i) += len;
 	return (token);
 }

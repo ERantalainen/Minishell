@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 15:44:37 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/03 04:32:35 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/03 04:56:29 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,22 @@
 t_cmd	*check_redirect(t_cmd *cmd, t_token *token)
 {
 	return (cmd);
+}
+
+char	*ft_strornchr(const char *s, int one, int two, size_t n)
+{
+	unsigned int	i;
+
+	i = 0;
+	while (s[i] && i < n)
+	{
+		if (s[i] == (char) two || (s[i] == (char) one))
+			return ((char *) &s[i]);
+		i++;
+	}
+	if (s[i] == (char) two || (s[i] == (char) one) && i < n)
+		return ((char *) &s[i]);
+	return (NULL);
 }
 
 char	*mini_append(char *s1, char *s2)
@@ -79,7 +95,7 @@ char	*quoted_token(char *s, char quote, size_t *i, t_type last)
 	if (quote == '\'')
 		str = mini_strndup(s + 1, pos - 1);
 	else
-		str = expand_strndup(s + 1, pos - 1);
+		str = expand_strndup(s + 1, pos - 1, '"');
 	if (s[pos] == quote)
 		pos++;
 	(*i) += pos;

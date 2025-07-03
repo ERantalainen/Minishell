@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:12:49 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/03 00:49:42 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/03 04:55:46 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,7 @@ size_t				ft_stralen(char **s);
 char				*mini_substr(char const *s, unsigned int start, size_t len);
 char				**mini_split(const char *s, char c);
 char				*mini_itoa(int n);
+char				*ft_strornchr(const char *s, int one, int two, size_t n);
 
 // Helpers
 void				init_export(void);
@@ -194,7 +195,7 @@ char				*expans_help(char *s, char *dup, size_t *i, size_t *pos);
 size_t				expanded_length(char *s, size_t n);
 
 int					check_specials(int c, int quote);
-char				*expand_strndup(char *s, size_t n);
+char				*expand_strndup(char *s, size_t n, char quote);
 char				*mini_append(char *s1, char *s2);
 
 char				*quoted_token(char *s, char quote, size_t *i, t_type last);
