@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:12:49 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/03 15:48:48 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/03 15:54:35 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,6 +194,7 @@ char				*expans_help(char *s, char *dup, size_t *i, size_t *pos);
 size_t				expanded_length(char *s, size_t n);
 
 int					check_specials(int c, int quote);
+char				*expand_strndup(char *s, size_t n);
 char				*expand_strndup(char *s, size_t n);
 char				*mini_append(char *s1, char *s2);
 
