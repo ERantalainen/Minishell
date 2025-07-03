@@ -48,11 +48,11 @@ STR_SRCS	:= ft_strlen.c ft_strlcpy.c ft_strlcat.c ft_strchr.c \
 			ft_strrchr.c ft_strncmp.c ft_strnstr.c ft_strdup.c \
 			ft_substr.c ft_strjoin.c ft_strtrim.c ft_split.c \
 			ft_strmapi.c ft_striteri.c ft_reverse_string.c \
-			ft_strndup.c ft_strcmp.c
+			ft_strndup.c ft_strcmp.c ft_array_dup.c
 
 # Memory management functions
 MEM_SRCS	:= ft_memset.c ft_bzero.c ft_memcpy.c ft_memmove.c \
-			ft_memchr.c ft_memcmp.c ft_calloc.c
+			ft_memchr.c ft_memcmp.c ft_calloc.c ft_free_array.c
 
 # File descriptor operations
 FD_SRCS		:= get_next_line.c ft_putchar_fd.c ft_putstr_fd.c \

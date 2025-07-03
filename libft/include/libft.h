@@ -58,6 +58,7 @@ char				*ft_strdup(const char *s);
 char				*ft_strndup(char *s, size_t n);
 int					ft_strcmp(const char *s1, const char *s2);
 int					ft_countchar(char *s, int c);
+char				**array_dup(char **array);
 
 // PART 2
 char				*ft_substr(char const *s, unsigned int start, size_t len);
@@ -86,6 +87,7 @@ void				ft_lstiter(t_list *lst, void (*f)(void *));
 t_list				*ft_lstmap(t_list *lst, void *(*f)(void *),
 						void (*del)(void *));
 
+void				free_array(char **array);
 // Printf
 int					ft_printf(const char *format, ...);
 int					ft_fprintf(int fd, const char *format, ...);

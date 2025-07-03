@@ -42,14 +42,14 @@ static char	**parse_paths(char **env)
 	i = 0;
 	while (env[i])
 	{
-		if (ft_strnstr(env[i], "PATH=", 5))
+		if (ft_strncmp(env[i], "PATH=", 5) == 0)
 		{
 			env_paths = mini_split(env[i] + 5, ':');
 			return (env_paths);
 		}
 		i++;
 	}
-return (NULL);
+	return (NULL);
 }
 
 char	*find_bin_in_path(char **env_paths, char *cmd)
