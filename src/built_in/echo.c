@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:34:01 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/03 04:40:40 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/03 15:49:59 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int	option_quotes(t_data *data)
 			if ((check[j] == '\'' && check[j + 1] && check[j + 1] == '\'')
 			|| (check[j] == '"' && check[j + 1] && check[j + 1] == '"'))
 			{
-				if (check[j + 2] && check[j + 2] == '-' 
+				if (check[j + 2] && check[j + 2] == '-'
 					&& check[j + 3] && check[j + 3] == 'n')
 						return (1);
 				else
@@ -45,13 +45,13 @@ static	void options(char *command, int *i, bool *nl)
 	data = get_data();
 	if (!option_quotes(data))
 		return ;
-	while (command[*i] == ' ')
-		i++;
+	while (command[*i] && command[*i] == ' ')
+		(*i)++;
 	if ((command[*i] == '-' && command[*i + 1] == 'n'))
 	{
 		while ((command[*i] == 'n' && command[*i - 1] != ' ')
-			|| command[*i] == ' ' 
-			|| (command[*i] == '-' && command[*i + 1] != ' ' 
+			|| command[*i] == ' '
+			|| (command[*i] == '-' && command[*i + 1] != ' '
 				&& command[*i + 1] != '-'))
 			(*i)++;
 		*nl = 0;

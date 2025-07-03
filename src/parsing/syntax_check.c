@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 15:48:23 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/03 04:32:04 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/03 15:47:38 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void	syntax_print(char *error, t_data *data, int exit)
 {
 	perror(error);
 	data->valid = 0;
-	replace_export("?=2");
+	replace_export(mini_join("?=", mini_itoa(exit)));
 }
 
 void	check_repeat(t_vector *tokens)
