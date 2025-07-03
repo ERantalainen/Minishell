@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:12:49 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/03 15:54:35 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/03 17:56:26 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,14 +187,12 @@ t_vector			*creator(char *s, size_t len, size_t i, t_data *data);
 t_vector			*create_commands(t_vector *tokens);
 void				cmd_help(t_vector *tks, size_t *i, t_token *tk, t_cmd *cm);
 t_cmd				*make_cmd_spc(t_vector *tokens, size_t *i);
-t_cmd				*make_cmd_str(t_vector *tokens, size_t *i);
+t_cmd				*make_cmd_str(t_vector *tokens, size_t *i, t_data *data);
 
 // Command creator
-char				*expans_help(char *s, char *dup, size_t *i, size_t *pos);
 size_t				expanded_length(char *s, size_t n);
 
 int					check_specials(int c, int quote);
-char				*expand_strndup(char *s, size_t n);
 char				*expand_strndup(char *s, size_t n);
 char				*mini_append(char *s1, char *s2);
 

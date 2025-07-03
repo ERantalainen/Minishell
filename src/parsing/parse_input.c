@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/03 15:54:29 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/03 18:39:52 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,9 @@ t_token	*create_token(char *s, size_t *i, t_type last, t_data *data)
 	new = arena_malloc(sizeof(t_token));
 	new->s = token_string(s, i, last);
 	new->space = 0;
-	if (data->tokens->count == 0 && !ft_isspace(s[*i]))
+	if (s[*i - 1] == '"' || s[*i - 1] == '\'')
+		new->t = STRING;
+	else if (data->tokens->count == 0 && !ft_isspace(s[*i]))
 		new->t = STRING;
 	else if (ft_strncmp(new->s, "|", 1) == 0)
 		new->t = PIPE;
@@ -31,12 +33,12 @@ t_token	*create_token(char *s, size_t *i, t_type last, t_data *data)
 		new->t = INPUT;
 	else if (ft_strcmp(new->s, ">") == 0)
 		new->t = OUTPUT;
-	else if (ft_strncmp(new->s, "<<", 2) == 0)
-		new->t = HERE_DOC;
 	else if (ft_strncmp(new->s, ">>", 2) == 0)
 		new->t = APPEND;
 	else
 		new->t = STRING;
+	if (ft_strncmp(new->s, "<<", 2) == 0 && (s[*i - 1] != '"' && s[*i- 1] != '\''))
+		new->t = HERE_DOC;
 	if (new->t == STRING && (last == HERE_DOC && (s[(*i)] == '"'
 			|| s[(*i)] == '\'' || data->last == HERE_NOEXP)))
 		new->t = HERE_NOEXP;
@@ -97,15 +99,31 @@ t_vector	*creator(char *s, size_t len, size_t i, t_data *data)
 	return (data->tokens);
 }
 
+int	check_empty_quote(char *s)
+{
+	size_t	pos;
+
+	pos = 0;
+	if (s[pos] && s[pos] == '"' && s[pos + 1] && s[pos + 1] == '"')
+		return (1);
+	if(s[pos] && s[pos] == '\'' && s[pos + 1] && s[pos + 1] == '\'')
+		return (1);
+	return (0);
+}
+
 char	*token_string(char *s, size_t *i, t_type last)
 {
 	char	*token;
 	int		len;
 
+	if (check_empty_quote(s + *i))
+	{
+		*i += 2;
+		return ("");
+	}
 	if (s[(*i)] == '\'' || s[(*i)] == '"' || last == HERE_DOC)
 		return (quoted_token(s + *i, s[(*i)], i, last));
-	len = word_len(s + (*i), '"');
-	token = expand_strndup(s + (*i), len);
+	len = word_len(s + (*i), 0);
 	token = expand_strndup(s + (*i), len);
 	(*i) += len;
 	return (token);
@@ -129,9 +147,10 @@ t_vector	*create_commands(t_vector *tokens)
 	{
 		curr = tokens->data[i];
 		if (curr->t == STRING || curr->t == FILES)
-			add_elem(commands, make_cmd_str(tokens, &i));
+			add_elem(commands, make_cmd_str(tokens, &i, data));
 		else
 			add_elem(commands, make_cmd_spc(tokens, &i));
+		data->last = curr->t;
 	}
 	next_check(commands);
 	return (commands);
@@ -139,7 +158,8 @@ t_vector	*create_commands(t_vector *tokens)
 
 // Combine tokens into commands.
 
-t_cmd	*make_cmd_str(t_vector *tokens, size_t *i)
+
+t_cmd	*make_cmd_str(t_vector *tokens, size_t *i, t_data *data)
 {
 	t_token	*tk;
 	t_cmd	*cmd;
@@ -148,7 +168,8 @@ t_cmd	*make_cmd_str(t_vector *tokens, size_t *i)
 	tk = tokens->data[(*i)];
 	cmd->type = STRING;
 	cmd->str = "";
-	if ((*i == 0) || ((access(tk->s, R_OK | W_OK) != 0 && tk->space == 1)))
+	if ((*i == 0) || ((access(tk->s, R_OK | W_OK) != 0 && tk->space == 1))
+	|| data->last == PIPE)
 		cmd_help(tokens, i, tk, cmd);
 	else
 	{

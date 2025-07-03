@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 15:43:47 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/03 01:31:32 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/03 18:21:15 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ size_t	word_len(char *s, int quote)
 
 int	check_specials(int c, int quote)
 {
+	if (quote == 0 && (c == '\'' || c == '"'))
+		return (1);
 	if (c == '<' || c == '|' || c == '>' || c == quote)
 		return (1);
 	return (0);
@@ -76,9 +78,21 @@ char	*expand_strndup(char *s, size_t n)
 char	*expans_help(char *s, char *dup, size_t *i, size_t *pos)
 {
 	char	*expansion;
+	size_t	quotes;
+	size_t	j;
 
-	expansion = find_export(mini_strndup((s + (*i) + 1), quote_len(s + (*i) + 1,
-					'"')));
+	j = 0;
+	quotes = 0;
+	while(s[j])
+	{
+		if (s[j] == '"')
+			quotes++;
+		j++;
+	}
+	if (quotes % 2 == 0 || ft_isalnum(s[*i + 1]) || s[*i + 1] == '?')
+		expansion = find_export(mini_strndup((s + (*i)), word_len(s + *i, '"')));
+	else
+		expansion = mini_strdup("$");
 	if (ft_strcmp(expansion, "") == 0 && s[(*i) + 1] == '"')
 		(*i)++;
 	else
@@ -107,7 +121,7 @@ size_t	expanded_length(char *s, size_t n)
 		{
 			total += ft_strlen(find_export(mini_strndup(s + i + 1, quote_len(s
 								+ i, '"'))));
-			total -= word_len(s + i, '"');
+			i += word_len(s + i, '"');
 		}
 		i++;
 	}
