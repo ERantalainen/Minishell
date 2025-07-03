@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:12:49 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/03 04:55:46 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/03 05:18:21 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,6 +208,7 @@ void				check_repeat(t_vector *tokens);
 t_cmd				*check_redirect(t_cmd *cmd, t_token *token);
 size_t				quote_len(char *s, char quote);
 void				check_command_syntax(t_vector *commands, t_data *data);
+size_t				neutral_len(char *s);
 
 // Syntax
 

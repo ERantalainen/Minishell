@@ -32,5 +32,7 @@ size_t	ft_strlcat(char *dst, const char *src, size_t size)
 		ft_memcpy(dst + dst_len, src, size - dst_len - 1);
 		dst[size - 1] = '\0';
 	}
+	#include <stdio.h>
+	printf("Cat: %s\n", dst);
 	return (dst_len + src_len);
 }

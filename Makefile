@@ -6,7 +6,7 @@
 #    By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/03 18:36:06 by jpelline          #+#    #+#              #
-#    Updated: 2025/07/02 01:27:33 by erantala         ###   ########.fr        #
+#    Updated: 2025/07/03 05:20:42 by erantala         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,7 +56,8 @@ SRCS_PARSE := \
 	syntax_check.c \
 	parse_additions.c \
 	parse_helpers.c \
-	heredoc.c
+	heredoc.c \
+	parsing_len.c
 
 # Built-in command source files
 SRCS_BUILTIN := \

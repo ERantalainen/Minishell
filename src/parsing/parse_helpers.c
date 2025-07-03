@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 15:43:47 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/03 05:10:56 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/03 05:50:51 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,19 +57,20 @@ char	*expand_strndup(char *s, size_t n, char quote)
 	i = 0;
 	len = expanded_length(s, n);
 	dup = arena_malloc(len + 1);
-	printf("Expand: %s, %zu\n", s, n);
+	puts(dup);
+	ft_memset(dup, 0, len + 1);
 	while (s[i] && i < n)
 	{
-		printf("Dupe: %s and %zu\n", dup, i);
 		if (s[i] == '$' && s[i + 1])
 		{
-			expans_help(s, dup, &i, &pos);
+			dup = expans_help(s, dup, &i, &pos);
 		}
 		if (i >= n)
 			break ;
-		if (s[i] == quote)
+		if (s[i] != quote)
+			dup[pos++] = s[i++];
+		else
 			i++;
-		dup[pos++] = s[i++];
 	}
 	dup[pos] = '\0';
 	return (dup);
@@ -79,22 +80,23 @@ char	*expans_help(char *s, char *dup, size_t *i, size_t *pos)
 {
 	char	*expansion;
 
-	expansion = find_export(mini_strndup((s + (*i) + 1), quote_len(s + (*i) + 1,
-					'\'')));
-	printf("exp: %s\n", expansion);
+	puts(dup);
+	expansion = find_export(mini_strndup((s + (*i) + 1), neutral_len(s + *i + 1)));
+	puts(expansion);
+	// SOMETHINHG GOES VERY VERY VERY VERY VERY WRONG HERE
+	puts(dup);
+
 	if (ft_strcmp(expansion, "") == 0 && s[(*i) + 1] == '"')
 		(*i)++;
 	else
 	{
-		printf("%s\n", dup);
-		printf("exp2: %s\n", expansion);
-		(*i) += word_len(s + (*i), '\'');
-		// IT FUCKS UP SOMEWHERE HERE !!!!!!!!!!!!! FIX
-		ft_strlcat(dup, expansion, ft_strlen(dup) + ft_strlen(expansion) + 1);
+		(*i) += neutral_len(s + *i);
+		printf("Len Before:%zu dup: %s and %zu\n", ft_strlen(expansion), dup, *pos);
+		dup = mini_join(dup, expansion);
 		(*pos) += ft_strlen(expansion);
-		printf("dup: %s\n", dup);
+
 	}
-	return (expansion);
+	return (dup);
 }
 
 // Get the total length of dup once expanded. If an expansion ($) is detected
