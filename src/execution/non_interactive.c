@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 22:53:35 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/02 18:50:35 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/02 22:13:28 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	non_interactive(void)
 	{
 		data->valid = 1;
 		line = get_next_line(STDIN_FILENO);
-		if (line && check_quotes(line))
+		if (line)
 		{
 			commands = create_commands(token_vector(line));
 			if (data->valid == 1)
@@ -35,7 +35,7 @@ void	non_interactive(void)
 		else
 			break ;
 	}
-	ft_exit("", 0);
+	ft_exit("", ft_atoi(find_export("?")));
 }
 
 // {

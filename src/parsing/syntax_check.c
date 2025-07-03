@@ -6,11 +6,18 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 15:48:23 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/02 20:44:04 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/03 15:47:38 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	syntax_print(char *error, t_data *data, int exit)
+{
+	perror(error);
+	data->valid = 0;
+	replace_export(mini_join("?=", mini_itoa(exit)));
+}
 
 void	check_repeat(t_vector *tokens)
 {
@@ -25,6 +32,12 @@ void	check_repeat(t_vector *tokens)
 	{
 		cur = tokens->data[i];
 		nx = tokens->data[i + 1];
+		if (cur->t == INPUT && nx->t == INPUT)
+		{
+			remove_elem(tokens, i);
+			nx->t = HERE_DOC;
+			nx->s = mini_strdup("<<");
+		}
 		if (cur->t == PIPE && nx->t == PIPE)
 		{
 			data->valid = 0;
@@ -62,7 +75,7 @@ int	check_heredoc(t_vector *tokens)
 		next = tokens->data[i + 1];
 		if (curr->t == HERE_DOC)
 		{
-			if (next->t != STRING && next->t != INPUT && next->t != HERE_NOEXP)
+			if (next->t != STRING && next->t != HERE_NOEXP)
 			{
 				ft_fprintf(2, "%s'\n", mini_join(TOKEN, next->s));
 				data->valid = 0;
@@ -100,6 +113,50 @@ int	check_heredoc(t_vector *tokens)
 	return (0);
 }
 
+static void	input_syntax(t_cmd *cmd, t_data *data)
+{
+	if (cmd->type == INPUT && cmd->next == EMPTY)
+			data->valid = -1;
+	else if (cmd->type == INPUT && cmd->next != FILES)
+			data->valid = -cmd->next;
+}
+
+static void output_syntax(t_cmd *cmd, t_data *data)
+{
+		if (cmd->type == OUTPUT && cmd->next == EMPTY)
+			data->valid = -1;
+		else if (cmd->type == OUTPUT && cmd->next != STRING
+			&& cmd->next != FILES)
+			data->valid = -cmd->next;
+}
+static void appen_syntax(t_cmd *cmd, t_data *data)
+{
+	if (cmd->type == APPEND && cmd->next == EMPTY)
+		data->valid = -1;
+	else if (cmd->type == APPEND && cmd->next != STRING
+		&& cmd->next != FILES)
+		data->valid = -cmd->next;
+}
+
+static void	check_files(t_cmd *cmd, t_cmd *next, t_data *data)
+{
+	if (cmd->type == INPUT)
+	{
+		if (access(next->str, R_OK) != 0)
+		{
+			syntax_print(mini_join(MS, next->str), data, 2);
+			return ;
+		}
+		cmd->next = FILES;
+		next->type = FILES;
+	}
+	if (cmd->type == OUTPUT)
+	{
+		cmd->next = FILES;
+		next->type = FILES;
+	}
+}
+
 void	check_command_syntax(t_vector *commands, t_data *data)
 {
 	size_t	i;
@@ -109,15 +166,13 @@ void	check_command_syntax(t_vector *commands, t_data *data)
 	while (i < commands->count)
 	{
 		cmd = commands->data[i];
-		if (cmd->type == INPUT && cmd->next == EMPTY)
-			data->valid = -1;
-		else if (cmd->type == INPUT && cmd->next != FILES)
-			data->valid = -cmd->next;
-		if (cmd->type == OUTPUT && cmd->next == EMPTY)
-			data->valid = -1;
-		else if (cmd->type == OUTPUT && cmd->next != STRING
-			&& cmd->next != FILES)
-			data->valid = -cmd->next;
+		if (commands->data[i + 1] && (cmd->next == STRING || cmd->next == FILES))
+			check_files(cmd, commands->data[i + 1], data);
+		if (data->valid != 1)
+			return ;
+		input_syntax(cmd, data);
+		output_syntax(cmd, data);
+		appen_syntax(cmd, data);
 		if (data->valid == -1)
 			ft_fprintf(2, "%s'\n", mini_join(TOKEN, "newline"));
 		else if (data->valid != 1 && data->valid != -1)
@@ -130,3 +185,5 @@ void	check_command_syntax(t_vector *commands, t_data *data)
 		i++;
 	}
 }
+
+

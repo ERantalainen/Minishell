@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/02 20:32:13 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/03 18:45:42 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,18 @@
 // MAKE EXCEPTONS FOR <<<A <>A ><A
 // https://www.gnu.org/software/bash/manual/bash.html#Shell-Syntax
 
-t_token	*create_token(char *s, size_t *i, t_type last)
+t_token	*create_token(char *s, size_t *i, t_type last, t_data *data)
 {
 	t_token	*new;
 
+	data->last = EMPTY;
 	new = arena_malloc(sizeof(t_token));
-	new->s = token_string(s, i);
+	new->s = token_string(s, i, last);
 	new->space = 0;
-	if (ft_strncmp(new->s, "|", 1) == 0)
+	ft_printf("Str: %s\n", s + *i);
+	if (data->tokens->count == 0 && !ft_isspace(s[*i]))
+		new->t = STRING;
+	else if (ft_strncmp(new->s, "|", 1) == 0)
 		new->t = PIPE;
 	else if (ft_strcmp(new->s, "<") == 0)
 		new->t = INPUT;
@@ -32,12 +36,10 @@ t_token	*create_token(char *s, size_t *i, t_type last)
 		new->t = HERE_DOC;
 	else if (ft_strncmp(new->s, ">>", 2) == 0)
 		new->t = APPEND;
-	else if (access(new->s, F_OK) == 0)
-		new->t = FILES;
 	else
 		new->t = STRING;
-	if ((last == HERE_DOC && new->t == STRING) && (s[(*i)] == '"'
-			|| s[(*i)] == '\''))
+	if (new->t == STRING && (last == HERE_DOC && (s[(*i)] == '"'
+			|| s[(*i)] == '\'' || data->last == HERE_NOEXP)))
 		new->t = HERE_NOEXP;
 	return (new);
 }
@@ -47,13 +49,17 @@ t_token	*create_token(char *s, size_t *i, t_type last)
 t_vector	*token_vector(char *s)
 {
 	size_t		len;
+	t_data		*data;
 	t_vector	*tokens;
 	size_t		i;
 
+	data = get_data();
 	i = 0;
 	len = ft_strlen(s);
 	tokens = new_vector(4);
-	tokens = creator(s, len, i, tokens);
+	data->tokens = tokens;
+	data->input = mini_strdup(s);
+	tokens = creator(s, len, i, data);
 	if (tokens->count == 0)
 		return (NULL);
 	check_heredoc(tokens);
@@ -63,7 +69,7 @@ t_vector	*token_vector(char *s)
 
 // Create token vector
 
-t_vector	*creator(char *s, size_t len, size_t i, t_vector *tokens)
+t_vector	*creator(char *s, size_t len, size_t i, t_data *data)
 {
 	t_token	*token;
 	bool	space;
@@ -75,13 +81,14 @@ t_vector	*creator(char *s, size_t len, size_t i, t_vector *tokens)
 			space = 1;
 		while (s[i] && ft_isspace(s[i]) == 1)
 			i++;
-		if (tokens->count == 0)
-			token = create_token(s, &i, EMPTY);
+		if (data->tokens->count == 0)
+			token = create_token(s, &i, EMPTY, data);
 		else
-			token = create_token(s, &i, token->t);
+			token = create_token(s, &i, token->t, data);
 		if (token->s && ft_strcmp(token->s, "") != 0)
 		{
-			add_elem(tokens, token);
+			printf("Adding: %s\n", token->s);
+			add_elem(data->tokens, token);
 			if (space == 1)
 			{
 				token->space = 1;
@@ -89,17 +96,20 @@ t_vector	*creator(char *s, size_t len, size_t i, t_vector *tokens)
 			}
 		}
 	}
-	return (tokens);
+	return (data->tokens);
 }
 
-char	*token_string(char *s, size_t *i)
+char	*token_string(char *s, size_t *i, t_type last)
 {
 	char	*token;
 	int		len;
+	char	quote;
 
-	if (s[(*i)] == '\'' || s[(*i)] == '"')
-		return (quoted_token(s + *i, s[(*i)], i));
+	quote = 0;
+	if (s[(*i)] == '\'' || s[(*i)] == '"' || last == HERE_DOC)
+		return (quoted_token(s + *i, s[(*i)], i, last));
 	len = word_len(s + (*i), '"');
+	token = expand_strndup(s + (*i), len);
 	token = expand_strndup(s + (*i), len);
 	(*i) += len;
 	return (token);
@@ -135,23 +145,23 @@ t_vector	*create_commands(t_vector *tokens)
 
 t_cmd	*make_cmd_str(t_vector *tokens, size_t *i)
 {
-	t_token	*token;
+	t_token	*tk;
 	t_cmd	*cmd;
 
 	cmd = arena_malloc(sizeof(t_cmd));
-	token = tokens->data[(*i)];
+	tk = tokens->data[(*i)];
 	cmd->type = STRING;
 	cmd->str = "";
-	if (access(token->s, R_OK | W_OK) != 0 || (*i == 0))
-		cmd_help(tokens, i, token, cmd);
+	if ((*i == 0) || ((access(tk->s, R_OK | W_OK) != 0 && tk->space == 1)))
+		cmd_help(tokens, i, tk, cmd);
 	else
 	{
 		cmd->type = FILES;
-		cmd->str = token->s;
+		cmd->str = tk->s;
 		(*i)++;
 	}
 	if ((*i) < tokens->count)
-		cmd->next = token->t;
+		cmd->next = tk->t;
 	else
 		cmd->next = EMPTY;
 	built_in(cmd);
@@ -173,9 +183,6 @@ t_cmd	*make_cmd_spc(t_vector *tokens, size_t *i)
 	if ((*i) < tokens->count)
 	{
 		token = tokens->data[(*i)];
-		if (cmd->type == INPUT || cmd->type == OUTPUT)
-			check_redirect(cmd, token);
-		else
 			cmd->next = token->t;
 	}
 	else

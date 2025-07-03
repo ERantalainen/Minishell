@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:12:49 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/02 20:32:33 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/03 18:45:25 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,16 +106,19 @@ typedef struct s_data
 	int				*hdfd;
 	int				line;
 	char			*directory;
+	char			*input;
 	int				hd_count;
 	t_cmd			*commands;
 	t_vector		*envv;
 	t_vector		*heredocs;
 	t_vector		*fds;
+	t_vector		*tokens;
 	char			**environ;
 	t_vector		*env_vec;
 	t_vector		*exp;
 	int				shell;
 	int				valid;
+	t_type			last;
 }					t_data;
 
 typedef struct s_pipedata
@@ -144,6 +147,7 @@ size_t				ft_stralen(char **s);
 char				*mini_substr(char const *s, unsigned int start, size_t len);
 char				**mini_split(const char *s, char c);
 char				*mini_itoa(int n);
+char				*ft_strornchr(const char *s, int one, int two, size_t n);
 
 // Helpers
 void				init_export(void);
@@ -175,10 +179,10 @@ char				*take_input(void);
 int					check_quotes(char *s);
 
 // Input
-t_token				*create_token(char *s, size_t *i, t_type last);
+t_token				*create_token(char *s, size_t *i, t_type last, t_data *data);
 t_vector			*token_vector(char *s);
-char				*token_string(char *s, size_t *i);
-t_vector			*creator(char *s, size_t len, size_t i, t_vector *tokens);
+char				*token_string(char *s, size_t *i, t_type last);
+t_vector			*creator(char *s, size_t len, size_t i, t_data *data);
 
 // Token creator
 t_vector			*create_commands(t_vector *tokens);
@@ -192,16 +196,16 @@ size_t				expanded_length(char *s, size_t n);
 
 int					check_specials(int c, int quote);
 char				*expand_strndup(char *s, size_t n);
+char				*expand_strndup(char *s, size_t n);
 char				*mini_append(char *s1, char *s2);
 
-char				*quoted_token(char *s, char quote, size_t *i);
+char				*quoted_token(char *s, char quote, size_t *i, t_type last);
 char				*mini_strndup(char *s, size_t n);
 char				*mini_strdup(char *s);
 size_t				word_len(char *s, int quote);
 t_vector			*next_check(t_vector *commands);
 
 void				check_repeat(t_vector *tokens);
-t_cmd				*check_redirect(t_cmd *cmd, t_token *token);
 size_t				quote_len(char *s, char quote);
 void				check_command_syntax(t_vector *commands, t_data *data);
 

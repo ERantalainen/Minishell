@@ -6,26 +6,13 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 15:44:37 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/02 20:32:51 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/03 18:45:52 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_cmd	*check_redirect(t_cmd *cmd, t_token *token)
-{
-	if (cmd->type == INPUT)
-	{
-		cmd->next = FILES;
-		token->t = FILES;
-	}
-	if (cmd->type == OUTPUT)
-	{
-		token->t = FILES;
-		cmd->next = FILES;
-	}
-	return (cmd);
-}
+
 
 char	*mini_append(char *s1, char *s2)
 {
@@ -40,21 +27,61 @@ char	*mini_append(char *s1, char *s2)
 	return (dup);
 }
 
-char	*quoted_token(char *s, char quote, size_t *i)
+char	*here_lim_token(char *s, size_t n, char quote)
+{
+	char	*dup;
+	size_t	i;
+	t_data	*data;
+
+	data = get_data();
+	i = 0;
+	dup = arena_malloc(n + 1);
+	while(quote != '\'' && quote != '"' && i < n)
+		quote = s[i++];
+	if (quote != '\'' && quote != '"')
+		quote = 0;
+	i = 0;
+	while (i < n)
+	{
+		if (s[i] == quote)
+			s += 1;
+		if (!s[i] || i >= n)
+			break ;
+		dup[i] = s[i];
+		i++;
+	}
+	if (quote != 0)
+		data->last = HERE_NOEXP;
+	dup[i] = '\0';
+	return (dup);
+}
+
+// Makes the string for a heredoc delimiter.
+
+char	*quoted_token(char *s, char quote, size_t *i, t_type last)
 {
 	char	*str;
 	int		pos;
 
 	pos = 1;
+	if (last == HERE_DOC)
+	{
+		str = here_lim_token(s, word_len(s, 0), quote);
+		(*i) += word_len(s, 0);
+	}
+	else
+	{
 	while (s[pos] && s[pos] != quote)
 		pos++;
 	if (quote == '\'')
 		str = mini_strndup(s + 1, pos - 1);
 	else
 		str = expand_strndup(s + 1, pos - 1);
+		str = expand_strndup(s + 1, pos - 1);
 	if (s[pos] == quote)
 		pos++;
 	(*i) += pos;
+	}
 	return (str);
 }
 
@@ -86,7 +113,7 @@ void	cmd_help(t_vector *tokens, size_t *i, t_token *token, t_cmd *cmd)
 		if (*i >= tokens->count)
 			break ;
 		token = tokens->data[(*i)];
-		if (token && access(token->s, R_OK) == 0)
+		if (token && access(token->s, R_OK) == 0 && token->space == 1)
 			break ;
 	}
 }
