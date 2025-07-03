@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/03 18:39:52 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/03 18:56:03 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ t_vector	*creator(char *s, size_t len, size_t i, t_data *data)
 			token = create_token(s, &i, token->t, data);
 		if (token->s && ft_strcmp(token->s, "") != 0)
 		{
+			printf("Adding: %s\n", token->s);
 			add_elem(data->tokens, token);
 			if (space == 1)
 			{
@@ -115,6 +116,7 @@ char	*token_string(char *s, size_t *i, t_type last)
 {
 	char	*token;
 	int		len;
+	char	quote;
 
 	if (check_empty_quote(s + *i))
 	{
