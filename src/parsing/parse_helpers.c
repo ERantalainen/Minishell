@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 15:43:47 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/03 18:55:57 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/03 19:00:24 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	check_specials(int c, int quote)
 
 // Counts the length of a single word.
 
-char	*expand_strndup(char *s, size_t n, char quote)
+char	*expand_strndup(char *s, size_t n)
 {
 	char	*dup;
 	size_t	len;
@@ -59,17 +59,15 @@ char	*expand_strndup(char *s, size_t n, char quote)
 	i = 0;
 	len = expanded_length(s, n);
 	dup = arena_malloc(len + 1);
-	printf("Expand: %s, %zu\n", s, n);
 	while (s[i] && i < n)
 	{
-		printf("Dupe: %s and %zu\n", dup, i);
 		if (s[i] == '$' && s[i + 1])
 		{
 			expans_help(s, dup, &i, &pos);
 		}
 		if (i >= n)
 			break ;
-		if (s[i] == quote)
+		if (s[i] == '"')
 			i++;
 		dup[pos++] = s[i++];
 	}
@@ -99,13 +97,9 @@ char	*expans_help(char *s, char *dup, size_t *i, size_t *pos)
 		(*i)++;
 	else
 	{
-		printf("%s\n", dup);
-		printf("exp2: %s\n", expansion);
 		(*i) += word_len(s + (*i), '\'');
-		// IT FUCKS UP SOMEWHERE HERE !!!!!!!!!!!!! FIX
-		ft_strlcat(dup, expansion, ft_strlen(dup) + ft_strlen(expansion) + 1);
+		ft_strlcat(dup, expansion, ft_strlen(expansion) + 1 + (*pos));
 		(*pos) += ft_strlen(expansion);
-		printf("dup: %s\n", dup);
 	}
 	return (expansion);
 }

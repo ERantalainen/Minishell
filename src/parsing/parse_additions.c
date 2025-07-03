@@ -6,13 +6,11 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 15:44:37 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/03 18:55:33 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/03 18:59:28 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-
 
 char	*mini_append(char *s1, char *s2)
 {
@@ -76,7 +74,6 @@ char	*quoted_token(char *s, char quote, size_t *i, t_type last)
 	if (quote == '\'')
 		str = mini_strndup(s + 1, pos - 1);
 	else
-		str = expand_strndup(s + 1, pos - 1);
 		str = expand_strndup(s + 1, pos - 1);
 	if (s[pos] == quote)
 		pos++;
