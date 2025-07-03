@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_parse_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 18:35:04 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/01 23:41:52 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/03 19:09:57 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 16:20:20 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/03 16:43:50 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/03 19:09:31 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	child_process(t_cmd **tokens, t_pipedata *p, char **env)
 			exit(errno);
 		return ;
 	}
-	path = get_bin_path(tokens[p->cmd_index]->str, env);
+	path = get_bin_path(mini_strndup(tokens[p->cmd_index]->str, word_len(tokens[p->cmd_index]->str, 0)), env);
 	open_handler(p, path);
 	if (access(p->cmd_args[0], X_OK) >= 0)
 		if (execve(p->cmd_args[0], p->cmd_args, env) < 0)
