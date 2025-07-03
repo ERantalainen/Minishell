@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   exec_parse_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 18:35:04 by jpelline          #+#    #+#             */
 /*   Updated: 2025/07/01 23:41:52 by jpelline         ###   ########.fr       */
@@ -18,16 +18,16 @@ char	**get_cmd_args(char *cmd, char *path)
 	char	**cmd_args;
 	int		i;
 
-	args = ft_split(cmd, ' ');
+	args = mini_split(cmd, ' ');
 	i = 0;
 	while (args[i])
 		i++;
 	cmd_args = arena_malloc((i + 1) * sizeof(char *));
-	cmd_args[0] = ft_strdup(path);
+	cmd_args[0] = mini_strdup(path);
 	i = 1;
 	while (args[i])
 	{
-		cmd_args[i] = ft_strdup(args[i]);
+		cmd_args[i] = mini_strdup(args[i]);
 		i++;
 	}
 	cmd_args[i] = NULL;
@@ -38,36 +38,29 @@ static char	**parse_paths(char **env)
 {
 	char	**env_paths;
 	int		i;
-	int		check;
 
-	check = 0;
 	i = 0;
 	while (env[i])
 	{
 		if (ft_strnstr(env[i], "PATH=", 5))
 		{
-			check = 1;
-			break ;
+			env_paths = mini_split(env[i] + 5, ':');
+			return (env_paths);
 		}
 		i++;
 	}
-	if (check == 0 && ft_strnstr(env[i - 1], "PATH=", 5) == NULL)
-		return (NULL);
-	env_paths = ft_split(env[i] + 5, ':');
-	return (env_paths);
+return (NULL);
 }
 
 char	*find_bin_in_path(char **env_paths, char *cmd)
 {
 	char	*current_path;
-	bool	check;
 	int		i;
 
 	i = 0;
-	check = false;
 	while (env_paths[i] != NULL)
 	{
-		current_path = ft_strjoin(env_paths[i], cmd);
+		current_path = mini_join(env_paths[i], cmd);
 		if (access(current_path, X_OK) == -1)
 		{
 			if (open(current_path, O_RDONLY) >= 0)
@@ -79,15 +72,9 @@ char	*find_bin_in_path(char **env_paths, char *cmd)
 			i++;
 		}
 		else
-		{
-			check = true;
-			break ;
-		}
-		free(current_path);
+			return (current_path);
 	}
-	if (check == false)
-		return (NULL);
-	return (current_path);
+	return (NULL);
 }
 
 char	*get_bin_path(char *cmd, char **env)
@@ -99,15 +86,16 @@ char	*get_bin_path(char *cmd, char **env)
 
 	if (access(cmd, X_OK) != -1)
 	{
-		path = ft_strdup(cmd);
+		path = mini_strdup(cmd);
 		return (NULL);
 	}
 	env_paths = parse_paths(env);
 	if (!env_paths)
 		ft_exit(mini_join(MS, mini_join(cmd, NSFOD)), 127);
-	args = ft_split(cmd, ' ');
-	temp = ft_strjoin("/", args[0]);
+	args = mini_split(cmd, ' ');
+	temp = mini_join("/", args[0]);
 	path = find_bin_in_path(env_paths, temp);
-	free(temp);
+	if (!path)
+		ft_exit_child(mini_join(cmd, ": command not found"), 127);
 	return (path);
 }

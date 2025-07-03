@@ -80,7 +80,6 @@ void	setup_child(t_cmd **tokens, t_pipedata *p, char **env, int i)
 	t_pipedata	*local_p;
 
 	p->is_builtin = false;
-	p->cmd_found = false;
 	p->pids[i] = fork();
 	if (p->pids[i] == 0)
 	{

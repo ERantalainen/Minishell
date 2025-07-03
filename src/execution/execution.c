@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 16:20:20 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/02 20:28:04 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/03 16:43:50 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,18 +68,16 @@ void	child_process(t_cmd **tokens, t_pipedata *p, char **env)
 	{
 		build_handler(tokens);
 		if (p->pipe_count > 0)
-			exit(1);
+			exit(errno);
 		return ;
 	}
-	if (p->cmd_found == false)
-		exit(1);
 	path = get_bin_path(tokens[p->cmd_index]->str, env);
 	open_handler(p, path);
 	if (access(p->cmd_args[0], X_OK) >= 0)
 		if (execve(p->cmd_args[0], p->cmd_args, env) < 0)
-			exit(1);
+			exit(errno);
 	if (execve(path, p->cmd_args, env) < 0)
-		exit(1);
+		exit(errno);
 }
 
 static void	exec_builtin(t_cmd **tokens, t_pipedata *p, char **env)
@@ -100,6 +98,7 @@ static void	exec_pipeline(t_cmd **tokens, t_pipedata *p, char **env)
 	i = 0;
 	while (i < p->pipe_count + 1)
 	{
+		p->cmd_found = false;
 		if (i < p->pipe_count)
 			if (pipe(p->pipefd[i]) < 0)
 				perror("pipe");
