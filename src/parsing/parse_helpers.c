@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 15:43:47 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/03 19:00:24 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/03 21:21:55 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ size_t	word_len(char *s, int quote)
 	i = 0;
 	while (s[i] && ft_isspace(s[i]) == 0 && !check_specials(s[i], quote))
 		i++;
-	if (i == 0 && check_specials(s[i], quote))
+	if (s[i] && i == 0 && check_specials(s[i], quote))
 	{
 		if (s[i] == '|')
 			return (1);
@@ -54,7 +54,9 @@ char	*expand_strndup(char *s, size_t n)
 	size_t	len;
 	size_t	i;
 	size_t	pos;
+	t_data	*data;
 
+	data = get_data();
 	pos = 0;
 	i = 0;
 	len = expanded_length(s, n);
@@ -65,10 +67,10 @@ char	*expand_strndup(char *s, size_t n)
 		{
 			expans_help(s, dup, &i, &pos);
 		}
-		if (i >= n)
-			break ;
-		if (s[i] == '"')
+		if (s[i] && s[i] == '"')
 			i++;
+		if (i >= n && !s[i] && pos >= len)
+			break ;
 		dup[pos++] = s[i++];
 	}
 	dup[pos] = '\0';
@@ -121,7 +123,6 @@ size_t	expanded_length(char *s, size_t n)
 		{
 			total += ft_strlen(find_export(mini_strndup(s + i + 1, quote_len(s
 								+ i, '"'))));
-			i += word_len(s + i, '"');
 		}
 		i++;
 	}
