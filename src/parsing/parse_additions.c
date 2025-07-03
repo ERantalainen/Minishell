@@ -6,32 +6,13 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 15:44:37 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/03 04:56:29 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/03 18:45:12 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_cmd	*check_redirect(t_cmd *cmd, t_token *token)
-{
-	return (cmd);
-}
 
-char	*ft_strornchr(const char *s, int one, int two, size_t n)
-{
-	unsigned int	i;
-
-	i = 0;
-	while (s[i] && i < n)
-	{
-		if (s[i] == (char) two || (s[i] == (char) one))
-			return ((char *) &s[i]);
-		i++;
-	}
-	if (s[i] == (char) two || (s[i] == (char) one) && i < n)
-		return ((char *) &s[i]);
-	return (NULL);
-}
 
 char	*mini_append(char *s1, char *s2)
 {
@@ -61,7 +42,7 @@ char	*here_lim_token(char *s, size_t n, char quote)
 		quote = 0;
 	i = 0;
 	while (i < n)
-	{		
+	{
 		if (s[i] == quote)
 			s += 1;
 		if (!s[i] || i >= n)

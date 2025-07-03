@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 15:44:11 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/02 18:31:07 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/03 15:52:32 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,9 @@ char	*here_doc(char *limiter, int index, t_type type)
 	t_data		*data;
 
 	data = get_data();
-	while (access(name_join(base, ft_itoa(filecount)), F_OK) == 0)
+	while (access(name_join(base, mini_itoa(filecount)), F_OK) == 0)
 		filecount++;
-	name = name_join(base, ft_itoa(filecount));
+	name = name_join(base, mini_itoa(filecount));
 	data->hdfd[index] = open(name, O_RDWR | O_CREAT | O_EXCL, 0600);
 	if (data->hdfd[index] < 0)
 		exit(5);

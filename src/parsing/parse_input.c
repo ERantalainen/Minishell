@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/03 04:57:18 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/03 18:44:58 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ t_token	*create_token(char *s, size_t *i, t_type last, t_data *data)
 		new->t = INPUT;
 	else if (ft_strcmp(new->s, ">") == 0)
 		new->t = OUTPUT;
+	if (ft_strncmp(new->s, "<<", 2) == 0)
 	if (ft_strncmp(new->s, "<<", 2) == 0)
 		new->t = HERE_DOC;
 	else if (ft_strncmp(new->s, ">>", 2) == 0)
@@ -184,9 +185,6 @@ t_cmd	*make_cmd_spc(t_vector *tokens, size_t *i)
 	if ((*i) < tokens->count)
 	{
 		token = tokens->data[(*i)];
-		if (cmd->type == INPUT || cmd->type == OUTPUT)
-			check_redirect(cmd, token);
-		else
 			cmd->next = token->t;
 	}
 	else
