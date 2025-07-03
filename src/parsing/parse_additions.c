@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 15:44:37 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/03 03:20:55 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/03 04:32:35 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,6 @@
 
 t_cmd	*check_redirect(t_cmd *cmd, t_token *token)
 {
-	if (cmd->type == INPUT)
-	{
-		cmd->next = FILES;
-		token->t = FILES;
-	}
-	if (cmd->type == OUTPUT && cmd->type == STRING)
-	{
-		token->t = FILES;
-		cmd->next = FILES;
-	}
 	return (cmd);
 }
 
@@ -125,7 +115,7 @@ void	cmd_help(t_vector *tokens, size_t *i, t_token *token, t_cmd *cmd)
 		if (*i >= tokens->count)
 			break ;
 		token = tokens->data[(*i)];
-		if (token && access(token->s, R_OK) == 0)
+		if (token && access(token->s, R_OK) == 0 && token->space == 1)
 			break ;
 	}
 }
