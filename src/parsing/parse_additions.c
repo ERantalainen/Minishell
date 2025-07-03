@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 15:44:37 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/03 18:45:12 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/03 18:45:52 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,8 @@ char	*quoted_token(char *s, char quote, size_t *i, t_type last)
 	if (quote == '\'')
 		str = mini_strndup(s + 1, pos - 1);
 	else
-		str = expand_strndup(s + 1, pos - 1, '"');
+		str = expand_strndup(s + 1, pos - 1);
+		str = expand_strndup(s + 1, pos - 1);
 	if (s[pos] == quote)
 		pos++;
 	(*i) += pos;
