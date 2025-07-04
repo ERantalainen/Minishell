@@ -93,7 +93,7 @@ static void check_cmd_validity(char *cmd)
 	}
 }
 
-char	*get_bin_path(char *cmd, char **env)
+char	*get_bin_path(char *cmd, char **env, t_pipedata *p)
 {
 	char	**env_paths;
 	char	**args;
@@ -115,12 +115,10 @@ char	*get_bin_path(char *cmd, char **env)
 		return (path);
 	}
 	check_cmd_validity(cmd);
-	if (access(temp, X_OK) < 0)
-	{
-		temp = mini_join("/", args[0]);
-		path = find_bin_in_path(env_paths, temp);
-		if (!path)
-			ft_exit_child(mini_join(cmd, ": command not found"), 127);
-	}
+	temp = mini_join("/", args[0]);
+	path = find_bin_in_path(env_paths, temp);
+	open_handler(p, path);
+	if (!path)
+		ft_exit_child(mini_join(cmd, ": command not found"), 127);
 	return (path);
 }

@@ -87,8 +87,8 @@ void	child_process(t_cmd **tokens, t_pipedata *p, char **env)
 		return ;
 	}
 	path = get_bin_path(mini_strndup(tokens[p->cmd_index]->str,
-				ft_strlen(tokens[p->cmd_index]->str)), env);
-	open_handler(p, path);
+				ft_strlen(tokens[p->cmd_index]->str)), env, p);
+	// open_handler(p, path);
 	if (access(p->cmd_args[0], X_OK) >= 0)
 		if (execve(p->cmd_args[0], p->cmd_args, env) < 0)
 			exit(1);

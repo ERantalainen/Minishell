@@ -270,7 +270,7 @@ char				*get_input(char **argv, int argc);
 // Execution
 void				execution(t_cmd **tokens, char **env);
 void				setup_pipeline(t_cmd **tokens, char **env);
-char				*get_bin_path(char *cmd, char **env);
+char				*get_bin_path(char *cmd, char **env, t_pipedata *p);
 char				**get_cmd_args(char *cmd, char *path);
 bool				check_for_builtin(t_cmd **tokens);
 void				find_next_cmd_index(t_cmd **tokens, t_pipedata *p);
