@@ -57,11 +57,8 @@ void	build_handler(t_cmd **cmds)
 	}
 }
 
-void	child_builds(t_cmd	**cmds, char **envi)
+void	child_builds(t_cmd	**cmds, char **envi, int i)
 {
-	size_t	i;
-
-	i = 0;
 	while (cmds[i])
 	{
 		if (cmds[i]->type == BUILTIN)
@@ -80,6 +77,7 @@ void	child_builds(t_cmd	**cmds, char **envi)
 				envi = unset_child(cmds[i]->str + 6, envi);
 			if (ft_strncmp("env", cmds[i]->str, 3) == 0)
 				env();
+			return ;
 		}
 		i++;
 	}

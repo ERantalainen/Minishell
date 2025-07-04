@@ -242,7 +242,7 @@ void				replace_export(char *key);
 
 // Built In helpers
 
-void				child_builds(t_cmd	**cmds, char **envi);
+void				child_builds(t_cmd	**cmds, char **envi, int i);
 void				built_in(t_cmd *cmd);
 void				build_handler(t_cmd **cmds);
 char				*expans_help(char *s, char *dup, size_t *i, size_t *pos);
