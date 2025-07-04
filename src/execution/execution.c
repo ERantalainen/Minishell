@@ -49,6 +49,19 @@ int	setup_cmd_to_execute(t_cmd **tokens, t_pipedata *p)
 	return (0);
 }
 
+void	setup_pipes(int in, int out, int close_in, int close_out)
+{
+	if (dup2(in, STDIN_FILENO) < 0)
+		ft_exit_child(NULL, errno);
+	if (close_in && in != STDIN_FILENO)
+		close(in);
+	if (dup2(out, STDOUT_FILENO) < 0)
+		ft_exit_child(NULL, errno);
+	if (close_out && out != STDOUT_FILENO)
+		close(out);
+}
+
+// FIX ECHO | ECHO!!!!!!!!!!!!
 void	child_process(t_cmd **tokens, t_pipedata *p, char **env)
 {
 	char	*path;
@@ -68,20 +81,20 @@ void	child_process(t_cmd **tokens, t_pipedata *p, char **env)
 	{
 		if (p->pipe_count > 0)
 		{
-			child_builds(tokens, env);
+			child_builds(tokens, env, p->cmd_index);
 			exit(ft_atoi(find_export("?")));
 		}
-		else
-			build_handler(tokens);
+		build_handler(tokens);
 		return ;
 	}
-	path = get_bin_path(mini_strndup(tokens[p->cmd_index]->str, word_len(tokens[p->cmd_index]->str, 0)), env);
+	path = get_bin_path(mini_strndup(tokens[p->cmd_index]->str,
+				word_len(tokens[p->cmd_index]->str, 0)), env);
 	open_handler(p, path);
 	if (access(p->cmd_args[0], X_OK) >= 0)
 		if (execve(p->cmd_args[0], p->cmd_args, env) < 0)
-			exit(errno);
+			exit(1);
 	if (execve(path, p->cmd_args, env) < 0)
-		exit(errno);
+		exit(1);
 }
 
 static void	exec_builtin(t_cmd **tokens, t_pipedata *p, char **env)
@@ -90,6 +103,23 @@ static void	exec_builtin(t_cmd **tokens, t_pipedata *p, char **env)
 	if (setup_cmd_to_execute(tokens, p) < 0)
 		return ;
 	child_process(tokens, p, env);
+}
+
+static void	close_all_pipes(t_pipedata *p)
+{
+	int	i;
+
+	i = 0;
+	while (i < p->pipe_count)
+	{
+		close(p->pipefd[i][READ]);
+		close(p->pipefd[i][WRITE]);
+		i++;
+	}
+	if (p->infile != STDIN_FILENO)
+		close(p->infile);
+	if (p->outfile != STDOUT_FILENO)
+		close(p->outfile);
 }
 
 static void	exec_pipeline(t_cmd **tokens, t_pipedata *p, char **env)
@@ -112,13 +142,11 @@ static void	exec_pipeline(t_cmd **tokens, t_pipedata *p, char **env)
 		else
 			setup_child(tokens, p, env, i);
 		if (p->pipe_count > 0)
-		{
 			find_next_cmd_index(tokens, p);
-			close_unused_pipes(p, i);
-		}
 		p->pipe_index++;
 		i++;
 	}
+	close_all_pipes(p);
 	if (p->pids[0])
 		wait_for_children(p, status);
 }
@@ -126,8 +154,8 @@ static void	exec_pipeline(t_cmd **tokens, t_pipedata *p, char **env)
 void	execution(t_cmd **tokens, char **env)
 {
 	t_pipedata	*p;
-	int			i;
 	t_data		*data;
+	int			i;
 
 	data = get_data();
 	if (data->valid != 1)

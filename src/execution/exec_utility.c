@@ -43,19 +43,30 @@ void	wait_for_children(t_pipedata *p, int status)
 	{
 		ignore();
 		if (waitpid(p->pids[i], &status, 0) < 0)
-			exit(100);
+			exit(1);
 		child_died(status);
 		catcher();
 		i++;
 	}
 }
 
-void	close_unused_pipes(t_pipedata *p, int index)
+void close_unused_pipes(t_pipedata *p, int index)
 {
-	if (index > 0)
-		close(p->pipefd[index - 1][READ]);
-	if (index < p->pipe_count)
-		close(p->pipefd[index][WRITE]);
+    int i;
+    
+    i = 0;
+    while (i < p->pipe_count)
+    {
+        // Close read end if this process shouldn't read from this pipe
+        if (i != index - 1)
+            close(p->pipefd[i][READ]);
+            
+        // Close write end if this process shouldn't write to this pipe  
+        if (i != index)
+            close(p->pipefd[i][WRITE]);
+            
+        i++;
+    }
 }
 
 void	init_pipes(t_pipedata *p)

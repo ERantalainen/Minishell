@@ -30,7 +30,7 @@ void	open_handler(t_pipedata *p, const char *path)
 					'\\')))
 		{
 			ft_fprintf(2, "%s: No such file or directory\n", p->cmd_args[0]);
-			exit(1);
+			exit(2);
 		}
 	}
 }
@@ -43,12 +43,14 @@ void	open_file(t_cmd **tokens, t_pipedata *p, int settings, int file)
 	{
 		file = open(tokens[p->index + 1]->str, settings);
 		if (file < 0)
-		{
-			fprintf(stdout, "errno %d\n", errno);
-		}
+			exit(1);
 	}
 	else
+	{
 		file = open(tokens[p->index + 1]->str, settings, 0644);
+		if (file < 0)
+			exit(1);
+	}
 }
 
 void	check_for_redirects(t_cmd **tokens, t_pipedata *p)
@@ -67,18 +69,6 @@ void	check_for_redirects(t_cmd **tokens, t_pipedata *p)
 			open_file(tokens, p, INPUT_CONF, p->infile);
 		p->index++;
 	}
-}
-
-void	setup_pipes(int in, int out, int close_in, int close_out)
-{
-	if (dup2(in, STDIN_FILENO) < 0)
-		ft_exit_child(NULL, 1);
-	if (close_in && in != STDIN_FILENO)
-		close(in);
-	if (dup2(out, STDOUT_FILENO) < 0)
-		ft_exit_child("", 1);
-	if (close_out && out != STDOUT_FILENO)
-		close(out);
 }
 
 void	setup_child(t_cmd **tokens, t_pipedata *p, char **env, int i)
