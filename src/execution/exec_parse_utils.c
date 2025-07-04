@@ -77,6 +77,22 @@ char	*find_bin_in_path(char **env_paths, char *cmd)
 	return (NULL);
 }
 
+static void check_cmd_validity(char *cmd)
+{
+	int i = 0;
+	while (cmd[i])
+	{
+		if (ft_isspace(cmd[i]))
+		{
+			while (ft_isspace(cmd[i++]))
+				if (!cmd[i])
+					ft_exit_child(mini_join(cmd, ": command not found"), 127);
+		}
+		else
+			i++;
+	}
+}
+
 char	*get_bin_path(char *cmd, char **env)
 {
 	char	**env_paths;
@@ -95,6 +111,7 @@ char	*get_bin_path(char *cmd, char **env)
 	args = mini_split(cmd, ' ');
 	temp = mini_join("/", args[0]);
 	path = find_bin_in_path(env_paths, temp);
+	check_cmd_validity(cmd);
 	if (!path)
 		ft_exit_child(mini_join(cmd, ": command not found"), 127);
 	return (path);
