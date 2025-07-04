@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 16:20:20 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/03 19:09:31 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/04 15:40:15 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,13 @@ void	child_process(t_cmd **tokens, t_pipedata *p, char **env)
 		close_unused_pipes(p, p->pipe_index);
 	if (p->is_builtin == true)
 	{
-		build_handler(tokens);
 		if (p->pipe_count > 0)
-			exit(errno);
+		{
+			child_builds(tokens, env);
+			exit(ft_atoi(find_export("?")));
+		}
+		else
+			build_handler(tokens);
 		return ;
 	}
 	path = get_bin_path(mini_strndup(tokens[p->cmd_index]->str, word_len(tokens[p->cmd_index]->str, 0)), env);

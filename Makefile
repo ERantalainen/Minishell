@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+         #
+#    By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/03 18:36:06 by jpelline          #+#    #+#              #
-#    Updated: 2025/07/02 01:27:33 by erantala         ###   ########.fr        #
+#    Updated: 2025/07/04 15:26:08 by erantala         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -70,6 +70,7 @@ SRCS_BUILTIN := \
 	pwd.c \
 	cd.c \
 	export.c \
+	export_help.c \
 	built_in.c \
 	env.c \
 	unset.c \

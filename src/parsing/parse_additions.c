@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 15:44:37 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/03 18:59:28 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/04 16:55:05 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ size_t	quote_len(char *s, char quote)
 		s += 1;
 	if (s[pos] == '"')
 		s += 1;
-	while (s[pos] && ft_isspace(s[pos]) == 0 && s[pos] != quote)
+	while (s[pos] && s[pos] != quote)
 		pos++;
 	return (pos);
 }
@@ -106,6 +106,7 @@ void	cmd_help(t_vector *tokens, size_t *i, t_token *token, t_cmd *cmd)
 			cmd->str = mini_append(cmd->str, token->s);
 		else
 			cmd->str = mini_join(cmd->str, token->s);
+		built_in(cmd);
 		(*i)++;
 		if (*i >= tokens->count)
 			break ;

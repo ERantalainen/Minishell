@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 13:56:30 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/02 18:31:59 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/04 16:07:48 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	built_in(t_cmd *cmd)
 		return ;
 	while (i < 7)
 	{
-		if (ft_strncmp(cmd->str, built[i], word_len(cmd->str, '"')) == 0)
+		if (ft_strncmp(cmd->str, built[i], ft_strlen(cmd->str)) == 0)
 			cmd->type = BUILTIN;
 		i++;
 	}
@@ -50,6 +50,34 @@ void	build_handler(t_cmd **cmds)
 				make_export(cmds[i]->str + 7);
 			if (ft_strncmp("unset", cmds[i]->str, 5) == 0)
 				unset(cmds[i]->str + 6);
+			if (ft_strncmp("env", cmds[i]->str, 3) == 0)
+				env();
+		}
+		i++;
+	}
+}
+
+void	child_builds(t_cmd	**cmds, char **envi)
+{
+	size_t	i;
+
+	i = 0;
+	while (cmds[i])
+	{
+		if (cmds[i]->type == BUILTIN)
+		{
+			if (ft_strncmp("echo", cmds[i]->str, 4) == 0)
+				echo(cmds, i);
+			if (ft_strncmp("exit", cmds[i]->str, 4) == 0)
+				ft_exit("exit", exit_calci(cmds[i]->str));
+			if (ft_strncmp("cd", cmds[i]->str, 2) == 0)
+				cd(cmds, i);
+			if (ft_strncmp("pwd", cmds[i]->str, 3) == 0)
+				pwd();
+			if (ft_strncmp("export", cmds[i]->str, 6) == 0)
+				envi = export_to_arr(cmds[i]->str + 7, envi);
+			if (ft_strncmp("unset", cmds[i]->str, 5) == 0)
+				envi = unset_child(cmds[i]->str + 6, envi);
 			if (ft_strncmp("env", cmds[i]->str, 3) == 0)
 				env();
 		}

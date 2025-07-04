@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/03 21:12:09 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/04 16:55:24 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,27 @@ char	*token_string(char *s, size_t *i, t_type last)
 
 // Create a string for the token
 
+t_cmd	*first_cmd(t_vector *tokens, size_t *i)
+{
+	t_cmd	*cmd;
+	t_token	*curr;
+
+	cmd = arena_malloc(sizeof(t_cmd));
+	curr = tokens->data[*i];
+	cmd->str = curr->s;
+	cmd->type = curr->t;
+	(*i)++;
+	if (*i < tokens->count)
+	{
+		curr = tokens->data[*i];
+		cmd->next = curr->t;
+	}
+	else
+		cmd->next = EMPTY;
+	built_in(cmd);
+	return (cmd);
+}
+
 t_vector	*create_commands(t_vector *tokens)
 {
 	t_vector	*commands;
@@ -139,7 +160,9 @@ t_vector	*create_commands(t_vector *tokens)
 	if (data->valid == 0 || !tokens)
 		return (NULL);
 	i = 0;
-	commands = new_vector(tokens->count + 1);
+	commands = new_vector(tokens->count);
+	if (data->input[0] == '"' || data->input[0] == '\'')
+		add_elem(commands, first_cmd(tokens, &i));
 	while (i < tokens->count && tokens->data[i] != NULL)
 	{
 		curr = tokens->data[i];

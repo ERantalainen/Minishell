@@ -6,15 +6,18 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 15:48:23 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/03 15:47:38 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/04 16:53:02 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	syntax_print(char *error, t_data *data, int exit)
+static void	syntax_print(char *error, t_data *data, int exit, bool per)
 {
-	perror(error);
+	if (per == 1)
+		perror(error);
+	else
+		ft_fprintf(2, "%s\n", error);
 	data->valid = 0;
 	replace_export(mini_join("?=", mini_itoa(exit)));
 }
@@ -39,10 +42,7 @@ void	check_repeat(t_vector *tokens)
 			nx->s = mini_strdup("<<");
 		}
 		if (cur->t == PIPE && nx->t == PIPE)
-		{
-			data->valid = 0;
-			ft_fprintf(2, "%s\n", mini_join(TOKEN, "|'"));
-		}
+			syntax_print(mini_join(TOKEN, "|'"), data, 127, 0);
 		if (data->valid == 0)
 			return ;
 		i++;
@@ -144,7 +144,7 @@ static void	check_files(t_cmd *cmd, t_cmd *next, t_data *data)
 	{
 		if (access(next->str, R_OK) != 0)
 		{
-			syntax_print(mini_join(MS, next->str), data, 2);
+			syntax_print(mini_join(MS, next->str), data, 2, 1);
 			return ;
 		}
 		cmd->next = FILES;

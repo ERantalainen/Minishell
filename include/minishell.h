@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:12:49 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/03 18:55:24 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/04 15:51:54 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,8 @@ typedef enum e_type
 	HERE_NOEXP,
 	STRING,
 	FILES,
-	BUILTIN
+	BUILTIN,
+	QUOTED
 }					t_type;
 
 typedef struct s_token
@@ -224,22 +225,34 @@ char				*name_join(char const *s1, char const *s2);
 void				fix_lines(char **file, size_t i, char *name, t_data *data);
 
 // Built Ins
-void				built_in(t_cmd *cmd);
-void				build_handler(t_cmd **cmds);
+
 void				echo(t_cmd **cmd, int i);
 void				pwd(void);
 void				unset(char *key);
 void				cd(t_cmd **cmd, int i);
 void				env(void);
 void				export(char *export);
+char				**export_to_arr(char *key, char **exports);
+char				**unset_child(char	*key, char **envi);
 char				*find_export(char *key);
-size_t				key_len(char *s);
 void				make_export(char *command);
 void				replace_export(char *key);
+
+
+// Built In helpers
+
+void				child_builds(t_cmd	**cmds, char **envi);
+void				built_in(t_cmd *cmd);
+void				build_handler(t_cmd **cmds);
 char				*expans_help(char *s, char *dup, size_t *i, size_t *pos);
 void				increase_shell_lvl(void);
 int					exit_calci(char *cmd);
 char				*mini_join(char const *s1, char const *s2);
+char				**ft_stradd(char **s, char *line);
+char				**replace_line(char **s, char *line, size_t i);
+int					find_line(char	**line, char *key);
+size_t				key_len(char *s);
+char				**ft_strremove(char	**s, int i);
 
 // Signals
 void				catcher(void);

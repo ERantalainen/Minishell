@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 22:37:46 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/26 15:26:51 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/04 15:32:26 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,4 +33,16 @@ void	unset(char *key)
 		i++;
 	}
 	return ;
+}
+
+char	**unset_child(char	*key, char **envi)
+{
+	int	i;
+
+	i = find_line(envi, key);
+	if (i == -1)
+		exit(1);
+	else
+		ft_strremove(envi, i);
+	exit (0);
 }
