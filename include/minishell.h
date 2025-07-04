@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:12:49 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/04 15:51:54 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/04 18:44:00 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@
 # define HRLIM "minishell: maximum here-document count exceeded\n"
 # define PRMD "minishell: Permission denied"
 # define NSFOD ": No such file or directory"
+# define AMBG ": ambiguous redirect"
 
 # define HDPROMPT "\001\033[0;32m\002heredoc>\001\033[0m\002 "
 # define RDPROMPT "\001\033[0;36m\002minishell>\001\033[0m\002 "
@@ -188,7 +189,7 @@ t_vector			*creator(char *s, size_t len, size_t i, t_data *data);
 // Token creator
 t_vector			*create_commands(t_vector *tokens);
 void				cmd_help(t_vector *tks, size_t *i, t_token *tk, t_cmd *cm);
-t_cmd				*make_cmd_spc(t_vector *tokens, size_t *i);
+t_cmd				*make_cmd_spc(t_vector *tokens, size_t *i, t_data *data);
 t_cmd				*make_cmd_str(t_vector *tokens, size_t *i, t_data *data);
 
 // Command creator
@@ -285,6 +286,7 @@ void				setup_child(t_cmd **tokens, t_pipedata *p, char **env,
 						int i);
 int					setup_cmd_to_execute(t_cmd **tokens, t_pipedata *p);
 void				child_process(t_cmd **tokens, t_pipedata *p, char **env);
+char				*ambigous(char *s, size_t *i);
 
 // Cleaner
 void				clean_heredoc(void);

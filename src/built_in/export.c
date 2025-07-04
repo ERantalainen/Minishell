@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:12:54 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/04 15:16:38 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/04 18:18:06 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,24 @@ char	*find_export(char *key)
 {
 	t_data	*data;
 	size_t	i;
+	size_t	len;
 	char	*var;
 
 	data = get_data();
 	if (!key)
 		return ("");
+	if (ft_strlen(key) == 1)
+		return (mini_strdup("$"));
 	i = 0;
 	if (key[0] == '$')
 		key += 1;
 	while (i < data->env_vec->count)
 	{
 		var = data->env_vec->data[i];
-		if (ft_strncmp(key, var, key_len(var)) == 0)
+		len = key_len(var);
+		if (key_len(key) > key_len(var))
+			len = key_len(key);
+		if (ft_strncmp(key, var, len) == 0)
 			return (var + (key_len(var) + 1));
 		i++;
 	}
@@ -52,7 +58,8 @@ size_t	key_len(char *s)
 	size_t	i;
 
 	i = 0;
-	while (s[i] && s[i] != '=' && !ft_isspace(s[i]))
+	while ((s[i] && s[i] != '=' && !ft_isspace(s[i]) && s[i] != '$')
+		&& s[i] != '"' && s[i] != '\'')
 		i++;
 	return (i);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utility2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 21:19:02 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/02 21:20:40 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/04 17:34:18 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,13 @@ void	open_file(t_cmd **tokens, t_pipedata *p, int settings, int file)
 	if (file)
 		close(file);
 	if (tokens[p->index]->type == INPUT || tokens[p->index]->type == HERE_DOC)
+	{
 		file = open(tokens[p->index + 1]->str, settings);
+		if (file < 0)
+		{
+			fprintf(stdout, "errno %d\n", errno);
+		}
+	}
 	else
 		file = open(tokens[p->index + 1]->str, settings, 0644);
 }
