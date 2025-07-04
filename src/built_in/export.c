@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:12:54 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/04 21:23:41 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/05 00:06:33 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ size_t	key_len(char *s)
 	size_t	i;
 
 	i = 0;
+	if (s[i] == '$' && s[i + 1] == '"')
+		return (2);
 	if (s[i] == '$')
 		i++;
 	while ((s[i] && s[i] != '=' && !ft_isspace(s[i]) && s[i] != '$')

@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 15:43:47 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/04 21:07:24 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/04 23:57:12 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,12 @@ char	*expand_strndup(char *s, size_t n)
 		{
 			expans_help(s, dup, &i, &pos);
 		}
+		else
+			dup[pos++] = s[i++];
 		while (s[i] && s[i] == '"')
 			break ;
 		if (i >= len || !s[i] || pos >= len)
 			break ;
-		dup[pos++] = s[i++];
 	}
 	dup[pos] = '\0';
 	return (dup);
@@ -118,9 +119,10 @@ size_t	expanded_length(char *s, size_t n)
 	{
 		if (s[i] == '$')
 		{
-			total += ft_strlen(find_export(mini_strndup(s + i + 1, quote_len(s
-								+ i, '"'))));
-			i += quote_len(s + i, '"');
+			total += ft_strlen(find_export(mini_strndup(s + i, key_len(s + i))));
+			ft_printf("Len: %zu\n", i);
+			i += key_len(s + i);
+			ft_printf("Len: %zu\n", i);
 		}
 		else
 		{

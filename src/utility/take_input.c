@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 02:49:43 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/04 20:13:49 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/05 00:55:40 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,23 +39,31 @@ char	*take_input(void)
 
 int	check_quotes(char *s)
 {
-	int	sgl;
-	int	dbl;
-	int	i;
-
+	int		i;
+	bool	syntax;
+	char	quote;
+	
+	syntax = 1;
 	i = 0;
-	sgl = 0;
-	dbl = 0;
 	while (s[i])
 	{
-		if (s[i] == '\'')
-			sgl++;
-		if (s[i] == '"')
-			dbl++;
+		if (s[i] == '"' || s[i] == '\'')
+		{
+			quote = s[i];
+			i++;
+			syntax = 0;
+			while (s[i] && s[i] != quote)
+				i++;
+			if (!s[i])
+				break;
+			syntax = 1;
+		}
 		i++;
 	}
-	if (sgl % 2 == 0 && dbl % 2 == 0)
-		return (0);
-	ft_fprintf(2, "Syntax error unclosed quotes\n");
-	return (1);
+	if (syntax == 0)
+	{
+		ft_fprintf(2, "Syntax error unclosed quotes\n");
+		return (1);
+	}
+	return (0);
 }
