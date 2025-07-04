@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/04 18:45:41 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/04 19:50:30 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ t_token	*create_token(char *s, size_t *i, t_type last, t_data *data)
 	if (new->t == STRING && (last == HERE_DOC && (s[(*i)] == '"'
 			|| s[(*i)] == '\'' || data->last == HERE_NOEXP)))
 		new->t = HERE_NOEXP;
-	puts(new->s);
 	return (new);
 }
 
@@ -123,11 +122,13 @@ char	*token_string(char *s, size_t *i, t_type last)
 		*i += 2;
 		return ("");
 	}
-	if ((last == INPUT || last == OUTPUT) && s[*i] == '$')
-		if (ambigous(s, i) != NULL)
+	if ((last == INPUT || last == OUTPUT || last == APPEND) && s[*i] == '$')
+		if (ambigous(s, *i) != NULL)
 			return (NULL);
 	if (s[(*i)] == '\'' || s[(*i)] == '"' || last == HERE_DOC)
  		return (quoted_token(s + *i, s[(*i)], i, last));
+	if (!s[*i])
+		return (NULL);
 	len = word_len(s + (*i), 0);
 	token = expand_strndup(s + (*i), len);
 	(*i) += len;

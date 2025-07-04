@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:12:49 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/04 18:44:00 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/04 19:33:31 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -286,7 +286,7 @@ void				setup_child(t_cmd **tokens, t_pipedata *p, char **env,
 						int i);
 int					setup_cmd_to_execute(t_cmd **tokens, t_pipedata *p);
 void				child_process(t_cmd **tokens, t_pipedata *p, char **env);
-char				*ambigous(char *s, size_t *i);
+char				*ambigous(char *s, size_t i);
 
 // Cleaner
 void				clean_heredoc(void);
