@@ -42,14 +42,10 @@ void	open_file(t_cmd **tokens, t_pipedata *p, int settings, int file)
 	if (tokens[p->index]->type == INPUT || tokens[p->index]->type == HERE_DOC)
 	{
 		file = open(tokens[p->index + 1]->str, settings);
-		if (file < 0)
-			exit(1);
 	}
 	else
 	{
 		file = open(tokens[p->index + 1]->str, settings, 0644);
-		if (file < 0)
-			exit(1);
 	}
 }
 

@@ -61,7 +61,6 @@ void	setup_pipes(int in, int out, int close_in, int close_out)
 		close(out);
 }
 
-// FIX ECHO | ECHO!!!!!!!!!!!!
 void	child_process(t_cmd **tokens, t_pipedata *p, char **env)
 {
 	char	*path;
@@ -88,7 +87,7 @@ void	child_process(t_cmd **tokens, t_pipedata *p, char **env)
 		return ;
 	}
 	path = get_bin_path(mini_strndup(tokens[p->cmd_index]->str,
-				word_len(tokens[p->cmd_index]->str, 0)), env);
+				ft_strlen(tokens[p->cmd_index]->str)), env);
 	open_handler(p, path);
 	if (access(p->cmd_args[0], X_OK) >= 0)
 		if (execve(p->cmd_args[0], p->cmd_args, env) < 0)
@@ -142,7 +141,10 @@ static void	exec_pipeline(t_cmd **tokens, t_pipedata *p, char **env)
 		else
 			setup_child(tokens, p, env, i);
 		if (p->pipe_count > 0)
+		{
 			find_next_cmd_index(tokens, p);
+			close_unused_pipes(p, p->pipe_index);
+		}
 		p->pipe_index++;
 		i++;
 	}
