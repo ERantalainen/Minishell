@@ -103,16 +103,24 @@ char	*get_bin_path(char *cmd, char **env)
 	if (access(cmd, X_OK) != -1)
 	{
 		path = mini_strdup(cmd);
-		return (NULL);
+		return (path);
 	}
 	env_paths = parse_paths(env);
 	if (!env_paths)
 		ft_exit(mini_join(MS, mini_join(cmd, NSFOD)), 127);
 	args = mini_split(cmd, ' ');
-	temp = mini_join("/", args[0]);
-	path = find_bin_in_path(env_paths, temp);
+	if (access(args[0], X_OK) != -1)
+	{
+		path = mini_strdup(args[0]);
+		return (path);
+	}
 	check_cmd_validity(cmd);
-	if (!path)
-		ft_exit_child(mini_join(cmd, ": command not found"), 127);
+	if (access(temp, X_OK) < 0)
+	{
+		temp = mini_join("/", args[0]);
+		path = find_bin_in_path(env_paths, temp);
+		if (!path)
+			ft_exit_child(mini_join(cmd, ": command not found"), 127);
+	}
 	return (path);
 }
