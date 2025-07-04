@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 01:00:50 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/02 01:56:30 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/04 04:24:41 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,4 +89,25 @@ char	**strarm(char **s, size_t i)
 	}
 	s[i] = NULL;
 	return (s);
+}
+
+void	empty_export_char(char **s)
+{
+	size_t	i;
+	char	*line;
+
+	i = 0;
+	while (s[i])
+	{
+		line = s[i];
+		if (ft_strncmp(line, "?=", 2) != 0 && ft_strncmp(line, "_", 1) != 0)
+		{
+			write(STDOUT_FILENO, "declare -x ", 11);
+			write(STDOUT_FILENO, line, key_len(line) + 1);
+			ft_putchar_fd('"', STDOUT_FILENO);
+			line += key_len(line) + 1;
+			ft_printf("%s\"\n", line);
+		}
+		i++;
+	}
 }

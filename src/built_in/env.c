@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 21:19:17 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/02 00:53:43 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/04 04:22:42 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,21 @@ void	env(void)
 	while (i < data->env_vec->count)
 	{
 		line = data->env_vec->data[i];
+		if (ft_strncmp(line, "?=", 2) != 0)
+			printf("%s\n", line);
+		i++;
+	}
+}
+
+void	env_char(char **s)
+{
+	char	*line;
+	size_t	i;
+
+	i = 0;
+	while (s[i])
+	{
+		line = s[i];
 		if (ft_strncmp(line, "?=", 2) != 0)
 			printf("%s\n", line);
 		i++;
