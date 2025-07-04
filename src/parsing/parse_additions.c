@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 15:44:37 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/04 18:41:28 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/04 21:32:04 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,31 @@ char	*here_lim_token(char *s, size_t n, char quote)
 
 // Makes the string for a heredoc delimiter.
 
+char	*expand_quotes(char *s)
+{
+	size_t	i;
+	char	*dupe;
+	char	*exp;
+
+	i = 0;
+	dupe = "";
+	while (s[i])
+	{
+		if (s[i] == '$')
+		{
+			exp = find_export(mini_strndup(s + i, key_len(s + i)));
+			dupe = mini_join(dupe, exp);
+			i += key_len(s + i);
+		}
+		else
+		{
+			dupe = mini_join(dupe, mini_strndup(&s[i], 1));
+			i++;
+		}
+	}
+	return (dupe);
+}
+
 char	*quoted_token(char *s, char quote, size_t *i, t_type last)
 {
 	char	*str;
@@ -69,15 +94,15 @@ char	*quoted_token(char *s, char quote, size_t *i, t_type last)
 	}
 	else
 	{
-	while (s[pos] && s[pos] != quote)
-		pos++;
-	if (quote == '\'')
-		str = mini_strndup(s + 1, pos - 1);
-	else
-		str = expand_strndup(s + 1, pos - 1);
-	if (s[pos] == quote)
-		pos++;
-	(*i) += pos;
+		while (s[pos] && s[pos] != quote)
+			pos++;
+		if (quote == '\'')
+			str = mini_strndup(s + 1, pos - 1);
+		else
+			str = expand_quotes(mini_strndup(s + 1, pos - 1));
+		if (s[pos] == quote)
+			pos++;
+		(*i) += pos;
 	}
 	return (str);
 }
@@ -100,8 +125,6 @@ size_t	quote_len(char *s, char quote)
 
 void	cmd_help(t_vector *tokens, size_t *i, t_token *token, t_cmd *cmd)
 {
-	puts("in cmd help");
-	puts(token->s);
 	while ((*i) < tokens->count && (token->t == STRING || token->t == FILES))
 	{
 		if (token->space == 1)

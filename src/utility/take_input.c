@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 02:49:43 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/02 18:47:18 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/04 20:13:49 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 char	*take_input(void)
 {
 	char	*input;
-
+	char	*ret;
 	while (1)
 	{
 		input = readline(RDPROMPT);
@@ -30,7 +30,9 @@ char	*take_input(void)
 				free(input);
 				return (NULL);
 			}
-			return (input);
+		ret = mini_strdup(input);
+		free(input);
+		return (ret);
 		}
 	}
 }

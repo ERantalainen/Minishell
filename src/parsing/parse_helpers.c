@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 15:43:47 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/04 18:04:00 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/04 21:07:24 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,15 +61,15 @@ char	*expand_strndup(char *s, size_t n)
 	i = 0;
 	len = expanded_length(s, n);
 	dup = arena_malloc(len + 1);
-	while (s[i] && i < n)
+	while (s[i] && i < len)
 	{
 		if (s[i] == '$' && s[i + 1])
 		{
 			expans_help(s, dup, &i, &pos);
 		}
-		if (s[i] && s[i] == '"')
-			i++;
-		if (i >= n && !s[i] && pos >= len)
+		while (s[i] && s[i] == '"')
+			break ;
+		if (i >= len || !s[i] || pos >= len)
 			break ;
 		dup[pos++] = s[i++];
 	}
@@ -92,10 +92,9 @@ char	*expans_help(char *s, char *dup, size_t *i, size_t *pos)
 		j++;
 	}
 	if (quotes % 2 == 0 || ft_isalnum(s[*i + 1]) || s[*i + 1] == '?')
-		expansion = find_export(mini_strndup((s + (*i)), key_len(s + *i + 1) + 1));
+		expansion = find_export(mini_strndup((s + (*i)), key_len(s + *i)));
 	else
 		expansion = mini_strdup("$");
-	(*i)++;
 	(*i) += key_len(s + *i);
 	ft_strlcat(dup, expansion, ft_strlen(expansion) + 1 + (*pos));
 	(*pos) += ft_strlen(expansion);
@@ -110,19 +109,26 @@ size_t	expanded_length(char *s, size_t n)
 {
 	size_t	i;
 	size_t	total;
+	size_t	other;
 
 	i = 0;
 	total = 0;
+	other = 0;
 	while (s[i] && i < n)
 	{
 		if (s[i] == '$')
 		{
 			total += ft_strlen(find_export(mini_strndup(s + i + 1, quote_len(s
 								+ i, '"'))));
+			i += quote_len(s + i, '"');
 		}
-		i++;
+		else
+		{
+			other++;
+			i++;
+		}
 	}
-	return (i + total);
+	return (other + total);
 }
 
 // Get total length of a token with expansions.
