@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:34:05 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/02 00:46:57 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/05 04:14:12 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,18 @@
 
 static void	change_dir(char *path, t_data *data)
 {
+	size_t	i;
+
+	i = 0;
+	while (path[i])
+	{
+		if (ft_isspace(path[i]))
+		{
+			ft_fprintf(STDERR_FILENO, "minishell: cd: HOME not set\n");
+			return ;
+		}
+		i++;
+	}
 	if (chdir(path) == -1)
 	{
 		perror((mini_join("minishell: cd: ", path)));
@@ -28,12 +40,34 @@ static void	change_dir(char *path, t_data *data)
 	}
 }
 
+static char	*cd_make_path(t_cmd **cmd, int i)
+{
+	char	*path;
+
+	path = "";
+	if (cmd[i]->next == EMPTY)
+		return (cmd[i]->str);
+	while(cmd[i] && cmd[i]->type == FILES)
+	{
+		if(cmd[i]->str[0] == '/')
+			path = mini_join(path, cmd[i]->str);
+		else
+		{
+			ft_fprintf(2, "%s\n", mini_join(MS, MARG));
+			return (NULL);
+		}
+		i++;
+	}
+	return (path);
+}
+
 void	cd(t_cmd **cmd, int i)
 {
 	t_data	*data;
 	char	*path;
 
 	data = get_data();
+
 	if ((cmd[i]->next != FILES && cmd[i]->next != STRING)
 		&& ft_strlen(cmd[i]->str) == 2)
 	{
@@ -44,12 +78,13 @@ void	cd(t_cmd **cmd, int i)
 			return ;
 		}
 	}
-	else if (cmd[i]->next == FILES)
-		path = cmd[i + 1]->str;
+	else if (cmd[i]->next == FILES && ft_strlen(cmd[i]->str) == 2)
+		path = cd_make_path(cmd, i + 1);
 	else
 	{
 		cmd[i]->str += 3;
 		path = cmd[i]->str;
 	}
-	change_dir(path, data);
+	if (path)
+		change_dir(path, data);
 }
