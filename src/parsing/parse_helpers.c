@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 15:43:47 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/04 23:57:12 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/05 03:26:37 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ char	*expand_strndup(char *s, size_t n)
 	char	*dup;
 	size_t	len;
 	size_t	i;
+	int b = 0;
 	size_t	pos;
 	t_data	*data;
 
@@ -61,17 +62,13 @@ char	*expand_strndup(char *s, size_t n)
 	i = 0;
 	len = expanded_length(s, n);
 	dup = arena_malloc(len + 1);
-	while (s[i] && i < len)
+	while (s[i] && i < n)
 	{
 		if (s[i] == '$' && s[i + 1])
-		{
 			expans_help(s, dup, &i, &pos);
-		}
 		else
 			dup[pos++] = s[i++];
-		while (s[i] && s[i] == '"')
-			break ;
-		if (i >= len || !s[i] || pos >= len)
+		if (s[i] && s[i] == '"')
 			break ;
 	}
 	dup[pos] = '\0';
@@ -111,18 +108,19 @@ size_t	expanded_length(char *s, size_t n)
 	size_t	i;
 	size_t	total;
 	size_t	other;
+	char	*exp;
 
 	i = 0;
 	total = 0;
 	other = 0;
 	while (s[i] && i < n)
 	{
-		if (s[i] == '$')
+		if (s[i] == '$' && s[i + 1] != 0)
 		{
-			total += ft_strlen(find_export(mini_strndup(s + i, key_len(s + i))));
-			ft_printf("Len: %zu\n", i);
+			exp = find_export(mini_strndup(s + i, key_len(s + i)));
+			if (ft_strcmp(exp, "") != 0)
+				total += ft_strlen(exp);
 			i += key_len(s + i);
-			ft_printf("Len: %zu\n", i);
 		}
 		else
 		{

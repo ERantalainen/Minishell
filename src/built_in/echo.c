@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:34:01 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/03 15:49:59 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/05 02:57:58 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,27 +37,57 @@ static int	option_quotes(t_data *data)
 	return (1);
 }
 
+static int	echo_quotes(char *command, t_data *data)
+{
+	size_t	i;
+	bool	quote;
+	char	*check;
+
+	(void)command;
+	check = ft_strnstr(data->input, "echo", ft_strlen(data->input));
+	data->input = check + 4;
+	quote = 0;
+	i = 0;
+	while (check[i])
+	{
+		while (check[i] == ' ')
+			i++;
+		if (check[i] == '"' || check[i] == '\'')
+			quote = 1;
+		while (check[i] && quote == 1)
+		{
+			if (ft_isspace(check[i]))
+				return (0);
+			i++;
+			if (check[i] == '\'' || check[i] == '"')
+				quote = 0;
+		}
+		i++;
+	}
+	return (1);
+}
 
 static	void options(char *command, int *i, bool *nl)
 {
 	t_data	*data;
 
 	data = get_data();
-	if (!option_quotes(data))
-		return ;
-	while (command[*i] && command[*i] == ' ')
-		(*i)++;
 	if ((command[*i] == '-' && command[*i + 1] == 'n'))
 	{
-		while ((command[*i] == 'n' && command[*i - 1] != ' ')
-			|| command[*i] == ' '
+		while (((command[*i] == 'n' && command[*i - 1] != ' ')
+			|| (command[*i] == ' ' && command[*i + 1] != ' ')
 			|| (command[*i] == '-' && command[*i + 1] != ' '
-				&& command[*i + 1] != '-'))
+			&& command[*i + 1] != '-')) 
+			&& command[*i] != '"' && command[*i] != '\'')
 			(*i)++;
 		*nl = 0;
-		if (command[*i] == ' ')
-			(*i)++;
 	}
+	if (command[*i] == ' ')
+		(*i)++;
+	if (!option_quotes(data))
+		return ;
+	if (!echo_quotes(command, data))
+		return ;
 }
 
 void	echo(t_cmd **commands, int i)
@@ -65,7 +95,7 @@ void	echo(t_cmd **commands, int i)
 	char	*command;
 	bool	newline;
 
-	command = commands[i]->str + 4;
+	command = commands[i]->str + 5;
 	while (commands[i]->next == FILES || commands[i]->next == STRING)
 		command = mini_append(command, commands[i++ + 1]->str);
 	i = 0;
