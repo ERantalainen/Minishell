@@ -144,7 +144,7 @@ static void	check_files(t_cmd *cmd, t_cmd *next, t_data *data)
 	{
 		if (access(next->str, R_OK) != 0)
 		{
-			syntax_print(mini_join(MS, next->str), data, 2, 1);
+			syntax_print(mini_join(MS, mini_strndup(next->str, word_len(next->str, 0))), data, 2, 1);
 			return ;
 		}
 		cmd->next = FILES;
