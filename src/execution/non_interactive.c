@@ -19,6 +19,7 @@ void	non_interactive(void)
 	t_vector	*commands;
 
 	data = get_data();
+	data->non_interactive = true;
 	while (!isatty(STDIN_FILENO))
 	{
 		data->valid = 1;

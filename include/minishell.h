@@ -120,6 +120,7 @@ typedef struct s_data
 	t_vector		*exp;
 	int				shell;
 	int				valid;
+	bool			non_interactive;
 	t_type			last;
 }					t_data;
 

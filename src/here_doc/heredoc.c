@@ -33,6 +33,8 @@ static void	write_to_tmpfile(char *limiter, int index)
 	t_data	*data;
 
 	data = get_data();
+	if (data->non_interactive == true)
+		return ;
 	while (true)
 	{
 		input = readline(HDPROMPT);
