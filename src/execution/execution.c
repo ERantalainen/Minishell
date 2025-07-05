@@ -19,7 +19,17 @@ int	setup_cmd_to_execute(t_cmd **tokens, t_pipedata *p)
 	size_t	arg_i;
 	size_t	tok_i;
 
-	while (tokens[p->cmd_index] && tokens[p->cmd_index]->type != STRING
+	while (tokens[p->cmd_index]
+		&& tokens[p->cmd_index]->type != STRING
+		&& tokens[p->cmd_index]->type != FILES
+		&& tokens[p->cmd_index]->type != BUILTIN)
+		p->cmd_index++;
+	if (tokens[p->cmd_index]
+		&& tokens[p->cmd_index]->type == FILES
+		&& tokens[p->cmd_index]->next == FILES)
+		tokens[p->cmd_index + 1]->type = STRING;
+	while (tokens[p->cmd_index]
+		&& tokens[p->cmd_index]->type != STRING
 		&& tokens[p->cmd_index]->type != PIPE
 		&& tokens[p->cmd_index]->type != BUILTIN)
 		p->cmd_index++;
@@ -52,11 +62,11 @@ int	setup_cmd_to_execute(t_cmd **tokens, t_pipedata *p)
 void	setup_pipes(int in, int out, int close_in, int close_out)
 {
 	if (dup2(in, STDIN_FILENO) < 0)
-		ft_exit_child(NULL, errno);
+		ft_exit_child(NULL, 1);
 	if (close_in && in != STDIN_FILENO)
 		close(in);
 	if (dup2(out, STDOUT_FILENO) < 0)
-		ft_exit_child(NULL, errno);
+		ft_exit_child(NULL, 1);
 	if (close_out && out != STDOUT_FILENO)
 		close(out);
 }
@@ -159,6 +169,7 @@ void	execution(t_cmd **tokens, char **env)
 	t_data		*data;
 	int			i;
 
+	
 	data = get_data();
 	if (data->valid != 1)
 		return ;
