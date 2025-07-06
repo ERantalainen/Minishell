@@ -12,13 +12,28 @@
 
 #include "minishell.h"
 
+static char	*get_box_prompt(void)
+{
+    char	*cwd;
+    char	*prompt;
+    char	*temp;
+    
+    cwd = get_pwd();
+    prompt = arena_malloc(256);
+    prompt = mini_join("\033[38;5;231m╭─❮ \033[38;5;219m", cwd);
+    temp = prompt;
+    prompt = mini_join(temp, " \033[38;5;231m❯ \033[38;5;156mminishell\033[0m\n\033[38;5;231m╰─❯ \033[0m");
+    return (prompt);
+}
+
 char	*take_input(void)
 {
 	char	*input;
 	char	*ret;
+
 	while (1)
 	{
-		input = readline(RDPROMPT);
+        input = readline(get_box_prompt());
 		if (!input)
 		{
 			ft_exit("exit", 0);
