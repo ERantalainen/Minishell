@@ -98,7 +98,6 @@ void	child_process(t_cmd **tokens, t_pipedata *p, char **env)
 	}
 	path = get_bin_path(mini_strndup(tokens[p->cmd_index]->str,
 				ft_strlen(tokens[p->cmd_index]->str)), env, p);
-	// open_handler(p, path);
 	if (access(p->cmd_args[0], X_OK) >= 0)
 		if (execve(p->cmd_args[0], p->cmd_args, env) < 0)
 			exit(1);
@@ -161,6 +160,10 @@ static void	exec_pipeline(t_cmd **tokens, t_pipedata *p, char **env)
 	close_all_pipes(p);
 	if (p->pids[0])
 		wait_for_children(p, status);
+	dup2(p->stdin_copy, STDIN_FILENO);
+	close(p->stdin_copy);
+	dup2(p->stdout_copy, STDOUT_FILENO);
+	close(p->stdout_copy);
 }
 
 void	execution(t_cmd **tokens, char **env)
@@ -180,6 +183,8 @@ void	execution(t_cmd **tokens, char **env)
 	p->pipe_index = 0;
 	p->infile = dup(STDIN_FILENO);
 	p->outfile = dup(STDOUT_FILENO);
+	p->stdout_copy = dup(STDOUT_FILENO);
+	p->stdin_copy = dup(STDIN_FILENO);
 	i = 0;
 	while (tokens[i])
 		if (tokens[i++]->type == PIPE)
