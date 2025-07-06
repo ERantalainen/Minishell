@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static char	*get_box_prompt(void)
+static char	*get_prompt(void)
 {
     char	*cwd;
     char	*prompt;
@@ -33,7 +33,7 @@ char	*take_input(void)
 
 	while (1)
 	{
-        input = readline(get_box_prompt());
+        input = readline(get_prompt());
 		if (!input)
 		{
 			ft_exit("exit", 0);
