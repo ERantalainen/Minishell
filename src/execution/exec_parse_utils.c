@@ -107,7 +107,7 @@ char	*get_bin_path(char *cmd, char **env, t_pipedata *p)
 	}
 	env_paths = parse_paths(env);
 	if (!env_paths)
-		ft_exit(mini_join(MS, mini_join(cmd, NSFOD)), 127);
+		ft_exit(mini_join(MS, mini_join(mini_strndup(cmd, word_len(cmd, 0)), NSFOD)), 127);
 	args = mini_split(cmd, ' ');
 	if (access(args[0], X_OK) != -1)
 	{
