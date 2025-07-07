@@ -54,7 +54,7 @@ int	check_heredoc(t_vector *tokens)
 {
 	size_t	count;
 	t_token	*curr;
-	t_token	*next;
+	// t_token	*next;
 	t_data	*data;
 
 	data = get_data();
@@ -121,7 +121,7 @@ void	here_two(t_vector *tokens, int count, t_data *data)
 		{
 			next->s = here_doc(next->s, count - 1, next->t);
 			if (!data->valid)
-				return (0);
+				return ;
 			next->t = FILES;
 			count--;
 		}

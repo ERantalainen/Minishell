@@ -13,9 +13,8 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "functions.h"
+
 # include "libft.h"
-# include "structs.h"
 # include <errno.h>
 # include <fcntl.h>
 # include <readline/history.h>
@@ -23,6 +22,9 @@
 # include <signal.h>
 # include <stdio.h>
 # include <sys/wait.h>
+
+# include "structs.h"
+# include "functions.h"
 
 # define ARENA_SIZE 16384
 # define ALIGNMENT 8

@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "minishell.h"
+
 static void	input_syntax(t_cmd *cmd, t_data *data)
 {
 	if (cmd->type == INPUT && cmd->next == EMPTY)

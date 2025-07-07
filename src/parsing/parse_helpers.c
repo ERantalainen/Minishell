@@ -6,12 +6,13 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 15:43:47 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/07 18:39:25 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/05 03:26:37 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// Counts the length of a single word.
 char	*expand_strndup(char *s, size_t n)
 {
 	char	*dup;

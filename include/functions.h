@@ -15,6 +15,13 @@
 
 # include "structs.h"
 # include <signal.h>
+# include <stdbool.h>
+# include <sys/types.h>
+
+
+void	here_two(t_vector *tokens, int count, t_data *data);
+
+int	here_count(t_vector *tokens, t_data *data);
 
 void		init_data(char **env);
 char		*get_pwd(void);
