@@ -35,17 +35,20 @@ void	open_handler(t_pipedata *p, const char *path)
 	}
 }
 
-void	open_file(t_cmd **tokens, t_pipedata *p, int settings, int file)
+void	open_file(t_cmd **tokens, t_pipedata *p, int settings)
 {
-	if (file)
-		close(file);
+
 	if (tokens[p->index]->type == INPUT || tokens[p->index]->type == HERE_DOC)
 	{
-		file = open(tokens[p->index + 1]->str, settings);
+		if (p->infile)
+			close(p->infile);
+		p->infile = open(tokens[p->index + 1]->str, settings);
 	}
 	else
 	{
-		file = open(tokens[p->index + 1]->str, settings, 0644);
+		if (p->outfile)
+			close(p->outfile);
+		p->outfile = open(tokens[p->index + 1]->str, settings, 0644);
 	}
 }
 
@@ -56,30 +59,13 @@ void	check_for_redirects(t_cmd **tokens, t_pipedata *p)
 		if (tokens[p->index]->type == PIPE)
 			return ;
 		if (tokens[p->index]->type == OUTPUT)
-			open_file(tokens, p, OUTPUT_CONF, p->outfile);
+			open_file(tokens, p, OUTPUT_CONF);
 		else if (tokens[p->index]->type == APPEND)
-			open_file(tokens, p, APPEND_CONF, p->outfile);
+			open_file(tokens, p, APPEND_CONF);
 		else if (tokens[p->index]->type == INPUT)
-			open_file(tokens, p, INPUT_CONF, p->infile);
+			open_file(tokens, p, INPUT_CONF);
 		else if (tokens[p->index]->type == HERE_DOC)
-			open_file(tokens, p, INPUT_CONF, p->infile);
+			open_file(tokens, p, INPUT_CONF);
 		p->index++;
-	}
-}
-
-void	setup_child(t_cmd **tokens, t_pipedata *p, char **env, int i)
-{
-	t_pipedata	*local_p;
-
-	p->is_builtin = false;
-	p->pids[i] = fork();
-	if (p->pids[i] == 0)
-	{
-		local_p = p;
-		local_p->cmd_index = p->index;
-		check_for_redirects(tokens, local_p);
-		if (setup_cmd_to_execute(tokens, local_p) < 0)
-			return ;
-		child_process(tokens, local_p, env);
 	}
 }
