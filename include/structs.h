@@ -14,9 +14,6 @@
 # define STRUCTS_H
 
 # include "libft.h"
-# include <fcntl.h>
-# include <stdbool.h>
-# include <sys/types.h>
 
 enum			e_pipe
 {

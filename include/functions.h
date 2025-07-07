@@ -14,14 +14,9 @@
 # define FUNCTIONS_H
 
 # include "structs.h"
-# include <signal.h>
-# include <stdbool.h>
-# include <sys/types.h>
 
-
-void	here_two(t_vector *tokens, int count, t_data *data);
-
-int	here_count(t_vector *tokens, t_data *data);
+void		here_two(t_vector *tokens, int count, t_data *data);
+int		here_count(t_vector *tokens, t_data *data);
 
 void		init_data(char **env);
 char		*get_pwd(void);
@@ -57,7 +52,7 @@ void		remove_elem(t_vector *vector, size_t i);
 
 // Vectors
 char		*take_input(void);
-int			check_quotes(char *s);
+int		check_quotes(char *s);
 
 // Input
 t_token		*create_token(char *s, size_t *i, t_type last, t_data *data);
@@ -90,7 +85,6 @@ size_t		quote_len(char *s, char quote);
 void		check_command_syntax(t_vector *commands, t_data *data);
 
 // Parsing
-
 void		syntax_print(char *error, t_data *data, int exit, bool per);
 
 // Syntax
@@ -107,7 +101,6 @@ char		*name_join(char const *s1, char const *s2);
 void		fix_lines(char **file, size_t i, char *name, t_data *data);
 
 // Built Ins
-
 void		echo(t_cmd **cmd, int i);
 void		pwd(void);
 void		unset(char *key);
@@ -127,11 +120,11 @@ void		built_in(t_cmd *cmd);
 void		build_handler(t_cmd **cmds);
 char		*expans_help(char *s, char *dup, size_t *i, size_t *pos);
 void		increase_shell_lvl(void);
-int			exit_calci(char *cmd);
+int		exit_calci(char *cmd);
 char		*mini_join(char const *s1, char const *s2);
 char		**ft_stradd(char **s, char *line);
 char		**replace_line(char **s, char *line, size_t i);
-int			find_line(char **line, char *key);
+int		find_line(char **line, char *key);
 size_t		key_len(char *s);
 char		**ft_strremove(char **s, int i);
 
@@ -162,7 +155,7 @@ void		open_file(t_cmd **tokens, t_pipedata *p, int settings);
 void		check_for_redirects(t_cmd **tokens, t_pipedata *p);
 void		setup_pipes(int in, int out, int close_in, int close_out);
 void		setup_child(t_cmd **tokens, t_pipedata *p, char **env, int i);
-int			setup_cmd_to_execute(t_cmd **tokens, t_pipedata *p);
+int		setup_cmd_to_execute(t_cmd **tokens, t_pipedata *p);
 void		child_process(t_cmd **tokens, t_pipedata *p, char **env);
 char		*ambigous(char *s, size_t i);
 
