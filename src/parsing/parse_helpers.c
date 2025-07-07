@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 15:43:47 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/05 03:26:37 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/07 22:21:50 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,7 @@ char	*expand_strndup(char *s, size_t n)
 	size_t	len;
 	size_t	i;
 	size_t	pos;
-	t_data	*data;
 
-	data = get_data();
 	pos = 0;
 	i = 0;
 	len = expanded_length(s, n);

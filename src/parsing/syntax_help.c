@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 18:40:32 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/07 18:41:46 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/07 22:42:40 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static void	check_files(t_cmd *cmd, t_cmd *next, t_data *data)
 	{
 		if (access(next->str, R_OK) != 0)
 		{
-			syntax_print(mini_join(MS, mini_strndup(next->str, word_len(next->str, 0))), data, 2, 1);
+			er_pr(mini_join(MS, mini_strndup(next->str, word_len(next->str, 0))), data, 2, 1);
 			return ;
 		}
 		cmd->next = FILES;

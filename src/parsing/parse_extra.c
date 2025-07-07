@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 18:04:47 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/07 18:39:40 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/07 22:22:04 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int		check_all_redir(char *s, size_t	len);
 char	*ambigous(char *s, size_t i)
 {
 	size_t	pos;
-	size_t	count;
 	t_data	*data;
 	size_t	len;
 	char	*exp_check;
@@ -25,7 +24,6 @@ char	*ambigous(char *s, size_t i)
 	len = word_len(s + i, '|');
 	if (check_all_redir((s + i), len) == 0)
 		return (NULL);
-	count = 0;
 	pos = i;
 	while (pos < len + i)
 	{

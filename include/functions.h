@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 19:21:07 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/07 20:26:43 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/07 22:42:16 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int			check_quotes(char *s);
 t_vector	*next_check(t_vector *commands);
 void		check_repeat(t_vector *tokens);
 void		check_command_syntax(t_vector *commands, t_data *data);
-void		syntax_print(char *error, t_data *data, int exit, bool per);
+void		er_pr(char *error, t_data *data, int exit, bool per);
 char		*ambigous(char *s, size_t i);
 
 // Built In
