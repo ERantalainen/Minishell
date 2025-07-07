@@ -43,4 +43,4 @@
 
 extern sig_atomic_t	g_sig;
 
-#endif
+#endif // MINISHELL_H

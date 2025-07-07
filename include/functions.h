@@ -175,4 +175,4 @@ void		child_process(t_cmd **tokens, t_pipedata *p, char **env);
 void		cmd_help(t_vector *tokens, size_t *i, t_token *token, t_cmd *cmd);
 void		child_died(int status);
 
-#endif
+#endif // FUNCTIONS_H

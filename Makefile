@@ -35,7 +35,7 @@ VPATH			:= $(SRC_DIR):$(SRC_DIR)/built_in:$(SRC_DIR)/execution \
 			:$(SRC_DIR)/vector
 
 # Include paths and libraries
-INC			:= -I./include -I$(LIBFT_DIR)/include -I./src/pipe/include
+INC			:= -I./include -I$(LIBFT_DIR)/include
 LIBFT			:= $(LIBFT_DIR)/libft.a
 LDFLAGS			:= -L$(LIBFT_DIR) -lft -lreadline
 
@@ -127,15 +127,16 @@ PROGRESS_FILE		:= $(OBJ_DIR)/.progress
 LATEST_SRC		:= $(shell find src -name "*.c" | xargs ls -t 2>/dev/null | head -1)
 OBJ_FILES_EXIST		:= $(shell [ -n "$(wildcard $(OBJ_DIR)/*.o)" ] && echo yes)
 
-LATEST_HEADER := $(shell find include $(LIBFT_DIR)/include src/pipe/include -name "*.h" 2>/dev/null | xargs ls -t 2>/dev/null | head -1)
+# Looking for updated header files
+LATEST_HEADER := $(shell find include $(LIBFT_DIR)/include -name "*.h" 2>/dev/null | xargs ls -t 2>/dev/null | head -1)
 
 # Check if binary is up to date
 is_up_to_date = \
-    [ -f $(PROGRAM_NAME) ] && \
-    [ "$(PROGRAM_NAME)" -nt $(LATEST_SRC) ] && \
+	[ -f $(PROGRAM_NAME) ] && \
+	[ "$(PROGRAM_NAME)" -nt $(LATEST_SRC) ] && \
 	[ "$(PROGRAM_NAME)" -nt $(LATEST_HEADER) ] && \
-    [ "$(PROGRAM_NAME)" -nt $(LIBFT) ] && \
-    [ "$(OBJ_FILES_EXIST)" = "yes" ]
+	[ "$(PROGRAM_NAME)" -nt $(LIBFT) ] && \
+	[ "$(OBJ_FILES_EXIST)" = "yes" ]
 
 # ============================== BUILD TARGETS =============================== #
 

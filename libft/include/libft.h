@@ -19,6 +19,7 @@
 # include <stdint.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <fcntl.h>
 
 // BONUS
 typedef struct s_list

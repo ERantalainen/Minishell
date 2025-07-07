@@ -117,4 +117,4 @@ typedef struct s_pipedata
 	bool		cmd_found;
 }				t_pipedata;
 
-#endif
+#endif // STRUCTS_H
