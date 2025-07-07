@@ -90,13 +90,16 @@ void	child_died(int status)
 
 	if (WIFSIGNALED(status))
 	{
-		if (WTERMSIG(status) == SIGQUIT)
-			ft_fprintf(STDERR_FILENO, "%s", QUIT);
-		write(1, "\n", 1);
-		rl_replace_line("", 0);
-		rl_done = 1;
+		if (WTERMSIG(status) == SIGQUIT || WTERMSIG(status) == SIGINT)
+		{
+			if (WTERMSIG(status) == SIGQUIT)
+				ft_fprintf(STDERR_FILENO, "%s", QUIT);
+			write(1, "\n", 1);
+			rl_replace_line("", 0);
+			rl_done = 1;
+		}
 		exit_export = mini_join(exit_code, mini_itoa(WTERMSIG(status) + 128));
-		if (ft_strcmp(find_export("?"), "") == 0)
+		if (ft_strcmp(find_export("?"), "") == 0) 
 			export(exit_export);
 		else
 			replace_export(exit_export);

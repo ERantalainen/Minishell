@@ -292,7 +292,7 @@ void				open_handler(t_pipedata *p, const char *path);
 void				open_file(t_cmd **tokens, t_pipedata *p, int settings,
 						int file);
 void				check_for_redirects(t_cmd **tokens, t_pipedata *p);
-void				setup_pipes(int in, int out, int close_in, int close_out);
+void	setup_pipes(int in, int out, int close_in, int close_out);
 void				setup_child(t_cmd **tokens, t_pipedata *p, char **env,
 						int i);
 int					setup_cmd_to_execute(t_cmd **tokens, t_pipedata *p);

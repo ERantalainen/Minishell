@@ -86,7 +86,7 @@ static void check_cmd_validity(char *cmd)
 		{
 			while (ft_isspace(cmd[i++]))
 				if (!cmd[i])
-					ft_exit_child(mini_join(cmd, ": command not found"), 127);
+					ft_exit_child(mini_join(mini_strndup(cmd, word_len(cmd, 0)), ": command not found"), 127);
 		}
 		else
 			i++;
@@ -119,6 +119,6 @@ char	*get_bin_path(char *cmd, char **env, t_pipedata *p)
 	path = find_bin_in_path(env_paths, temp);
 	open_handler(p, path);
 	if (!path)
-		ft_exit_child(mini_join(cmd, ": command not found"), 127);
+		ft_exit_child(mini_join(mini_strndup(cmd, word_len(cmd, 0)), ": command not found"), 127);
 	return (path);
 }

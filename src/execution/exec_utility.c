@@ -50,24 +50,6 @@ void	wait_for_children(t_pipedata *p, int status)
 	}
 }
 
-// void close_unused_pipes(t_pipedata *p, int index)
-// {
-//     int i;
-//
-//     if (!p || index < 0 || index > p->pipe_count)
-//         return;
-//
-//     i = 0;
-//     while (i < p->pipe_count)
-//     {
-//         if (i != index - 1)
-//             close(p->pipefd[i][READ]);
-//         if (i != index)
-//             close(p->pipefd[i][WRITE]);
-//         i++;
-//     }
-// }
-
 void	close_unused_pipes(t_pipedata *p, int index)
 {
 	if (index > 0)
