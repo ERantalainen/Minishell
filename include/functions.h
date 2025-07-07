@@ -103,8 +103,8 @@ int			exit_calci(char *cmd);
 // Utility
 
 size_t		expanded_length(char *s, size_t n);
-int			check_specials(int c, int quote);
-int			find_line(char **line, char *key);
+int		check_specials(int c, int quote);
+int		find_line(char **line, char *key);
 size_t		quote_len(char *s, char quote);
 char		**ft_stradd(char **s, char *line);
 char		**strarm(char **s, size_t i);
@@ -129,12 +129,12 @@ char		*ft_strornchr(const char *s, int one, int two, size_t n);
 
 void		here_check(int fd, char *name, t_data *data, size_t i);
 char		*here_expansion(char *ln, size_t *i);
-int			check_heredoc(t_vector *tokens);
+int		check_heredoc(t_vector *tokens);
 void		fix_lines(char **file, size_t i, char *name, t_data *data);
 char		*here_doc(char *limiter, int index, t_type type);
 char		*name_join(char const *s1, char const *s2);
 void		here_two(t_vector *tokens, int count, t_data *data);
-int			here_count(t_vector *tokens, t_data *data);
+int		here_count(t_vector *tokens, t_data *data);
 
 // Signal handling
 
@@ -162,7 +162,7 @@ void		open_file(t_cmd **tokens, t_pipedata *p, int settings);
 void		check_for_redirects(t_cmd **tokens, t_pipedata *p);
 void		setup_pipes(int in, int out, int close_in, int close_out);
 void		setup_child(t_cmd **tokens, t_pipedata *p, char **env, int i);
-int			setup_cmd_to_execute(t_cmd **tokens, t_pipedata *p);
+int		setup_cmd_to_execute(t_cmd **tokens, t_pipedata *p);
 
 void		child_process(t_cmd **tokens, t_pipedata *p, char **env);
 void		cmd_help(t_vector *tokens, size_t *i, t_token *token, t_cmd *cmd);
