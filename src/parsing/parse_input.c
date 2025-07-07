@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/04 23:57:27 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/07 17:51:16 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,6 +194,7 @@ t_cmd	*make_cmd_str(t_vector *tokens, size_t *i, t_data *data)
 	tk = tokens->data[(*i)];
 	cmd->type = STRING;
 	cmd->str = "";
+	cmd->space = tk->space;
 	if (data->last != FILES && (((*i == 0) || ((access(tk->s, R_OK | W_OK) != 0
 		&& tk->space == 1)) || data->last == PIPE)))
 		cmd_help(tokens, i, tk, cmd);

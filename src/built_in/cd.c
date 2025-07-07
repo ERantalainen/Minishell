@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:34:05 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/05 04:14:12 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/07 17:50:13 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,16 @@ static char	*cd_make_path(t_cmd **cmd, int i)
 	path = "";
 	if (cmd[i]->next == EMPTY)
 		return (cmd[i]->str);
-	while(cmd[i] && cmd[i]->type == FILES)
+	path = mini_join(path, cmd[i]->str);
+	i++;
+	while(cmd[i] && (cmd[i]->type == FILES || cmd[i]->type == STRING))
 	{
-		if(cmd[i]->str[0] == '/')
+		if (cmd[i]->space == 0)
 			path = mini_join(path, cmd[i]->str);
 		else
 		{
 			ft_fprintf(2, "%s\n", mini_join(MS, MARG));
+			replace_export("?=1");
 			return (NULL);
 		}
 		i++;
@@ -78,7 +81,7 @@ void	cd(t_cmd **cmd, int i)
 			return ;
 		}
 	}
-	else if (cmd[i]->next == FILES && ft_strlen(cmd[i]->str) == 2)
+	else if ((cmd[i]->next == FILES || cmd[i]->next == STRING) && ft_strlen(cmd[i]->str) == 2)
 		path = cd_make_path(cmd, i + 1);
 	else
 	{

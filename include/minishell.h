@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:12:49 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/05 04:10:45 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/07 17:34:57 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@
 # define PRMD "minishell: Permission denied"
 # define NSFOD ": No such file or directory"
 # define AMBG ": ambiguous redirect"
-# define MARG " cd: too many arguments"
+# define MARG "cd: too many arguments"
 
 # define HDPROMPT "\001\033[0;32m\002heredoc>\001\033[0m\002 "
 # define RDPROMPT "\001\033[38;5;210m\002m" \
@@ -111,6 +111,7 @@ typedef struct s_command
 	char			*str;
 	t_type			type;
 	t_type			next;
+	bool			space;
 }					t_cmd;
 
 typedef struct s_data
