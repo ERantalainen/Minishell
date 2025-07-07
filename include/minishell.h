@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:12:49 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/07 17:34:57 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/07 18:41:30 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,6 +169,7 @@ void				sort_export(size_t count, t_data *data, char **exps);
 void				empty_export(void);
 char				**strarm(char **s, size_t i);
 
+
 // Export sort
 void				cmd_help(t_vector *tokens, size_t *i, t_token *token,
 						t_cmd *cmd);
@@ -222,9 +223,11 @@ void				check_repeat(t_vector *tokens);
 size_t				quote_len(char *s, char quote);
 void				check_command_syntax(t_vector *commands, t_data *data);
 
-// Syntax
-
 // Parsing
+
+void	syntax_print(char *error, t_data *data, int exit, bool per);
+
+// Syntax
 t_data				*get_data(void);
 void				free_arenas(void);
 void				ft_exit(char *s, int code);

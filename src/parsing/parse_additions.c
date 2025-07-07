@@ -6,24 +6,11 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 15:44:37 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/04 21:32:04 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/07 18:39:02 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char	*mini_append(char *s1, char *s2)
-{
-	char	*dup;
-
-	dup = arena_malloc(ft_strlen(s1) + ft_strlen(s2) + 2);
-	dup[0] = '\0';
-	ft_strlcat(dup, s1, ft_strlen(s1) + 1);
-	if (s1[0] != 0)
-		dup[ft_strlen(s1)] = ' ';
-	ft_strlcat(dup, s2, ft_strlen(s1) + ft_strlen(s2) + 2);
-	return (dup);
-}
 
 char	*here_lim_token(char *s, size_t n, char quote)
 {

@@ -6,13 +6,14 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 18:04:47 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/04 19:54:20 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/07 18:39:40 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 int		check_all_redir(char *s, size_t	len);
+
 char	*ambigous(char *s, size_t i)
 {
 	size_t	pos;
@@ -55,4 +56,49 @@ int	check_all_redir(char *s, size_t	len)
 		pos += key_len(s + pos);
 	}
 	return (1);
+}
+
+char	*mini_append(char *s1, char *s2)
+{
+	char	*dup;
+
+	dup = arena_malloc(ft_strlen(s1) + ft_strlen(s2) + 2);
+	dup[0] = '\0';
+	ft_strlcat(dup, s1, ft_strlen(s1) + 1);
+	if (s1[0] != 0)
+		dup[ft_strlen(s1)] = ' ';
+	ft_strlcat(dup, s2, ft_strlen(s1) + ft_strlen(s2) + 2);
+	return (dup);
+}
+
+size_t	word_len(char *s, int quote)
+{
+	int		i;
+	char	c;
+
+	i = 0;
+	while (s[i] && ft_isspace(s[i]) == 0 && !check_specials(s[i], quote))
+		i++;
+	if (s[i] && i == 0 && check_specials(s[i], quote))
+	{
+		if (s[i] == '|')
+			return (1);
+		c = s[i];
+		if (!s[i + 1] || (s[i + 1] && s[i + 1] != c))
+			return (1);
+		else
+			return (2);
+	}
+	return (i);
+}
+
+// Count the lenght of a word
+
+int	check_specials(int c, int quote)
+{
+	if (quote == 0 && (c == '\'' || c == '"'))
+		return (1);
+	if (c == '<' || c == '|' || c == '>' || c == quote)
+		return (1);
+	return (0);
 }

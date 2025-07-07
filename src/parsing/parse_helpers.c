@@ -6,47 +6,11 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 15:43:47 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/07 15:58:43 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/07 18:39:25 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-size_t	word_len(char *s, int quote)
-{
-	int		i;
-	char	c;
-
-	i = 0;
-	while (s[i] && ft_isspace(s[i]) == 0 && !check_specials(s[i], quote))
-		i++;
-	if (s[i] && i == 0 && check_specials(s[i], quote))
-	{
-		if (s[i] == '|')
-			return (1);
-		c = s[i];
-		if (!s[i + 1] || (s[i + 1] && s[i + 1] != c))
-			return (1);
-		else
-			return (2);
-	}
-	return (i);
-}
-
-// Count the lenght of a word
-
-int	check_specials(int c, int quote)
-{
-	if (quote == 0 && (c == '\'' || c == '"'))
-		return (1);
-	if (c == '<' || c == '|' || c == '>' || c == quote)
-		return (1);
-	return (0);
-}
-
-// Check for redirect or pipe character
-
-// Counts the length of a single word.
 
 char	*expand_strndup(char *s, size_t n)
 {
