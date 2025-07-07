@@ -93,7 +93,8 @@ SRCS_EXEC := \
 	exec_parse_utils.c \
 	execution.c \
 	exec_utility.c \
-	exec_utility2.c
+	file_handling.c \
+	parsing.c
 
 # Main program and entry point
 SRCS_OTHER := \
