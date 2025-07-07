@@ -65,8 +65,6 @@ void	child_process(t_cmd **tokens, t_pipedata *p, char **env)
 		close(my_stdin);
 	if (my_stdout != p->outfile && my_stdout != STDOUT_FILENO)
 		close(my_stdout);
-	close(p->stdin_copy);
-	close(p->stdout_copy);
 	if (p->infile != STDIN_FILENO)
 		close(p->infile);
 	if (p->outfile != STDOUT_FILENO)
@@ -75,12 +73,16 @@ void	child_process(t_cmd **tokens, t_pipedata *p, char **env)
 	{
 		if (p->pipe_count > 0)
 		{
+			close(p->stdin_copy);
+			close(p->stdout_copy);
 			child_builds(tokens, env, p->cmd_index);
 			exit(ft_atoi(find_export("?")));
 		}
 		build_handler(tokens);
 		return ;
 	}
+	close(p->stdin_copy);
+	close(p->stdout_copy);
 	path = get_bin_path(mini_strndup(tokens[p->cmd_index]->str,
 				ft_strlen(tokens[p->cmd_index]->str)), env, p);
 	if (access(p->cmd_args[0], X_OK) >= 0)

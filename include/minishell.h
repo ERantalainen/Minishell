@@ -14,12 +14,12 @@
 # define MINISHELL_H
 
 # include "libft.h"
+# include <stdio.h>
 # include <errno.h>
 # include <fcntl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
-# include <stdio.h>
 # include <sys/wait.h>
 
 # define ARENA_SIZE 16384
@@ -289,8 +289,7 @@ void				wait_for_children(t_pipedata *p, int status);
 void				close_unused_pipes(t_pipedata *p, int index);
 void				init_pipes(t_pipedata *p);
 void				open_handler(t_pipedata *p, const char *path);
-void				open_file(t_cmd **tokens, t_pipedata *p, int settings,
-						int file);
+void				open_file(t_cmd **tokens, t_pipedata *p, int settings);
 void				check_for_redirects(t_cmd **tokens, t_pipedata *p);
 void	setup_pipes(int in, int out, int close_in, int close_out);
 void				setup_child(t_cmd **tokens, t_pipedata *p, char **env,
