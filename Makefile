@@ -64,7 +64,7 @@ SRCS_PARSE := \
 	parse_helpers.c \
 	heredoc.c \
 	parse_extra.c \
-	parse_input_help.C
+	parse_input_help.c \
 	syntax_help.c
 
 # Built-in shell commands
@@ -127,10 +127,13 @@ PROGRESS_FILE		:= $(OBJ_DIR)/.progress
 LATEST_SRC		:= $(shell find src -name "*.c" | xargs ls -t 2>/dev/null | head -1)
 OBJ_FILES_EXIST		:= $(shell [ -n "$(wildcard $(OBJ_DIR)/*.o)" ] && echo yes)
 
+LATEST_HEADER := $(shell find include $(LIBFT_DIR)/include src/pipe/include -name "*.h" 2>/dev/null | xargs ls -t 2>/dev/null | head -1)
+
 # Check if binary is up to date
 is_up_to_date = \
     [ -f $(PROGRAM_NAME) ] && \
     [ "$(PROGRAM_NAME)" -nt $(LATEST_SRC) ] && \
+	[ "$(PROGRAM_NAME)" -nt $(LATEST_HEADER) ] && \
     [ "$(PROGRAM_NAME)" -nt $(LIBFT) ] && \
     [ "$(OBJ_FILES_EXIST)" = "yes" ]
 
@@ -153,7 +156,7 @@ $(NAME): $(OBJS) $(LIBFT)
 	@rm -f $(PROGRESS_FILE)
 	@echo ">$(BOLD)$(GREEN)  $(NAME) successfully compiled!$(RESET)"
 
-$(OBJ_DIR)/%.o: %.c | $(OBJ_DIR) $(DEP_DIR)
+$(OBJ_DIR)/%.o: %.c include/minishell.h | $(OBJ_DIR) $(DEP_DIR)
 	@if [ -f $(PROGRESS_FILE) ]; then \
 		CURRENT=$$(cat $(PROGRESS_FILE)); \
 		NEXT=$$((CURRENT + 1)); \
@@ -169,10 +172,10 @@ $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
 	@echo "0" > $(PROGRESS_FILE)
 
+-include $(wildcard $(DEP_DIR)/*.d)
+
 $(DEP_DIR): | $(OBJ_DIR)
 	@mkdir -p $@
-
--include $(wildcard $(DEP_DIR)/*.d)
 
 debug: CFLAGS += $(DEBUG_FLAGS)
 debug: OPTFLAGS := -O0

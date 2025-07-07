@@ -112,6 +112,11 @@ char		**replace_line(char **s, char *line, size_t i);
 size_t		key_len(char *s);
 size_t		word_len(char *s, int quote);
 
+
+
+
+
+
 // String functions
 
 char		**ft_strremove(char **s, int i);
@@ -124,6 +129,8 @@ char		*mini_append(char *s1, char *s2);
 char		*mini_join(char const *s1, char const *s2);
 char		*expand_strndup(char *s, size_t n);
 char		*ft_strornchr(const char *s, int one, int two, size_t n);
+char		*mini_strndup(char *s, size_t n);
+char		*mini_strdup(char *s);
 
 // Heredoc
 
