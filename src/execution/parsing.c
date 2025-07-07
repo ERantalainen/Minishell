@@ -12,24 +12,16 @@
 
 #include "minishell.h"
 
-int	setup_cmd_to_execute(t_cmd **tokens, t_pipedata *p)
+static int	find_next_cmd_in_tokens(t_cmd **tokens, t_pipedata *p)
 {
-	char	**split;
-	size_t	total_args;
-	size_t	arg_i;
-	size_t	tok_i;
-
-	while (tokens[p->cmd_index]
-		&& tokens[p->cmd_index]->type != STRING
+	while (tokens[p->cmd_index] && tokens[p->cmd_index]->type != STRING
 		&& tokens[p->cmd_index]->type != FILES
 		&& tokens[p->cmd_index]->type != BUILTIN)
 		p->cmd_index++;
-	if (tokens[p->cmd_index]
-		&& tokens[p->cmd_index]->type == FILES
+	if (tokens[p->cmd_index] && tokens[p->cmd_index]->type == FILES
 		&& tokens[p->cmd_index]->next == FILES)
 		tokens[p->cmd_index + 1]->type = STRING;
-	while (tokens[p->cmd_index]
-		&& tokens[p->cmd_index]->type != STRING
+	while (tokens[p->cmd_index] && tokens[p->cmd_index]->type != STRING
 		&& tokens[p->cmd_index]->type != PIPE
 		&& tokens[p->cmd_index]->type != BUILTIN)
 		p->cmd_index++;
@@ -38,14 +30,37 @@ int	setup_cmd_to_execute(t_cmd **tokens, t_pipedata *p)
 	if (!tokens[p->cmd_index] && p->pipe_count == 0)
 		return (-1);
 	else if (!tokens[p->cmd_index] && p->pipe_count > 0)
-		exit(1);
-	split = mini_split(tokens[p->cmd_index]->str, ' ');
+		ft_exit_child(NULL, 1);
+	return (0);
+}
+
+static size_t	get_cmd_array_size(t_cmd **tokens, t_pipedata *p, char **split)
+{
+	size_t	total_args;
+	size_t	arg_i;
+
+	total_args = 0;
+	arg_i = 0;
 	total_args = p->cmd_index + 1;
 	while (tokens[total_args] && tokens[total_args]->type == FILES)
 		total_args++;
 	arg_i = 0;
 	while (split[arg_i++])
 		total_args++;
+	return (total_args);
+}
+
+int	setup_cmd_to_execute(t_cmd **tokens, t_pipedata *p)
+{
+	char	**split;
+	size_t	total_args;
+	size_t	arg_i;
+	size_t	tok_i;
+
+	if (find_next_cmd_in_tokens(tokens, p) < 0)
+		return (-1);
+	split = mini_split(tokens[p->cmd_index]->str, ' ');
+	total_args = get_cmd_array_size(tokens, p, split);
 	p->cmd_args = arena_malloc((total_args - p->cmd_index) * sizeof(char *));
 	arg_i = 0;
 	tok_i = 0;

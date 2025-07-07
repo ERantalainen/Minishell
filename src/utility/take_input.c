@@ -14,16 +14,17 @@
 
 static char	*get_prompt(void)
 {
-    char	*cwd;
-    char	*prompt;
-    char	*temp;
-    
-    cwd = get_pwd();
-    prompt = arena_malloc(256);
-    prompt = mini_join("\033[38;5;231m╭─❮ \033[38;5;219m", cwd);
-    temp = prompt;
-    prompt = mini_join(temp, " \033[38;5;231m❯ \033[38;5;156mminishell\033[0m\n\033[38;5;231m╰─❯ \033[0m");
-    return (prompt);
+	char	*cwd;
+	char	*prompt;
+	char	*temp;
+
+	cwd = get_pwd();
+	prompt = arena_malloc(256);
+	prompt = mini_join("\033[38;5;231m╭─❮ \033[38;5;219m", cwd);
+	temp = prompt;
+	prompt = mini_join(temp,
+			" \033[38;5;231m❯ \033[38;5;156mminishell\033[0m\n\033[38;5;231m╰─❯ \033[0m");
+	return (prompt);
 }
 
 char	*take_input(void)
@@ -33,7 +34,7 @@ char	*take_input(void)
 
 	while (1)
 	{
-        input = readline(get_prompt());
+		input = readline(get_prompt());
 		if (!input)
 		{
 			ft_exit("exit", 0);
@@ -45,9 +46,9 @@ char	*take_input(void)
 				free(input);
 				return (NULL);
 			}
-		ret = mini_strdup(input);
-		free(input);
-		return (ret);
+			ret = mini_strdup(input);
+			free(input);
+			return (ret);
 		}
 	}
 }
@@ -57,7 +58,7 @@ int	check_quotes(char *s)
 	int		i;
 	bool	syntax;
 	char	quote;
-	
+
 	syntax = 1;
 	i = 0;
 	while (s[i])
@@ -70,7 +71,7 @@ int	check_quotes(char *s)
 			while (s[i] && s[i] != quote)
 				i++;
 			if (!s[i])
-				break;
+				break ;
 			syntax = 1;
 		}
 		i++;

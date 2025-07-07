@@ -49,7 +49,7 @@ static char	**parse_paths(char **env)
 		}
 		i++;
 	}
-return (NULL);
+	return (NULL);
 }
 
 char	*find_bin_in_path(char **env_paths, char *cmd)
@@ -77,16 +77,19 @@ char	*find_bin_in_path(char **env_paths, char *cmd)
 	return (NULL);
 }
 
-static void check_cmd_validity(char *cmd)
+static void	check_cmd_validity(char *cmd)
 {
-	int i = 0;
+	int	i;
+
+	i = 0;
 	while (cmd[i])
 	{
 		if (ft_isspace(cmd[i]))
 		{
 			while (ft_isspace(cmd[i++]))
 				if (!cmd[i])
-					ft_exit_child(mini_join(mini_strndup(cmd, word_len(cmd, 0)), ": command not found"), 127);
+					ft_exit_child(mini_join(mini_strndup(cmd, word_len(cmd, 0)),
+							": command not found"), 127);
 		}
 		else
 			i++;
@@ -107,7 +110,8 @@ char	*get_bin_path(char *cmd, char **env, t_pipedata *p)
 	}
 	env_paths = parse_paths(env);
 	if (!env_paths)
-		ft_exit(mini_join(MS, mini_join(mini_strndup(cmd, word_len(cmd, 0)), NSFOD)), 127);
+		ft_exit(mini_join(MS, mini_join(mini_strndup(cmd, word_len(cmd, 0)),
+					NSFOD)), 127);
 	args = mini_split(cmd, ' ');
 	if (access(args[0], X_OK) != -1)
 	{
@@ -119,6 +123,7 @@ char	*get_bin_path(char *cmd, char **env, t_pipedata *p)
 	path = find_bin_in_path(env_paths, temp);
 	open_handler(p, path);
 	if (!path)
-		ft_exit_child(mini_join(mini_strndup(cmd, word_len(cmd, 0)), ": command not found"), 127);
+		ft_exit_child(mini_join(mini_strndup(cmd, word_len(cmd, 0)),
+				": command not found"), 127);
 	return (path);
 }

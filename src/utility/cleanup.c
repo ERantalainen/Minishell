@@ -52,6 +52,12 @@ void	ft_exit(char *s, int code)
 
 void	ft_exit_child(char *s, int code)
 {
+	int i = 3;
+	while (i < 1024)
+	{
+		close(i);
+		i++;
+	}
 	if (s)
 		ft_fprintf(2, "%s\n", s);
 	exit(code);

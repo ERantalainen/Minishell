@@ -30,25 +30,47 @@ void	open_handler(t_pipedata *p, const char *path)
 					'\\')))
 		{
 			ft_fprintf(2, "%s: No such file or directory\n", p->cmd_args[0]);
-			exit(2);
+			ft_exit_child(NULL, 2);
 		}
 	}
 }
 
+void	check_open_errno(const char *file)
+{
+		if (errno == EISDIR)
+			ft_fprintf(2, "%s: Is a directory\n", file);
+		else if (errno == ENOTDIR)
+			ft_fprintf(2, "%s: Not a directory\n", file);
+		else if (errno == EACCES)
+			ft_fprintf(2, "%s: Permission denied\n", file);
+		else if (errno == ENOENT && access(file, X_OK) < 0
+			&& (ft_strchr(file, '/') || ft_strchr(file,
+					'\\')))
+		{
+			ft_fprintf(2, "%s: No such file or directory\n", file);
+			ft_exit_child(NULL, 2);
+		}
+		ft_exit_child(NULL, 1);
+}
+
+
 void	open_file(t_cmd **tokens, t_pipedata *p, int settings)
 {
-
 	if (tokens[p->index]->type == INPUT || tokens[p->index]->type == HERE_DOC)
 	{
 		if (p->infile)
 			close(p->infile);
 		p->infile = open(tokens[p->index + 1]->str, settings);
+		if (p->infile < 0)
+			check_open_errno(tokens[p->index + 1]->str);
 	}
 	else
 	{
 		if (p->outfile)
 			close(p->outfile);
 		p->outfile = open(tokens[p->index + 1]->str, settings, 0644);
+		if (p->outfile < 0)
+			check_open_errno(tokens[p->index + 1]->str);
 	}
 }
 
