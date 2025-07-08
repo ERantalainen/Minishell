@@ -90,6 +90,8 @@ static void	check_cmd_validity(char *cmd)
 				if (!cmd[i])
 					ft_exit_child(mini_join(mini_strndup(cmd, word_len(cmd, 0)),
 							": command not found"), 127);
+			if (cmd[i])
+				break ;
 		}
 		else
 			i++;
