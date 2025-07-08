@@ -6,10 +6,11 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 13:56:30 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/08 16:30:29 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/08 16:31:36 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "minishell.h"
 
 void	built_in(t_cmd *cmd)
@@ -38,8 +39,9 @@ static void	exit_arg_checker(char *str)
 		i++;
 	if (str[i] && ft_isalpha(str[i]))
 	{
-		ft_fprintf(2, mini_join(mini_join(mini_join(MS, "exit: "), str), NMARG),
-			mini_strndup(str, word_len(str + i, 0)));
+		str += i;
+		ft_fprintf(2, mini_join(mini_join(mini_join(MS, "exit: "),
+					mini_strndup(str, word_len(str, 0))), NMARG));
 		return ;
 	}
 	if (str[i] && ft_isdigit(str[i]))
