@@ -20,10 +20,10 @@ static char	*get_prompt(void)
 
 	cwd = get_pwd();
 	prompt = arena_malloc(256);
-	prompt = mini_join("\033[38;5;231m╭─❮ \033[38;5;219m", cwd);
+	prompt = mini_join("\1\e[38;5;231m\2╭─❮ \1\e[38;5;219m\2", cwd);
 	temp = prompt;
 	prompt = mini_join(temp,
-			" \033[38;5;231m❯ \033[38;5;156mminishell\033[0m\n\033[38;5;231m╰─❯ \033[0m");
+			" \1\e[38;5;231m\2❯ \1\e[38;5;156m\2minishell\1\e[0m\2\n\1\e[38;5;231m\2╰─❯\1\e[0m\2 ");
 	return (prompt);
 }
 
