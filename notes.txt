@@ -1,3 +1,7 @@
+!!!!!!!!!!!!!!!!!
+FIX ls|cat<<a
+!!!!!!!!!!!!!!!!!
+
 ls | $EMPTY | pwd | ls | env | grep SH | wc > a > b > c // FIXED
 
 ls | $PWD| pwd | ls | env | grep SH | wc > a > b > c // FIXED
