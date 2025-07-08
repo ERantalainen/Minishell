@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 13:28:50 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/08 15:52:58 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/08 22:16:23 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,18 @@ static size_t	get_cmd_array_size(t_cmd **tokens, t_pipedata *p, char **split)
 	return (total_args);
 }
 
+static void additional_arguments_to_cmd(t_cmd **tokens, t_pipedata *p, size_t arg_i, size_t tok_i)
+{
+	tok_i = p->cmd_index;
+	if (tokens[tok_i]->next == FILES || tokens[tok_i]->next == HERE_DOC)
+		tok_i++;
+	if (tokens[tok_i]->type == HERE_DOC)
+		tok_i++;
+	while (tokens[tok_i] && tokens[tok_i]->type == FILES)
+		p->cmd_args[arg_i++] = mini_strdup(tokens[tok_i++]->str);
+	p->cmd_args[arg_i] = NULL;
+}
+
 int	setup_cmd_to_execute(t_cmd **tokens, t_pipedata *p)
 {
 	char	**split;
@@ -66,12 +78,7 @@ int	setup_cmd_to_execute(t_cmd **tokens, t_pipedata *p)
 	tok_i = 0;
 	while (split[tok_i])
 		p->cmd_args[arg_i++] = mini_strdup(split[tok_i++]);
-	tok_i = p->cmd_index;
-	if (tokens[tok_i]->next == FILES)
-		tok_i++;
-	while (tokens[tok_i] && tokens[tok_i]->type == FILES)
-		p->cmd_args[arg_i++] = mini_strdup(tokens[tok_i++]->str);
-	p->cmd_args[arg_i] = NULL;
+	additional_arguments_to_cmd(tokens, p, tok_i, arg_i);
 	p->cmd_found = true;
 	return (0);
 }
