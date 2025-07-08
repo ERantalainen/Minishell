@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 13:56:30 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/04 16:07:48 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/08 16:30:29 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,34 @@ void	built_in(t_cmd *cmd)
 	}
 }
 
+static void	exit_arg_checker(char *str)
+{
+	size_t	i;
+
+	i = 4;
+	while (str[i] && ft_isspace(str[i]))
+		i++;
+	if (str[i] && ft_isalpha(str[i]))
+	{
+		ft_fprintf(2, mini_join(mini_join(mini_join(MS, "exit: "), str), NMARG),
+			mini_strndup(str, word_len(str + i, 0)));
+		return ;
+	}
+	if (str[i] && ft_isdigit(str[i]))
+	{
+		while (str[i] && !ft_isspace(str[i]))
+			i++;
+		while (str[i] && ft_isspace(str[i]))
+			i++;
+		if (str[i])
+		{
+			ft_fprintf(2, "minishell: exit: too many arguments\n");
+			return ;
+		}
+	}
+	ft_exit("exit", exit_calci(str));
+}
+
 void	build_handler(t_cmd **cmds)
 {
 	size_t	i;
@@ -41,7 +69,7 @@ void	build_handler(t_cmd **cmds)
 			if (ft_strncmp("echo", cmds[i]->str, 4) == 0)
 				echo(cmds, i);
 			if (ft_strncmp("exit", cmds[i]->str, 4) == 0)
-				ft_exit("exit", exit_calci(cmds[i]->str));
+				exit_arg_checker(cmds[i]->str);
 			if (ft_strncmp("cd", cmds[i]->str, 2) == 0)
 				cd(cmds, i);
 			if (ft_strncmp("pwd", cmds[i]->str, 3) == 0)
@@ -57,7 +85,7 @@ void	build_handler(t_cmd **cmds)
 	}
 }
 
-void	child_builds(t_cmd	**cmds, char **envi, int i)
+void	child_builds(t_cmd **cmds, char **envi, int i)
 {
 	while (cmds[i])
 	{
@@ -66,7 +94,7 @@ void	child_builds(t_cmd	**cmds, char **envi, int i)
 			if (ft_strncmp("echo", cmds[i]->str, 4) == 0)
 				echo(cmds, i);
 			if (ft_strncmp("exit", cmds[i]->str, 4) == 0)
-				ft_exit("exit", exit_calci(cmds[i]->str));
+				exit_arg_checker(cmds[i]->str);
 			if (ft_strncmp("cd", cmds[i]->str, 2) == 0)
 				cd(cmds, i);
 			if (ft_strncmp("pwd", cmds[i]->str, 3) == 0)

@@ -42,6 +42,7 @@
 # define AMBG ": ambiguous redirect"
 # define MARG "cd: too many arguments"
 # define CMD ": command not found"
+# define NMARG ": numeric argument required\n"
 
 extern sig_atomic_t	g_sig;
 
