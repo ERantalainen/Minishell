@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:12:49 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/08 16:00:56 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/08 17:20:25 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # include "structs.h"
 # include "functions.h"
 
-# define ARENA_SIZE 16384
+# define ARENA_SIZE 32768
 # define ALIGNMENT 8
 
 # define EOF1 "minishell: warning: here-document at line "

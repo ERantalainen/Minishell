@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 15:44:11 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/03 15:52:32 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/08 15:11:52 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*here_eof(char *limiter)
 static char	*get_heredoc_prompt(void)
 {
     char *prompt;
-    
+
     prompt = arena_malloc(128);
     ft_strlcpy(prompt, "\033[38;5;231m╰─❯❯ \033[0m", 128);
     return (prompt);
@@ -241,10 +241,6 @@ void	fix_lines(char **file, size_t index, char *name, t_data *data)
 		i++;
 	}
 	close(fd);
-	fd = open(name, O_RDONLY);
-	if (fd == -1)
-		perror("minishell:");
-	data->hdfd[i] = fd;
 }
 
 char	*mini_substr(char const *s, unsigned int start, size_t len)
@@ -255,7 +251,7 @@ char	*mini_substr(char const *s, unsigned int start, size_t len)
 	if (!s)
 		return (NULL);
 	if (start > ft_strlen(s))
-		return (ft_strdup(""));
+		return (mini_strdup(""));
 	if (len > ft_strlen(s + start))
 		len = ft_strlen(s + start);
 	res = arena_malloc(len + 1);

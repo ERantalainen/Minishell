@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/07 18:40:07 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/08 17:02:00 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_token	*create_token(char *s, size_t *i, t_type last, t_data *data)
 		new->t = STRING;
 	else if (data->tokens->count == 0 && !ft_isspace(s[*i]))
 		new->t = STRING;
-	else if (ft_strncmp(new->s, "|", 1) == 0)
+	if (ft_strncmp(new->s, "|", 1) == 0)
 		new->t = PIPE;
 	else if (ft_strcmp(new->s, "<") == 0)
 		new->t = INPUT;
@@ -168,8 +168,6 @@ t_vector	*create_commands(t_vector *tokens)
 		return (NULL);
 	i = 0;
 	commands = new_vector(tokens->count);
-	if (data->input[0] == '"' || data->input[0] == '\'')
-		add_elem(commands, first_cmd(tokens, &i));
 	while (i < tokens->count && tokens->data[i] != NULL)
 	{
 		curr = tokens->data[i];

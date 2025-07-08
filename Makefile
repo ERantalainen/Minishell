@@ -6,7 +6,7 @@
 #    By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/03 18:36:06 by jpelline          #+#    #+#              #
-#    Updated: 2025/07/07 18:48:21 by erantala         ###   ########.fr        #
+#    Updated: 2025/07/08 16:12:54 by erantala         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -88,7 +88,8 @@ SRCS_UTILS := \
 	mini_split.c \
 	helpers.c \
 	empty_exp.c \
-	cleanup.c
+	cleanup.c \
+	multiples.c
 
 # Command execution and process management
 SRCS_EXEC := \

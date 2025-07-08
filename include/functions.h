@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 19:21:07 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/07 22:42:16 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/08 17:10:59 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,25 +49,29 @@ char		*ambigous(char *s, size_t i);
 
 // Built In
 
-void		init_export(void);
-void		sort_export(size_t count, t_data *data, char **exps);
-void		empty_export(void);
 void		echo(t_cmd **cmd, int i);
 void		pwd(void);
 void		unset(char *key);
 void		cd(t_cmd **cmd, int i);
 void		env(void);
 void		export(char *export);
-
-char		**export_to_arr(char *key, char **exports);
 char		**unset_child(char *key, char **envi);
-char		*find_export(char *key);
-void		make_export(char *command);
-void		replace_export(char *key);
 void		child_builds(t_cmd **cmds, char **envi, int i);
 void		built_in(t_cmd *cmd);
 void		build_handler(t_cmd **cmds);
+void		count_unset(char *command);
+
+// Export
+
+int			count_export(char	*export);
+void		init_export(void);
+void		sort_export(size_t count, t_data *data, char **exps);
+void		empty_export(void);
+char		*find_export(char *key);
+void		make_export(char *command);
+void		replace_export(char *key);
 char		*expans_help(char *s, char *dup, size_t *i, size_t *pos);
+char		**export_to_arr(char *key, char **exports);
 
 // Memory Arena
 

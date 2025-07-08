@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:34:01 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/05 02:57:58 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/08 16:01:39 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,13 +72,12 @@ static	void options(char *command, int *i, bool *nl)
 	t_data	*data;
 
 	data = get_data();
-	if ((command[*i] == '-' && command[*i + 1] == 'n'))
+	if ((command[*i] == '-' && command[*i + 1] == 'n' &&
+		(!command[*i + 2] || command[*i + 2]  == ' ' || command[*i + 2] == 'n')))
 	{
-		while (((command[*i] == 'n' && command[*i - 1] != ' ')
-			|| (command[*i] == ' ' && command[*i + 1] != ' ')
-			|| (command[*i] == '-' && command[*i + 1] != ' '
-			&& command[*i + 1] != '-')) 
-			&& command[*i] != '"' && command[*i] != '\'')
+		while (command[*i] && ((command[*i] == '-' && command[*i + 1] == 'n')
+		|| (command[*i] == 'n' && (command[*i + 1] == 'n' || command[*i + 1] == ' ' || !command[*i + 1]))
+		|| (command[*i] == ' ' || command[*i + 1] == ' ' || command[*i + 1] == '-')))
 			(*i)++;
 		*nl = 0;
 	}

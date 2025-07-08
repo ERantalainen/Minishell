@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:12:54 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/05 00:06:33 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/08 16:31:26 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ void	make_export(char *command)
 	size_t	i;
 
 	i = 0;
+	puts(command);
 	if (ft_strcmp(command, "") == 0)
 		empty_export();
 	while (command[i])
