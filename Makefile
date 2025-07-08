@@ -6,7 +6,7 @@
 #    By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/03 18:36:06 by jpelline          #+#    #+#              #
-#    Updated: 2025/07/08 16:12:54 by erantala         ###   ########.fr        #
+#    Updated: 2025/07/08 18:54:03 by erantala         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -77,7 +77,8 @@ SRCS_BUILTIN := \
 	built_in.c \
 	env.c \
 	unset.c \
-	shlv.c
+	shlv.c \
+	built_helpers.c
 
 # Utility functions and helpers
 SRCS_UTILS := \

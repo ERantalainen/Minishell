@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 13:56:30 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/08 17:20:29 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/08 19:03:23 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,15 +74,15 @@ void	build_handler(t_cmd **cmds)
 			if (ft_strncmp("echo", cmds[i]->str, 4) == 0)
 				echo(cmds, i);
 			if (ft_strncmp("exit", cmds[i]->str, 4) == 0)
-				exit_arg_checker(cmds[i]->str);
+				exit_arg_checker(join_full(cmds, i));
 			if (ft_strncmp("cd", cmds[i]->str, 2) == 0)
 				cd(cmds, i);
 			if (ft_strncmp("pwd", cmds[i]->str, 3) == 0)
 				pwd();
 			if (ft_strncmp("export", cmds[i]->str, 6) == 0)
-				count_export(cmds[i]->str);
+				count_export(join_full(cmds, i));
 			if (ft_strncmp("unset", cmds[i]->str, 5) == 0)
-				count_unset(cmds[i]->str + 6);
+				count_unset(join_full(cmds, i) + 6);
 			if (ft_strncmp("env", cmds[i]->str, 3) == 0)
 				env();
 		}
@@ -99,15 +99,15 @@ void	child_builds(t_cmd **cmds, char **envi, int i)
 			if (ft_strncmp("echo", cmds[i]->str, 4) == 0)
 				echo(cmds, i);
 			if (ft_strncmp("exit", cmds[i]->str, 4) == 0)
-				exit_arg_checker(cmds[i]->str);
+				exit_arg_checker(join_full(cmds, i));
 			if (ft_strncmp("cd", cmds[i]->str, 2) == 0)
 				cd(cmds, i);
 			if (ft_strncmp("pwd", cmds[i]->str, 3) == 0)
 				pwd();
 			if (ft_strncmp("export", cmds[i]->str, 6) == 0)
-				envi = export_to_arr(cmds[i]->str + 7, envi);
+				envi = count_export_child(join_full(cmds, i) + 6, envi);
 			if (ft_strncmp("unset", cmds[i]->str, 5) == 0)
-				envi = unset_child(cmds[i]->str + 6, envi);
+				envi = count_unset_child(cmds[i]->str + 6, envi);
 			if (ft_strncmp("env", cmds[i]->str, 3) == 0)
 				env();
 			return ;

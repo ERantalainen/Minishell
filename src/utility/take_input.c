@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 02:49:43 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/08 17:34:08 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/08 18:37:53 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,10 @@ static char	*get_prompt(void)
 	char	*cwd;
 	char	*prompt;
 	char	*temp;
+	t_data	*data;
 
-	cwd = get_pwd();
+	data = get_data();
+	cwd = data->directory;
 	prompt = arena_malloc(256);
 	prompt = mini_join("\1\e[38;5;231m\2╭─❮ \1\e[38;5;219m\2", cwd);
 	temp = prompt;
@@ -85,11 +87,13 @@ int	check_quotes(char *s)
 	return (0);
 }
 
-void	pwd_check()
+int	pwd_check()
 {
 	char	*path;
 	int		len;
+	t_data	*data;
 
+	data = get_data();
 	len = 50;
 	path = NULL;
 	while (!path)
@@ -98,7 +102,8 @@ void	pwd_check()
 		path = getcwd(path, len);
 		if (!path && errno == ERANGE)
 			path += 25;
-		else if (errno == ENOENT)
-			chdir()
+		else if (!path && errno == ENOENT)
+			return (0);
 	}
+	return (1);
 }

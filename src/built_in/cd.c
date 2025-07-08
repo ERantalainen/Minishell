@@ -6,11 +6,28 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:34:05 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/07 17:50:13 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/08 18:39:44 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void check_cd_res(char *path, t_data *data)
+{
+	if (!pwd_check())
+	{
+		replace_export(mini_join("OLDPWD=", data->directory));
+		data->directory = (mini_join(data->directory, mini_join("/", path)));
+		chdir(data->directory);
+		replace_export(mini_join("PWD=", data->directory));
+		replace_export("?=0");
+		return ;
+	}
+	replace_export(mini_join("OLDPWD=", data->directory));
+	data->directory = get_pwd();
+	replace_export(mini_join("PWD=", get_pwd()));
+	replace_export("?=0");
+}
 
 static void	change_dir(char *path, t_data *data)
 {
@@ -33,10 +50,8 @@ static void	change_dir(char *path, t_data *data)
 	}
 	else
 	{
-		replace_export(mini_join("OLDPWD=", data->directory));
-		data->directory = get_pwd();
-		replace_export(mini_join("PWD=", get_pwd()));
-		replace_export("?=0");
+		check_cd_res(path, data);
+
 	}
 }
 

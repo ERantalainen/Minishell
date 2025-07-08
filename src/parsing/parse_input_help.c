@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 18:39:57 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/07 18:40:18 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/08 19:51:40 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ t_cmd	*make_cmd_str(t_vector *tokens, size_t *i, t_data *data)
 	cmd->type = STRING;
 	cmd->str = "";
 	cmd->space = tk->space;
+	cmd->quoted = tk->quoted;
 	if (data->last != FILES && (((*i == 0) || ((access(tk->s, R_OK | W_OK) != 0
 		&& tk->space == 1)) || data->last == PIPE)))
 		cmd_help(tokens, i, tk, cmd);
@@ -50,6 +51,8 @@ t_cmd	*make_cmd_spc(t_vector *tokens, size_t *i, t_data *data)
 	cmd = arena_malloc(sizeof(t_cmd));
 	token = tokens->data[(*i)];
 	cmd->type = token->t;
+	cmd->space = token->space;
+	cmd->quoted = token->quoted;
 	cmd->str = token->s;
 	(*i)++;
 	if ((*i) < tokens->count)

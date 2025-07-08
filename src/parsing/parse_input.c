@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/08 17:02:00 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/08 19:50:40 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,13 @@ t_token	*create_token(char *s, size_t *i, t_type last, t_data *data)
 
 	data->last = EMPTY;
 	new = arena_malloc(sizeof(t_token));
-	new->s = token_string(s, i, last);
+	new->s = token_string(s, i, &last);
 	if (data->valid == 0)
 		return (NULL);
+	new->quoted = 0;
 	new->space = 0;
+	if (last == QUOTED)
+		new->quoted = 1;
 	if (s[*i - 1] == '"' || s[*i - 1] == '\'')
 		new->t = STRING;
 	else if (data->tokens->count == 0 && !ft_isspace(s[*i]))
@@ -81,20 +84,19 @@ t_vector	*creator(char *s, size_t len, size_t i, t_data *data)
 			space = 1;
 		while (s[i] && ft_isspace(s[i]) == 1)
 			i++;
-		if (data->tokens->count == 0)
+		if (!s[i])
+			break ;
+		if (data->tokens->count == 0 && s[i])
 			token = create_token(s, &i, EMPTY, data);
-		else
+		else if (s[i])
 			token = create_token(s, &i, token->t, data);
 		if (data->valid == 0)
 			break ;
-		if (token->s && ft_strcmp(token->s, "") != 0)
+		add_elem(data->tokens, token);
+		if (space == 1)
 		{
-			add_elem(data->tokens, token);
-			if (space == 1)
-			{
-				token->space = 1;
-				space = 0;
-			}
+			token->space = 1;
+			space = 0;
 		}
 	}
 	return (data->tokens);
@@ -112,7 +114,7 @@ int	check_empty_quote(char *s)
 	return (0);
 }
 
-char	*token_string(char *s, size_t *i, t_type last)
+char	*token_string(char *s, size_t *i, t_type *last)
 {
 	char	*token;
 	int		len;
@@ -122,10 +124,10 @@ char	*token_string(char *s, size_t *i, t_type last)
 		*i += 2;
 		return ("");
 	}
-	if ((last == INPUT || last == OUTPUT || last == APPEND) && s[*i] == '$')
+	if ((*last == INPUT || *last == OUTPUT || *last == APPEND) && s[*i] == '$')
 		if (ambigous(s, *i) != NULL)
 			return (NULL);
-	if (s[(*i)] == '\'' || s[(*i)] == '"' || last == HERE_DOC)
+	if (s[(*i)] == '\'' || s[(*i)] == '"' || *last == HERE_DOC)
  		return (quoted_token(s + *i, s[(*i)], i, last));
 	len = word_len(s + (*i), 0);
 	token = expand_strndup(s + (*i), len);
@@ -134,27 +136,6 @@ char	*token_string(char *s, size_t *i, t_type last)
 }
 
 // Create a string for the token
-
-t_cmd	*first_cmd(t_vector *tokens, size_t *i)
-{
-	t_cmd	*cmd;
-	t_token	*curr;
-
-	cmd = arena_malloc(sizeof(t_cmd));
-	curr = tokens->data[*i];
-	cmd->str = curr->s;
-	cmd->type = curr->t;
-	(*i)++;
-	if (*i < tokens->count)
-	{
-		curr = tokens->data[*i];
-		cmd->next = curr->t;
-	}
-	else
-		cmd->next = EMPTY;
-	built_in(cmd);
-	return (cmd);
-}
 
 t_vector	*create_commands(t_vector *tokens)
 {

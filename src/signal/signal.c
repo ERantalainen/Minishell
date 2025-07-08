@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 17:07:20 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/30 19:30:28 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/08 19:57:24 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,4 +90,5 @@ void	heredoc_signal(void)
 	s_sig.sa_handler = heredoc_handler;
 	sigaction(SIGINT, &s_sig, NULL);
 	rl_event_hook = &check_signal;
+	replace_export("?=130");
 }

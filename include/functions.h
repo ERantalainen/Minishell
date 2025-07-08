@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 19:21:07 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/08 17:10:59 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/08 19:48:38 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@
 
 t_vector	*next_check(t_vector *commands);
 
-// Tokenizer
+// Tokenizers
 
 t_token		*create_token(char *s, size_t *i, t_type last, t_data *data);
 t_vector	*token_vector(char *s);
-char		*token_string(char *s, size_t *i, t_type last);
+char		*token_string(char *s, size_t *i, t_type *last);
 t_vector	*creator(char *s, size_t len, size_t i, t_data *data);
-char		*quoted_token(char *s, char quote, size_t *i, t_type last);
+char		*quoted_token(char *s, char quote, size_t *i, t_type *last);
 
 // Command creator
 
@@ -60,6 +60,8 @@ void		child_builds(t_cmd **cmds, char **envi, int i);
 void		built_in(t_cmd *cmd);
 void		build_handler(t_cmd **cmds);
 void		count_unset(char *command);
+char		*join_full(t_cmd **cmds, int i);
+char		**count_unset_child(char *command, char **env);
 
 // Export
 
@@ -72,6 +74,7 @@ void		make_export(char *command);
 void		replace_export(char *key);
 char		*expans_help(char *s, char *dup, size_t *i, size_t *pos);
 char		**export_to_arr(char *key, char **exports);
+char		**count_export_child(char	*export, char **env);
 
 // Memory Arena
 
@@ -103,6 +106,7 @@ void		ft_exit_child(char *s, int code);
 void		free_arenas(void);
 void		ft_exit(char *s, int code);
 int			exit_calci(char *cmd);
+int		pwd_check(void);
 
 // Utility
 
@@ -115,11 +119,6 @@ char		**strarm(char **s, size_t i);
 char		**replace_line(char **s, char *line, size_t i);
 size_t		key_len(char *s);
 size_t		word_len(char *s, int quote);
-
-
-
-
-
 
 // String functions
 
@@ -173,7 +172,7 @@ void		open_file(t_cmd **tokens, t_pipedata *p, int settings);
 void		check_for_redirects(t_cmd **tokens, t_pipedata *p);
 void		setup_pipes(int in, int out, int close_in, int close_out);
 void		setup_child(t_cmd **tokens, t_pipedata *p, char **env, int i);
-int		setup_cmd_to_execute(t_cmd **tokens, t_pipedata *p);
+int			setup_cmd_to_execute(t_cmd **tokens, t_pipedata *p);
 
 void		child_process(t_cmd **tokens, t_pipedata *p, char **env);
 void		cmd_help(t_vector *tokens, size_t *i, t_token *token, t_cmd *cmd);

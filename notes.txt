@@ -1,46 +1,46 @@
-ls | $EMPTY | pwd | ls | env | grep SH | wc > a > b > c
+ls | $EMPTY | pwd | ls | env | grep SH | wc > a > b > c // FIXED
 
-ls | $PWD| pwd | ls | env | grep SH | wc > a > b > c
-
-
-ls | $PWD | pwd | ls | env | grep SH | wc > a > b > c
+ls | $PWD| pwd | ls | env | grep SH | wc > a > b > c // FIXED
 
 
-ls | grep l
+ls | $PWD | pwd | ls | env | grep SH | wc > a > b > c // NEVER BROKE
 
-echo -nnnnnnnnnnnnn -n -n -nnn -n-n
 
-echo -n-n
+ls | grep l //fixed
 
-..
+echo -nnnnnnnnnnnnn -n -n -nnn -n-n // FIXED
 
-.
+echo -n-n // FIXED
 
-mkdir -p 1/2/3/4
+.. //fixed
+
+. //fixed
+
+mkdir -p 1/2/3/4 // FIXED
 (rm check)
 
-cd 1/2/3/4/
+cd 1/2/3/4/ // FIXED
 
-rm -r ../../../../1
+rm -r ../../../../1 // FIXED
 
- >| ls
+ >| ls //fixed
 
 < c echo > 2 > 3 | wc
 
-< c
+< c // FIXED
 
-echo "1"2"2"3"4"
+echo "1"2"2"3"4" //fixed
 
 echo "1"2"2"3"4"""
 
-< c echo > 2 >
+< c echo > 2 > // FIXED
 
-export TEST="o hello"
-ech$TEST
+export TEST="o hello" //fixed
+ech$TEST //fixed
 
 cat <<""EOF
 
-cat <<EOF""
+cat <<EOF"" //fixed
 
 cat <<EOF
 ╰─❯❯ $US"ER"
@@ -49,14 +49,14 @@ cat <<EOF
 ls > asd > $EMADASD
 
 exit 3000000000
-exit 1 1
-exit a 1
-exit -1
+exit 1 1 //fixed
+exit a 1 // fixed
+exit -1 // fixed ?
 echo $?
 echo $SASDASDASD
 
-export TEST=1 TEST2=2 TEST=3 4TEST=error TEST5=5
-export SUPER
-unset TEST TEST123123 SUPER
+export TEST=1 TEST2=2 TEST=3 4TEST=error TEST5=5 //fixed
+export SUPER //fixed
+unset TEST TEST123123 SUPER //fixed
 <a>b<a>c><a
 >b<a>>a

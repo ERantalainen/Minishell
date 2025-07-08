@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 19:33:55 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/08 17:37:05 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/08 19:40:11 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ typedef struct s_token
 {
 	t_type		t;
 	char		*s;
+	bool		quoted;
 	bool		space;
 }				t_token;
 
@@ -75,6 +76,7 @@ typedef struct s_command
 	char		*str;
 	t_type		type;
 	t_type		next;
+	bool		quoted;
 	bool		space;
 }				t_cmd;
 

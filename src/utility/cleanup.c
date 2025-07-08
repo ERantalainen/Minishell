@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 17:07:45 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/08 17:29:41 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/08 17:43:04 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	ft_exit(char *s, int code)
 void	ft_exit_child(char *s, int code)
 {
 	int i = 3;
-	while (i < 1024)
+	while (i < _SC_OPEN_MAX)
 		close(i++);
 	if (s)
 		ft_fprintf(2, "%s\n", s);

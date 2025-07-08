@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:12:54 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/08 16:31:26 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/08 19:05:59 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ size_t	key_len(char *s)
 	if (s[i] == '$')
 		i++;
 	while ((s[i] && s[i] != '=' && !ft_isspace(s[i]) && s[i] != '$')
-		&& s[i] != '"' && s[i] != '\'')
+		&& !check_specials(s[i], 0))
 		i++;
 	return (i);
 }
@@ -75,7 +75,6 @@ void	make_export(char *command)
 	size_t	i;
 
 	i = 0;
-	puts(command);
 	if (ft_strcmp(command, "") == 0)
 		empty_export();
 	while (command[i])

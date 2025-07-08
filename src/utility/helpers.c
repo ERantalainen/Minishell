@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:02:28 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/08 17:32:26 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/08 18:25:33 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	init_data(char **env)
 	array_to_vec(data->env_vec, (void **)env);
 	add_elem(data->env_vec, mini_strdup("?=0"));
 	init_export();
+	data->trash = mini_join(find_export("HOME"), "/.local/share/Trash/files");
 }
 
 char	*get_pwd(void)
