@@ -103,6 +103,7 @@ char	*get_bin_path(char *cmd, char **env, t_pipedata *p)
 	char	*temp;
 	char	*path;
 
+	open_handler(p, cmd);
 	if (access(cmd, X_OK) != -1)
 	{
 		path = mini_strdup(cmd);
