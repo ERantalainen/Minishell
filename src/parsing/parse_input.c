@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/08 19:50:40 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/08 22:19:06 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,11 @@ t_token	*create_token(char *s, size_t *i, t_type last, t_data *data)
 	new->quoted = 0;
 	new->space = 0;
 	if (last == QUOTED)
+	{
 		new->quoted = 1;
+		new->t = STRING;
+		return (new);
+	}
 	if (s[*i - 1] == '"' || s[*i - 1] == '\'')
 		new->t = STRING;
 	else if (data->tokens->count == 0 && !ft_isspace(s[*i]))
@@ -129,8 +133,17 @@ char	*token_string(char *s, size_t *i, t_type *last)
 			return (NULL);
 	if (s[(*i)] == '\'' || s[(*i)] == '"' || *last == HERE_DOC)
  		return (quoted_token(s + *i, s[(*i)], i, last));
-	len = word_len(s + (*i), 0);
-	token = expand_strndup(s + (*i), len);
+	if (s[*i] == '$')
+	{
+		token = find_export(mini_strndup(s + *i, key_len(s + *i)));
+		len = key_len(s + *i);
+		*last = QUOTED;
+	}
+	else
+	{
+		len = word_len(s + (*i), 0);
+		token = mini_strndup(s + *i, len);
+	}
 	(*i) += len;
 	return (token);
 }

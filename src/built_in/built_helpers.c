@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_helpers.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 18:46:33 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/08 21:10:55 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/09 01:21:49 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,12 @@ char	*join_full(t_cmd **cmds, int i)
 	i++;
 	while (cmds[i] && (cmds[i]->type == FILES || cmds[i]->type == STRING))
 	{
-		res = mini_append(res, cmds[i]->str);
+		if (cmds[i]->space == 1)
+			res = mini_append(res, cmds[i]->str);
+		else
+			res = mini_join(res, cmds[i]->str);
 		i++;
 	}
+	puts(res);
 	return (res);
 }

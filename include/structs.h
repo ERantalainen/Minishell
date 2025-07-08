@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 19:33:55 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/08 19:40:11 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/08 22:46:08 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ typedef enum e_type
 	STRING,
 	FILES,
 	BUILTIN,
-	QUOTED
+	QUOTED,
 }				t_type;
 
 typedef struct s_token
@@ -56,6 +56,7 @@ typedef struct s_token
 	char		*s;
 	bool		quoted;
 	bool		space;
+	bool		expansion;
 }				t_token;
 
 typedef struct s_vector

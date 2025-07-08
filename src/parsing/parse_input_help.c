@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 18:39:57 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/08 19:51:40 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/08 22:48:53 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ t_cmd	*make_cmd_str(t_vector *tokens, size_t *i, t_data *data)
 	cmd->str = "";
 	cmd->space = tk->space;
 	cmd->quoted = tk->quoted;
-	if (data->last != FILES && (((*i == 0) || ((access(tk->s, R_OK | W_OK) != 0
-		&& tk->space == 1)) || data->last == PIPE)))
+	if (data->last != FILES && ((((*i == 0) || ((access(tk->s, R_OK | W_OK) != 0
+		&& tk->space == 1)) || data->last == PIPE)) || tk->quoted == 1))
 		cmd_help(tokens, i, tk, cmd);
 	else
 	{

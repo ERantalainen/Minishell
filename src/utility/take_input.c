@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 02:49:43 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/08 18:37:53 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/08 21:39:06 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,7 @@ int	pwd_check()
 {
 	char	*path;
 	int		len;
-	t_data	*data;
 
-	data = get_data();
 	len = 50;
 	path = NULL;
 	while (!path)

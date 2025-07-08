@@ -64,3 +64,9 @@ export SUPER //fixed
 unset TEST TEST123123 SUPER //fixed
 <a>b<a>c><a
 >b<a>>a
+
+NEW STUFF 9.7.2025 2.16
+
+- FIX CHILD Export and UNSET
+
+- EXEC LOGIC HAS TO WORK WITH MULTIPLE ARGS NOW !!

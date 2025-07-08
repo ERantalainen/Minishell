@@ -6,88 +6,83 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 15:02:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/08 19:05:48 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/09 02:14:46 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	export_len(char *s)
+char	*build_exports(t_cmd **cmds, int *i)
 {
-	int		i;
-	int		quote;
-	bool	limiter;
+	char	*export;
+	size_t	j;
 
-	limiter = 0;
-	quote = -1;
-	i = 0;
-	while(s[i])
+	j = 0;
+	if (!(cmds[*i] && ((cmds[*i]->type == FILES || cmds[*i]->type == STRING)
+	|| (cmds[*i]->type == BUILTIN))))
+		return (NULL);
+	while(cmds[*i]->str[j] && ft_isspace(cmds[*i]->str[j]))
+		j++;
+	export = mini_strdup(cmds[*i]->str + j);
+	(*i)++;
+	while (cmds[*i] && ((cmds[*i]->type == FILES || cmds[*i]->type == STRING)
+		|| (cmds[*i]->type == BUILTIN)))
 	{
-		if(s[i] == '"' || s[i] == '\'')
-			quote *= -1;
-		if (quote == -1 && ft_isspace(s[i]))
+		if (cmds[*i]->space == 0)
+			export = mini_join(export, cmds[*i]->str);
+		else
 			break ;
-		if (s[i] == '=')
-			limiter = 1;
-		i++;
+		(*i)++;
 	}
-	if (!limiter)
-		return (-1);
-	return (i);
+	puts(export);
+	return (export);
 }
 
-int	count_export(char	*export)
+int	check_export(char *export)
 {
-	int			len;
-	size_t		i;
+	size_t	j;
+	bool	limiter;
 
-	i = 0;
-	if (ft_strlen(export) == 6)
-		empty_export();
-	else
-		export += 6;
-	while (export[0])
+	j = 0;
+	limiter = 0;
+	while (export[j])
 	{
-		i = 0;
-		while (export[i] && ft_isspace(export[i]))
-			i++;
-		if (!export[i])
-			return (0);
-		len = export_len(export + i);
-		if (len > 0)
-			make_export(mini_strndup(export + i, len));
-		else
-			return (0);
-		export += len + i;
+		if (export[j] == '=')
+			limiter = 1;
+		j++;
+	}
+	if (limiter == 1)
+		return (1);
+	return (0);
+}
+
+int	count_export(t_cmd **cmds, int i)
+{
+	char		*export;
+
+	if (cmds[i]->next != STRING && cmds[i]->next != FILES)
+	{
+		empty_export();
+		return (0);
+	}
+	else
+		i++;
+	while (1)
+	{
+		export = build_exports(cmds, &i);
+		if (!export)
+			break ;
+		if (check_export(export))
+			make_export(export);
 	}
 	return (0);
 }
 
-char	**count_export_child(char	*export, char **env)
+char	**count_export_child(char *export, char **env)
 {
-	int			len;
-	size_t		i;
-
-	i = 0;
-	if (ft_strlen(export) == 6)
-		empty_export();
-	else
-		export += 6;
-	while (export[0])
-	{
-		i = 0;
-		while (export[i] && ft_isspace(export[i]))
-			i++;
-		if (!export[i])
-			break ;
-		len = export_len(export + i);
-		if (len > 0)
-			export_to_arr(mini_strndup(export +i, len), env);
-		else
-			break ;
-		export += len + i;
-	}
-		return (env);
+	(void)export;
+	(void)env;
+	return (NULL);
 }
 
 char	**count_unset_child(char *command, char **env)
@@ -111,3 +106,4 @@ char	**count_unset_child(char *command, char **env)
 	}
 	return (env);
 }
+

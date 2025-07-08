@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 15:44:37 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/08 19:48:50 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/09 02:07:15 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,10 @@ char	*expand_quotes(char *s)
 	size_t	i;
 	char	*dupe;
 	char	*exp;
-
+	bool	space;
+	
 	i = 0;
+	space = 0;
 	dupe = "";
 	while (s[i])
 	{
@@ -59,11 +61,17 @@ char	*expand_quotes(char *s)
 			dupe = mini_join(dupe, exp);
 			i += key_len(s + i);
 		}
-		else
+		else if (!ft_isspace(s[i]) || space == 0)
 		{
+			if (space == 0 && ft_isspace(s[i]))
+				space = 1;
+			else
+				space = 0;
 			dupe = mini_join(dupe, mini_strndup(&s[i], 1));
 			i++;
 		}
+		else
+			i++;
 	}
 	return (dupe);
 }
@@ -115,17 +123,10 @@ void	cmd_help(t_vector *tokens, size_t *i, t_token *token, t_cmd *cmd)
 {
 	while ((*i) < tokens->count && (token->t == STRING || token->t == FILES))
 	{
-		if (token->space == 1)
-			cmd->str = mini_append(cmd->str, token->s);
-		else
-			cmd->str = mini_join(cmd->str, token->s);
+		cmd->str = token->s;
 		built_in(cmd);
 		(*i)++;
-		if (*i >= tokens->count)
-			break ;
-		token = tokens->data[(*i)];
-		if (token && access(token->s, R_OK) == 0 && token->space == 1)
-			break ;
+		break;
 	}
 }
 

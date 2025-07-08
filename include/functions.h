@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 19:21:07 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/08 19:48:38 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/09 02:28:34 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,13 +59,13 @@ char		**unset_child(char *key, char **envi);
 void		child_builds(t_cmd **cmds, char **envi, int i);
 void		built_in(t_cmd *cmd);
 void		build_handler(t_cmd **cmds);
-void		count_unset(char *command);
+void		count_unset(t_cmd **cmds, int i);
 char		*join_full(t_cmd **cmds, int i);
 char		**count_unset_child(char *command, char **env);
 
 // Export
 
-int			count_export(char	*export);
+int			count_export(t_cmd **cmds, int i);
 void		init_export(void);
 void		sort_export(size_t count, t_data *data, char **exps);
 void		empty_export(void);

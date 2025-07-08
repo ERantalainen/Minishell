@@ -6,30 +6,32 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 22:37:46 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/08 17:17:10 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/09 02:28:06 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	count_unset(char *command)
+void	count_unset(t_cmd **cmds, int i)
 {
-	int		len;
-	size_t	i;
+	char	*cmd;
 
-	while (command[0])
+	cmd = "";
+	while (cmds[i] && ((cmds[i]->type == FILES || cmds[i]->type == STRING)))
 	{
-		i = 0;
-		while (command[i] && ft_isspace(command[i]))
+		if (cmds[i]->space == 0)
+		{
+			cmd = mini_join(cmd, cmds[i]->str);
 			i++;
-		if (!command[i])
-			return ;
-		len = word_len(command + i, 0);
-		if (len > 0)
-			unset(mini_strndup(command + i, len));
+		}
 		else
-			return ;
-		command += len + i;
+			cmd = mini_strdup(cmds[i]->str);
+		if (cmds[i]->space != 0)
+		{
+			unset(cmd);
+			cmd = "";
+		}
+		i++;
 	}
 }
 

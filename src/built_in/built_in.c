@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 13:56:30 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/08 19:03:23 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/09 02:29:01 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,9 @@ void	build_handler(t_cmd **cmds)
 			if (ft_strncmp("pwd", cmds[i]->str, 3) == 0)
 				pwd();
 			if (ft_strncmp("export", cmds[i]->str, 6) == 0)
-				count_export(join_full(cmds, i));
+				count_export(cmds, i);
 			if (ft_strncmp("unset", cmds[i]->str, 5) == 0)
-				count_unset(join_full(cmds, i) + 6);
+				count_unset(cmds, i + 1);
 			if (ft_strncmp("env", cmds[i]->str, 3) == 0)
 				env();
 		}

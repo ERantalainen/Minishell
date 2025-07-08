@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 18:04:47 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/07 22:22:04 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/08 22:12:30 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int	check_specials(int c, int quote)
 {
 	if (quote == 0 && (c == '\'' || c == '"'))
 		return (1);
-	if (c == '<' || c == '|' || c == '>' || c == quote)
+	if (c == '<' || c == '|' || c == '>' || c == quote || c == '$')
 		return (1);
 	return (0);
 }
