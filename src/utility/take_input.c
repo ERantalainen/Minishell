@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 02:49:43 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/08 15:40:32 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/08 17:34:08 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,4 +83,22 @@ int	check_quotes(char *s)
 		return (1);
 	}
 	return (0);
+}
+
+void	pwd_check()
+{
+	char	*path;
+	int		len;
+
+	len = 50;
+	path = NULL;
+	while (!path)
+	{
+		path = arena_malloc(len);
+		path = getcwd(path, len);
+		if (!path && errno == ERANGE)
+			path += 25;
+		else if (errno == ENOENT)
+			chdir()
+	}
 }

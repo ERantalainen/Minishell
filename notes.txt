@@ -17,6 +17,7 @@ echo -n-n
 .
 
 mkdir -p 1/2/3/4
+(rm check)
 
 cd 1/2/3/4/
 
@@ -32,7 +33,7 @@ echo "1"2"2"3"4"
 
 echo "1"2"2"3"4"""
 
-< c echo > 2 > 
+< c echo > 2 >
 
 export TEST="o hello"
 ech$TEST

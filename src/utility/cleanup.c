@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 17:07:45 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/08 17:21:00 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/08 17:29:41 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,3 +62,31 @@ void	ft_exit_child(char *s, int code)
 		ft_fprintf(2, "%s\n", s);
 	exit(code);
 }
+
+void	child_died(int status)
+{
+	const char	*exit_code = "?=";
+	char		*exit_export;
+
+	if (WIFSIGNALED(status))
+	{
+		if (WTERMSIG(status) == SIGQUIT || WTERMSIG(status) == SIGINT)
+		{
+			if (WTERMSIG(status) == SIGQUIT)
+				ft_fprintf(STDERR_FILENO, "%s", QUIT);
+			write(1, "\n", 1);
+			rl_replace_line("", 0);
+			rl_done = 1;
+		}
+		exit_export = mini_join(exit_code, mini_itoa(WTERMSIG(status) + 128));
+		if (ft_strcmp(find_export("?"), "") == 0)
+			export(exit_export);
+		else
+			replace_export(exit_export);
+	}
+	else if (ft_strcmp(find_export("?"), "") == 0)
+		export(mini_join(exit_code, mini_itoa(WEXITSTATUS(status))));
+	else
+		replace_export(mini_join(exit_code, mini_itoa(WEXITSTATUS(status))));
+}
+
