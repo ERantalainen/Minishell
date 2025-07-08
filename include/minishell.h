@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:12:49 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/07 22:41:24 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/08 16:00:56 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <signal.h>
 # include <stdio.h>
 # include <sys/wait.h>
+# include <sys/stat.h>
 
 # include "structs.h"
 # include "functions.h"
@@ -40,6 +41,12 @@
 # define NSFOD ": No such file or directory"
 # define AMBG ": ambiguous redirect"
 # define MARG "cd: too many arguments"
+# define CMD ": command not found"
+# define NMARG ": numeric argument required\n"
+
 extern sig_atomic_t	g_sig;
+
+typedef struct stat s_stat;
+typedef s_stat t_stat;
 
 #endif // MINISHELL_H

@@ -1,0 +1,61 @@
+ls | $EMPTY | pwd | ls | env | grep SH | wc > a > b > c
+
+ls | $PWD| pwd | ls | env | grep SH | wc > a > b > c
+
+
+ls | $PWD | pwd | ls | env | grep SH | wc > a > b > c
+
+
+ls | grep l
+
+echo -nnnnnnnnnnnnn -n -n -nnn -n-n
+
+echo -n-n
+
+..
+
+.
+
+mkdir -p 1/2/3/4
+
+cd 1/2/3/4/
+
+rm -r ../../../../1
+
+ >| ls
+
+< c echo > 2 > 3 | wc
+
+< c
+
+echo "1"2"2"3"4"
+
+echo "1"2"2"3"4"""
+
+< c echo > 2 > 
+
+export TEST="o hello"
+ech$TEST
+
+cat <<""EOF
+
+cat <<EOF""
+
+cat <<EOF
+╰─❯❯ $US"ER"
+╰─❯❯ EOF
+
+ls > asd > $EMADASD
+
+exit 3000000000
+exit 1 1
+exit a 1
+exit -1
+echo $?
+echo $SASDASDASD
+
+export TEST=1 TEST2=2 TEST=3 4TEST=error TEST5=5
+export SUPER
+unset TEST TEST123123 SUPER
+<a>b<a>c><a
+>b<a>>a
