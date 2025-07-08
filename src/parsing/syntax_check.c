@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 15:48:23 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/07 22:43:40 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/09 02:36:35 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,7 @@ void	here_two(t_vector *tokens, int count, t_data *data)
 			if (!data->valid)
 				return ;
 			next->t = FILES;
+			remove_elem(tokens, i);
 			count--;
 		}
 		i++;
