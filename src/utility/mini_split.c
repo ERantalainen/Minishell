@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 18:55:30 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/01 19:26:03 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/08 15:52:37 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static size_t	ft_words_in_s(const char *s, char c)
 	}
 	count = 0;
 	i = 0;
-	if (s[i] && s[i + 1] && s[i] != c)
+	if (s[i] && s[i] != c)
 		count++;
 	while (s[i])
 	{

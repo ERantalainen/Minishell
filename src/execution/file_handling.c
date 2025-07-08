@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_utility2.c                                    :+:      :+:    :+:   */
+/*   file_handling.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 21:19:02 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/04 17:34:18 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/08 15:48:00 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,14 @@
 
 void	open_handler(t_pipedata *p, const char *path)
 {
+	t_stat st;
 	int	fd;
 
 	fd = open(p->cmd_args[0], O_RDONLY);
+	if (ft_strcmp(p->cmd_args[0], "..") == 0 || ft_strcmp(p->cmd_args[0], ".") == 0)
+		ft_exit_child(mini_join(p->cmd_args[0], CMD), 2);
+	if (stat(p->cmd_args[0], &st) == 0 && S_ISDIR(st.st_mode))
+		ft_fprintf(2, "%s: Is a directory\n", p->cmd_args[0]);
 	if (fd < 0)
 	{
 		if (errno == EISDIR)
