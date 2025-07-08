@@ -70,3 +70,7 @@ NEW STUFF 9.7.2025 2.16
 - FIX CHILD Export and UNSET
 
 - EXEC LOGIC HAS TO WORK WITH MULTIPLE ARGS NOW !!
+
+- FULL_JOIN SAVES ALL YMS YMS
+
+- <<a menee rikki koska eka file ja jos eka on file se on komento ? tee heredoc filest heredoc tyyppi? vai ? 
