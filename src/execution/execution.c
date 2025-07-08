@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 16:20:20 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/04 15:40:15 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/08 15:56:43 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,9 @@
 
 static int	safe_execve(char *path, char **argv, char **env)
 {
-	if (fcntl(STDOUT_FILENO, F_GETFL) == -1 && errno == EBADF)
-	{
-		ft_fprintf(2, "stdout pipe broken\n");
-		exit(1);
-	}
+	t_stat st;
+	if (fstat(STDOUT_FILENO, &st) == -1 && errno == EBADF)
+		ft_exit_child(NULL, 1);
 	return (execve(path, argv, env));
 }
 
