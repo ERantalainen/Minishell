@@ -98,6 +98,15 @@ static void	check_cmd_validity(char *cmd)
 	}
 }
 
+static int	check_if_path_exists(void)
+{
+	char *path;
+	path = find_export("PATH");
+	if (ft_strcmp(path, "") == 0)
+		return (-1);
+	return (1);
+}
+
 char	*get_bin_path(char *cmd, char **env, t_pipedata *p)
 {
 	char	**env_paths;
@@ -105,8 +114,13 @@ char	*get_bin_path(char *cmd, char **env, t_pipedata *p)
 	char	*temp;
 	char	*path;
 
+	if (check_if_path_exists() == -1 && access(cmd, X_OK) != -1)
+	{
+		path = mini_strdup(cmd);
+		return (path);
+	}
 	open_handler(p, cmd);
-	if (access(cmd, X_OK) != -1)
+	if (check_if_path_exists() && ft_strncmp(cmd, "./", 2) == 0 && access(cmd, X_OK) != -1)
 	{
 		path = mini_strdup(cmd);
 		return (path);
@@ -116,11 +130,6 @@ char	*get_bin_path(char *cmd, char **env, t_pipedata *p)
 		ft_exit(mini_join(MS, mini_join(mini_strndup(cmd, word_len(cmd, 0)),
 					NSFOD)), 127);
 	args = mini_split(cmd, ' ');
-	if (access(args[0], X_OK) != -1)
-	{
-		path = mini_strdup(args[0]);
-		return (path);
-	}
 	check_cmd_validity(cmd);
 	temp = mini_join("/", args[0]);
 	path = find_bin_in_path(env_paths, temp);
