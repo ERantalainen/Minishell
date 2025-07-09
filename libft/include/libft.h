@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 15:02:54 by jpelline          #+#    #+#             */
-/*   Updated: 2025/06/20 02:26:28 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/09 20:29:21 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ char				*ft_strnstr(const char *big, const char *little,
 int					ft_atoi(const char *nptr);
 double				ft_atof(const char *nptr);
 bool				ft_atoib(const char *nptr);
+long				ft_atol(const char *nptr);
 void				*ft_calloc(size_t nmemb, size_t size);
 char				*ft_strdup(const char *s);
 char				*ft_strndup(char *s, size_t n);

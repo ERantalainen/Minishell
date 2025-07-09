@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/09 19:36:28 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/09 21:16:34 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,8 +158,11 @@ t_vector	*create_commands(t_vector *tokens)
 	t_data		*data;
 
 	data = get_data();
-	if (data->valid == 0 || !tokens)
+	if (!tokens || data->valid == 0)
+	{
+		data->valid = 0;
 		return (NULL);
+	}
 	i = 0;
 	data->check_build = 1;
 	commands = new_vector(tokens->count);

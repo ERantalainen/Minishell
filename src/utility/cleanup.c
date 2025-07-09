@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 17:07:45 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/09 19:48:30 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/09 20:09:16 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,9 @@ void	ft_exit(char *s, int code)
 	i = 3;
 	while (i < 1024)
 		close(i++);
-	if (s[0] != 0)
-		ft_fprintf(1, "%s\n", s);
+	//if (s[0] != 0)
+		//ft_fprintf(1, "%s\n", s);
+	(void)s;
 	free_arenas();
 	exit(code);
 }

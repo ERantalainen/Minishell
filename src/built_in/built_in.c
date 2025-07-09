@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 13:56:30 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/09 20:06:37 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/09 21:02:15 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,19 +37,32 @@ static void	exit_arg_checker(char *str)
 {
 	size_t	i;
 
+	if (!str)
+		return ;
 	i = 4;
 	while (str[i] && ft_isspace(str[i]))
 		i++;
+	if (ft_atoib(str + i) && ft_atoi(str + i) == 0)
+		ft_exit("exit", 0);
+	if (str[i] == '+' || str[i] == '-')
+		i++;
 	while (str[i])
 	{
-		if ((str[i] && !ft_isdigit(str[i]) && !ft_isspace(str[i])) || !str[i] || i > 19)
+		if ((str[i] && !ft_isdigit(str[i]) && !ft_isspace(str[i])) || !str[i])
+		{
+			str += 5;
+			ft_fprintf(2, mini_join(mini_join(mini_join(MS, "exit: "),
+			mini_strndup(str, word_len(str, 0))), NMARG));
+			ft_exit("exit", 2);
+		}
+		else if (ft_isdigit(str[i]) && ft_atol(mini_strndup(str + i, word_len(str + i, 0))) == 0)
 		{
 			str += i;
 			ft_fprintf(2, mini_join(mini_join(mini_join(MS, "exit: "),
-						mini_strndup(str, word_len(str, 0))), NMARG));
+			mini_strndup(str, word_len(str, 0))), NMARG));
 			ft_exit("exit", 2);
 		}
-		if (str[i] && ft_isspace(str[i - 1]) && i > 5)
+		if (ft_isspace(str[i]) && str[i + 1] && !ft_isspace(str[i + 1]))
 		{
 			ft_fprintf(2, "minishell: exit: too many arguments\n");
 			replace_export("?=2");
@@ -73,7 +86,7 @@ void	build_handler(t_cmd **cmds)
 			if (ft_strncmp("echo", cmds[i]->str, 4) == 0)
 				echo(cmds, i + 1);
 			if (ft_strncmp("exit", cmds[i]->str, 4) == 0)
-				exit_arg_checker(join_full(cmds, i));
+				exit_arg_checker(exit_join(cmds, i));
 			if (ft_strncmp("cd", cmds[i]->str, 2) == 0)
 				cd(cmds, i);
 			if (ft_strncmp("pwd", cmds[i]->str, 3) == 0)
@@ -98,7 +111,7 @@ void	child_builds(t_cmd **cmds, char **envi, int i)
 			if (ft_strncmp("echo", cmds[i]->str, 4) == 0)
 				echo(cmds, i + 1);
 			if (ft_strncmp("exit", cmds[i]->str, 4) == 0)
-				exit_arg_checker(join_full(cmds, i));
+				exit_arg_checker(exit_join(cmds, i));
 			if (ft_strncmp("cd", cmds[i]->str, 2) == 0)
 				cd(cmds, i);
 			if (ft_strncmp("pwd", cmds[i]->str, 3) == 0)
