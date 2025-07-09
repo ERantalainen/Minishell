@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_parse_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 18:35:04 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/03 19:09:57 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/10 00:53:02 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,11 +87,9 @@ static void	check_cmd_validity(char *cmd)
 		if (ft_isspace(cmd[i]))
 		{
 			while (ft_isspace(cmd[i++]))
-				if (!cmd[i])
-					ft_exit_child(mini_join(mini_strndup(cmd, word_len(cmd, 0)),
+				if (cmd[i])
+					ft_exit_child(mini_join(mini_strndup(cmd, ft_strlen(cmd)),
 							": command not found"), 127);
-			if (cmd[i])
-				break ;
 		}
 		else
 			i++;

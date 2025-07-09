@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 13:28:50 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/09 18:08:48 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/10 00:49:41 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,16 +67,22 @@ static void additional_arguments_to_cmd(t_cmd **tokens, t_pipedata *p, size_t ar
 	if (tok_i != p->cmd_index)
 	{
 		p->cmd_args[arg_i] = "";
-		while (tokens[tok_i] && (tokens[tok_i]->type == FILES || tokens[tok_i]->type == STRING || tokens[tok_i]->type == BUILTIN))
+		while (tokens[tok_i] && (tokens[tok_i]->type == FILES
+			|| tokens[tok_i]->type == STRING
+			|| tokens[tok_i]->type == BUILTIN))
 		{
-			if (ft_strcmp(tokens[tok_i]->str, "") != 0 || (tokens[tok_i + 1] && tokens[tok_i + 1]->space))
+			if (ft_strcmp(tokens[tok_i]->str, "") != 0
+			|| (tokens[tok_i + 1] && tokens[tok_i + 1]->space))
 			{
 				if (tokens[tok_i]->space)
 					p->cmd_args[arg_i] = mini_strdup(tokens[tok_i]->str);
 				else
 					p->cmd_args[arg_i] = mini_join(p->cmd_args[arg_i], tokens[tok_i]->str);
 			}
-			if ((tokens[tok_i + 1] && tokens[tok_i + 1]->space) || (tokens[tok_i]->next != FILES && tokens[tok_i]->next != STRING && tokens[tok_i]->type != BUILTIN))
+			if ((tokens[tok_i + 1] && tokens[tok_i + 1]->space)
+			|| (tokens[tok_i]->next != FILES
+			&& tokens[tok_i]->next != STRING
+			&& tokens[tok_i]->type != BUILTIN))
 				arg_i++;
 			tok_i++;
 		}
