@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 13:28:50 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/09 15:32:24 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/09 17:02:52 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,17 +55,28 @@ static void additional_arguments_to_cmd(t_cmd **tokens, t_pipedata *p, size_t ar
 	tok_i = p->cmd_index;
 	if (tokens[tok_i] && (tokens[tok_i]->next == FILES
 		|| tokens[tok_i]->next == HERE_DOC
+		|| tokens[tok_i]->next == BUILTIN
 		|| tokens[tok_i]->next == STRING))
 		tok_i++;
 	if (tokens[tok_i] && tokens[tok_i]->type == HERE_DOC)
 		tok_i++;
 	if (tok_i != p->cmd_index)
-		while (tokens[tok_i] && (tokens[tok_i]->type == FILES || tokens[tok_i]->type == STRING))
+	{
+		p->cmd_args[arg_i] = "";
+		while (tokens[tok_i] && (tokens[tok_i]->type == FILES || tokens[tok_i]->type == STRING || tokens[tok_i]->type == BUILTIN))
 		{
 			if (ft_strcmp(tokens[tok_i]->str, "") != 0 || (tokens[tok_i + 1] && tokens[tok_i + 1]->space))
-				p->cmd_args[arg_i++] = mini_strdup(tokens[tok_i]->str);
+			{
+				if (tokens[tok_i]->space)
+					p->cmd_args[arg_i] = mini_strdup(tokens[tok_i]->str);
+				else
+					p->cmd_args[arg_i] = mini_join(p->cmd_args[arg_i], tokens[tok_i]->str);
+			}
+			if ((tokens[tok_i + 1] && tokens[tok_i + 1]->space) || (tokens[tok_i]->next != FILES && tokens[tok_i]->next != STRING && tokens[tok_i]->type != BUILTIN))
+				arg_i++;
 			tok_i++;
 		}
+	}
 	p->cmd_args[arg_i] = NULL;
 }
 
@@ -80,6 +91,7 @@ int	setup_cmd_to_execute(t_cmd **tokens, t_pipedata *p)
 		return (-1);
 	split = mini_split(tokens[p->cmd_index]->str, ' ');
 	total_args = get_cmd_array_size(tokens, p, split);
+
 	p->cmd_args = arena_malloc((total_args - p->cmd_index) * sizeof(char *));
 	arg_i = 0;
 	tok_i = 0;

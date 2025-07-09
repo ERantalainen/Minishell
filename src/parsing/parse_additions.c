@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 15:44:37 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/09 04:33:20 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/09 17:28:03 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,8 @@ char	*expand_quotes(char *s)
 	size_t	i;
 	char	*dupe;
 	char	*exp;
-	bool	space;
-	
+
 	i = 0;
-	space = 0;
 	dupe = "";
 	while (s[i])
 	{
@@ -61,17 +59,11 @@ char	*expand_quotes(char *s)
 			dupe = mini_join(dupe, exp);
 			i += key_len(s + i);
 		}
-		else if (!ft_isspace(s[i]) || space == 0)
+		else
 		{
-			if (space == 0 && ft_isspace(s[i]))
-				space = 1;
-			else
-				space = 0;
 			dupe = mini_join(dupe, mini_strndup(&s[i], 1));
 			i++;
 		}
-		else
-			i++;
 	}
 	return (dupe);
 }
@@ -82,15 +74,13 @@ char	*quoted_token(char *s, char quote, size_t *i, t_type *last)
 	int		pos;
 
 	pos = 1;
-	puts("here");
 	if (*last == HERE_DOC && s[0] != '"' && s[0] != '\'')
 	{
-		str = here_lim_token(s, word_len(s, 0), quote);
-		(*i) += word_len(s, 0);
+		str = here_lim_token(s, word_len(s, -1), quote);
+		(*i) += word_len(s, -1);
 	}
 	else
 	{
-			printf("Pos :%s, %d:\n", s, pos);
 		while (s[pos] && s[pos] != quote)
 			pos++;
 		if (quote == '\'')
@@ -99,7 +89,6 @@ char	*quoted_token(char *s, char quote, size_t *i, t_type *last)
 			str = expand_quotes(mini_strndup(s + 1, pos - 1));
 		if (s[pos] == quote)
 			pos++;
-		printf("Pos :%s, %d:\n", s + pos, pos);
 		(*i) += pos;
 		*last = QUOTED;
 	}

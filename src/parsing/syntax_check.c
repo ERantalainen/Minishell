@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 15:48:23 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/09 04:36:15 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/09 17:23:50 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	check_nexts(t_vector *tokens, t_data *data)
 			}
 		}
 		i++;
-	}	
+	}
 }
 
 // ENSURE NO SYNTAX ERROR WITH REPEAT SYMBOLS
@@ -144,6 +144,10 @@ char	*create_here_prompt(t_vector *vec, int i, int count)
 	limiter = "";
 	here_type = STRING;
 	tokens = (t_token **)vec->data;
+	limiter = mini_strdup(tokens[j]->s);
+	if (tokens[j]->quoted == 1)
+		here_type = HERE_NOEXP;
+	j++;
 	while (tokens[j] && (tokens[j]->t == HERE_NOEXP || tokens[j]->t == STRING))
 	{
 		if (tokens[j]->quoted == 1)
