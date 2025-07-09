@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 18:40:32 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/07 22:57:14 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/10 00:30:53 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,11 @@ static void	check_files(t_cmd *cmd, t_cmd *next, t_data *data)
 		next->type = FILES;
 	}
 	if (cmd->type == OUTPUT)
+	{
+		cmd->next = FILES;
+		next->type = FILES;
+	}
+	if (cmd->type == APPEND)
 	{
 		cmd->next = FILES;
 		next->type = FILES;
