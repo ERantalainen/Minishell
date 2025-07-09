@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/09 04:31:31 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/09 14:54:35 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,6 @@ t_vector	*creator(char *s, size_t len, size_t i, t_data *data)
 			token = create_token(s, &i, token->t, data);
 		if (data->valid == 0)
 			break ;
-		printf("%s, token: %s, i: %d\n", s + i, token->s, i);
 		add_elem(data->tokens, token);
 		if (space == 1)
 		{
@@ -124,7 +123,6 @@ char	*token_string(char *s, size_t *i, t_type *last)
 	char	*token;
 	int		len;
 
-	printf("Start of token: %s, %s, %d\n", s, s + *i, *i);
 	if (check_empty_quote(s + *i))
 	{
 		*i += 2;
@@ -167,7 +165,6 @@ t_vector	*create_commands(t_vector *tokens)
 	while (i < tokens->count && tokens->data[i] != NULL)
 	{
 		curr = tokens->data[i];
-		printf("Token :%s, %d, %d, %ld\n", curr->s, curr->t, curr->quoted, i);
 		if (curr->t == STRING || curr->t == FILES)
 			add_elem(commands, make_cmd_str(tokens, &i, data));
 		else

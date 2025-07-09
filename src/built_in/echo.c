@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:34:01 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/08 19:49:01 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/09 15:23:59 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,33 @@ static	void options(char *command, int *i, bool *nl)
 	}
 }
 
-void	echo(t_cmd **commands, int i)
+void	echo(t_cmd **cmd, int i)
 {
 	char	*command;
 	bool	newline;
 
-	command = commands[i]->str + 5;
-	while (commands[i]->next == FILES || commands[i]->next == STRING)
-		command = mini_append(command, commands[i++ + 1]->str);
+	ft_fprintf(2, "Echo: %d: %s %d %d\n", i, cmd[i]->str, cmd[i]->space, cmd[i]->quoted);
+	command = mini_strdup(cmd[i]->str);
+	i++;
+	while (cmd[i] && (cmd[i]->next == FILES || cmd[i]->next == STRING))
+	{
+		ft_fprintf(2, "Loop1: %d: [%s] %d %d\n", i, cmd[i]->str, cmd[i]->space, cmd[i]->quoted);
+		puts(command);
+		if (cmd[i]->space && cmd[i - 1]->space)
+		{
+			command = mini_append(command, cmd[i]->str);
+			puts("here");
+		}
+		else
+			command = mini_join(command, cmd[i]->str);
+		puts(command);
+		ft_fprintf(2, "Loop2: %d: [%s] %d %d\n", i, cmd[i]->str, cmd[i]->space, cmd[i]->quoted);
+		i++;
+	}
+	if (!cmd[i]->next && cmd[i]->space && cmd[i - 1]->space)
+		command = mini_append(command, cmd[i]->str);
+	ft_fprintf(2, "%d: %s %d %d\n", i, cmd[i]->str, cmd[i]->space, cmd[i]->quoted);
+	puts(command);
 	i = 0;
 	newline = 1;
 	options(command, &i, &newline);

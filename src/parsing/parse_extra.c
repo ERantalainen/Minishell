@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 18:04:47 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/08 22:12:30 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/09 15:24:38 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,8 @@ char	*mini_append(char *s1, char *s2)
 	char	*dup;
 
 	dup = arena_malloc(ft_strlen(s1) + ft_strlen(s2) + 2);
-	dup[0] = '\0';
 	ft_strlcat(dup, s1, ft_strlen(s1) + 1);
-	if (s1[0] != 0)
-		dup[ft_strlen(s1)] = ' ';
+	dup[ft_strlen(s1)] = ' ';
 	ft_strlcat(dup, s2, ft_strlen(s1) + ft_strlen(s2) + 2);
 	return (dup);
 }

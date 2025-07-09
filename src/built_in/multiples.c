@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 15:02:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/09 02:14:46 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/09 14:55:01 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,11 +78,26 @@ int	count_export(t_cmd **cmds, int i)
 	return (0);
 }
 
-char	**count_export_child(char *export, char **env)
+char	**count_export_child(t_cmd **cmds, int i, char **envi)
 {
-	(void)export;
-	(void)env;
-	return (NULL);
+	char		*export;
+
+	if (cmds[i]->next != STRING && cmds[i]->next != FILES)
+	{
+		empty_export();
+		return (envi);
+	}
+	else
+		i++;
+	while (1)
+	{
+		export = build_exports(cmds, &i);
+		if (!export)
+			break ;
+		if (check_export(export))
+			envi = export_to_arr(export, envi);
+	}
+	return (envi);
 }
 
 char	**count_unset_child(char *command, char **env)
