@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 19:33:55 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/08 22:46:08 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/09 18:50:50 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ typedef struct s_data
 	int			shell;
 	int			valid;
 	bool		non_interactive;
+	bool		check_build;
 	t_type		last;
 }				t_data;
 

@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 13:56:30 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/09 15:08:02 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/09 20:06:37 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,25 +40,24 @@ static void	exit_arg_checker(char *str)
 	i = 4;
 	while (str[i] && ft_isspace(str[i]))
 		i++;
-	if (str[i] && ft_isalpha(str[i]))
+	while (str[i])
 	{
-		str += i;
-		ft_fprintf(2, mini_join(mini_join(mini_join(MS, "exit: "),
-					mini_strndup(str, word_len(str, 0))), NMARG));
-		return ;
-	}
-	if (str[i] && ft_isdigit(str[i]))
-	{
-		while (str[i] && !ft_isspace(str[i]))
-			i++;
-		while (str[i] && ft_isspace(str[i]))
-			i++;
-		if (str[i])
+		if ((str[i] && !ft_isdigit(str[i]) && !ft_isspace(str[i])) || !str[i] || i > 19)
+		{
+			str += i;
+			ft_fprintf(2, mini_join(mini_join(mini_join(MS, "exit: "),
+						mini_strndup(str, word_len(str, 0))), NMARG));
+			ft_exit("exit", 2);
+		}
+		if (str[i] && ft_isspace(str[i - 1]) && i > 5)
 		{
 			ft_fprintf(2, "minishell: exit: too many arguments\n");
+			replace_export("?=2");
 			return ;
 		}
+		i++;
 	}
+	replace_export("?=0");
 	ft_exit("exit", exit_calci(str));
 }
 
@@ -149,10 +148,5 @@ int	exit_calci(char *cmd)
 
 	cmd += 5;
 	res = atoi(cmd);
-	if (res < 0)
-		res = -res;
-	if (res > 255)
-		return (res % 255);
-	else
-		return (res);
+	return((unsigned char)res);
 }

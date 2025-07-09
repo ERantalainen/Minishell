@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 15:44:37 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/09 17:28:03 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/09 18:56:09 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ char	*expand_quotes(char *s)
 	dupe = "";
 	while (s[i])
 	{
-		if (s[i] == '$')
+		if (s[i] == '$' && s[i + 1])
 		{
 			exp = find_export(mini_strndup(s + i, key_len(s + i)));
 			dupe = mini_join(dupe, exp);
@@ -113,10 +113,18 @@ size_t	quote_len(char *s, char quote)
 
 void	cmd_help(t_vector *tokens, size_t *i, t_token *token, t_cmd *cmd)
 {
+	t_data	*data;
+
+	data = get_data();
 	while ((*i) < tokens->count && (token->t == STRING || token->t == FILES))
 	{
 		cmd->str = token->s;
-		built_in(cmd);
+		if (data->check_build == 1)
+		{
+			built_in(cmd);
+			if (cmd->type == BUILTIN)
+				data->check_build = 0;
+		}
 		(*i)++;
 		break;
 	}

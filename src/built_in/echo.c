@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:34:01 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/09 16:06:47 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/09 18:41:41 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,10 @@ static	void options(char *command, int *i, bool *nl)
 {
 	t_data	*data;
 	char	*check_option;
-	size_t	j;
 
-	j = 0;
-	while (ft_isspace(command[j]))
-		j++;
 	data = get_data();
-	if ((command[*i] == '-' && command[*i + 1] == 'n' &&
-		(!command[*i + 2] || command[*i + 2]  == ' ' || command[*i + 2] == 'n')))
+	if ((command[*i] == '-' && command[*i + 1] == 'n'))
 	{
-		*i += j;
 		while (1 && command[*i])
 		{
 			check_option = mini_strndup(command + *i, word_len(command + *i, 0));
@@ -71,15 +65,15 @@ void	echo(t_cmd **cmd, int i)
 	}
 	command = mini_strdup(cmd[i]->str);
 	i++;
-	while (cmd[i] && (cmd[i]->next == FILES || cmd[i]->next == STRING))
+	while (cmd[i] && (cmd[i]->next == FILES || cmd[i]->next == STRING || cmd[i]->next == BUILTIN))
 	{
-		if (cmd[i]->space && cmd[i - 1]->space)
+		if (cmd[i]->space)
 			command = mini_append(command, cmd[i]->str);
 		else
 			command = mini_join(command, cmd[i]->str);
 		i++;
 	}
-	if (cmd[i] && !cmd[i]->next && cmd[i]->space && cmd[i - 1]->space)
+	if (cmd[i] && !cmd[i]->next && cmd[i]->space)
 		command = mini_append(command, cmd[i]->str);
 	else if (cmd[i])
 		command = mini_join(command, cmd[i]->str);

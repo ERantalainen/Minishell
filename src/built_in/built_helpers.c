@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 18:46:33 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/09 01:21:49 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/09 19:52:44 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,5 @@ char	*join_full(t_cmd **cmds, int i)
 			res = mini_join(res, cmds[i]->str);
 		i++;
 	}
-	puts(res);
 	return (res);
 }

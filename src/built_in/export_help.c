@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 03:49:53 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/04 15:33:53 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/09 19:41:24 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ char	**ft_stradd(char **s, char *line)
 		new[i] = mini_strdup(s[i]);
 		i++;
 	}
-	s[i] = line;
-	s[i + 1] = NULL;
+	new[i] = line;
+	new[i + 1] = NULL;
 	return (new);
 }
 

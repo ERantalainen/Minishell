@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 15:02:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/09 14:55:01 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/09 19:42:01 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,32 +34,52 @@ char	*build_exports(t_cmd **cmds, int *i)
 			break ;
 		(*i)++;
 	}
-	puts(export);
 	return (export);
 }
 
-int	check_export(char *export)
+static bool	export_str(char *s)
 {
-	size_t	j;
-	bool	limiter;
 
-	j = 0;
-	limiter = 0;
-	while (export[j])
+	size_t	i;
+
+	i = 0;
+	while (s[i])
 	{
-		if (export[j] == '=')
-			limiter = 1;
-		j++;
+		if (s[i] == '=' && s[i + 1] && i != 0)
+			break ;
+		if (!ft_isalpha(s[0]) || ((ft_isalnum(s[i]) == 0) && s[i]))
+		{
+			ft_fprintf(2, "minishell: export: `%s", mini_join(s, INV));
+			replace_export("?=1");
+			return (false);
+		}
+		i++;
 	}
-	if (limiter == 1)
-		return (1);
-	return (0);
+	if (!s[i])
+		return (false);
+	return (true);
+}
+
+int	check_export(char **exports)
+{
+	size_t	i;
+
+	i = 0;
+	while (exports[i])
+	{
+		if (!export_str(exports[i]))
+			return (0);
+		i++;
+	}
+	return (1);
 }
 
 int	count_export(t_cmd **cmds, int i)
 {
 	char		*export;
+	char		**exps;
 
+	exps = arena_malloc(sizeof(char *) * 2);
 	if (cmds[i]->next != STRING && cmds[i]->next != FILES)
 	{
 		empty_export();
@@ -72,8 +92,12 @@ int	count_export(t_cmd **cmds, int i)
 		export = build_exports(cmds, &i);
 		if (!export)
 			break ;
-		if (check_export(export))
-			make_export(export);
+		exps = ft_stradd(exps, export);
+	}
+	if (check_export(exps))
+	{
+		while (exps[i])
+			make_export(exps[i++]);
 	}
 	return (0);
 }
@@ -94,7 +118,7 @@ char	**count_export_child(t_cmd **cmds, int i, char **envi)
 		export = build_exports(cmds, &i);
 		if (!export)
 			break ;
-		if (check_export(export))
+		if (check_export(&export))
 			envi = export_to_arr(export, envi);
 	}
 	return (envi);

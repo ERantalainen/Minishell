@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:12:49 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/08 17:20:25 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/09 18:58:53 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 
 # define MS "minishell: "
 # define QUIT "Quit (core dumped)"
-# define INV "': not a valid identifier"
+# define INV "': not a valid identifier\n"
 # define SHLVL "minishell: warning: shell level (%d) too high, resetting to 1\n"
 # define TOKEN "minishell: syntax error near unexpected token `"
 # define HRLIM "minishell: maximum here-document count exceeded\n"

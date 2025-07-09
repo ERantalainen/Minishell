@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 18:39:57 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/08 22:48:53 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/09 18:54:07 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,12 @@ t_cmd	*make_cmd_str(t_vector *tokens, size_t *i, t_data *data)
 		cmd->next = tk->t;
 	else
 		cmd->next = EMPTY;
-	built_in(cmd);
+	if (data->check_build == 1)
+	{
+		built_in(cmd);
+		if (cmd->type == BUILTIN)
+			data->check_build = 0;
+	}
 	data->last = cmd->type;
 	return (cmd);
 }
@@ -63,6 +68,8 @@ t_cmd	*make_cmd_spc(t_vector *tokens, size_t *i, t_data *data)
 	else
 		cmd->next = EMPTY;
 	data->last = cmd->type;
+	if (cmd->type == PIPE)
+		data->check_build = 1;
 	return (cmd);
 }
 
