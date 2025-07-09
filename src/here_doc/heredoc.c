@@ -27,15 +27,6 @@ char	*here_eof(char *limiter)
 	return (eof_msg);
 }
 
-static char	*get_heredoc_prompt(void)
-{
-    char *prompt;
-
-    prompt = arena_malloc(128);
-    ft_strlcpy(prompt, "\033[38;5;231m╰─❯❯ \033[0m", 128);
-    return (prompt);
-}
-
 static void	write_to_tmpfile(char *limiter, int index)
 {
 	char	*input;
@@ -46,7 +37,7 @@ static void	write_to_tmpfile(char *limiter, int index)
 		return ;
 	while (true)
 	{
-		input = readline(get_heredoc_prompt());
+		input = readline("\1\e[38;5;231m\2╰─❯❯ \1\e[0m\2");
 		if (g_sig == SIGINT || !input)
 		{
 			if (g_sig == SIGINT)
