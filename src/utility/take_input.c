@@ -21,11 +21,10 @@ static char	*get_prompt(void)
 
 	data = get_data();
 	cwd = data->directory;
-	prompt = arena_malloc(256);
-	prompt = mini_join("\1\e[38;5;231m\2╭─❮ \1\e[38;5;219m\2", cwd);
+	prompt = mini_join("\001\e[38;5;231m\002╭─❮ \001\e[38;5;219m\002", cwd);
 	temp = prompt;
 	prompt = mini_join(temp,
-			" \1\e[38;5;231m\2❯ \1\e[38;5;156m\2minishell\1\e[0m\2\n\1\e[38;5;231m\2╰─❯\1\e[0m\2 ");
+			" \001\e[38;5;231m\002❯ \001\e[38;5;156m\002minishell\001\e[0m\002\n\001\e[38;5;231m\002╰─❯\001\e[0m\002 ");
 	return (prompt);
 }
 
