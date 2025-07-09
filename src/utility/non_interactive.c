@@ -12,57 +12,6 @@
 
 #include "minishell.h"
 
-void	non_interactive(void)
-{
-	char		*line;
-	t_data		*data;
-	t_vector	*commands;
-
-	data = get_data();
-	data->non_interactive = true;
-	while (!isatty(STDIN_FILENO))
-	{
-		data->valid = 1;
-		line = get_next_line(STDIN_FILENO);
-		if (line)
-		{
-			commands = create_commands(token_vector(line));
-			if (data->valid == 1)
-				execution((t_cmd **)commands->data,
-					vec_to_array(data->env_vec));
-			clean_heredoc();
-			free(line);
-		}
-		else
-			break ;
-	}
-	ft_exit("", ft_atoi(find_export("?")));
-}
-
-// {
-// 	char		*input;
-// 	char		*add;
-// 	t_data		*data;
-// 	t_vector	*commands;
-
-// 	data = get_data();
-// 	input = "";
-// 	while (1)
-// 	{
-// 		data->valid = 1;
-// 		while (1)
-// 		{
-// 			add = get_input(argv, argc);
-// 			if (add == NULL)
-// 				break ;
-// 			input = mini_append(input, add);
-// 		}
-// 		commands = create_commands(token_vector(input));
-// 		execution((t_cmd **)commands->data, vec_to_array(data->env_vec));
-// 		break ;
-// 	}
-// }
-
 char	*get_input(char **argv, int argc)
 {
 	static int	pos = 0;
