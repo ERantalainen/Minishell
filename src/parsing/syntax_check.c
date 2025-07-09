@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 15:48:23 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/09 17:23:50 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/09 17:31:49 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ char	*create_here_prompt(t_vector *vec, int i, int count)
 	if (tokens[j]->quoted == 1)
 		here_type = HERE_NOEXP;
 	j++;
-	while (tokens[j] && (tokens[j]->t == HERE_NOEXP || tokens[j]->t == STRING))
+	while (tokens[j] && (tokens[j]->t == HERE_NOEXP || tokens[j]->t == STRING) && (!tokens[j]->space))
 	{
 		if (tokens[j]->quoted == 1)
 			here_type = HERE_NOEXP;

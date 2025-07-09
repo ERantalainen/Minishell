@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 22:37:46 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/09 02:28:06 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/09 18:08:07 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	count_unset(t_cmd **cmds, int i)
 		}
 		else
 			cmd = mini_strdup(cmds[i]->str);
-		if (cmds[i]->space != 0)
+		if (cmds[i] && cmds[i]->space != 0)
 		{
 			unset(cmd);
 			cmd = "";

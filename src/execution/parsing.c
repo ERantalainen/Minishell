@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 13:28:50 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/09 17:02:52 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/09 18:08:48 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,11 @@ static size_t	get_cmd_array_size(t_cmd **tokens, t_pipedata *p, char **split)
 	total_args = 0;
 	arg_i = 0;
 	total_args = p->cmd_index + 1;
-	while (tokens[total_args] && (tokens[total_args]->type == FILES || tokens[total_args]->type == STRING))
+	while (tokens[total_args]
+		&& (tokens[total_args]->type == FILES
+		|| tokens[total_args]->type == STRING
+		|| tokens[total_args]->type == BUILTIN
+		|| tokens[total_args]->type == HERE_DOC))
 		total_args++;
 	arg_i = 0;
 	while (split[arg_i++])
@@ -91,7 +95,6 @@ int	setup_cmd_to_execute(t_cmd **tokens, t_pipedata *p)
 		return (-1);
 	split = mini_split(tokens[p->cmd_index]->str, ' ');
 	total_args = get_cmd_array_size(tokens, p, split);
-
 	p->cmd_args = arena_malloc((total_args - p->cmd_index) * sizeof(char *));
 	arg_i = 0;
 	tok_i = 0;
