@@ -150,7 +150,6 @@ char	*create_here_prompt(t_vector *vec, int i, int count)
 			here_type = HERE_NOEXP;
 		while (tokens[j] && (!tokens[j]->space || j == i))
 		{
-			printf("%d: %s %d\n", j, tokens[j]->s, tokens[j]->t);
 			limiter = mini_join(limiter, tokens[j]->s);
 			j++;
 		}
@@ -174,8 +173,6 @@ void	here_two(t_vector *tokens, int count, t_data *data)
 			if (!data->valid)
 				return ;
 			next->t = FILES;
-			puts(next->s);
-			remove_elem(tokens, i);
 			count--;
 		}
 		i++;

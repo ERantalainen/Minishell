@@ -42,7 +42,7 @@ static size_t	get_cmd_array_size(t_cmd **tokens, t_pipedata *p, char **split)
 	total_args = 0;
 	arg_i = 0;
 	total_args = p->cmd_index + 1;
-	while (tokens[total_args] && tokens[total_args]->type == FILES)
+	while (tokens[total_args] && (tokens[total_args]->type == FILES || tokens[total_args]->type == STRING))
 		total_args++;
 	arg_i = 0;
 	while (split[arg_i++])
@@ -53,11 +53,11 @@ static size_t	get_cmd_array_size(t_cmd **tokens, t_pipedata *p, char **split)
 static void additional_arguments_to_cmd(t_cmd **tokens, t_pipedata *p, size_t arg_i, size_t tok_i)
 {
 	tok_i = p->cmd_index;
-	if (tokens[tok_i]->next == FILES || tokens[tok_i]->next == HERE_DOC)
+	if (tokens[tok_i]->next == FILES || tokens[tok_i]->next == HERE_DOC || tokens[tok_i]->next == STRING)
 		tok_i++;
 	if (tokens[tok_i]->type == HERE_DOC)
 		tok_i++;
-	while (tokens[tok_i] && tokens[tok_i]->type == FILES)
+	while (tokens[tok_i] && (tokens[tok_i]->type == FILES || tokens[tok_i]->type == STRING))
 		p->cmd_args[arg_i++] = mini_strdup(tokens[tok_i++]->str);
 	p->cmd_args[arg_i] = NULL;
 }
