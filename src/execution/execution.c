@@ -137,6 +137,11 @@ static void	exec_pipeline(t_cmd **tokens, t_pipedata *p, char **env)
 			setup_child(tokens, p, env, i);
 		if (p->pipe_count > 0)
 			find_next_cmd_index(tokens, p);
+		if (i > 0)
+        {
+            close(p->pipefd[i - 1][READ]);
+            close(p->pipefd[i - 1][WRITE]);
+        }
 		i++;
 	}
 	i = 0;
