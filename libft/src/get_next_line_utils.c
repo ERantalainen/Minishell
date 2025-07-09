@@ -39,6 +39,8 @@ char	*ft_strchr_gnl(char *s, char c)
 	unsigned int	i;
 
 	i = 0;
+	if (!s)
+		return (NULL);
 	while (s[i])
 	{
 		if (s[i] == c)
@@ -55,7 +57,9 @@ char	*ft_strjoin_gnl(char const *s1, char const *s2)
 	size_t	i;
 	char	*joined;
 
-	if (!s1)
+	if (!s2)
+		return (NULL);
+	if (!s1 && s2)
 		return (ft_strdup_copy(s2));
 	joined = malloc((ft_strlen_gnl(s1) + ft_strlen_gnl(s2) + 1));
 	if (!joined)
@@ -84,13 +88,15 @@ char	*ft_substr_gnl(char const *src, unsigned int start, size_t len)
 	char	*res;
 	size_t	i;
 
+	if (!src || start >= ft_strlen_gnl(src))
+		return (ft_strdup_copy(""));
 	if (len > ft_strlen_gnl(src + start))
 		len = ft_strlen_gnl(src + start);
 	res = malloc(len + 1);
 	if (!res)
 		return (NULL);
 	i = 0;
-	while (i < len)
+	while (src[start + i] && i < len)
 	{
 		res[i] = src[start + i];
 		i++;

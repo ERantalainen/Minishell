@@ -179,7 +179,8 @@ void	here_check(int fd, char *name, t_data *data, size_t index)
 		line = get_next_line(fd);
 		if (!line)
 			break ;
-		add_elem(lines, line);
+		add_elem(lines, mini_strdup(line));
+		free(line);
 	}
 	file = vec_to_array(lines);
 	while (file[i])
