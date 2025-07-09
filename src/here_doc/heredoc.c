@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 15:44:11 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/08 15:11:52 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/09 04:38:33 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ char	*here_doc(char *limiter, int index, t_type type)
 	t_data		*data;
 
 	data = get_data();
+	puts(limiter);
 	while (access(name_join(base, mini_itoa(filecount)), F_OK) == 0)
 		filecount++;
 	name = name_join(base, mini_itoa(filecount));
@@ -215,6 +216,11 @@ char	*here_expansion(char *ln, size_t *i)
 
 	expansion = (find_export(mini_strndup((ln + (*i)), word_len(ln + (*i),
 						'"'))));
+	if (ft_strcmp(expansion, "") == 0)
+	{
+		*i += key_len(ln + *i);
+		return (mini_strdup(""));
+	}
 	len = ft_strlen(ln);
 	expan_len = word_len(ln + (*i), '"');
 	expansion = mini_join(mini_strndup(ln, (*i)), expansion);

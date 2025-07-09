@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 15:48:23 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/09 02:36:35 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/09 04:36:15 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,31 @@ int	here_count(t_vector *tokens, t_data *data)
 	}
 	return (count);
 }
+
+char	*create_here_prompt(t_vector *vec, int i, int count)
+{
+	char	*limiter;
+	t_type	here_type;
+	t_token	**tokens;
+	int		j;
+
+	j = i + 1;
+	limiter = "";
+	here_type = STRING;
+	tokens = (t_token **)vec->data;
+	while (tokens[j] && (tokens[j]->t == HERE_NOEXP || tokens[j]->t == STRING))
+	{
+		if (tokens[j]->quoted == 1)
+			here_type = HERE_NOEXP;
+		while (tokens[j] && (!tokens[j]->space || j == i))
+		{
+			printf("%d: %s %d\n", j, tokens[j]->s, tokens[j]->t);
+			limiter = mini_join(limiter, tokens[j]->s);
+			j++;
+		}
+	}
+	return (here_doc(limiter, count - 1, here_type));
+}
 void	here_two(t_vector *tokens, int count, t_data *data)
 {
 	t_token	*curr;
@@ -145,10 +170,11 @@ void	here_two(t_vector *tokens, int count, t_data *data)
 		next = tokens->data[i + 1];
 		if ((curr->t == HERE_DOC) && next != NULL)
 		{
-			next->s = here_doc(next->s, count - 1, next->t);
+			next->s = create_here_prompt(tokens, i, count);
 			if (!data->valid)
 				return ;
 			next->t = FILES;
+			puts(next->s);
 			remove_elem(tokens, i);
 			count--;
 		}

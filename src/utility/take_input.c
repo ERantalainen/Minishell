@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 02:49:43 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/08 21:39:06 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/09 03:49:16 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ char	*take_input(void)
 			{
 				add_history(ret);
 				free(input);
+				replace_export("?=2");
 				return (NULL);
 			}
 			free(input);
