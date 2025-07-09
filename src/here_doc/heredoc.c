@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 15:44:11 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/09 04:38:33 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/09 15:36:02 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ char	*here_doc(char *limiter, int index, t_type type)
 	t_data		*data;
 
 	data = get_data();
-	puts(limiter);
 	while (access(name_join(base, mini_itoa(filecount)), F_OK) == 0)
 		filecount++;
 	name = name_join(base, mini_itoa(filecount));

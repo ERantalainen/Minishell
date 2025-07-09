@@ -6,61 +6,88 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:34:01 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/09 15:23:59 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/09 16:06:47 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static	int	valid_option(char *s)
+{
+	int	i;
 
+	i = 0;
+	if (s[i] != '-')
+		return(-1);
+	i++;
+	while (s[i] && s[i] == 'n')
+	{
+		i++;
+	}
+	if (s[i] && s[i] != 'n')
+		return (-1);
+	else
+		return (i);
+}
 
 static	void options(char *command, int *i, bool *nl)
 {
 	t_data	*data;
+	char	*check_option;
+	size_t	j;
 
+	j = 0;
+	while (ft_isspace(command[j]))
+		j++;
 	data = get_data();
 	if ((command[*i] == '-' && command[*i + 1] == 'n' &&
 		(!command[*i + 2] || command[*i + 2]  == ' ' || command[*i + 2] == 'n')))
 	{
-		while (command[*i] && ((command[*i] == '-' && command[*i + 1] == 'n')
-		|| (command[*i] == 'n' && (command[*i + 1] == 'n' || command[*i + 1] == ' ' || !command[*i + 1]))
-		|| (command[*i] == ' ' || command[*i + 1] == ' ' || command[*i + 1] == '-')))
-			(*i)++;
-		*nl = 0;
+		*i += j;
+		while (1 && command[*i])
+		{
+			check_option = mini_strndup(command + *i, word_len(command + *i, 0));
+			if (valid_option(check_option) == -1)
+				break ;
+			else
+				*i += word_len(command + *i, 0);
+			*nl = 0;
+			while(ft_isspace(command[*i]))
+				(*i)++;
+		}
 	}
 }
 
 void	echo(t_cmd **cmd, int i)
 {
 	char	*command;
+	int		pos;
 	bool	newline;
 
-	ft_fprintf(2, "Echo: %d: %s %d %d\n", i, cmd[i]->str, cmd[i]->space, cmd[i]->quoted);
+	if (!cmd[i])
+	{
+		write(1, "\n", 1);
+		return ;
+	}
 	command = mini_strdup(cmd[i]->str);
 	i++;
 	while (cmd[i] && (cmd[i]->next == FILES || cmd[i]->next == STRING))
 	{
-		ft_fprintf(2, "Loop1: %d: [%s] %d %d\n", i, cmd[i]->str, cmd[i]->space, cmd[i]->quoted);
-		puts(command);
 		if (cmd[i]->space && cmd[i - 1]->space)
-		{
 			command = mini_append(command, cmd[i]->str);
-			puts("here");
-		}
 		else
 			command = mini_join(command, cmd[i]->str);
-		puts(command);
-		ft_fprintf(2, "Loop2: %d: [%s] %d %d\n", i, cmd[i]->str, cmd[i]->space, cmd[i]->quoted);
 		i++;
 	}
-	if (!cmd[i]->next && cmd[i]->space && cmd[i - 1]->space)
+	if (cmd[i] && !cmd[i]->next && cmd[i]->space && cmd[i - 1]->space)
 		command = mini_append(command, cmd[i]->str);
-	ft_fprintf(2, "%d: %s %d %d\n", i, cmd[i]->str, cmd[i]->space, cmd[i]->quoted);
-	puts(command);
-	i = 0;
+	else if (cmd[i])
+		command = mini_join(command, cmd[i]->str);
+	pos = 0;
 	newline = 1;
-	options(command, &i, &newline);
-	command += i;
+	options(command, &pos, &newline);
+	command += pos;
+
 	if (newline == 1)
 		ft_putendl_fd((mini_strndup(command, ft_strlen(command))), 1);
 	else

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 13:28:50 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/08 22:16:23 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/09 15:32:24 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,11 @@ static void additional_arguments_to_cmd(t_cmd **tokens, t_pipedata *p, size_t ar
 		tok_i++;
 	if (tok_i != p->cmd_index)
 		while (tokens[tok_i] && (tokens[tok_i]->type == FILES || tokens[tok_i]->type == STRING))
-			p->cmd_args[arg_i++] = mini_strdup(tokens[tok_i++]->str);
+		{
+			if (ft_strcmp(tokens[tok_i]->str, "") != 0 || (tokens[tok_i + 1] && tokens[tok_i + 1]->space))
+				p->cmd_args[arg_i++] = mini_strdup(tokens[tok_i]->str);
+			tok_i++;
+		}
 	p->cmd_args[arg_i] = NULL;
 }
 
