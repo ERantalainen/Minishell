@@ -116,14 +116,12 @@ char	*get_bin_path(char *cmd, char **env, t_pipedata *p)
 
 	if (check_if_path_exists() == -1 && access(cmd, X_OK) != -1)
 	{
-		ft_fprintf(2, "here1\n");
 		path = mini_strdup(cmd);
 		return (path);
 	}
 	open_handler(p, cmd);
 	if (check_if_path_exists() && ft_strncmp(cmd, "./", 2) == 0 && access(cmd, X_OK) != -1)
 	{
-		ft_fprintf(2, "here2\n");
 		path = mini_strdup(cmd);
 		return (path);
 	}
