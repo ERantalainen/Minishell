@@ -120,7 +120,7 @@ char	*get_bin_path(char *cmd, char **env, t_pipedata *p)
 		return (path);
 	}
 	open_handler(p, cmd);
-	if (check_if_path_exists() && ft_strncmp(cmd, "./", 2) == 0 && access(cmd, X_OK) != -1)
+	if (check_if_path_exists() && ft_strncmp(cmd, "/", 1) == 0 && access(cmd, X_OK) != -1)
 	{
 		path = mini_strdup(cmd);
 		return (path);
