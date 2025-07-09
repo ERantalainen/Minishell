@@ -14,7 +14,8 @@
 
 static int	safe_execve(char *path, char **argv, char **env)
 {
-	t_stat st;
+	t_stat	st;
+
 	if (fstat(STDOUT_FILENO, &st) == -1 && errno == EBADF)
 		ft_exit_child(NULL, 1);
 	return (execve(path, argv, env));
@@ -138,10 +139,10 @@ static void	exec_pipeline(t_cmd **tokens, t_pipedata *p, char **env)
 		if (p->pipe_count > 0)
 			find_next_cmd_index(tokens, p);
 		if (i > 0)
-        {
-            close(p->pipefd[i - 1][READ]);
-            close(p->pipefd[i - 1][WRITE]);
-        }
+		{
+			close(p->pipefd[i - 1][READ]);
+			close(p->pipefd[i - 1][WRITE]);
+		}
 		i++;
 	}
 	i = 0;
