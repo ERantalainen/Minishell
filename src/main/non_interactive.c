@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 22:53:35 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/09 21:13:53 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/09 21:18:43 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,7 @@ void	non_interactive(void)
 		{
 			commands = create_commands(token_vector(line));
 			if (data->valid == 1 && commands->data)
-			{
-				printf("%p & %p\n", commands->data, data->env_vec);
 				execution((t_cmd **)commands->data, vec_to_array(data->env_vec));
-			}
 			clean_heredoc();
 			free(line);
 		}
