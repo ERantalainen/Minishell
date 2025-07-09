@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 22:53:35 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/09 21:18:43 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/09 22:39:00 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ void	non_interactive(void)
 		else
 			break ;
 	}
-	ft_exit("", ft_atoi(find_export("?")));
+
+	ft_exit("", ft_atoi(find_export("$?")));
 }
 
 char	*get_input(char **argv, int argc)

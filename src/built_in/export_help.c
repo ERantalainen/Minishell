@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 03:49:53 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/09 19:41:24 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/09 23:31:58 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	**ft_stradd(char **s, char *line)
 	char	**new;
 
 	i = 0;
-	new = arena_malloc(sizeof(char *) + (ft_stralen(s) + 2));
+	new = arena_malloc(sizeof(char *) * (ft_stralen(s) + 2));
 	while(s[i])
 	{
 		new[i] = mini_strdup(s[i]);

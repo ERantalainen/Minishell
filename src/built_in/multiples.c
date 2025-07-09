@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 15:02:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/09 19:42:01 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/09 23:51:38 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static bool	export_str(char *s)
 		}
 		i++;
 	}
-	if (!s[i])
+	if (s[i] != '=')
 		return (false);
 	return (true);
 }
@@ -78,6 +78,7 @@ int	count_export(t_cmd **cmds, int i)
 {
 	char		*export;
 	char		**exps;
+	size_t		j;
 
 	exps = arena_malloc(sizeof(char *) * 2);
 	if (cmds[i]->next != STRING && cmds[i]->next != FILES)
@@ -94,10 +95,14 @@ int	count_export(t_cmd **cmds, int i)
 			break ;
 		exps = ft_stradd(exps, export);
 	}
+	j = 0;
 	if (check_export(exps))
 	{
-		while (exps[i])
-			make_export(exps[i++]);
+		while (exps[j])
+		{
+			make_export(exps[j]);
+			j++;
+		}
 	}
 	return (0);
 }
