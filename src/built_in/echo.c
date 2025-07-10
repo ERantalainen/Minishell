@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:34:01 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/10 16:39:48 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/10 17:37:12 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,15 +70,9 @@ void	echo(t_cmd **cmd, int i)
 	while (ft_isspace(command[j]) && !cmd[i]->quoted)
 		j++;
 	command += j;
-	if (cmd[i] && (cmd[i]->type == FILES || cmd[i]->type == STRING))
-		i++;
-	while (cmd[i] && (cmd[i]->type == FILES || cmd[i]->type == STRING))
+	while (1)
 	{
-		if (cmd[i]->space)
-			command = mini_append(command, cmd[i]->str);
-		else
-			command = mini_join(command, cmd[i]->str);
-		i++;
+		
 	}
 	pos = 0;
 	newline = 1;
@@ -90,3 +84,15 @@ void	echo(t_cmd **cmd, int i)
 		ft_putstr_fd((mini_strndup(command, ft_strlen(command))), 1);
 	replace_export("?=0");
 }
+
+
+	if (cmd[i] && (cmd[i]->type == FILES || cmd[i]->type == STRING))
+		i++;
+	while (cmd[i] && (cmd[i]->type == FILES || cmd[i]->type == STRING))
+	{
+		if (cmd[i]->space)
+			command = mini_append(command, cmd[i]->str);
+		else
+			command = mini_join(command, cmd[i]->str);
+		i++;
+	}
