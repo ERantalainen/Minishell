@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_help.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 18:40:32 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/11 01:44:38 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/11 02:44:11 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static void	check_files(t_cmd *cmd, t_cmd *next, t_data *data)
 		if (access(next->str, R_OK) != 0)
 		{
 			er_pr(mini_join(MS, mini_strndup(next->str,
-						word_len(next->str, 0))), data, 2, 1);
+						word_len(next->str, 0))), data, 1, 1);
 			return ;
 		}
 		cmd->next = FILES;
@@ -67,18 +67,18 @@ static void	check_files(t_cmd *cmd, t_cmd *next, t_data *data)
 	}
 }
 
-static	syntax_help(t_cmd *cmd, t_data *data, int i, t_vector *commands)
+static void	syntax_help(t_cmd *cmd, t_data *data, int i, t_vector *commands)
 {
-		input_syntax(cmd, data);
-		output_syntax(cmd, data);
-		additional_syntax(cmd, data, i);
-		if (data->valid == -10)
-			ft_fprintf(2, "%s'\n", mini_join(TOKEN, "newline\'"));
-		else if (data->valid != 1 && data->valid != 0 && commands->data[i + 1])
-		{
-			cmd = commands->data[i + 1];
-			ft_fprintf(2, "%s'\n", mini_join(TOKEN, cmd->str));
-		}
+	input_syntax(cmd, data);
+	output_syntax(cmd, data);
+	additional_syntax(cmd, data, i);
+	if (data->valid == -10)
+		ft_fprintf(2, "%s'\n", mini_join(TOKEN, "newline\'"));
+	else if (data->valid != 1 && data->valid != 0 && commands->data[i + 1])
+	{
+		cmd = commands->data[i + 1];
+		ft_fprintf(2, "%s'\n", mini_join(TOKEN, cmd->str));
+	}
 }
 
 void	check_command_syntax(t_vector *commands, t_data *data)
