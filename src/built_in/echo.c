@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:34:01 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/10 01:52:37 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/10 14:22:31 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ void	echo(t_cmd **cmd, int i)
 		return ;
 	}
 	command = mini_strdup(cmd[i]->str);
-	i++;
+	if (cmd[i] && (cmd[i]->next == FILES || cmd[i]->next == STRING || cmd[i]->next == BUILTIN))
+		i++;
 	while (cmd[i] && (cmd[i]->next == FILES || cmd[i]->next == STRING || cmd[i]->next == BUILTIN))
 	{
 		if (cmd[i]->space)
@@ -71,10 +72,13 @@ void	echo(t_cmd **cmd, int i)
 			command = mini_join(command, cmd[i]->str);
 		i++;
 	}
-	if (cmd[i] && !cmd[i]->next && cmd[i]->space)
-		command = mini_append(command, cmd[i]->str);
-	else if (cmd[i])
-		command = mini_join(command, cmd[i]->str);
+	if (cmd[i] && (cmd[i]->next == FILES || cmd[i]->next == STRING || cmd[i]->next == BUILTIN))
+	{
+		if (cmd[i] && !cmd[i]->next && cmd[i]->space)
+			command = mini_append(command, cmd[i]->str);
+		else if (cmd[i])
+			command = mini_join(command, cmd[i]->str);
+	}
 	pos = 0;
 	newline = 1;
 	options(command, &pos, &newline);
