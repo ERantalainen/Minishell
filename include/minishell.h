@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:12:49 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/09 18:58:53 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/10 22:53:25 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,8 @@
 # define CMD ": command not found"
 # define NMARG ": numeric argument required\n"
 
-extern sig_atomic_t	g_sig;
+extern sig_atomic_t		g_sig;
 
-typedef struct stat s_stat;
-typedef s_stat t_stat;
+typedef struct stat		t_stat;
 
 #endif // MINISHELL_H

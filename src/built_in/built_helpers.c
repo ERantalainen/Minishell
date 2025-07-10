@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_helpers.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 18:46:33 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/10 01:52:50 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/10 22:54:16 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ char	*join_full(t_cmd **cmds, int i)
 			res = mini_join(res, cmds[i]->str);
 		i++;
 	}
-
 	return (res);
 }
 

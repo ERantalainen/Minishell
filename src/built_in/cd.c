@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:34:05 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/10 16:12:52 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/10 22:56:27 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void check_cd_res(char *path, t_data *data)
+static void	check_cd_res(char *path, t_data *data)
 {
 	if (!pwd_check())
 	{
@@ -49,7 +49,7 @@ static char	*cd_make_path(t_cmd **cmd, int i)
 		return (cmd[i]->str);
 	path = mini_join(path, cmd[i]->str);
 	i++;
-	while(cmd[i] && (cmd[i]->type == FILES || cmd[i]->type == STRING))
+	while (cmd[i] && (cmd[i]->type == FILES || cmd[i]->type == STRING))
 	{
 		if (cmd[i]->space == 0)
 			path = mini_join(path, cmd[i]->str);
@@ -80,7 +80,8 @@ void	cd(t_cmd **cmd, int i)
 			return ;
 		}
 	}
-	else if ((cmd[i]->next == FILES || cmd[i]->next == STRING) && ft_strlen(cmd[i]->str) == 2)
+	else if ((cmd[i]->next == FILES || cmd[i]->next == STRING)
+		&& ft_strlen(cmd[i]->str) == 2)
 		path = cd_make_path(cmd, i + 1);
 	else
 	{

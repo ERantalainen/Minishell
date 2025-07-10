@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 22:37:46 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/09 18:08:07 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/10 22:59:53 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ void	unset(char *key)
 
 	data = get_data();
 	i = 0;
-
 	while (i < data->env_vec->count)
 	{
 		var = data->env_vec->data[i];
@@ -56,7 +55,6 @@ void	unset(char *key)
 	}
 	return ;
 }
-
 
 char	**unset_child(char	*key, char **envi)
 {

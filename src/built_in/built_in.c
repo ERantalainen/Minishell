@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 13:56:30 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/10 16:14:06 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/10 22:56:03 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	built_in(t_cmd *cmd)
 {
 	size_t		i;
 	const char	*built[8] = {"echo", "cd", "pwd", "export", "unset", "env",
-			"exit", NULL};
+		"exit", NULL};
 	size_t		len;
 
 	i = 0;
@@ -50,16 +50,19 @@ static void	exit_arg_checker(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if ((str[i] && (!ft_isdigit(str[i]) && !ft_isspace(str[i])) && (i == 0 && str[i] != '-')) || !str[i])
+		if ((str[i] && (!ft_isdigit(str[i]) && !ft_isspace(str[i]))
+				&& (i == 0 && str[i] != '-')) || !str[i])
 		{
-			ft_fprintf(2, mini_join(mini_join(mini_join(MS, "exit: "),
+			ft_fprintf(2, mini_join(mini_join(mini_join(MS, "exit: ");
 			mini_strndup(str, word_len(str, 0))), NMARG));
 			ft_exit("exit", 2);
 		}
-		else if (ft_isdigit(str[i]) && (!ft_atol(mini_strndup(str + i, word_len(str + i, 0))) && i == 0))
+		else if (ft_isdigit(str[i])
+			&& (!ft_atol(mini_strndup(str + i, word_len(str + i, 0)))
+				&& i == 0))
 		{
 			str += i;
-			ft_fprintf(2, mini_join(mini_join(mini_join(MS, "exit: "),
+			ft_fprintf(2, mini_join(mini_join(mini_join(MS, "exit: ");
 			mini_strndup(str, word_len(str, 0))), NMARG));
 			ft_exit("exit", 2);
 		}
@@ -161,5 +164,5 @@ int	exit_calci(char *cmd)
 	long long	res;
 
 	res = ft_atol(cmd);
-	return((unsigned char)res);
+	return ((unsigned char)res);
 }

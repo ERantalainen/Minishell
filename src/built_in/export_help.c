@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_help.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 03:49:53 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/09 23:31:58 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/10 22:59:18 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	**ft_stradd(char **s, char *line)
 
 	i = 0;
 	new = arena_malloc(sizeof(char *) * (ft_stralen(s) + 2));
-	while(s[i])
+	while (s[i])
 	{
 		new[i] = mini_strdup(s[i]);
 		i++;
@@ -31,7 +31,7 @@ char	**ft_stradd(char **s, char *line)
 
 char	**ft_strremove(char	**s, int i)
 {
-	while(s[i + 1])
+	while (s[i + 1])
 	{
 		s[i] = s[i + 1];
 		i++;
@@ -51,7 +51,7 @@ int	find_line(char	**line, char *key)
 	size_t	i;
 
 	i = 0;
-	while(line[i])
+	while (line[i])
 	{
 		if (ft_strncmp(line[i], key, key_len(key)) == 0)
 			return (i);

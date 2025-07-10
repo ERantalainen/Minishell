@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:34:01 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/10 18:38:57 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/10 22:57:49 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,17 @@ static	int	valid_option(char *s)
 
 	i = 0;
 	if (s[i] != '-')
-		return(-1);
+		return (-1);
 	i++;
 	while (s[i] && s[i] == 'n')
-	{
 		i++;
-	}
 	if (s[i] && s[i] != 'n')
 		return (-1);
 	else
 		return (i);
 }
 
-static	void options(char *command, int *i, bool *nl)
+static void	options(char *command, int *i, bool *nl)
 {
 	char	*check_option;
 	size_t	j;
@@ -40,7 +38,8 @@ static	void options(char *command, int *i, bool *nl)
 	{
 		while (1 && command[*i + j])
 		{
-			check_option = mini_strndup(command + *i + j, word_len(command + *i + j, 0));
+			check_option = mini_strndup(command + *i + j,
+					word_len(command + *i + j, 0));
 			if (valid_option(check_option) == -1)
 				break ;
 			else
@@ -53,7 +52,7 @@ static	void options(char *command, int *i, bool *nl)
 	}
 }
 
-static 	char	*echo_part(t_cmd *cmd, int *pos, bool *nl)
+static char	*echo_part(t_cmd *cmd, int *pos, bool *nl)
 {
 	char	*command;
 
