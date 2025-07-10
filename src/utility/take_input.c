@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 02:49:43 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/10 23:08:01 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/10 23:09:04 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,7 @@ static char	*get_prompt(void)
 	prompt = mini_join("\1\e[38;5;231m\2╭─❮ \1\e[38;5;219m\2", cwd);
 	temp = prompt;
 	prompt = mini_join(temp,
-			" \1\e[38;5;231m\2❯ \1\e[38;5;156m\2minishell\1\e[0m\2
-					\n\1\e[38;5;231m\2╰─❯\1\e[0m\2 ");
+			" \1\e[38;5;231m\2❯ \1\e[38;5;156m\2minishell\1\e[0m\2\n\1\e[38;5;231m\2╰─❯\1\e[0m\2 ");
 	return (prompt);
 }
 
