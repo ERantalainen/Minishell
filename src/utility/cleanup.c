@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 17:07:45 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/10 16:11:45 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/10 23:07:08 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,9 @@ void	ft_exit(char *s, int code)
 
 void	ft_exit_child(char *s, int code)
 {
-	int i = 3;
+	int	i;
+
+	i = 3;
 	while (i < _SC_OPEN_MAX)
 		close(i++);
 	if (s)
@@ -90,4 +92,3 @@ void	child_died(int status)
 	else
 		replace_export(mini_join(exit_code, mini_itoa(WEXITSTATUS(status))));
 }
-

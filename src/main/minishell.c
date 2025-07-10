@@ -3,14 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 18:29:23 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/09 19:36:19 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/10 23:05:34 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+// for (size_t i = 0; i < tokens->count; i++)
+// {
+// 	t_cmd *cmd = tokens->data[i];
+// 	printf("%zu: %s, %d, %d, Space: %d Quote: %d\n", i,
+// 		cmd->str, cmd->type, cmd->next, cmd->space, cmd->quoted);
+// }
 
 static void	parse_and_execute(t_data *data)
 {
@@ -30,12 +37,8 @@ static void	parse_and_execute(t_data *data)
 				if (data->valid == 1 && tokens)
 				{
 					check_command_syntax(tokens, data);
-					for (size_t i = 0; i < tokens->count; i++)
-					{
-						t_cmd *cmd = tokens->data[i];
-						printf("%zu: %s, %d, %d, Space: %d Quote: %d\n", i, cmd->str, cmd->type, cmd->next, cmd->space, cmd->quoted);
-					}
-					execution((t_cmd **)tokens->data, vec_to_array(data->env_vec));
+					execution((t_cmd **)tokens->data,
+						vec_to_array(data->env_vec));
 					clean_heredoc();
 
 				}
