@@ -85,11 +85,11 @@ void	check_for_redirects(t_cmd **tokens, t_pipedata *p)
 	{
 		if (tokens[p->index]->type == PIPE)
 			return ;
-		if (tokens[p->index]->type == OUTPUT)
+		if (tokens[p->index]->type == OUTPUT && tokens[p->index]->next != EMPTY)
 			open_file(tokens, p, OUTPUT_CONF);
-		else if (tokens[p->index]->type == APPEND)
+		else if (tokens[p->index]->type == APPEND && tokens[p->index]->next != EMPTY)
 			open_file(tokens, p, APPEND_CONF);
-		else if (tokens[p->index]->type == INPUT)
+		else if (tokens[p->index]->type == INPUT && tokens[p->index]->next != EMPTY)
 			open_file(tokens, p, INPUT_CONF);
 		else if (tokens[p->index]->type == HERE_DOC)
 			open_file(tokens, p, INPUT_CONF);
