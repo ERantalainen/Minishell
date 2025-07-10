@@ -53,31 +53,31 @@ static size_t	get_cmd_array_size(t_cmd **tokens, t_pipedata *p, char **split)
 	return (total_args);
 }
 
-static void	check_and_add_arguments(t_cmd **tokens, t_pipedata *p, size_t arg_i,
-		size_t tok_i)
+static void	check_and_add_arguments(t_cmd **tokens, t_pipedata *p, size_t *arg_i,
+		size_t *tok_i)
 {
-	if (tok_i != p->cmd_index)
+	if (*tok_i != p->cmd_index)
 	{
-		p->cmd_args[arg_i] = "";
-		while (tokens[tok_i] && (tokens[tok_i]->type == FILES
-				|| tokens[tok_i]->type == STRING
-				|| tokens[tok_i]->type == BUILTIN))
+		p->cmd_args[*arg_i] = "";
+		while (tokens[*tok_i] && (tokens[*tok_i]->type == FILES
+				|| tokens[*tok_i]->type == STRING
+				|| tokens[*tok_i]->type == BUILTIN))
 		{
-			if (ft_strcmp(tokens[tok_i]->str, "") != 0 || (tokens[tok_i + 1]
-					&& tokens[tok_i + 1]->space))
+			if (ft_strcmp(tokens[*tok_i]->str, "") != 0 || (tokens[*tok_i + 1]
+					&& tokens[*tok_i + 1]->space))
 			{
-				if (tokens[tok_i]->space)
-					p->cmd_args[arg_i] = mini_strdup(tokens[tok_i]->str);
+				if (tokens[*tok_i]->space)
+					p->cmd_args[*arg_i] = mini_strdup(tokens[*tok_i]->str);
 				else
-					p->cmd_args[arg_i] = mini_join(p->cmd_args[arg_i],
-							tokens[tok_i]->str);
+					p->cmd_args[*arg_i] = mini_join(p->cmd_args[*arg_i],
+							tokens[*tok_i]->str);
 			}
-			if ((tokens[tok_i + 1] && tokens[tok_i + 1]->space)
-				|| (tokens[tok_i]->next != FILES
-					&& tokens[tok_i]->next != STRING
-					&& tokens[tok_i]->type != BUILTIN))
-				arg_i++;
-			tok_i++;
+			if ((tokens[*tok_i + 1] && tokens[*tok_i + 1]->space)
+				|| (tokens[*tok_i]->next != FILES
+					&& tokens[*tok_i]->next != STRING
+					&& tokens[*tok_i]->type != BUILTIN))
+				(*arg_i)++;
+			(*tok_i)++;
 		}
 	}
 }
@@ -92,7 +92,7 @@ static void	additional_arguments_to_cmd(t_cmd **tokens, t_pipedata *p,
 		tok_i++;
 	if (tokens[tok_i] && tokens[tok_i]->type == HERE_DOC)
 		tok_i++;
-	check_and_add_arguments(tokens, p, arg_i, tok_i);
+	check_and_add_arguments(tokens, p, &arg_i, &tok_i);
 	p->cmd_args[arg_i] = NULL;
 }
 
