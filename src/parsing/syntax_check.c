@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_check.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 15:48:23 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/10 17:02:04 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/10 23:15:26 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	check_nexts(t_vector *tokens, t_data *data)
 // ENSURE NO SYNTAX ERROR WITH REPEAT SYMBOLS
 int	check_heredoc(t_vector *tokens)
 {
-	int	count;
+	int		count;
 	t_token	*curr;
 	t_data	*data;
 
@@ -148,7 +148,8 @@ char	*create_here_prompt(t_vector *vec, int i, int count)
 	if (tokens[j]->quoted == 1)
 		here_type = HERE_NOEXP;
 	j++;
-	while (tokens[j] && (tokens[j]->t == HERE_NOEXP || tokens[j]->t == STRING) && (!tokens[j]->space))
+	while (tokens[j] && (tokens[j]->t == HERE_NOEXP
+			|| tokens[j]->t == STRING) && (!tokens[j]->space))
 	{
 		if (tokens[j]->quoted == 1)
 			here_type = HERE_NOEXP;
@@ -161,6 +162,7 @@ char	*create_here_prompt(t_vector *vec, int i, int count)
 	}
 	return (here_doc(limiter, count - 1, here_type));
 }
+
 void	here_two(t_vector *tokens, int count, t_data *data)
 {
 	t_token	*curr;
@@ -183,5 +185,3 @@ void	here_two(t_vector *tokens, int count, t_data *data)
 		i++;
 	}
 }
-
-

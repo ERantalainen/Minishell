@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_input.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/10 03:56:06 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/10 23:11:31 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,11 @@ t_token	*create_token(char *s, size_t *i, t_type last, t_data *data)
 		new->t = APPEND;
 	else
 		new->t = STRING;
-	if (ft_strncmp(new->s, "<<", 2) == 0 && (s[*i - 1] != '"' && s[*i- 1] != '\''))
+	if (ft_strncmp(new->s, "<<", 2) == 0
+		&& (s[*i - 1] != '"' && s[*i - 1] != '\''))
 		new->t = HERE_DOC;
 	if (new->t == STRING && (last == HERE_DOC && (s[(*i)] == '"'
-			|| s[(*i)] == '\'' || data->last == HERE_NOEXP)))
+				|| s[(*i)] == '\'' || data->last == HERE_NOEXP)))
 		new->t = HERE_NOEXP;
 	return (new);
 }
@@ -113,7 +114,7 @@ int	check_empty_quote(char *s)
 	pos = 0;
 	if (s[pos] && s[pos] == '"' && s[pos + 1] && s[pos + 1] == '"')
 		return (1);
-	if(s[pos] && s[pos] == '\'' && s[pos + 1] && s[pos + 1] == '\'')
+	if (s[pos] && s[pos] == '\'' && s[pos + 1] && s[pos + 1] == '\'')
 		return (1);
 	return (0);
 }
@@ -132,7 +133,7 @@ char	*token_string(char *s, size_t *i, t_type *last)
 		if (ambigous(s, *i) != NULL)
 			return (NULL);
 	if (s[(*i)] == '\'' || s[(*i)] == '"' || *last == HERE_DOC)
- 		return (quoted_token(s + *i, s[(*i)], i, last));
+		return (quoted_token(s + *i, s[(*i)], i, last));
 	if (s[*i] == '$')
 		token = unquoted_expan(s + *i, i);
 	else
@@ -173,5 +174,3 @@ t_vector	*create_commands(t_vector *tokens)
 	next_check(commands);
 	return (commands);
 }
-
-// Combine tokens into commands.

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_help.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 18:40:32 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/10 18:45:24 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/10 23:14:42 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,21 @@
 static void	input_syntax(t_cmd *cmd, t_data *data)
 {
 	if (cmd->type == INPUT && cmd->next == EMPTY)
-			data->valid = -10;
+		data->valid = -10;
 	else if (cmd->type == INPUT && cmd->next != FILES)
-			data->valid = -cmd->next;
+		data->valid = -cmd->next;
 }
 
-static void output_syntax(t_cmd *cmd, t_data *data)
+static void	output_syntax(t_cmd *cmd, t_data *data)
 {
-		if (cmd->type == OUTPUT && cmd->next == EMPTY)
-			data->valid = -10;
-		else if (cmd->type == OUTPUT && cmd->next != STRING
-			&& cmd->next != FILES)
-			data->valid = -cmd->next;
+	if (cmd->type == OUTPUT && cmd->next == EMPTY)
+		data->valid = -10;
+	else if (cmd->type == OUTPUT && cmd->next != STRING
+		&& cmd->next != FILES)
+		data->valid = -cmd->next;
 }
-static void additional_syntax(t_cmd *cmd, t_data *data, size_t i)
+
+static void	additional_syntax(t_cmd *cmd, t_data *data, size_t i)
 {
 	if (cmd->type == APPEND && cmd->next == EMPTY)
 		data->valid = -10;
@@ -47,7 +48,8 @@ static void	check_files(t_cmd *cmd, t_cmd *next, t_data *data)
 	{
 		if (access(next->str, R_OK) != 0)
 		{
-			er_pr(mini_join(MS, mini_strndup(next->str, word_len(next->str, 0))), data, 2, 1);
+			er_pr(mini_join(MS, mini_strndup(next->str,
+						word_len(next->str, 0))), data, 2, 1);
 			return ;
 		}
 		cmd->next = FILES;
@@ -74,7 +76,8 @@ void	check_command_syntax(t_vector *commands, t_data *data)
 	while (i < commands->count && commands)
 	{
 		cmd = commands->data[i];
-		if (commands->data[i + 1] && (cmd->next == STRING || cmd->next == FILES))
+		if (commands->data[i + 1]
+			&& (cmd->next == STRING || cmd->next == FILES))
 			check_files(cmd, commands->data[i + 1], data);
 		if (data->valid != 1)
 			return ;

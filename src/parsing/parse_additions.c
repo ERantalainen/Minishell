@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_additions.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 15:44:37 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/10 03:56:16 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/10 23:10:13 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*here_lim_token(char *s, size_t n, char quote)
 	data = get_data();
 	i = 0;
 	dup = arena_malloc(n + 1);
-	while(quote != '\'' && quote != '"' && i < n)
+	while (quote != '\'' && quote != '"' && i < n)
 		quote = s[i++];
 	if (quote != '\'' && quote != '"')
 		quote = 0;

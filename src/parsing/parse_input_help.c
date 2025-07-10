@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_input_help.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 18:39:57 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/10 16:56:49 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/10 23:13:34 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,9 @@ t_cmd	*make_cmd_str(t_vector *tokens, size_t *i, t_data *data)
 	cmd->str = "";
 	cmd->space = tk->space;
 	cmd->quoted = tk->quoted;
-	if (data->last != FILES && ((((*i == 0) || ((access(tk->s, R_OK | W_OK) != 0
-		&& tk->space == 1)) || data->last == PIPE)) || tk->quoted == 1))
+	if (data->last != FILES
+		&& ((((*i == 0) || ((access(tk->s, R_OK | W_OK) != 0 && tk->space == 1))
+					|| data->last == PIPE)) || tk->quoted == 1))
 		cmd_help(tokens, i, tk, cmd);
 	else
 	{
@@ -63,7 +64,7 @@ t_cmd	*make_cmd_spc(t_vector *tokens, size_t *i, t_data *data)
 	if ((*i) < tokens->count)
 	{
 		token = tokens->data[(*i)];
-			cmd->next = token->t;
+		cmd->next = token->t;
 	}
 	else
 		cmd->next = EMPTY;
