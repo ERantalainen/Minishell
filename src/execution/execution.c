@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 16:20:20 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/10 00:17:17 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/10 13:51:53 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,11 @@ void	child_process(t_cmd **tokens, t_pipedata *p, char **env)
 	close(p->stdout_copy);
 	path = get_bin_path(mini_strndup(tokens[p->cmd_index]->str,
 				ft_strlen(tokens[p->cmd_index]->str)), env, p);
-	if (access(p->cmd_args[0], X_OK) >= 0)
+	for (int i = 0; p->cmd_args[i]; i++)
+		ft_fprintf(2, "[%s] ", p->cmd_args[i]);
+	ft_fprintf(2, "\n");
+	ft_fprintf(2, "path: [%s]\n", path);
+	if (access(p->cmd_args[0], X_OK) >= 0 && ft_strncmp(p->cmd_args[0], "/", 1 == 0))
 		if (safe_execve(p->cmd_args[0], p->cmd_args, env) < 0)
 			exit(1);
 	if (safe_execve(path, p->cmd_args, env) < 0)
