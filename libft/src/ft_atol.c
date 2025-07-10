@@ -6,52 +6,51 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 20:21:19 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/09 21:03:10 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/10 16:08:47 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static unsigned long	check_input(const char *nptr, int sign, unsigned long result, int digit)
-{
-	int	check;
+#include "libft.h"
 
-	check = false;
-	while (*nptr >= '0' && *nptr <= '9')
-	{
-		digit = *nptr - '0';
-		if (sign == 1 && result > (unsigned long)(LONG_MAX - digit) / 10)
-			return (false);
-		if (sign == -1 && result > (-(unsigned long)LONG_MIN - digit) / 10)
-			return (false);
-		result = result * 10 + digit;
-		nptr++;
-		check = true;
-	}
-	if ((*nptr < '0' || *nptr > '9') && *nptr && *nptr != '\0')
-		return (false);
-	if (!check)
-		return (false);
-	return (result);
-}
+static int	overflow(long long nbr, int neg, int digit);
 
 long	ft_atol(const char *nptr)
 {
-	unsigned long	result;
-	int				sign;
-	int				digit;
+	long long	res;
+	int			neg;
 
-
-	result = 0;
-	digit = 0;
-	sign = 1;
-	while (*nptr == ' ' || (*nptr >= '\a' && *nptr <= '\r'))
+	res = 0;
+	neg = 1;
+	while (((*nptr) >= 9 && (*nptr) <= 13) || (*nptr) == 32)
 		nptr++;
 	if (*nptr == '-' || *nptr == '+')
 	{
 		if (*nptr == '-')
-			sign = -1;
+			neg *= -1;
 		nptr++;
 	}
-	return (sign * check_input(nptr, sign, result, digit));
+	while ((*nptr) >= 48 && (*nptr) <= 57)
+	{
+		if (overflow(res, neg, (*nptr - '0')) != 2)
+			return (overflow(res, neg, (*nptr - '0')));
+		res = res * 10 + (*nptr - '0');
+		nptr++;
+	}
+	return ((int)(res * neg));
+}
+
+static int	overflow(long long nbr, int neg, int digit)
+{
+	if (neg < 0)
+	{
+		nbr = -nbr;
+		if (nbr < (LONG_MIN + digit) / 10)
+			return (0);
+	}
+	if (neg > 0)
+		if (nbr > (LONG_MAX - digit) / 10)
+			return (0);
+	return (2);
 }

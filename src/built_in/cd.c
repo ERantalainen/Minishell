@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:34:05 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/10 04:06:49 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/10 16:12:52 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,7 @@ static void	change_dir(char *path, t_data *data)
 		replace_export("?=1");
 	}
 	else
-	{
 		check_cd_res(path, data);
-
-	}
 }
 
 static char	*cd_make_path(t_cmd **cmd, int i)
@@ -73,13 +70,13 @@ void	cd(t_cmd **cmd, int i)
 	char	*path;
 
 	data = get_data();
-	puts(cmd[i]->str);
 	if ((cmd[i]->next != FILES && cmd[i]->next != STRING))
 	{
 		path = find_export("$HOME");
 		if (ft_strcmp(path, "") == 0)
 		{
-			ft_fprintf(STDERR_FILENO, "minishell: cd: HOME not set\n");
+			ft_fprintf(2, "minishell: cd: HOME not set\n");
+			replace_export("?=1");
 			return ;
 		}
 	}

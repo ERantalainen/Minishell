@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 17:07:45 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/10 14:05:40 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/10 16:11:45 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ void	ft_exit(char *s, int code)
 	i = 3;
 	while (i < 1024)
 		close(i++);
-	if (s && s[0] != 0)
-		ft_fprintf(1, "%s\n", s);
+	// if (s && s[0] != 0)
+	// 	ft_fprintf(1, "%s\n", s);
 	(void)s;
 	free_arenas();
 	exit(code);

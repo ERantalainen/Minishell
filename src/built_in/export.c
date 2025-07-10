@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:12:54 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/10 04:14:31 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/10 16:20:36 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ size_t	key_len(char *s)
 		return (1);
 	if (s[i] == '$')
 		i++;
-	while ((s[i] && s[i] != '=' && (ft_isalnum(s[i]) || s[i] == '?')))
+	while ((s[i] && s[i] != '=' && (ft_isalnum(s[i]) || s[i] == '_' || s[i] == '?')))
 		i++;
 	return (i);
 }

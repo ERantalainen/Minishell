@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 01:00:50 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/04 04:24:41 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/10 15:49:35 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	empty_export(void)
 		}
 		i++;
 	}
+	replace_export("?=0");
 }
 
 void	sort_export(size_t count, t_data *data, char **exps)

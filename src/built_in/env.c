@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 21:19:17 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/04 04:22:42 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/10 15:49:22 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	env(void)
 			printf("%s\n", line);
 		i++;
 	}
+	replace_export("?=0");
 }
 
 void	env_char(char **s)

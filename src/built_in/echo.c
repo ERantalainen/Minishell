@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:34:01 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/10 14:22:31 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/10 16:39:48 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,19 +33,22 @@ static	int	valid_option(char *s)
 static	void options(char *command, int *i, bool *nl)
 {
 	char	*check_option;
+	size_t	j;
 
+	j = 0;
 	if ((command[*i] == '-' && command[*i + 1] == 'n'))
 	{
-		while (1 && command[*i])
+		while (1 && command[*i + j])
 		{
-			check_option = mini_strndup(command + *i, word_len(command + *i, 0));
+			check_option = mini_strndup(command + *i + j, word_len(command + *i + j, 0));
 			if (valid_option(check_option) == -1)
 				break ;
 			else
-				*i += word_len(command + *i, 0);
+				*i += word_len(command + *i, 0) + (j - *i);
+			j = *i;
 			*nl = 0;
-			while(ft_isspace(command[*i]))
-				(*i)++;
+			while (ft_isspace(command[j]))
+				j++;
 		}
 	}
 }
@@ -55,16 +58,21 @@ void	echo(t_cmd **cmd, int i)
 	char	*command;
 	int		pos;
 	bool	newline;
+	size_t	j;
 
+	j = 0;
 	if (!cmd[i])
 	{
 		write(1, "\n", 1);
 		return ;
 	}
 	command = mini_strdup(cmd[i]->str);
-	if (cmd[i] && (cmd[i]->next == FILES || cmd[i]->next == STRING || cmd[i]->next == BUILTIN))
+	while (ft_isspace(command[j]) && !cmd[i]->quoted)
+		j++;
+	command += j;
+	if (cmd[i] && (cmd[i]->type == FILES || cmd[i]->type == STRING))
 		i++;
-	while (cmd[i] && (cmd[i]->next == FILES || cmd[i]->next == STRING || cmd[i]->next == BUILTIN))
+	while (cmd[i] && (cmd[i]->type == FILES || cmd[i]->type == STRING))
 	{
 		if (cmd[i]->space)
 			command = mini_append(command, cmd[i]->str);
@@ -72,18 +80,10 @@ void	echo(t_cmd **cmd, int i)
 			command = mini_join(command, cmd[i]->str);
 		i++;
 	}
-	if (cmd[i] && (cmd[i]->next == FILES || cmd[i]->next == STRING || cmd[i]->next == BUILTIN))
-	{
-		if (cmd[i] && !cmd[i]->next && cmd[i]->space)
-			command = mini_append(command, cmd[i]->str);
-		else if (cmd[i])
-			command = mini_join(command, cmd[i]->str);
-	}
 	pos = 0;
 	newline = 1;
 	options(command, &pos, &newline);
 	command += pos;
-
 	if (newline == 1)
 		ft_putendl_fd((mini_strndup(command, ft_strlen(command))), 1);
 	else

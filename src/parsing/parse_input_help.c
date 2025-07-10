@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 18:39:57 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/10 03:53:02 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/10 15:42:56 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ char	*unquoted_expan(char *s, size_t *pos)
 	int		i;
 	int		len;
 
-	if (s[0] == '$' && s[1] == '"' || s[1] == '\'')
+	if (s[0] == '$' && (s[1] == '"' || s[1] == '\''))
 	{
 		*pos += 1;
 		return ("");

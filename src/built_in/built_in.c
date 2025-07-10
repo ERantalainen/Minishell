@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 13:56:30 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/09 21:02:15 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/10 16:14:06 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,9 @@ void	built_in(t_cmd *cmd)
 static void	exit_arg_checker(char *str)
 {
 	size_t	i;
+	int		neg;
 
+	neg = 1;
 	if (!str)
 		return ;
 	i = 4;
@@ -44,18 +46,17 @@ static void	exit_arg_checker(char *str)
 		i++;
 	if (ft_atoib(str + i) && ft_atoi(str + i) == 0)
 		ft_exit("exit", 0);
-	if (str[i] == '+' || str[i] == '-')
-		i++;
+	str += i;
+	i = 0;
 	while (str[i])
 	{
-		if ((str[i] && !ft_isdigit(str[i]) && !ft_isspace(str[i])) || !str[i])
+		if ((str[i] && (!ft_isdigit(str[i]) && !ft_isspace(str[i])) && (i == 0 && str[i] != '-')) || !str[i])
 		{
-			str += 5;
 			ft_fprintf(2, mini_join(mini_join(mini_join(MS, "exit: "),
 			mini_strndup(str, word_len(str, 0))), NMARG));
 			ft_exit("exit", 2);
 		}
-		else if (ft_isdigit(str[i]) && ft_atol(mini_strndup(str + i, word_len(str + i, 0))) == 0)
+		else if (ft_isdigit(str[i]) && (!ft_atol(mini_strndup(str + i, word_len(str + i, 0))) && i == 0))
 		{
 			str += i;
 			ft_fprintf(2, mini_join(mini_join(mini_join(MS, "exit: "),
@@ -157,9 +158,8 @@ int	mini_atoi(const char *nptr)
 
 int	exit_calci(char *cmd)
 {
-	int	res;
+	long long	res;
 
-	cmd += 5;
-	res = atoi(cmd);
+	res = ft_atol(cmd);
 	return((unsigned char)res);
 }
