@@ -6,7 +6,7 @@
 #    By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/03 18:36:06 by jpelline          #+#    #+#              #
-#    Updated: 2025/07/11 00:26:26 by jpelline         ###   ########.fr        #
+#    Updated: 2025/07/11 00:34:01 by jpelline         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,9 @@ DEP_DIR			:= $(OBJ_DIR)/.deps
 LIBFT_DIR		:= libft
 
 # Search paths for source files
-VPATH			:= $(SRC_DIR):$(SRC_DIR)/built_in:$(SRC_DIR)/execution \
+BUILTIN_DIRS := $(shell find $(SRC_DIR)/built_in -type d | tr '\n' ':' | sed 's/:$$//')
+
+VPATH			:= $(SRC_DIR):$(BUILTIN_DIRS):$(SRC_DIR)/execution \
 			:$(SRC_DIR)/here_doc:$(SRC_DIR)/main:$(SRC_DIR)/memory_arena \
 			:$(SRC_DIR)/parsing:$(SRC_DIR)/signal:$(SRC_DIR)/utility \
 			:$(SRC_DIR)/vector
