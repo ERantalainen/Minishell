@@ -23,8 +23,7 @@ static int	safe_execve(char *path, char **argv, char **env)
 
 static int	check_if_path_exists(void)
 {
-	char	*path;
-
+	char *path;
 	path = find_export("PATH");
 	if (ft_strcmp(path, "") == 0)
 		return (-1);
@@ -72,6 +71,8 @@ static void	close_unused_child_fds(t_pipedata *p, int *child_stdin,
 			close(p->pipefd[j][WRITE]);
 		j++;
 	}
+	dup2(*child_stdin, STDIN_FILENO);
+	dup2(*child_stdout, STDOUT_FILENO);
 	if (*child_stdin != p->infile && *child_stdin != STDIN_FILENO)
 		close(*child_stdin);
 	if (*child_stdout != p->outfile && *child_stdout != STDOUT_FILENO)
@@ -102,8 +103,6 @@ void	child_process(t_cmd **tokens, t_pipedata *p, char **env)
 
 	setup_read_and_write_ends(p, &child_stdin, &child_stdout);
 	close_unused_child_fds(p, &child_stdin, &child_stdout);
-	dup2(child_stdin, STDIN_FILENO);
-	dup2(child_stdout, STDOUT_FILENO);
 	if (p->is_builtin == true)
 	{
 		execute_child_builtin(tokens, p, env);
@@ -113,8 +112,7 @@ void	child_process(t_cmd **tokens, t_pipedata *p, char **env)
 	close(p->stdout_copy);
 	path = get_bin_path(mini_strndup(tokens[p->cmd_index]->str,
 				ft_strlen(tokens[p->cmd_index]->str)), env, p);
-	if (access(p->cmd_args[0], X_OK) >= 0 && ft_strncmp(p->cmd_args[0], "/",
-			1 == 0))
+	if (access(p->cmd_args[0], X_OK) >= 0 && ft_strncmp(p->cmd_args[0], "/", 1 == 0))
 		if (safe_execve(p->cmd_args[0], p->cmd_args, env) < 0)
 			ft_exit_child(NULL, 1);
 	if (safe_execve(path, p->cmd_args, env) < 0 && check_if_path_exists() == 1)
@@ -170,8 +168,18 @@ static void	exec_pipeline(t_cmd **tokens, t_pipedata *p, char **env)
 			setup_child(tokens, p, env, i);
 		if (p->pipe_count > 0)
 			find_next_cmd_index(tokens, p);
-		if (i > 0 && p->pipe_count > 0)
-			close_unused_pipes(p, i);
+		if (i > 0)
+		{
+			close(p->pipefd[i - 1][READ]);
+			close(p->pipefd[i - 1][WRITE]);
+		}
+		i++;
+	}
+	i = 0;
+	while (i < p->pipe_count)
+	{
+		close(p->pipefd[i][READ]);
+		close(p->pipefd[i][WRITE]);
 		i++;
 	}
 	if (p->pids[0])
