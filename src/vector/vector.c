@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 16:48:14 by erantala          #+#    #+#             */
-/*   Updated: 2025/06/26 18:48:04 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/10 21:25:45 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ t_vector	*new_vector(size_t elem)
 }
 
 // Creates a new vector with elem * 2 space.
-
 void	expand_vector(t_vector *vector)
 {
 	void	**new;
@@ -45,7 +44,6 @@ void	expand_vector(t_vector *vector)
 }
 
 // Expands a vector to add space for more elements.
-
 void	add_elem(t_vector *vector, void *elem)
 {
 	if (vector->count == vector->size - 1)
@@ -55,7 +53,6 @@ void	add_elem(t_vector *vector, void *elem)
 }
 
 // Adds a new element to the end of the vector and expands the vector if needed.
-
 void	change_data(t_vector *vector, void *elem, void *target)
 {
 	size_t	i;
@@ -71,35 +68,3 @@ void	change_data(t_vector *vector, void *elem, void *target)
 		i++;
 	}
 }
-
-void	array_to_vec(t_vector *vec, void **arr)
-{
-	size_t	i;
-
-	i = 0;
-	while (arr[i])
-	{
-		add_elem(vec, arr[i]);
-		i++;
-	}
-}
-
-char	**vec_to_array(t_vector *vec)
-{
-	size_t	i;
-	char	**res;
-	char	*str;
-
-	i = 0;
-	res = arena_malloc(sizeof(char *) * (vec->count + 1));
-	while (i < vec->count)
-	{
-		str = vec->data[i];
-		res[i] = str;
-		i++;
-	}
-	res[i] = NULL;
-	return (res);
-}
-
-// Finds element target and replaces it with elem in the designated vector.

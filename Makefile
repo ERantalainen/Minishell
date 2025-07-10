@@ -6,7 +6,7 @@
 #    By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/03 18:36:06 by jpelline          #+#    #+#              #
-#    Updated: 2025/07/10 20:59:18 by jpelline         ###   ########.fr        #
+#    Updated: 2025/07/10 21:27:22 by jpelline         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ NAME			:= minishell_standard
 CC			:= cc
 
 # Compiler flags
-CFLAGS			:= -Wall -Wextra -Werror
+CFLAGS			:=
 DEBUG_FLAGS		:= -g3 -fsanitize=address -fsanitize=undefined
 OPTFLAGS		:= -O2
 
@@ -83,6 +83,7 @@ SRCS_BUILTIN := \
 # Utility functions and helpers
 SRCS_UTILS := \
 	memory_arena.c \
+	memory_arena_helpers.c \
 	vector.c \
 	vector_helpers.c \
 	command_help.c \

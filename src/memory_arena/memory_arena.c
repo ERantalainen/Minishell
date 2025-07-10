@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   memory_arena.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 16:05:04 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/03 21:20:29 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/10 21:27:24 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // Memory arena to store all allocated memory in one location.
-
 void	*arena_malloc(size_t n)
 {
 	t_arena	*arena;
@@ -30,7 +29,6 @@ void	*arena_malloc(size_t n)
 }
 
 // gets the next available arena and returns a pointer to the free memory
-
 t_arena	*init_arena(size_t size)
 {
 	t_arena	*arena;
@@ -44,7 +42,6 @@ t_arena	*init_arena(size_t size)
 }
 
 // Returns a free point in the arena, if arenas are full allocates more.
-
 t_arena	*find_arena(size_t n)
 {
 	static int	arena_count = 2;
@@ -69,7 +66,6 @@ t_arena	*find_arena(size_t n)
 
 // Creates a new arena when there isn't enough memory in current arenas.
 // Free the old arena pointers, only the data matters.
-
 t_arena	**new_arena(t_arena **curr, int count, size_t n)
 {
 	t_arena	**arenas;
@@ -109,19 +105,4 @@ t_arena	**get_arenas(t_arena **new)
 	if (new)
 		arenas = new;
 	return (arenas);
-}
-
-void	free_arenas(void)
-{
-	t_arena	**arenas;
-	int		i;
-
-	i = 0;
-	arenas = get_arenas(NULL);
-	while (arenas[i])
-	{
-		free(arenas[i]);
-		i++;
-	}
-	free(arenas);
 }
