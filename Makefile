@@ -6,7 +6,7 @@
 #    By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/03 18:36:06 by jpelline          #+#    #+#              #
-#    Updated: 2025/07/10 20:52:41 by jpelline         ###   ########.fr        #
+#    Updated: 2025/07/10 20:59:18 by jpelline         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -97,6 +97,7 @@ SRCS_EXEC := \
 	exec_parse_utils.c \
 	execution.c \
 	exec_utility.c \
+	exec_utility_extra.c \
 	file_handling.c \
 	child.c \
 	parsing.c

@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 20:49:29 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/10 20:52:40 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/10 21:00:56 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,15 +86,6 @@ static void	setup_read_and_write_ends(t_pipedata *p, int *child_stdin,
 	}
 }
 
-static int	check_if_path_exists(void)
-{
-	char *path;
-	path = find_export("PATH");
-	if (ft_strcmp(path, "") == 0)
-		return (-1);
-	return (1);
-}
-
 void	child_process(t_cmd **tokens, t_pipedata *p, char **env)
 {
 	char	*path;
@@ -115,7 +106,7 @@ void	child_process(t_cmd **tokens, t_pipedata *p, char **env)
 	if (access(p->cmd_args[0], X_OK) >= 0 && ft_strncmp(p->cmd_args[0], "/", 1 == 0))
 		if (safe_execve(p->cmd_args[0], p->cmd_args, env) < 0)
 			ft_exit_child(NULL, 1);
-	if (safe_execve(path, p->cmd_args, env) < 0 && check_if_path_exists() == 1)
+	if (safe_execve(path, p->cmd_args, env) < 0 && path_exists() == 1)
 		ft_exit_child(NULL, 1);
 	else
 		ft_exit_child(NULL, 0);

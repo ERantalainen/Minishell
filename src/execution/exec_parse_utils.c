@@ -6,12 +6,11 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 18:35:04 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/10 13:51:59 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/10 20:57:51 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <unistd.h>
 
 char	**get_cmd_args(char *cmd, char *path)
 {

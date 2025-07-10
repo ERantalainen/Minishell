@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   functions.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 19:21:07 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/10 03:53:05 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/10 21:01:27 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,6 +175,7 @@ void		check_for_redirects(t_cmd **tokens, t_pipedata *p);
 void		setup_pipes(int in, int out, int close_in, int close_out);
 void		setup_child(t_cmd **tokens, t_pipedata *p, char **env, int i);
 int			setup_cmd_to_execute(t_cmd **tokens, t_pipedata *p);
+int	        path_exists(void);
 
 void		child_process(t_cmd **tokens, t_pipedata *p, char **env);
 void		cmd_help(t_vector *tokens, size_t *i, t_token *token, t_cmd *cmd);
