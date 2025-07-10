@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 18:39:57 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/10 15:42:56 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/10 16:56:49 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,8 +103,11 @@ char	*unquoted_expan(char *s, size_t *pos)
 		*pos += key_len(s);
 		return ("");
 	}
+	while (ft_isspace(token[i]))
+		i++;
 	while (token[i] && i < len)
 	{
+
 		if (!ft_isspace(token[i]) || space == 0)
 			res = mini_join(res, mini_strndup(token + i, 1));
 		if (ft_isspace(token[i]))
