@@ -18,7 +18,7 @@ NAME			:= minishell_standard
 CC			:= cc
 
 # Compiler flags
-CFLAGS			:= 
+CFLAGS			:= -Wall -Wextra -Werror
 DEBUG_FLAGS		:= -g3 -fsanitize=address -fsanitize=undefined
 OPTFLAGS		:= -O2
 
