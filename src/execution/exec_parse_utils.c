@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 18:35:04 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/10 20:57:51 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/10 21:03:49 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,16 +92,6 @@ static void	check_cmd_validity(char *cmd)
 		else
 			i++;
 	}
-}
-
-static int	path_exists(void)
-{
-	char	*path;
-
-	path = find_export("PATH");
-	if (ft_strcmp(path, "") == 0)
-		return (-1);
-	return (1);
 }
 
 char	*get_bin_path(char *cmd, char **env, t_pipedata *p)
