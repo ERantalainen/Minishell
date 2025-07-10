@@ -166,7 +166,7 @@ char		**get_cmd_args(char *cmd, char *path);
 bool		check_for_builtin(t_cmd **tokens);
 void		find_next_cmd_index(t_cmd **tokens, t_pipedata *p);
 void		wait_for_children(t_pipedata *p, int status);
-void		close_unused_pipes(t_pipedata *p, int index);
+void		close_unused_pipes(t_pipedata *p, int i);
 
 void		init_pipes(t_pipedata *p);
 void		open_handler(t_pipedata *p, const char *path);

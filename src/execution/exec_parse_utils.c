@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <unistd.h>
 
 char	**get_cmd_args(char *cmd, char *path)
 {
@@ -87,16 +88,17 @@ static void	check_cmd_validity(char *cmd)
 		if (ft_isspace(cmd[i]))
 		{
 			ft_exit_child(mini_join(mini_strndup(cmd, ft_strlen(cmd)),
-				": command not found"), 127);
+					": command not found"), 127);
 		}
 		else
 			i++;
 	}
 }
 
-static int	check_if_path_exists(void)
+static int	path_exists(void)
 {
-	char *path;
+	char	*path;
+
 	path = find_export("PATH");
 	if (ft_strcmp(path, "") == 0)
 		return (-1);
@@ -110,17 +112,11 @@ char	*get_bin_path(char *cmd, char **env, t_pipedata *p)
 	char	*temp;
 	char	*path;
 
-	if (check_if_path_exists() == -1 && access(cmd, X_OK) != -1)
-	{
-		path = mini_strdup(cmd);
-		return (path);
-	}
+	if (path_exists() == -1 && !access(cmd, X_OK))
+		return (mini_strdup(cmd));
 	open_handler(p, cmd);
-	if (check_if_path_exists() && ft_strncmp(cmd, "/", 1) == 0 && access(cmd, X_OK) != -1)
-	{
-		path = mini_strdup(cmd);
-		return (path);
-	}
+	if (path_exists() && ft_strncmp(cmd, "/", 1) == 0 && !access(cmd, X_OK))
+		return (mini_strdup(cmd));
 	env_paths = parse_paths(env);
 	if (!env_paths)
 		ft_exit(mini_join(MS, mini_join(mini_strndup(cmd, word_len(cmd, 0)),

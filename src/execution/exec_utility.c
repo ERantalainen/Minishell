@@ -48,14 +48,18 @@ void	wait_for_children(t_pipedata *p, int status)
 		catcher();
 		i++;
 	}
+	dup2(p->stdin_copy, STDIN_FILENO);
+	close(p->stdin_copy);
+	dup2(p->stdout_copy, STDOUT_FILENO);
+	close(p->stdout_copy);
+	close(p->infile);
+	close(p->outfile);
 }
 
-void	close_unused_pipes(t_pipedata *p, int index)
+void	close_unused_pipes(t_pipedata *p, int i)
 {
-	if (index > 0)
-		close(p->pipefd[index - 1][READ]);
-	if (index < p->pipe_count)
-		close(p->pipefd[index][WRITE]);
+	close(p->pipefd[i - 1][READ]);
+	close(p->pipefd[i - 1][WRITE]);
 }
 
 void	init_pipes(t_pipedata *p)

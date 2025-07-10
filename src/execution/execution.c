@@ -23,81 +23,98 @@ static int	safe_execve(char *path, char **argv, char **env)
 
 static int	check_if_path_exists(void)
 {
-	char *path;
+	char	*path;
+
 	path = find_export("PATH");
 	if (ft_strcmp(path, "") == 0)
 		return (-1);
 	return (1);
 }
 
-void	child_process(t_cmd **tokens, t_pipedata *p, char **env)
+static void	setup_read_and_write_ends(t_pipedata *p, int *child_stdin,
+		int *child_stdout)
 {
-	char	*path;
-	int		j;
-	int		my_stdin;
-	int		my_stdout;
-
-	my_stdin = -1, my_stdout = -1;
+	*child_stdin = -1;
+	*child_stdout = -1;
 	if (p->pipe_count == 0)
 	{
-		my_stdin = p->infile;
-		my_stdout = p->outfile;
+		*child_stdin = p->infile;
+		*child_stdout = p->outfile;
 	}
 	else if (p->pipe_index == 0)
 	{
-		my_stdin = p->infile;
-		my_stdout = p->pipefd[p->pipe_index][WRITE];
+		*child_stdin = p->infile;
+		*child_stdout = p->pipefd[p->pipe_index][WRITE];
 	}
 	else if (p->pipe_index == p->pipe_count)
 	{
-		my_stdin = p->pipefd[p->pipe_index - 1][READ];
-		my_stdout = p->outfile;
+		*child_stdin = p->pipefd[p->pipe_index - 1][READ];
+		*child_stdout = p->outfile;
 	}
 	else
 	{
-		my_stdin = p->pipefd[p->pipe_index - 1][READ];
-		my_stdout = p->pipefd[p->pipe_index][WRITE];
+		*child_stdin = p->pipefd[p->pipe_index - 1][READ];
+		*child_stdout = p->pipefd[p->pipe_index][WRITE];
 	}
+}
+
+static void	close_unused_child_fds(t_pipedata *p, int *child_stdin,
+		int *child_stdout)
+{
+	int	j;
+
 	j = 0;
 	while (j < p->pipe_count)
 	{
-		if (p->pipefd[j][READ] != my_stdin)
+		if (p->pipefd[j][READ] != *child_stdin)
 			close(p->pipefd[j][READ]);
-		if (p->pipefd[j][WRITE] != my_stdout)
+		if (p->pipefd[j][WRITE] != *child_stdout)
 			close(p->pipefd[j][WRITE]);
 		j++;
 	}
-	dup2(my_stdin, STDIN_FILENO);
-	dup2(my_stdout, STDOUT_FILENO);
-	if (my_stdin != p->infile && my_stdin != STDIN_FILENO)
-		close(my_stdin);
-	if (my_stdout != p->outfile && my_stdout != STDOUT_FILENO)
-		close(my_stdout);
+	if (*child_stdin != p->infile && *child_stdin != STDIN_FILENO)
+		close(*child_stdin);
+	if (*child_stdout != p->outfile && *child_stdout != STDOUT_FILENO)
+		close(*child_stdout);
 	if (p->infile != STDIN_FILENO)
 		close(p->infile);
 	if (p->outfile != STDOUT_FILENO)
 		close(p->outfile);
+}
+
+static void	execute_child_builtin(t_cmd **tokens, t_pipedata *p, char **env)
+{
+	if (p->pipe_count > 0)
+	{
+		close(p->stdin_copy);
+		close(p->stdout_copy);
+		child_builds(tokens, env, p->cmd_index);
+		exit(ft_atoi(find_export("?")));
+	}
+	build_handler(tokens);
+}
+
+void	child_process(t_cmd **tokens, t_pipedata *p, char **env)
+{
+	char	*path;
+	int		child_stdin;
+	int		child_stdout;
+
+	setup_read_and_write_ends(p, &child_stdin, &child_stdout);
+	close_unused_child_fds(p, &child_stdin, &child_stdout);
+	dup2(child_stdin, STDIN_FILENO);
+	dup2(child_stdout, STDOUT_FILENO);
 	if (p->is_builtin == true)
 	{
-		if (p->pipe_count > 0)
-		{
-			close(p->stdin_copy);
-			close(p->stdout_copy);
-			child_builds(tokens, env, p->cmd_index);
-			exit(ft_atoi(find_export("?")));
-		}
-		build_handler(tokens);
+		execute_child_builtin(tokens, p, env);
 		return ;
 	}
 	close(p->stdin_copy);
 	close(p->stdout_copy);
 	path = get_bin_path(mini_strndup(tokens[p->cmd_index]->str,
 				ft_strlen(tokens[p->cmd_index]->str)), env, p);
-	// for (int i = 0; p->cmd_args[i]; i++)
-	// 	ft_fprintf(2, "[%s] ", p->cmd_args[i]);
-	// ft_fprintf(2, "\n");
-	// ft_fprintf(2, "path: [%s]\n", path);
-	if (access(p->cmd_args[0], X_OK) >= 0 && ft_strncmp(p->cmd_args[0], "/", 1 == 0))
+	if (access(p->cmd_args[0], X_OK) >= 0 && ft_strncmp(p->cmd_args[0], "/",
+			1 == 0))
 		if (safe_execve(p->cmd_args[0], p->cmd_args, env) < 0)
 			ft_exit_child(NULL, 1);
 	if (safe_execve(path, p->cmd_args, env) < 0 && check_if_path_exists() == 1)
@@ -153,28 +170,12 @@ static void	exec_pipeline(t_cmd **tokens, t_pipedata *p, char **env)
 			setup_child(tokens, p, env, i);
 		if (p->pipe_count > 0)
 			find_next_cmd_index(tokens, p);
-		if (i > 0)
-		{
-			close(p->pipefd[i - 1][READ]);
-			close(p->pipefd[i - 1][WRITE]);
-		}
-		i++;
-	}
-	i = 0;
-	while (i < p->pipe_count)
-	{
-		close(p->pipefd[i][READ]);
-		close(p->pipefd[i][WRITE]);
+		if (i > 0 && p->pipe_count > 0)
+			close_unused_pipes(p, i);
 		i++;
 	}
 	if (p->pids[0])
 		wait_for_children(p, status);
-	dup2(p->stdin_copy, STDIN_FILENO);
-	close(p->stdin_copy);
-	dup2(p->stdout_copy, STDOUT_FILENO);
-	close(p->stdout_copy);
-	close(p->infile);
-	close(p->outfile);
 }
 
 void	execution(t_cmd **tokens, char **env)
