@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 16:20:20 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/10 13:51:53 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/10 14:09:27 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,15 @@ static int	safe_execve(char *path, char **argv, char **env)
 	if (fstat(STDOUT_FILENO, &st) == -1 && errno == EBADF)
 		ft_exit_child(NULL, 1);
 	return (execve(path, argv, env));
+}
+
+static int	check_if_path_exists(void)
+{
+	char *path;
+	path = find_export("PATH");
+	if (ft_strcmp(path, "") == 0)
+		return (-1);
+	return (1);
 }
 
 void	child_process(t_cmd **tokens, t_pipedata *p, char **env)
@@ -90,9 +99,11 @@ void	child_process(t_cmd **tokens, t_pipedata *p, char **env)
 	ft_fprintf(2, "path: [%s]\n", path);
 	if (access(p->cmd_args[0], X_OK) >= 0 && ft_strncmp(p->cmd_args[0], "/", 1 == 0))
 		if (safe_execve(p->cmd_args[0], p->cmd_args, env) < 0)
-			exit(1);
-	if (safe_execve(path, p->cmd_args, env) < 0)
-		exit(1);
+			ft_exit_child(NULL, 1);
+	if (safe_execve(path, p->cmd_args, env) < 0 && check_if_path_exists() == 1)
+		ft_exit_child(NULL, 1);
+	else
+		ft_exit_child(NULL, 0);
 }
 
 static void	exec_builtin(t_cmd **tokens, t_pipedata *p, char **env)
