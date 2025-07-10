@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 03:49:53 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/10 22:59:18 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/11 00:12:12 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,29 +66,4 @@ char	**export_to_arr(char *key, char **exports)
 
 	new_exp = ft_stradd(exports, key);
 	return (new_exp);
-}
-
-char	**make_arr_export(char *exp, char **exports)
-{
-	size_t	i;
-
-	i = 0;
-	if (ft_strcmp(exp, "") == 0)
-		empty_export();
-	while (exp[i])
-	{
-		if (exp[i] != '=')
-			break ;
-		if ((ft_isalnum(exp[i]) == 0) && exp[i])
-		{
-			ft_fprintf(2, "minishell: export: `%s", mini_join(exp, INV));
-			exit (1);
-		}
-		i++;
-	}
-	if (find_line(exports, exp) != -1)
-		exports = replace_line(exports, exp, find_line(exports, exp));
-	else
-		exports = export_to_arr(exp, exports);
-	exit (0);
 }

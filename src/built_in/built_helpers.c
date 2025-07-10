@@ -6,11 +6,19 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 18:46:33 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/10 22:54:16 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/10 23:24:47 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	exit_calci(char *cmd)
+{
+	long long	res;
+
+	res = ft_atol(cmd);
+	return ((unsigned char)res);
+}
 
 char	*join_full(t_cmd **cmds, int i)
 {

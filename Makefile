@@ -6,7 +6,7 @@
 #    By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/03 18:36:06 by jpelline          #+#    #+#              #
-#    Updated: 2025/07/10 21:27:22 by jpelline         ###   ########.fr        #
+#    Updated: 2025/07/11 00:26:26 by jpelline         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -74,11 +74,14 @@ SRCS_BUILTIN := \
 	cd.c \
 	export.c \
 	export_help.c \
+	export_help_extra.c \
 	built_in.c \
 	env.c \
 	unset.c \
 	shlv.c \
-	built_helpers.c
+	built_helpers.c \
+	exit_helper.c \
+	echo_helper.c
 
 # Utility functions and helpers
 SRCS_UTILS := \
@@ -91,7 +94,8 @@ SRCS_UTILS := \
 	helpers.c \
 	empty_exp.c \
 	cleanup.c \
-	multiples.c
+	multiples.c \
+	mini_atoi.c
 
 # Command execution and process management
 SRCS_EXEC := \

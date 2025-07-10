@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 15:02:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/10 23:00:59 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/11 00:25:41 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,14 @@ char	*build_exports(t_cmd **cmds, int *i)
 
 	j = 0;
 	if (!(cmds[*i] && ((cmds[*i]->type == FILES || cmds[*i]->type == STRING)
-				|| (cmds[*i]->type == BUILTIN))))
+	|| (cmds[*i]->type == BUILTIN))))
 		return (NULL);
-	while (cmds[*i]->str[j] && ft_isspace(cmds[*i]->str[j]))
+	while(cmds[*i]->str[j] && ft_isspace(cmds[*i]->str[j]))
 		j++;
 	export = mini_strdup(cmds[*i]->str + j);
 	(*i)++;
 	while (cmds[*i] && ((cmds[*i]->type == FILES || cmds[*i]->type == STRING)
-			|| (cmds[*i]->type == BUILTIN)))
+		|| (cmds[*i]->type == BUILTIN)))
 	{
 		if (cmds[*i]->space == 0)
 			export = mini_join(export, cmds[*i]->str);
@@ -39,6 +39,7 @@ char	*build_exports(t_cmd **cmds, int *i)
 
 static bool	export_str(char *s)
 {
+
 	size_t	i;
 
 	i = 0;
@@ -46,8 +47,7 @@ static bool	export_str(char *s)
 	{
 		if (s[i] == '=' && i != 0)
 			break ;
-		if (!ft_isalpha(s[0]) || ((ft_isalnum(s[i]) == 0)
-				&& s[i] != '_' && s[i]))
+		if (!ft_isalpha(s[0]) || ((ft_isalnum(s[i]) == 0) && s[i] != '_' && s[i]))
 		{
 			ft_fprintf(2, "minishell: export: `%s", mini_join(s, INV));
 			replace_export("?=1");
@@ -150,3 +150,4 @@ char	**count_unset_child(char *command, char **env)
 	}
 	return (env);
 }
+

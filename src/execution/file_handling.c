@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file_handling.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 21:19:02 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/09 17:33:32 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/10 21:06:11 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

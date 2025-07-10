@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 19:21:07 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/10 22:51:00 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/11 00:22:41 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ void		replace_export(char *key);
 char		*expans_help(char *s, char *dup, size_t *i, size_t *pos);
 char		**export_to_arr(char *key, char **exports);
 char		**count_export_child(t_cmd **cmds, int i, char **envi);
+char		*build_exports(t_cmd **cmds, int *i);
 
 // Memory Arena
 t_arena		*init_arena(size_t size);
@@ -163,5 +164,8 @@ int			path_exists(void);
 void		child_process(t_cmd **tokens, t_pipedata *p, char **env);
 void		cmd_help(t_vector *tokens, size_t *i, t_token *token, t_cmd *cmd);
 void		child_died(int status);
+
+void		exit_arg_checker(char *str);
+char		*echo_part(t_cmd *cmd, int *pos, bool *nl);
 
 #endif // FUNCTIONS_H
