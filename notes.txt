@@ -1,3 +1,17 @@
+
+
+// THESE SEGFAULT !!!
+echo "echo >" | ./minishell
+
+echo "echo > <" | ./minishell
+
+echo ">echo>" | ./minishell
+
+echo "<echo<" | ./minishell
+
+echo ">>echo>>" | ./minishell
+
+
 !!!!!!!!!!!!!!!!!
 FIX ls|cat<<a
 !!!!!!!!!!!!!!!!!
