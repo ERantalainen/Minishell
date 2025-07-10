@@ -6,7 +6,7 @@
 #    By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/03 18:36:06 by jpelline          #+#    #+#              #
-#    Updated: 2025/07/10 13:23:14 by jpelline         ###   ########.fr        #
+#    Updated: 2025/07/10 20:52:41 by jpelline         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -98,6 +98,7 @@ SRCS_EXEC := \
 	execution.c \
 	exec_utility.c \
 	file_handling.c \
+	child.c \
 	parsing.c
 
 # Main program and entry point
