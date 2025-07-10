@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 18:40:32 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/10 00:30:53 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/10 18:45:24 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	check_command_syntax(t_vector *commands, t_data *data)
 	t_cmd	*cmd;
 
 	i = 0;
-	while (i < commands->count)
+	while (i < commands->count && commands)
 	{
 		cmd = commands->data[i];
 		if (commands->data[i + 1] && (cmd->next == STRING || cmd->next == FILES))
@@ -89,7 +89,10 @@ void	check_command_syntax(t_vector *commands, t_data *data)
 			ft_fprintf(2, "%s'\n", mini_join(TOKEN, cmd->str));
 		}
 		if (data->valid != 1)
+		{
+			replace_export("?=2");
 			return ;
+		}
 		i++;
 	}
 }
