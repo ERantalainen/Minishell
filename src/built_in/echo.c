@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:34:01 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/10 17:37:12 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/10 18:38:57 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,24 @@ static	void options(char *command, int *i, bool *nl)
 	}
 }
 
+static 	char	*echo_part(t_cmd *cmd, int *pos, bool *nl)
+{
+	char	*command;
+
+	command = cmd->str;
+	while (command[*pos] && !cmd->quoted && ft_isspace(command[*pos]))
+		(*pos)++;
+	options(command, pos, nl);
+	if (!command[*pos] && cmd->space == 0)
+		return ("");
+	else
+		return (mini_strdup(command += *pos));
+}
+
 void	echo(t_cmd **cmd, int i)
 {
 	char	*command;
+	char	*part;
 	int		pos;
 	bool	newline;
 	size_t	j;
@@ -66,28 +81,35 @@ void	echo(t_cmd **cmd, int i)
 		write(1, "\n", 1);
 		return ;
 	}
-	command = mini_strdup(cmd[i]->str);
-	while (ft_isspace(command[j]) && !cmd[i]->quoted)
-		j++;
-	command += j;
-	while (1)
-	{
-		
-	}
-	pos = 0;
 	newline = 1;
-	options(command, &pos, &newline);
-	command += pos;
-	if (newline == 1)
-		ft_putendl_fd((mini_strndup(command, ft_strlen(command))), 1);
-	else
-		ft_putstr_fd((mini_strndup(command, ft_strlen(command))), 1);
-	replace_export("?=0");
-}
-
-
-	if (cmd[i] && (cmd[i]->type == FILES || cmd[i]->type == STRING))
-		i++;
+	command = "";
+	while (cmd[i] && (cmd[i]->type == FILES || cmd[i]->type == STRING))
+	{
+		pos = 0;
+		part = echo_part(cmd[i], &pos, &newline);
+		if (ft_strcmp(part, "") == 0 && cmd[i]->quoted == 0)
+			i++;
+		else if (ft_strcmp(part, "") == 0 && cmd[i]->space && cmd[i]->quoted)
+		{
+			if (ft_strcmp(cmd[i]->str, "") == 0)
+				i++;
+			else
+			{
+				i++;
+				if (!cmd[i])
+					break ;
+				command = mini_strdup(cmd[i]->str);
+				i++;
+			}
+			break ;
+		}
+		else
+		{
+			command = mini_strdup(part);
+			i++;
+			break ;
+		}
+	}
 	while (cmd[i] && (cmd[i]->type == FILES || cmd[i]->type == STRING))
 	{
 		if (cmd[i]->space)
@@ -96,3 +118,9 @@ void	echo(t_cmd **cmd, int i)
 			command = mini_join(command, cmd[i]->str);
 		i++;
 	}
+	if (newline == 1)
+		ft_putendl_fd((mini_strndup(command, ft_strlen(command))), 1);
+	else
+		ft_putstr_fd((mini_strndup(command, ft_strlen(command))), 1);
+	replace_export("?=0");
+}
