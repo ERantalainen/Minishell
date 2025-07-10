@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+         #
+#    By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/03 18:36:06 by jpelline          #+#    #+#              #
-#    Updated: 2025/07/08 18:54:03 by erantala         ###   ########.fr        #
+#    Updated: 2025/07/10 13:23:14 by jpelline         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ NAME			:= minishell_standard
 CC			:= cc
 
 # Compiler flags
-CFLAGS			:= -Wall -Wextra -Werror
+CFLAGS			:= 
 DEBUG_FLAGS		:= -g3 -fsanitize=address -fsanitize=undefined
 OPTFLAGS		:= -O2
 
@@ -132,12 +132,16 @@ OBJ_FILES_EXIST		:= $(shell [ -n "$(wildcard $(OBJ_DIR)/*.o)" ] && echo yes)
 # Looking for updated header files
 LATEST_HEADER := $(shell find include $(LIBFT_DIR)/include -name "*.h" 2>/dev/null | xargs ls -t 2>/dev/null | head -1)
 
+# Looking for updated libft source files
+LATEST_LIBFT_SRC := $(shell find $(LIBFT_DIR)/src -name "*.c" 2>/dev/null | xargs ls -t 2>/dev/null | head -1)
+
 # Check if binary is up to date
 is_up_to_date = \
 	[ -f $(PROGRAM_NAME) ] && \
 	[ "$(PROGRAM_NAME)" -nt $(LATEST_SRC) ] && \
 	[ "$(PROGRAM_NAME)" -nt $(LATEST_HEADER) ] && \
 	[ "$(PROGRAM_NAME)" -nt $(LIBFT) ] && \
+	( [ -z "$(LATEST_LIBFT_SRC)" ] || [ "$(PROGRAM_NAME)" -nt $(LATEST_LIBFT_SRC) ] ) && \
 	[ "$(OBJ_FILES_EXIST)" = "yes" ]
 
 # ============================== BUILD TARGETS =============================== #
@@ -152,7 +156,7 @@ all:
 		echo ">$(BOLD)$(GREEN)  All components built successfully!$(RESET)"; \
 	fi
 
-$(NAME): $(OBJS) $(LIBFT)
+$(NAME): $(OBJS) libft-check
 	@echo ">$(BOLD)$(GREEN)  Linking $(NAME)...$(RESET)"
 	@$(CC) $(CFLAGS) -o $(PROGRAM_NAME) $(OBJS) $(LDFLAGS) $(OPTFLAGS)
 	@touch $(MARKER_STANDARD)
@@ -189,6 +193,9 @@ $(LIBFT):
 	@echo ">$(MAGENTA)  Entering libft directory...$(RESET)"
 	@$(MAKE) -C $(LIBFT_DIR) --no-print-directory
 
+libft-check:
+	@$(MAKE) -C $(LIBFT_DIR) --no-print-directory
+
 # ============================== CLEAN TARGETS =============================== #
 
 clean:
@@ -221,4 +228,4 @@ re:
 	@$(MAKE) $(NAME) --no-print-directory
 
 .SECONDARY: $(OBJS)
-.PHONY: all debug clean fclean re
+.PHONY: all debug clean fclean re libft-check
