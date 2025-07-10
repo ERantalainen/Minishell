@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 13:56:30 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/10 23:30:35 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/11 02:03:19 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,8 @@ void	built_in(t_cmd *cmd)
 	}
 }
 
-void	build_handler(t_cmd **cmds)
+void	build_handler(t_cmd **cmds, int i)
 {
-	size_t	i;
-
-	i = 0;
 	while (cmds[i])
 	{
 		if (cmds[i]->type == BUILTIN)
@@ -54,31 +51,6 @@ void	build_handler(t_cmd **cmds)
 				count_export(cmds, i);
 			if (ft_strncmp("unset", cmds[i]->str, 5) == 0)
 				count_unset(cmds, i + 1);
-			if (ft_strncmp("env", cmds[i]->str, 3) == 0)
-				env();
-		}
-		i++;
-	}
-}
-
-void	child_builds(t_cmd **cmds, char **envi, int i)
-{
-	while (cmds[i])
-	{
-		if (cmds[i]->type == BUILTIN)
-		{
-			if (ft_strncmp("echo", cmds[i]->str, 4) == 0)
-				echo(cmds, i + 1);
-			if (ft_strncmp("exit", cmds[i]->str, 4) == 0)
-				exit_arg_checker(exit_join(cmds, i));
-			if (ft_strncmp("cd", cmds[i]->str, 2) == 0)
-				cd(cmds, i);
-			if (ft_strncmp("pwd", cmds[i]->str, 3) == 0)
-				pwd();
-			if (ft_strncmp("export", cmds[i]->str, 6) == 0)
-				envi = count_export_child(cmds, i, envi);
-			if (ft_strncmp("unset", cmds[i]->str, 5) == 0)
-				envi = count_unset_child(cmds[i]->str + 6, envi);
 			if (ft_strncmp("env", cmds[i]->str, 3) == 0)
 				env();
 			return ;

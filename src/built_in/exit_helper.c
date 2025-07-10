@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_helper.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 23:29:39 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/10 23:39:59 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/11 02:00:22 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static void	check_for_nonnumeric(char *str, int i)
 {
 	if ((str[i] && (!ft_isdigit(str[i]) && !ft_isspace(str[i]))
-			&& (i == 0 && str[i] != '-')) || !str[i])
+			&& (i == 0 && str[i] != '-' && str[i] != '+')) || !str[i])
 	{
 		ft_fprintf(2, mini_join(mini_join(mini_join(MS, "exit: "),
 					mini_strndup(str, word_len(str, 0))), NMARG));
@@ -23,17 +23,12 @@ static void	check_for_nonnumeric(char *str, int i)
 	}
 }
 
-static void	check_for_numeric(char *str, int i)
+static void	overflow_error(char *str, int i)
 {
-	if (ft_isdigit(str[i])
-		&& (!ft_atol(mini_strndup(str + i, word_len(str + i, 0)))
-			&& i == 0))
-	{
 		str += i;
 		ft_fprintf(2, mini_join(mini_join(mini_join(MS, "exit: "),
-					mini_strndup(str, word_len(str, 0))), NMARG));
+		mini_strndup(str, word_len(str, 0))), NMARG));
 		ft_exit("exit", 2);
-	}
 }
 
 static void	check_for_too_many(char *str, int i)
@@ -61,10 +56,12 @@ void	exit_arg_checker(char *str)
 		ft_exit("exit", 0);
 	str += i;
 	i = 0;
+	if (!ft_atol(mini_strndup(str + i, word_len(str + i, 0)))
+			&& i == 0)
+		overflow_error(str, i);	
 	while (str[i])
 	{
 		check_for_nonnumeric(str, i);
-		check_for_numeric(str, i);
 		check_for_too_many(str, i);
 		i++;
 	}

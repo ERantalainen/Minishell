@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_help.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 18:40:32 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/10 23:14:42 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/11 01:44:38 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,13 +67,27 @@ static void	check_files(t_cmd *cmd, t_cmd *next, t_data *data)
 	}
 }
 
+static	syntax_help(t_cmd *cmd, t_data *data, int i, t_vector *commands)
+{
+		input_syntax(cmd, data);
+		output_syntax(cmd, data);
+		additional_syntax(cmd, data, i);
+		if (data->valid == -10)
+			ft_fprintf(2, "%s'\n", mini_join(TOKEN, "newline\'"));
+		else if (data->valid != 1 && data->valid != 0 && commands->data[i + 1])
+		{
+			cmd = commands->data[i + 1];
+			ft_fprintf(2, "%s'\n", mini_join(TOKEN, cmd->str));
+		}
+}
+
 void	check_command_syntax(t_vector *commands, t_data *data)
 {
 	size_t	i;
 	t_cmd	*cmd;
 
 	i = 0;
-	while (i < commands->count && commands)
+	while (commands && i < commands->count)
 	{
 		cmd = commands->data[i];
 		if (commands->data[i + 1]
@@ -81,16 +95,7 @@ void	check_command_syntax(t_vector *commands, t_data *data)
 			check_files(cmd, commands->data[i + 1], data);
 		if (data->valid != 1)
 			return ;
-		input_syntax(cmd, data);
-		output_syntax(cmd, data);
-		additional_syntax(cmd, data, i);
-		if (data->valid == -10)
-			ft_fprintf(2, "%s'\n", mini_join(TOKEN, "newline\'"));
-		else if (data->valid != 1 && data->valid != 0)
-		{
-			cmd = commands->data[i + 1];
-			ft_fprintf(2, "%s'\n", mini_join(TOKEN, cmd->str));
-		}
+		syntax_help(cmd, data, i, commands);
 		if (data->valid != 1)
 		{
 			replace_export("?=2");

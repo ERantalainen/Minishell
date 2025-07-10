@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   multiples.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 15:02:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/11 00:25:41 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/11 01:31:04 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,41 +37,15 @@ char	*build_exports(t_cmd **cmds, int *i)
 	return (export);
 }
 
-static bool	export_str(char *s)
+static int	check_emp(t_cmd **cmds, int i)
 {
-
-	size_t	i;
-
-	i = 0;
-	while (s[i])
+	if (cmds[i]->next != STRING && cmds[i]->next != FILES)
 	{
-		if (s[i] == '=' && i != 0)
-			break ;
-		if (!ft_isalpha(s[0]) || ((ft_isalnum(s[i]) == 0) && s[i] != '_' && s[i]))
-		{
-			ft_fprintf(2, "minishell: export: `%s", mini_join(s, INV));
-			replace_export("?=1");
-			return (false);
-		}
-		i++;
+		empty_export();
+		return (0);
 	}
-	if (s[i] != '=')
-		return (false);
-	return (true);
-}
-
-int	check_export(char **exports)
-{
-	size_t	i;
-
-	i = 0;
-	while (exports[i])
-	{
-		if (!export_str(exports[i]))
-			return (0);
-		i++;
-	}
-	return (1);
+	else
+		return (1);
 }
 
 int	count_export(t_cmd **cmds, int i)
@@ -80,14 +54,10 @@ int	count_export(t_cmd **cmds, int i)
 	char		**exps;
 	size_t		j;
 
-	exps = arena_malloc(sizeof(char *) * 2);
-	if (cmds[i]->next != STRING && cmds[i]->next != FILES)
-	{
-		empty_export();
+	if (!check_emp(cmds, i))
 		return (0);
-	}
-	else
-		i++;
+	exps = arena_malloc(sizeof(char *) * 2);
+	i++;
 	while (1)
 	{
 		export = build_exports(cmds, &i);
@@ -106,48 +76,3 @@ int	count_export(t_cmd **cmds, int i)
 	}
 	return (0);
 }
-
-char	**count_export_child(t_cmd **cmds, int i, char **envi)
-{
-	char		*export;
-
-	if (cmds[i]->next != STRING && cmds[i]->next != FILES)
-	{
-		empty_export();
-		return (envi);
-	}
-	else
-		i++;
-	while (1)
-	{
-		export = build_exports(cmds, &i);
-		if (!export)
-			break ;
-		if (check_export(&export))
-			envi = export_to_arr(export, envi);
-	}
-	return (envi);
-}
-
-char	**count_unset_child(char *command, char **env)
-{
-	int		len;
-	size_t	i;
-
-	while (command[0])
-	{
-		i = 0;
-		while (command[i] && ft_isspace(command[i]))
-			i++;
-		if (!command[i])
-			break ;
-		len = word_len(command + i, 0);
-		if (len > 0)
-			unset_child(mini_strndup(command + i, len), env);
-		else
-			break ;
-		command += len + i;
-	}
-	return (env);
-}
-

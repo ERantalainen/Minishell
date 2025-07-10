@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   functions.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 19:21:07 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/11 00:22:41 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/11 02:03:54 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,14 +51,11 @@ void		unset(char *key);
 void		cd(t_cmd **cmd, int i);
 void		env(void);
 void		export(char *export);
-char		**unset_child(char *key, char **envi);
-void		child_builds(t_cmd **cmds, char **envi, int i);
 void		built_in(t_cmd *cmd);
-void		build_handler(t_cmd **cmds);
+void		build_handler(t_cmd **cmds, int i);
 void		count_unset(t_cmd **cmds, int i);
 char		*join_full(t_cmd **cmds, int i);
 char		*exit_join(t_cmd **cmds, int i);
-char		**count_unset_child(char *command, char **env);
 
 // Export
 int			count_export(t_cmd **cmds, int i);
@@ -72,6 +69,7 @@ char		*expans_help(char *s, char *dup, size_t *i, size_t *pos);
 char		**export_to_arr(char *key, char **exports);
 char		**count_export_child(t_cmd **cmds, int i, char **envi);
 char		*build_exports(t_cmd **cmds, int *i);
+int			check_export(char **exports);
 
 // Memory Arena
 t_arena		*init_arena(size_t size);

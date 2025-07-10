@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_input_help.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 18:39:57 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/10 23:13:34 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/11 01:53:56 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,8 +104,6 @@ char	*unquoted_expan(char *s, size_t *pos)
 		*pos += key_len(s);
 		return ("");
 	}
-	while (ft_isspace(token[i]))
-		i++;
 	while (token[i] && i < len)
 	{
 

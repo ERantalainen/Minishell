@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+         #
+#    By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/03 18:36:06 by jpelline          #+#    #+#              #
-#    Updated: 2025/07/11 00:34:01 by jpelline         ###   ########.fr        #
+#    Updated: 2025/07/11 01:22:44 by erantala         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -83,7 +83,8 @@ SRCS_BUILTIN := \
 	shlv.c \
 	built_helpers.c \
 	exit_helper.c \
-	echo_helper.c
+	echo_helper.c \
+	additional_helpers.c
 
 # Utility functions and helpers
 SRCS_UTILS := \

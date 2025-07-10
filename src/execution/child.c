@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 20:49:29 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/10 21:00:56 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/11 02:03:40 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ static void	execute_child_builtin(t_cmd **tokens, t_pipedata *p, char **env)
 	{
 		close(p->stdin_copy);
 		close(p->stdout_copy);
-		child_builds(tokens, env, p->cmd_index);
+		build_handler(tokens, p->cmd_index);
 		exit(ft_atoi(find_export("?")));
 	}
-	build_handler(tokens);
+	build_handler(tokens, 0);
 }
 
 static void	close_unused_child_fds(t_pipedata *p, int *child_stdin,
