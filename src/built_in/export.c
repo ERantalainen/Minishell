@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:12:54 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/09 23:51:16 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/10 04:14:31 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	*find_export(char *key)
 	data = get_data();
 	if (!key)
 		return ("");
-	if (ft_strlen(key) == 1)
+	if (ft_strlen(key) == 1 && key[0] == '$')
 		return (mini_strdup("$"));
 	i = 0;
 	if (key[0] == '$')
@@ -44,7 +44,7 @@ char	*find_export(char *key)
 	{
 		var = data->env_vec->data[i];
 		len = key_len(var);
-		if (key_len(key) > key_len(var))
+		if (key_len(key) > len)
 			len = key_len(key);
 		if (ft_strncmp(key, var, len) == 0)
 			return (var + (key_len(var) + 1));
@@ -58,12 +58,11 @@ size_t	key_len(char *s)
 	size_t	i;
 
 	i = 0;
-	if (s[i] == '$' && s[i + 1] == '"')
-		return (2);
+	if (s[i] == '$' && s[i + 1] && s[i + 1] == '"')
+		return (1);
 	if (s[i] == '$')
 		i++;
-	while ((s[i] && s[i] != '=' && !ft_isspace(s[i]) && s[i] != '$')
-		&& !check_specials(s[i], 0))
+	while ((s[i] && s[i] != '=' && (ft_isalnum(s[i]) || s[i] == '?')))
 		i++;
 	return (i);
 }

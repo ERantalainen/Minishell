@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 18:39:57 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/09 18:54:07 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/10 03:53:02 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,3 +74,45 @@ t_cmd	*make_cmd_spc(t_vector *tokens, size_t *i, t_data *data)
 }
 
 // Make a redirect or pipe command
+
+char	*unquoted_expan(char *s, size_t *pos)
+{
+	char	*token;
+	char	*res;
+	bool	space;
+	int		i;
+	int		len;
+
+	if (s[0] == '$' && s[1] == '"' || s[1] == '\'')
+	{
+		*pos += 1;
+		return ("");
+	}
+	if (s[0] == '$' && !s[1])
+	{
+		*pos += 1;
+		return ("$");
+	}
+	i = 0;
+	space = 0;
+	res = "";
+	token = find_export(mini_strndup(s, key_len(s)));
+	len = ft_strlen(token);
+	if (ft_strcmp(token, "") == 0)
+	{
+		*pos += key_len(s);
+		return ("");
+	}
+	while (token[i] && i < len)
+	{
+		if (!ft_isspace(token[i]) || space == 0)
+			res = mini_join(res, mini_strndup(token + i, 1));
+		if (ft_isspace(token[i]))
+			space = 1;
+		if (!ft_isspace(token[i]))
+			space = 0;
+		i++;
+	}
+	*pos += key_len(s);
+	return (res);
+}

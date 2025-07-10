@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 15:48:23 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/09 17:31:49 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/10 01:48:14 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,9 +142,10 @@ char	*create_here_prompt(t_vector *vec, int i, int count)
 
 	j = i + 1;
 	limiter = "";
-	here_type = STRING;
 	tokens = (t_token **)vec->data;
+	here_type = tokens[j]->t;
 	limiter = mini_strdup(tokens[j]->s);
+	printf("%d %d %s\n", tokens[j]->quoted, tokens[j]->t, tokens[j]->s);
 	if (tokens[j]->quoted == 1)
 		here_type = HERE_NOEXP;
 	j++;
@@ -157,6 +158,7 @@ char	*create_here_prompt(t_vector *vec, int i, int count)
 			limiter = mini_join(limiter, tokens[j]->s);
 			j++;
 		}
+		remove_elem(vec, j -1);
 	}
 	return (here_doc(limiter, count - 1, here_type));
 }
@@ -182,3 +184,5 @@ void	here_two(t_vector *tokens, int count, t_data *data)
 		i++;
 	}
 }
+
+

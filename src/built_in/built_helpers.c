@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 18:46:33 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/09 20:46:09 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/10 01:52:50 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,7 @@ char	*join_full(t_cmd **cmds, int i)
 char	*exit_join(t_cmd **cmds, int i)
 {
 	char	*res;
-	int		start;
 
-	start = i;
 	res = mini_strdup(cmds[i]->str);
 	i++;
 	while (cmds[i] && (cmds[i]->type == FILES || cmds[i]->type == STRING))

@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 15:02:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/09 23:51:38 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/10 03:17:29 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static bool	export_str(char *s)
 	i = 0;
 	while (s[i])
 	{
-		if (s[i] == '=' && s[i + 1] && i != 0)
+		if (s[i] == '=' && i != 0)
 			break ;
 		if (!ft_isalpha(s[0]) || ((ft_isalnum(s[i]) == 0) && s[i]))
 		{

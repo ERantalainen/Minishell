@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 19:21:07 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/09 20:37:15 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/10 03:53:05 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ t_vector	*token_vector(char *s);
 char		*token_string(char *s, size_t *i, t_type *last);
 t_vector	*creator(char *s, size_t len, size_t i, t_data *data);
 char		*quoted_token(char *s, char quote, size_t *i, t_type *last);
+char		*unquoted_expan(char *s, size_t *pos);
 
 // Command creator
 
