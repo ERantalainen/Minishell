@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_additions.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 15:44:37 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/10 23:10:13 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/11 02:19:51 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

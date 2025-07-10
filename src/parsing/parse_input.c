@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_input.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/10 23:11:31 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/11 02:20:11 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,23 +29,7 @@ t_token	*create_token(char *s, size_t *i, t_type last, t_data *data)
 		new->t = STRING;
 		return (new);
 	}
-	if (s[*i - 1] == '"' || s[*i - 1] == '\'')
-		new->t = STRING;
-	else if (data->tokens->count == 0 && !ft_isspace(s[*i]))
-		new->t = STRING;
-	if (ft_strncmp(new->s, "|", 1) == 0)
-		new->t = PIPE;
-	else if (ft_strcmp(new->s, "<") == 0)
-		new->t = INPUT;
-	else if (ft_strcmp(new->s, ">") == 0)
-		new->t = OUTPUT;
-	else if (ft_strncmp(new->s, ">>", 2) == 0)
-		new->t = APPEND;
-	else
-		new->t = STRING;
-	if (ft_strncmp(new->s, "<<", 2) == 0
-		&& (s[*i - 1] != '"' && s[*i - 1] != '\''))
-		new->t = HERE_DOC;
+	new = check_type(new, data, i, s);
 	if (new->t == STRING && (last == HERE_DOC && (s[(*i)] == '"'
 				|| s[(*i)] == '\'' || data->last == HERE_NOEXP)))
 		new->t = HERE_NOEXP;
@@ -172,5 +156,6 @@ t_vector	*create_commands(t_vector *tokens)
 			add_elem(commands, make_cmd_spc(tokens, &i, data));
 	}
 	next_check(commands);
+	trim_check(commands);
 	return (commands);
 }
