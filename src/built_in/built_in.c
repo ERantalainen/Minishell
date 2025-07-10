@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 13:56:30 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/10 22:56:03 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/10 23:02:19 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ static void	exit_arg_checker(char *str)
 		if ((str[i] && (!ft_isdigit(str[i]) && !ft_isspace(str[i]))
 				&& (i == 0 && str[i] != '-')) || !str[i])
 		{
-			ft_fprintf(2, mini_join(mini_join(mini_join(MS, "exit: ");
-			mini_strndup(str, word_len(str, 0))), NMARG));
+			ft_fprintf(2, mini_join(mini_join(mini_join(MS, "exit: "),
+						mini_strndup(str, word_len(str, 0))), NMARG));
 			ft_exit("exit", 2);
 		}
 		else if (ft_isdigit(str[i])
@@ -62,8 +62,8 @@ static void	exit_arg_checker(char *str)
 				&& i == 0))
 		{
 			str += i;
-			ft_fprintf(2, mini_join(mini_join(mini_join(MS, "exit: ");
-			mini_strndup(str, word_len(str, 0))), NMARG));
+			ft_fprintf(2, mini_join(mini_join(mini_join(MS, "exit: "),
+						mini_strndup(str, word_len(str, 0))), NMARG));
 			ft_exit("exit", 2);
 		}
 		if (ft_isspace(str[i]) && str[i + 1] && !ft_isspace(str[i + 1]))
