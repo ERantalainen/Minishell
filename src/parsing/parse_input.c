@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/11 23:53:17 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/12 00:14:25 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,24 +67,23 @@ t_vector	*creator(char *s, size_t len, size_t i, t_data *data)
 	t_token	*token;
 	bool	space;
 
-	space = 0;
 	while (i < len && s[i] && data->valid == 1)
 	{
+		space = 0;
 		if (ft_isspace(s[i]))
 			space = 1;
 		while (s[i] && ft_isspace(s[i]) == 1)
 			i++;
+		if (!s[i])
+			break ;
 		if (data->tokens->count == 0 && s[i])
 			token = create_token(s, &i, EMPTY, data);
 		else if (s[i])
 			token = create_token(s, &i, token->t, data);
-		if (data->valid == 0 || !s[i])
+		if (data->valid == 0)
 			break ;
 		if (space == 1)
-		{
 			token->space = 1;
-			space = 0;
-		}
 		add_elem(data->tokens, token);
 	}
 	return (data->tokens);
