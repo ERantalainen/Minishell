@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 19:21:07 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/11 02:13:12 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/11 04:10:08 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ t_token		*check_type(t_token *new, t_data *data, size_t *i, char *s);
 
 // Command creator
 t_vector	*create_commands(t_vector *tokens);
+void		first_trim_check(t_vector *commands);
 void		cmd_help(t_vector *tks, size_t *i, t_token *tk, t_cmd *cm);
 t_cmd		*make_cmd_spc(t_vector *tokens, size_t *i, t_data *data);
 t_cmd		*make_cmd_str(t_vector *tokens, size_t *i, t_data *data);

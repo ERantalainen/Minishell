@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/11 02:20:11 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/11 04:37:06 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,8 +146,8 @@ t_vector	*create_commands(t_vector *tokens)
 	}
 	i = 0;
 	data->check_build = 1;
-	commands = new_vector(tokens->count);
-	while (i < tokens->count && tokens->data[i] != NULL)
+	commands = new_vector(4);
+	while (i < data->tokens->count)
 	{
 		curr = tokens->data[i];
 		if (curr->t == STRING || curr->t == FILES)
@@ -156,6 +156,6 @@ t_vector	*create_commands(t_vector *tokens)
 			add_elem(commands, make_cmd_spc(tokens, &i, data));
 	}
 	next_check(commands);
-	trim_check(commands);
+	first_trim_check(commands);
 	return (commands);
 }

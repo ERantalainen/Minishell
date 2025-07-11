@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_check.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 15:48:23 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/10 23:16:15 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/11 04:36:22 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	er_pr(char *error, t_data *data, int exit, bool per)
 		perror(error);
 	else
 		ft_fprintf(2, "%s\n", error);
-	data->valid = 0;
+	data->valid = -1;
 	replace_export(mini_join("?=", mini_itoa(exit)));
 }
 
@@ -35,7 +35,7 @@ void	check_repeat(t_vector *tokens)
 	{
 		cur = tokens->data[i];
 		nx = tokens->data[i + 1];
-		if (cur->t == INPUT && nx->t == INPUT)
+		if (cur->t == INPUT && nx->t == INPUT && nx->space == 0)
 		{
 			remove_elem(tokens, i);
 			nx->t = HERE_DOC;

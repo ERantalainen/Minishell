@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 23:29:39 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/11 03:24:48 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/11 03:46:41 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,16 +57,16 @@ void	exit_arg_checker(char *str)
 		ft_exit("exit", 0);
 	str += i;
 	i = 0;
+	puts(str);
 	if (!ft_atol(mini_strndup(str + i, word_len(str + i, 0)))
 			&& i == 0)
 		overflow_error(str, i);	
 	while (str[i])
 	{
 		check_for_nonnumeric(str, i);
-		if (check_for_too_many(str, i));
+		if (check_for_too_many(str, i) == 1)
 			return ;
 		i++;
 	}
-	replace_export("?=0");
 	ft_exit("exit", exit_calci(str));
 }

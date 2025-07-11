@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 15:44:37 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/11 02:19:51 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/11 04:35:28 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ char	*quoted_token(char *s, char quote, size_t *i, t_type *last)
 	pos = 1;
 	if (*last == HERE_DOC)
 	{
+		if (s[0] != '"' && s[0] != '\'')
+			quote = 0;
 		str = here_lim_token(s, word_len(s, quote), quote);
 		(*i) += word_len(s, -1);
 	}

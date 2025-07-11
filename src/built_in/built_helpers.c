@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_helpers.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 18:46:33 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/10 23:24:47 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/11 03:46:45 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
