@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   non_interactive.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 22:53:35 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/10 17:38:32 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/11 22:09:02 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,14 @@ void	non_interactive(void)
 			commands = create_commands(token_vector(line));
 			check_command_syntax(commands, data);
 			if (data->valid == 1 && commands->data)
-				execution((t_cmd **)commands->data, vec_to_array(data->env_vec));
+				execution((t_cmd **)commands->data,
+					vec_to_array(data->env_vec));
 			clean_heredoc();
 			free(line);
 		}
 		else
 			break ;
 	}
-
 	ft_exit("", ft_atoi(find_export("$?")));
 }
 

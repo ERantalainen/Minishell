@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 13:28:50 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/11 04:04:06 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/11 22:08:12 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ static int	find_next_cmd_in_tokens(t_cmd **tokens, t_pipedata *p)
 		p->is_builtin = true;
 	if (!tokens[p->cmd_index] && p->pipe_count == 0)
 		return (-1);
-	else if ((!tokens[p->cmd_index] || tokens[p->cmd_index]->type == PIPE) && p->pipe_count > 0)
+	else if ((!tokens[p->cmd_index] || tokens[p->cmd_index]->type == PIPE)
+		&& p->pipe_count > 0)
 		ft_exit_child(NULL, 1);
 	return (0);
 }
@@ -53,7 +54,8 @@ static size_t	get_cmd_array_size(t_cmd **tokens, t_pipedata *p, char **split)
 	return (total_args);
 }
 
-static void	check_and_add_arguments(t_cmd **tokens, t_pipedata *p, size_t *arg_i,
+static void	check_and_add_arguments(t_cmd **tokens, t_pipedata *p,
+	size_t *arg_i,
 		size_t *tok_i)
 {
 	if (*tok_i != p->cmd_index)
@@ -92,7 +94,7 @@ static void	additional_arguments_to_cmd(t_cmd **tokens, t_pipedata *p,
 			|| tokens[tok_i]->next == STRING))
 		tok_i++;
 	if (tokens[tok_i] && tokens[tok_i]->type == HERE_DOC)
-		tok_i++;	
+		tok_i++;
 	check_and_add_arguments(tokens, p, &arg_i, &tok_i);
 	p->cmd_args[arg_i] = NULL;
 }
