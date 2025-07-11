@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 02:20:24 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/11 23:50:15 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/12 00:07:18 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,32 +55,4 @@ t_cmd	*make_cmd_spc(t_vector *tokens, size_t *i, t_data *data)
 	if (cmd->type == PIPE)
 		data->check_build = 1;
 	return (cmd);
-}
-
-void	cmd_help(t_vector *tokens, size_t *i, t_token *token, t_cmd *cmd)
-{
-	t_data	*data;
-	bool	join;
-
-	join = 0;
-	data = get_data();
-	while ((*i) < tokens->count && (token->t == STRING || token->t == FILES))
-	{
-		if (join == 0)
-			cmd->str = token->s;
-		else
-			cmd->str = mini_join(cmd->str, token->s);
-		if (data->check_build == 1)
-		{
-			built_in(cmd);
-			if (cmd->type == BUILTIN)
-				data->check_build = 0;
-		}
-		(*i)++;
-		if (tokens->data[*i])
-			token = tokens->data[*i];
-		if (token->space == 1)
-			break ;
-		join = 1;
-	}
 }

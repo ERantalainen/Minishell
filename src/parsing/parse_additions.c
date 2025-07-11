@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 15:44:37 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/11 23:47:19 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/12 00:07:10 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,37 +68,23 @@ char	*expand_quotes(char *s)
 	return (dupe);
 }
 
-static	char	*next_to_here(char *s, size_t *i, char quote, int pos)
-{
-	char	*str;
-
-	if (quote == '"' || quote == '\'')
-	{
-		str = mini_strndup(s + 1, pos - 1);
-		(*i) += pos;
-	}
-	else
-	{
-		str = here_lim_token(s, word_len(s, -1), quote);
-		(*i) += word_len(s, -1);
-	}
-	return (str);
-}
-
 char	*quoted_token(char *s, char quote, size_t *i, t_type *last)
 {
 	char	*str;
 	int		pos;
 
 	pos = 1;
-	if (s[0] != '"' && s[0] != '\'')
-		quote = ' ';
-	while (s[pos] && s[pos] != quote)
-		pos++;
-	if (*last == HERE_DOC)
-		return (next_to_here(s, i, quote, pos));
+	if (*last == HERE_DOC && s[0] != '\'' && s[0] != '"')
+	{
+		if (s[0] != '"' && s[0] != '\'')
+			quote = 0;
+		str = here_lim_token(s, word_len(s, quote), quote);
+		(*i) += word_len(s, -1);
+	}
 	else
 	{
+		while (s[pos] && s[pos] != quote)
+			pos++;
 		if (quote == '\'')
 			str = mini_strndup(s + 1, pos - 1);
 		else
@@ -126,3 +112,33 @@ size_t	quote_len(char *s, char quote)
 }
 
 // Creates a token with quotes
+
+void	cmd_help(t_vector *tokens, size_t *i, t_token *token, t_cmd *cmd)
+{
+	t_data	*data;
+	bool	join;
+
+	join = 0;
+	data = get_data();
+	while ((*i) < tokens->count && (token->t == STRING || token->t == FILES))
+	{
+		if (join == 0)
+			cmd->str = token->s;
+		else
+			cmd->str = mini_join(cmd->str, token->s);
+		if (data->check_build == 1)
+		{
+			built_in(cmd);
+			if (cmd->type == BUILTIN)
+				data->check_build = 0;
+		}
+		(*i)++;
+		if (tokens->data[*i])
+			token = tokens->data[*i];
+		if (token->space == 1)
+			break ;
+		join = 1;
+	}
+}
+
+// Helper function for command parsing.
