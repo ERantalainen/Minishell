@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo_helper.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 23:39:37 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/11 00:12:29 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/11 14:37:13 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static void	options(char *command, int *i, bool *nl)
 		while (1 && command[*i + j])
 		{
 			check_option = mini_strndup(command + *i + j,
-					word_len(command + *i + j, 0));
+				ft_strlen(command + *i + j));
 			if (valid_option(check_option) == -1)
 				break ;
 			else
