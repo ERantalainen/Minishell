@@ -18,7 +18,6 @@ a
 <
 .gitignore
 |
-echo
 >>
 grep
 .gitignore
