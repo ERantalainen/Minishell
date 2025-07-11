@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 23:39:37 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/11 14:37:13 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/11 17:20:42 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,40 @@ static void	options(char *command, int *i, bool *nl)
 	}
 }
 
+static int	check_non_quoted_string(t_cmd *cmd)
+{
+	int	i;
+	int	total;
+	char	**split;
+
+	split = mini_split(cmd->str, ' ');
+	if (ft_stralen(split) < 2)
+		return (0);
+	i = 0;
+	total = 0;
+	while (split[i])
+	{
+		if (valid_option(split[i]) == -1)
+			break ;
+		else
+			i++;
+	}
+	while (i - 1 >= 0)
+	{
+		total += ft_strlen(split[i - 1]);
+		if ((i - 1) % 2 == 0)
+			total++;
+		i--;
+	}
+	return (total);
+}
+
 char	*echo_part(t_cmd *cmd, int *pos, bool *nl)
 {
 	char	*command;
 
+	if (cmd->quoted == 0)
+		cmd->str += check_non_quoted_string(cmd);
 	command = cmd->str;
 	while (command[*pos] && !cmd->quoted && ft_isspace(command[*pos]))
 		(*pos)++;

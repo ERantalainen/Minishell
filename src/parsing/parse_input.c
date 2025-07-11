@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/11 16:59:16 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/11 17:08:08 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,29 +64,7 @@ t_vector	*token_vector(char *s)
 
 // Create token vector
 
-static void	split_expand(t_data *data, t_token *token)
-{
-	int	i;
-	t_token	*new;
-	char	**split;
 
-	i = 1;
-	split = mini_split(token->s, ' ');
-	if (split[0])
-		token->s = split[0];
-	add_elem(data->tokens, token);
-	while (split[i])
-	{
-		new = arena_malloc(sizeof(t_token));
-		new->space = 1;
-		new->quoted = 0;
-		new->expansion = 0;
-		new->t = STRING;
-		new->s = split[i];
-		add_elem(data->tokens, new);
-		i++;
-	}
-}
 
 t_vector	*creator(char *s, size_t len, size_t i, t_data *data)
 {
@@ -113,10 +91,7 @@ t_vector	*creator(char *s, size_t len, size_t i, t_data *data)
 			token->space = 1;
 			space = 0;
 		}
-		if (token->expansion == 1)
-			split_expand(data, token);
-		else
-			add_elem(data->tokens, token);
+		add_elem(data->tokens, token);
 	}
 	return (data->tokens);
 }
