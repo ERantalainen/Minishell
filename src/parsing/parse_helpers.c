@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_helpers.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 15:43:47 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/07 22:21:50 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/11 22:11:24 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ char	*expans_help(char *s, char *dup, size_t *i, size_t *pos)
 
 	j = 0;
 	quotes = 0;
-	while(s[j])
+	while (s[j])
 	{
 		if (s[j] == '"')
 			quotes++;
@@ -64,7 +64,6 @@ char	*expans_help(char *s, char *dup, size_t *i, size_t *pos)
 // Get the total length of dup once expanded. If an expansion ($) is detected
 // Find the expansion, cat it onto the new string and adjust positions.
 // Null terminate and return the result
-
 size_t	expanded_length(char *s, size_t n)
 {
 	size_t	i;
@@ -94,7 +93,6 @@ size_t	expanded_length(char *s, size_t n)
 }
 
 // Get total length of a token with expansions.
-
 char	*mini_strndup(char *s, size_t n)
 {
 	char	*dup;
@@ -112,7 +110,6 @@ char	*mini_strndup(char *s, size_t n)
 }
 
 // Simply makes a duplicate string with size N not considering expansions.
-
 char	*mini_strdup(char *s)
 {
 	char	*dup;
