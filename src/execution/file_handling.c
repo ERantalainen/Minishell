@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 21:19:02 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/11 12:14:29 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/11 13:14:50 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	open_handler(t_pipedata *p, const char *path)
 
 void	check_open_errno(const char *file)
 {
+	ft_fprintf(2, "errno: %d\n", errno);
 	if (errno == EISDIR)
 		ft_fprintf(2, "%s: Is a directory\n", file);
 	else if (errno == ENOTDIR)
@@ -51,6 +52,11 @@ void	check_open_errno(const char *file)
 		ft_fprintf(2, "%s: Permission denied\n", file);
 	else if (errno == ENOENT && access(file, X_OK) < 0 && (ft_strchr(file, '/')
 			|| ft_strchr(file, '\\')))
+	{
+		ft_fprintf(2, "minishell: %s: No such file or directory\n", file);
+		ft_exit_child(NULL, 1);
+	}
+	else if (errno == ENOENT && access(file, X_OK) < 0)
 	{
 		ft_fprintf(2, "minishell: %s: No such file or directory\n", file);
 		ft_exit_child(NULL, 1);
