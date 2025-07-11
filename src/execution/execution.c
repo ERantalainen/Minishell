@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 16:20:20 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/11 16:10:28 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/11 22:48:16 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,20 +38,23 @@ static void	exec_builtin(t_cmd **tokens, t_pipedata *p, char **env)
 	child_process(tokens, p, env);
 }
 
+static void	close_pipe_pair(t_pipedata *p, int i)
+{
+	close(p->pipefd[i][READ]);
+	close(p->pipefd[i][WRITE]);
+}
+
 static void	exec_pipeline(t_cmd **tokens, t_pipedata *p, char **env)
 {
-	int	status;
 	int	i;
 
 	p->pids = arena_malloc(sizeof(int) * (p->pipe_count + 1));
-	status = 0;
 	i = 0;
 	while (i < p->pipe_count + 1)
 	{
 		p->cmd_found = false;
-		if (i < p->pipe_count)
-			if (pipe(p->pipefd[i]) < 0)
-				perror("pipe");
+		if (i < p->pipe_count && pipe(p->pipefd[i]) < 0)
+			perror("pipe");
 		reset_sig();
 		if (p->pipe_count == 0 && check_for_builtin(tokens, p->pipe_count))
 			exec_builtin(tokens, p, env);
@@ -60,21 +63,11 @@ static void	exec_pipeline(t_cmd **tokens, t_pipedata *p, char **env)
 		if (p->pipe_count > 0)
 			find_next_cmd_index(tokens, p);
 		if (i > 0)
-		{
-			close(p->pipefd[i - 1][READ]);
-			close(p->pipefd[i - 1][WRITE]);
-		}
-		i++;
-	}
-	i = 0;
-	while (i < p->pipe_count)
-	{
-		close(p->pipefd[i][READ]);
-		close(p->pipefd[i][WRITE]);
+			close_pipe_pair(p, i - 1);
 		i++;
 	}
 	if (p->pids[0])
-		wait_for_children(p, status);
+		wait_for_children(p);
 }
 
 void	execution(t_cmd **tokens, char **env)
@@ -104,10 +97,4 @@ void	execution(t_cmd **tokens, char **env)
 	if (p->pipe_count > 0)
 		init_pipes(p);
 	exec_pipeline(tokens, p, env);
-	dup2(p->stdin_copy, STDIN_FILENO);
-	close(p->stdin_copy);
-	dup2(p->stdout_copy, STDOUT_FILENO);
-	close(p->stdout_copy);
-	close(p->infile);
-	close(p->outfile);
 }

@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 21:15:46 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/10 20:53:43 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/11 22:43:54 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,12 @@ void	find_next_cmd_index(t_cmd **tokens, t_pipedata *p)
 		p->index++;
 }
 
-void	wait_for_children(t_pipedata *p, int status)
+void	wait_for_children(t_pipedata *p)
 {
 	int	i;
+	int	status;
 
+	status = 0;
 	i = 0;
 	while (i < p->pipe_count + 1)
 	{
@@ -50,6 +52,12 @@ void	wait_for_children(t_pipedata *p, int status)
 		catcher();
 		i++;
 	}
+	dup2(p->stdin_copy, STDIN_FILENO);
+	close(p->stdin_copy);
+	dup2(p->stdout_copy, STDOUT_FILENO);
+	close(p->stdout_copy);
+	close(p->infile);
+	close(p->outfile);
 }
 
 void	close_unused_pipes(t_pipedata *p, int i)
