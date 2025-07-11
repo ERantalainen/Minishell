@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   multiples.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 15:02:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/11 01:31:04 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/11 21:57:01 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,14 @@ char	*build_exports(t_cmd **cmds, int *i)
 
 	j = 0;
 	if (!(cmds[*i] && ((cmds[*i]->type == FILES || cmds[*i]->type == STRING)
-	|| (cmds[*i]->type == BUILTIN))))
+				|| (cmds[*i]->type == BUILTIN))))
 		return (NULL);
-	while(cmds[*i]->str[j] && ft_isspace(cmds[*i]->str[j]))
+	while (cmds[*i]->str[j] && ft_isspace(cmds[*i]->str[j]))
 		j++;
 	export = mini_strdup(cmds[*i]->str + j);
 	(*i)++;
 	while (cmds[*i] && ((cmds[*i]->type == FILES || cmds[*i]->type == STRING)
-		|| (cmds[*i]->type == BUILTIN)))
+			|| (cmds[*i]->type == BUILTIN)))
 	{
 		if (cmds[*i]->space == 0)
 			export = mini_join(export, cmds[*i]->str);

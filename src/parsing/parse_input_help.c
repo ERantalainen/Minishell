@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_input_help.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 18:39:57 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/11 17:30:11 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/11 22:05:35 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ static void	command_checks(t_data *data, t_token *tk, t_cmd *cmd,  size_t *i)
 		(*i)++;
 	}
 }
-
 
 t_cmd	*make_cmd_str(t_vector *tokens, size_t *i, t_data *data)
 {
@@ -54,8 +53,8 @@ t_cmd	*make_cmd_str(t_vector *tokens, size_t *i, t_data *data)
 }
 
 // Make a command of type FILES or STRING
-
-static char*	unquoted_expan_help(char *token, size_t *pos, char *s, bool space)
+static char	*unquoted_expan_help(char *token, size_t *pos,
+	char *s, bool space)
 {
 	int		len;
 	char	*res;
@@ -71,7 +70,6 @@ static char*	unquoted_expan_help(char *token, size_t *pos, char *s, bool space)
 	}
 	while (token[i] && i < len)
 	{
-
 		if (!ft_isspace(token[i]) || space == 0)
 			res = mini_join(res, mini_strndup(token + i, 1));
 		if (ft_isspace(token[i]))

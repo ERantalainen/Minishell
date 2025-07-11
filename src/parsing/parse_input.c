@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_input.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/11 17:08:08 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/11 21:59:48 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ t_token	*create_token(char *s, size_t *i, t_type last, t_data *data)
 }
 
 // check for token type
-
 t_vector	*token_vector(char *s)
 {
 	size_t		len;
@@ -63,9 +62,6 @@ t_vector	*token_vector(char *s)
 }
 
 // Create token vector
-
-
-
 t_vector	*creator(char *s, size_t len, size_t i, t_data *data)
 {
 	t_token	*token;
@@ -138,7 +134,6 @@ char	*token_string(char *s, size_t *i, t_type *last)
 }
 
 // Create a string for the token
-
 t_vector	*create_commands(t_vector *tokens)
 {
 	t_vector	*commands;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_helpers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 14:52:01 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/11 15:17:34 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/11 22:00:41 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ void	here_check(int fd, char *name, t_data *data, size_t index)
 }
 
 // write new heredoc file.
-
 char	*here_expansion(char *ln, size_t *i)
 {
 	char	*expansion;

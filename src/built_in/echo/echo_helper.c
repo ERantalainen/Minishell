@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo_helper.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 23:39:37 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/11 17:20:42 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/11 21:57:23 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static void	options(char *command, int *i, bool *nl)
 		while (1 && command[*i + j])
 		{
 			check_option = mini_strndup(command + *i + j,
-				ft_strlen(command + *i + j));
+					ft_strlen(command + *i + j));
 			if (valid_option(check_option) == -1)
 				break ;
 			else
@@ -54,8 +54,8 @@ static void	options(char *command, int *i, bool *nl)
 
 static int	check_non_quoted_string(t_cmd *cmd)
 {
-	int	i;
-	int	total;
+	int		i;
+	int		total;
 	char	**split;
 
 	split = mini_split(cmd->str, ' ');

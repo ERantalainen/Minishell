@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 17:07:45 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/11 16:10:54 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/11 22:01:35 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,6 @@ void	ft_exit(char *s, unsigned char code)
 	i = 3;
 	while (i < 1024)
 		close(i++);
-	// if (s && s[0] != 0)
-	// 	ft_fprintf(1, "%s\n", s);
 	(void)s;
 	free_arenas();
 	exit(code);
@@ -82,7 +80,7 @@ void	child_died(int status)
 			rl_done = 1;
 		}
 		exit_export = mini_join(exit_code, mini_itoa(WTERMSIG(status) + 128));
-			replace_export(exit_export);
+		replace_export(exit_export);
 	}
 	replace_export(mini_join(exit_code, mini_itoa(WEXITSTATUS(status))));
 }
