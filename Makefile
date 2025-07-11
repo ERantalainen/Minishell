@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+         #
+#    By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/03 18:36:06 by jpelline          #+#    #+#              #
-#    Updated: 2025/07/11 14:57:59 by erantala         ###   ########.fr        #
+#    Updated: 2025/07/11 22:27:58 by jpelline         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -100,7 +100,8 @@ SRCS_UTILS := \
 	empty_exp.c \
 	cleanup.c \
 	multiples.c \
-	mini_atoi.c
+	mini_atoi.c \
+	mini_itoa.c
 
 # Command execution and process management
 SRCS_EXEC := \
