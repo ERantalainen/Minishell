@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 15:44:37 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/11 04:35:28 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/11 14:44:07 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ char	*quoted_token(char *s, char quote, size_t *i, t_type *last)
 	int		pos;
 
 	pos = 1;
-	if (*last == HERE_DOC)
+	if (*last == HERE_DOC && s[0] != '\'' && s[0] != '"')
 	{
 		if (s[0] != '"' && s[0] != '\'')
 			quote = 0;

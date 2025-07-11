@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 15:44:11 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/10 01:51:13 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/11 14:57:08 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,6 @@ char	*here_doc(char *limiter, int index, t_type type)
 		filecount++;
 	name = name_join(base, mini_itoa(filecount));
 	data->hdfd[index] = open(name, O_RDWR | O_CREAT | O_EXCL, 0600);
-	if (data->hdfd[index] < 0)
-		exit(5);
 	add_elem(data->fds, &data->hdfd[index]);
 	heredoc_signal();
 	write_to_tmpfile(limiter, index);
@@ -79,8 +77,6 @@ char	*here_doc(char *limiter, int index, t_type type)
 	data->hdfd[index] = open(name, O_RDONLY);
 	if (type == STRING)
 		here_check(data->hdfd[index], name, data, index);
-	if (data->hdfd[index] < 0)
-		exit(6);
 	add_elem(data->heredocs, name);
 	return (name);
 }
@@ -164,101 +160,4 @@ char	*mini_itoa(int n)
 	}
 	return (result);
 }
-void	here_check(int fd, char *name, t_data *data, size_t index)
-{
-	char		**file;
-	char		*line;
-	t_vector	*lines;
-	size_t		i;
-	size_t		j;
 
-	i = 0;
-	lines = new_vector(4);
-	while (1)
-	{
-		line = get_next_line(fd);
-		if (!line)
-			break ;
-		add_elem(lines, mini_strdup(line));
-		free(line);
-	}
-	file = vec_to_array(lines);
-	while (file[i])
-	{
-		j = 0;
-		while (file[i][j])
-		{
-			if (file[i][j] == '$')
-				file[i] = here_expansion(file[i], &j);
-			j++;
-		}
-		i++;
-	}
-	fix_lines(file, index, name, data);
-}
-
-// write new heredoc file.
-
-char	*here_expansion(char *ln, size_t *i)
-{
-	char	*expansion;
-	size_t	len;
-	size_t	expan_len;
-
-	expansion = (find_export(mini_strndup((ln + (*i)), key_len(ln + *i))));
-	if (ft_strcmp(expansion, "") == 0)
-	{
-		*i += key_len(ln + *i);
-		return (mini_strdup(""));
-	}
-	len = ft_strlen(ln);
-	expan_len = key_len(ln + *i) + word_len(ln + (*i), 0);
-	expansion = mini_join(mini_strndup(ln, (*i)), expansion);
-	(*i) += expan_len;
-	if ((*i) < len)
-		expansion = mini_join(expansion, ln + (*i));
-	if(expansion[ft_strlen(expansion) - 2] != '\n')
-		mini_join(expansion, "\n");
-	return (expansion);
-}
-
-void	fix_lines(char **file, size_t index, char *name, t_data *data)
-{
-	int		fd;
-	size_t	i;
-
-	fd = data->hdfd[index];
-	i = 0;
-	close(fd);
-	fd = open(name, O_WRONLY);
-	if (fd == -1)
-		perror("minishell:");
-	while (file[i])
-	{
-		write(fd, file[i], ft_strlen(file[i]));
-		i++;
-	}
-	close(fd);
-}
-
-char	*mini_substr(char const *s, unsigned int start, size_t len)
-{
-	char	*res;
-	size_t	i;
-
-	if (!s)
-		return (NULL);
-	if (start > ft_strlen(s))
-		return (mini_strdup(""));
-	if (len > ft_strlen(s + start))
-		len = ft_strlen(s + start);
-	res = arena_malloc(len + 1);
-	i = 0;
-	while (i < len)
-	{
-		res[i] = s[start + i];
-		i++;
-	}
-	res[i] = '\0';
-	return (res);
-}
