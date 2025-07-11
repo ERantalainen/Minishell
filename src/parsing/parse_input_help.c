@@ -6,13 +6,13 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 18:39:57 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/11 22:05:35 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/11 22:10:07 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	command_checks(t_data *data, t_token *tk, t_cmd *cmd,  size_t *i)
+static void	command_checks(t_data *data, t_token *tk, t_cmd *cmd, size_t *i)
 {
 	if (data->last != FILES
 		&& ((((*i == 0) || ((access(tk->s, R_OK | W_OK) != 0 && tk->space == 1))

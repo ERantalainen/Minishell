@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_token_help.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 02:09:42 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/11 04:04:00 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/11 22:10:31 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
