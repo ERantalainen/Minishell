@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_helper.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 23:29:39 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/11 03:46:41 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/11 12:27:56 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@ static void	check_for_nonnumeric(char *str, int i)
 
 static void	overflow_error(char *str, int i)
 {
-		str += i;
-		ft_fprintf(2, mini_join(mini_join(mini_join(MS, "exit: "),
-		mini_strndup(str, word_len(str, 0))), NMARG));
-		ft_exit("exit", 2);
+	str += i;
+	ft_fprintf(2, mini_join(mini_join(mini_join(MS, "exit: "),
+				mini_strndup(str, word_len(str, 0))), NMARG));
+	ft_exit("exit", 2);
 }
 
 static int	check_for_too_many(char *str, int i)
@@ -57,10 +57,9 @@ void	exit_arg_checker(char *str)
 		ft_exit("exit", 0);
 	str += i;
 	i = 0;
-	puts(str);
 	if (!ft_atol(mini_strndup(str + i, word_len(str + i, 0)))
-			&& i == 0)
-		overflow_error(str, i);	
+		&& i == 0)
+		overflow_error(str, i);
 	while (str[i])
 	{
 		check_for_nonnumeric(str, i);
