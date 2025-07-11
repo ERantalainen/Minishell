@@ -12,11 +12,13 @@
 
 #include "minishell.h"
 
-bool	check_for_builtin(t_cmd **tokens)
+bool	check_for_builtin(t_cmd **tokens, int pipe_count)
 {
 	int	i;
 
 	i = 0;
+	if (tokens[i]->type != BUILTIN && pipe_count == 0)
+		return (false);
 	while (tokens[i])
 	{
 		if (tokens[i]->type == BUILTIN)

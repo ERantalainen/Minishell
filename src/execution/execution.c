@@ -53,7 +53,7 @@ static void	exec_pipeline(t_cmd **tokens, t_pipedata *p, char **env)
 			if (pipe(p->pipefd[i]) < 0)
 				perror("pipe");
 		reset_sig();
-		if (p->pipe_count == 0 && check_for_builtin(tokens))
+		if (p->pipe_count == 0 && check_for_builtin(tokens, p->pipe_count))
 			exec_builtin(tokens, p, env);
 		else
 			setup_child(tokens, p, env, i);

@@ -29,10 +29,7 @@ void	open_handler(t_pipedata *p, const char *path)
 	if (fd < 0)
 	{
 		if (errno == EISDIR)
-		{
 			ft_fprintf(2, "%s: Is a directory\n", p->cmd_args[0]);
-			ft_exit_child(NULL, 126);
-		}
 		else if (errno == ENOTDIR)
 			ft_fprintf(2, "%s: Not a directory\n", p->cmd_args[0]);
 		else if (errno == EACCES)
@@ -50,10 +47,7 @@ void	open_handler(t_pipedata *p, const char *path)
 void	check_open_errno(const char *file)
 {
 	if (errno == EISDIR)
-	{
 		ft_fprintf(2, "%s: Is a directory\n", file);
-		ft_exit_child(NULL, 126);
-	}
 	else if (errno == ENOTDIR)
 		ft_fprintf(2, "%s: Not a directory\n", file);
 	else if (errno == EACCES)

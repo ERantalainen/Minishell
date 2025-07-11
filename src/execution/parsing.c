@@ -75,7 +75,7 @@ static void	check_and_add_arguments(t_cmd **tokens, t_pipedata *p, size_t *arg_i
 			if ((tokens[*tok_i + 1] && tokens[*tok_i + 1]->space)
 				|| (tokens[*tok_i]->next != FILES
 					&& tokens[*tok_i]->next != STRING
-					&& tokens[*tok_i]->type != BUILTIN))
+					&& tokens[*tok_i]->next != BUILTIN))
 				(*arg_i)++;
 			(*tok_i)++;
 		}
@@ -87,11 +87,12 @@ static void	additional_arguments_to_cmd(t_cmd **tokens, t_pipedata *p,
 {
 	tok_i = p->cmd_index;
 	if (tokens[tok_i] && (tokens[tok_i]->next == FILES
-			|| tokens[tok_i]->next == HERE_DOC || tokens[tok_i]->next == BUILTIN
+			|| tokens[tok_i]->next == HERE_DOC
+			|| tokens[tok_i]->next == BUILTIN
 			|| tokens[tok_i]->next == STRING))
 		tok_i++;
 	if (tokens[tok_i] && tokens[tok_i]->type == HERE_DOC)
-		tok_i++;
+		tok_i++;	
 	check_and_add_arguments(tokens, p, &arg_i, &tok_i);
 	p->cmd_args[arg_i] = NULL;
 }
