@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+         #
+#    By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/03 18:36:06 by jpelline          #+#    #+#              #
-#    Updated: 2025/07/11 22:51:20 by jpelline         ###   ########.fr        #
+#    Updated: 2025/07/11 23:47:58 by erantala         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -120,7 +120,8 @@ SRCS_OTHER := \
 	take_input.c \
 	signal.c \
 	signal_utility.c \
-	here_helpers.c
+	here_helpers.c \
+	syntax_helpers.c
 
 # Combine all source files
 SRCS := \

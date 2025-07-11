@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_help.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 18:40:32 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/11 22:04:47 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/11 23:56:46 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static void	additional_syntax(t_cmd *cmd, t_data *data, size_t i)
 		er_pr(mini_join(TOKEN, "|'"), data, 2, 0);
 }
 
-static void	check_files(t_cmd *cmd, t_cmd *next, t_data *data)
+void	check_files(t_cmd *cmd, t_cmd *next, t_data *data)
 {
 	if (cmd->type == INPUT)
 	{
@@ -62,7 +62,7 @@ static void	check_files(t_cmd *cmd, t_cmd *next, t_data *data)
 	}
 }
 
-static void	syntax_help(t_cmd *cmd, t_data *data, int i, t_vector *commands)
+void	syntax_help(t_cmd *cmd, t_data *data, int i, t_vector *commands)
 {
 	input_syntax(cmd, data);
 	output_syntax(cmd, data);
@@ -73,29 +73,5 @@ static void	syntax_help(t_cmd *cmd, t_data *data, int i, t_vector *commands)
 	{
 		cmd = commands->data[i + 1];
 		ft_fprintf(2, "%s'\n", mini_join(TOKEN, cmd->str));
-	}
-}
-
-void	check_command_syntax(t_vector *commands, t_data *data)
-{
-	size_t	i;
-	t_cmd	*cmd;
-
-	i = 0;
-	while (commands && i < commands->count)
-	{
-		cmd = commands->data[i];
-		if (commands->data[i + 1]
-			&& (cmd->next == STRING || cmd->next == FILES))
-			check_files(cmd, commands->data[i + 1], data);
-		if (data->valid != 1)
-			return ;
-		syntax_help(cmd, data, i, commands);
-		if (data->valid != 1)
-		{
-			replace_export("?=2");
-			return ;
-		}
-		i++;
 	}
 }

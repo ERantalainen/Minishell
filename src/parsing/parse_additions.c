@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 15:44:37 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/11 23:43:57 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/11 23:47:19 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ char	*expand_quotes(char *s)
 
 static	char	*next_to_here(char *s, size_t *i, char quote, int pos)
 {
-	char *str;
+	char	*str;
 
 	if (quote == '"' || quote == '\'')
 	{
@@ -126,7 +126,3 @@ size_t	quote_len(char *s, char quote)
 }
 
 // Creates a token with quotes
-
-
-
-// Helper function for command parsing.

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_input.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/11 21:59:48 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/11 23:53:17 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,13 +74,11 @@ t_vector	*creator(char *s, size_t len, size_t i, t_data *data)
 			space = 1;
 		while (s[i] && ft_isspace(s[i]) == 1)
 			i++;
-		if (!s[i])
-			break ;
 		if (data->tokens->count == 0 && s[i])
 			token = create_token(s, &i, EMPTY, data);
 		else if (s[i])
 			token = create_token(s, &i, token->t, data);
-		if (data->valid == 0)
+		if (data->valid == 0 || !s[i])
 			break ;
 		if (space == 1)
 		{
@@ -134,31 +132,3 @@ char	*token_string(char *s, size_t *i, t_type *last)
 }
 
 // Create a string for the token
-t_vector	*create_commands(t_vector *tokens)
-{
-	t_vector	*commands;
-	t_token		*curr;
-	size_t		i;
-	t_data		*data;
-
-	data = get_data();
-	if (!tokens || data->valid == 0)
-	{
-		data->valid = 0;
-		return (NULL);
-	}
-	i = 0;
-	data->check_build = 1;
-	commands = new_vector(4);
-	while (i < data->tokens->count)
-	{
-		curr = tokens->data[i];
-		if (curr->t == STRING || curr->t == FILES)
-			add_elem(commands, make_cmd_str(tokens, &i, data));
-		else
-			add_elem(commands, make_cmd_spc(tokens, &i, data));
-	}
-	next_check(commands);
-	first_trim_check(commands);
-	return (commands);
-}

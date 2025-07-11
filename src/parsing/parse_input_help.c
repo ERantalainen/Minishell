@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_input_help.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 18:39:57 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/11 22:10:07 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/11 23:51:01 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,4 +100,33 @@ char	*unquoted_expan(char *s, size_t *pos)
 	space = 0;
 	token = find_export(mini_strndup(s, key_len(s)));
 	return (unquoted_expan_help(token, pos, s, space));
+}
+
+t_vector	*create_commands(t_vector *tokens)
+{
+	t_vector	*commands;
+	t_token		*curr;
+	size_t		i;
+	t_data		*data;
+
+	data = get_data();
+	if (!tokens || data->valid == 0)
+	{
+		data->valid = 0;
+		return (NULL);
+	}
+	i = 0;
+	data->check_build = 1;
+	commands = new_vector(4);
+	while (i < data->tokens->count)
+	{
+		curr = tokens->data[i];
+		if (curr->t == STRING || curr->t == FILES)
+			add_elem(commands, make_cmd_str(tokens, &i, data));
+		else
+			add_elem(commands, make_cmd_spc(tokens, &i, data));
+	}
+	next_check(commands);
+	first_trim_check(commands);
+	return (commands);
 }
