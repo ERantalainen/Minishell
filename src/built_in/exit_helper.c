@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_helper.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 23:29:39 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/11 16:15:19 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/11 22:25:12 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,7 @@ static int	check_for_too_many(char *str, int i)
 void	exit_arg_checker(char *str)
 {
 	size_t	i;
-	int		neg;
 
-	neg = 1;
 	if (!str)
 		return ;
 	i = 4;
@@ -58,10 +56,9 @@ void	exit_arg_checker(char *str)
 	if (ft_atoib(str + i) && ft_atoi(str + i) == 0)
 		ft_exit("exit", 0);
 	str += i;
+	if (!ft_atol(mini_strndup(str, word_len(str, 0))))
+		overflow_error(str, 0);
 	i = 0;
-	if (!ft_atol(mini_strndup(str + i, word_len(str + i, 0)))
-		&& i == 0)
-		overflow_error(str, i);
 	while (str[i])
 	{
 		check_for_nonnumeric(str, i);
