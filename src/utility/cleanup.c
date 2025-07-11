@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 17:07:45 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/11 03:46:40 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/11 15:26:18 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	clean_heredoc(void)
 	data->heredocs = new_vector(2);
 }
 
-void	ft_exit(char *s, int code)
+void	ft_exit(char *s, unsigned char code)
 {
 	t_data	*data;
 	size_t	i;

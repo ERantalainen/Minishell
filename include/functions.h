@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 19:21:07 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/11 04:10:08 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/11 15:23:53 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ t_data		*get_data(void);
 void		clean_heredoc(void);
 void		ft_exit_child(char *s, int code);
 void		free_arenas(void);
-void		ft_exit(char *s, int code);
+void		ft_exit(char *s, unsigned char code);
 int			exit_calci(char *cmd);
 int			pwd_check(void);
 

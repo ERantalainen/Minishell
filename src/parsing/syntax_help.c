@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 18:40:32 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/11 15:17:46 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/11 15:27:15 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ static void	input_syntax(t_cmd *cmd, t_data *data)
 {
 	if (cmd->type == INPUT && cmd->next == EMPTY)
 		data->valid = -10;
-	else if (cmd->type == INPUT && cmd->next != FILES && cmd->next != STRING)
+	else if (cmd->type == INPUT && cmd->next != FILES && cmd->next != STRING
+	&& cmd->next != BUILTIN)
 		data->valid = -1;
 }
 
@@ -25,7 +26,7 @@ static void	output_syntax(t_cmd *cmd, t_data *data)
 	if (cmd->type == OUTPUT && cmd->next == EMPTY)
 		data->valid = -10;
 	else if (cmd->type == OUTPUT && cmd->next != STRING
-		&& cmd->next != FILES)
+		&& cmd->next != FILES && cmd->next != BUILTIN)
 		data->valid = -1;
 }
 
@@ -34,7 +35,7 @@ static void	additional_syntax(t_cmd *cmd, t_data *data, size_t i)
 	if (cmd->type == APPEND && cmd->next == EMPTY)
 		data->valid = -10;
 	else if (cmd->type == APPEND && cmd->next != STRING
-		&& cmd->next != FILES)
+		&& cmd->next != FILES && cmd->next != BUILTIN)
 		data->valid = -1;
 	if (cmd->type == PIPE && cmd->next == EMPTY)
 		data->valid = -10;

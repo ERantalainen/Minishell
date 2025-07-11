@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_helper.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 23:29:39 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/11 12:27:56 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/11 15:40:12 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static int	check_for_too_many(char *str, int i)
 	if (ft_isspace(str[i]) && str[i + 1] && !ft_isspace(str[i + 1]))
 	{
 		ft_fprintf(2, "minishell: exit: too many arguments\n");
-		replace_export("?=2");
+		replace_export("?=1");
 		return (1);
 	}
 	return (0);
