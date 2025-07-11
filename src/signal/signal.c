@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 17:07:20 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/08 19:57:24 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/11 22:52:19 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,31 +64,4 @@ void	reset_sig(void)
 	sigaction(SIGINT, &s_sig, NULL);
 	sigaction(SIGQUIT, &s_sig, NULL);
 	return ;
-}
-
-void	heredoc_handler(int sig)
-{
-	if (sig == SIGINT)
-		g_sig = SIGINT;
-}
-
-int	check_signal(void)
-{
-	if (g_sig == SIGINT)
-	{
-		rl_done = 1;
-		return (1);
-	}
-	return (0);
-}
-
-void	heredoc_signal(void)
-{
-	struct sigaction	s_sig;
-
-	ft_memset(&s_sig, 0, sizeof(s_sig));
-	s_sig.sa_handler = heredoc_handler;
-	sigaction(SIGINT, &s_sig, NULL);
-	rl_event_hook = &check_signal;
-	replace_export("?=130");
 }
