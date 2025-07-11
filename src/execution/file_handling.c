@@ -17,26 +17,31 @@ void	open_handler(t_pipedata *p, const char *path)
 	t_stat	st;
 	int		fd;
 
+	if (!p->cmd_args[0])
+		return ;
 	fd = open(p->cmd_args[0], O_RDONLY);
 	if (ft_strcmp(p->cmd_args[0], "..") == 0 || ft_strcmp(p->cmd_args[0],
 			".") == 0)
 		ft_exit_child(mini_join(p->cmd_args[0], CMD), 127);
 	if (stat(p->cmd_args[0], &st) == 0 && S_ISDIR(st.st_mode))
 	{
-		ft_fprintf(2, "%s: Is a directory\n", p->cmd_args[0]);
-		ft_exit_child(NULL, 126);
+		if (ft_strchr(p->cmd_args[0], '/'))
+		{
+			ft_fprintf(2, "%s: Is a directory\n", p->cmd_args[0]);
+			ft_exit_child(NULL, 126);
+		}
+		ft_fprintf(2, "%s: command not found\n", p->cmd_args[0]);
+		ft_exit_child(NULL, 127);
 	}
 	if (fd < 0)
 	{
-		if (errno == EISDIR)
+		if (errno == EISDIR && ft_strchr(p->cmd_args[0], '\\'))
 			ft_fprintf(2, "%s: Is a directory\n", p->cmd_args[0]);
 		else if (errno == ENOTDIR)
 			ft_fprintf(2, "%s: Not a directory\n", p->cmd_args[0]);
 		else if (errno == EACCES)
 			ft_fprintf(2, "%s: Permission denied\n", p->cmd_args[0]);
-		else if (errno == ENOENT && access(path, X_OK) < 0
-			&& (ft_strchr(p->cmd_args[0], '/') || ft_strchr(p->cmd_args[0],
-					'\\')))
+		else if (errno == ENOENT && access(path, X_OK) < 0 && (ft_strchr(p->cmd_args[0], '/')))
 		{
 			ft_fprintf(2, "%s: No such file or directory\n", p->cmd_args[0]);
 			ft_exit_child(NULL, 127);
