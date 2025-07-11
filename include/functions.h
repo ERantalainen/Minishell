@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   functions.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 19:21:07 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/11 15:23:53 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/11 22:48:57 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,7 @@ char		*get_bin_path(char *cmd, char **env, t_pipedata *p);
 char		**get_cmd_args(char *cmd, char *path);
 bool		check_for_builtin(t_cmd **tokens, int pipe_count);
 void		find_next_cmd_index(t_cmd **tokens, t_pipedata *p);
-void		wait_for_children(t_pipedata *p, int status);
+void		wait_for_children(t_pipedata *p);
 void		close_unused_pipes(t_pipedata *p, int i);
 void		init_pipes(t_pipedata *p);
 void		open_handler(t_pipedata *p, const char *path);
