@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 22:37:46 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/11 01:37:05 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/11 03:22:44 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void	unset(char *key)
 		{
 			remove_elem(data->env_vec, i);
 			init_export();
+			replace_export("?=0");
 			return ;
 		}
 		i++;
