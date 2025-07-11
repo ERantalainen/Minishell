@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 19:33:55 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/09 18:50:50 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/11 16:35:57 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef enum e_type
 	FILES,
 	BUILTIN,
 	QUOTED,
+	EXPANSION
 }				t_type;
 
 typedef struct s_token

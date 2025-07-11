@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/11 04:37:06 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/11 16:59:16 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,16 @@ t_token	*create_token(char *s, size_t *i, t_type last, t_data *data)
 		return (NULL);
 	new->quoted = 0;
 	new->space = 0;
+	new->t = STRING;
 	if (last == QUOTED || s[*i - 1] == '"' || s[*i - 1] == '\'')
 	{
 		new->quoted = 1;
-		new->t = STRING;
 		return (new);
 	}
-	new = check_type(new, data, i, s);
+	if (last == EXPANSION)
+		new->expansion = 1;
+	else
+		new = check_type(new, data, i, s);
 	if (new->t == STRING && (last == HERE_DOC && (s[(*i)] == '"'
 				|| s[(*i)] == '\'' || data->last == HERE_NOEXP)))
 		new->t = HERE_NOEXP;
@@ -61,6 +64,30 @@ t_vector	*token_vector(char *s)
 
 // Create token vector
 
+static void	split_expand(t_data *data, t_token *token)
+{
+	int	i;
+	t_token	*new;
+	char	**split;
+
+	i = 1;
+	split = mini_split(token->s, ' ');
+	if (split[0])
+		token->s = split[0];
+	add_elem(data->tokens, token);
+	while (split[i])
+	{
+		new = arena_malloc(sizeof(t_token));
+		new->space = 1;
+		new->quoted = 0;
+		new->expansion = 0;
+		new->t = STRING;
+		new->s = split[i];
+		add_elem(data->tokens, new);
+		i++;
+	}
+}
+
 t_vector	*creator(char *s, size_t len, size_t i, t_data *data)
 {
 	t_token	*token;
@@ -81,12 +108,15 @@ t_vector	*creator(char *s, size_t len, size_t i, t_data *data)
 			token = create_token(s, &i, token->t, data);
 		if (data->valid == 0)
 			break ;
-		add_elem(data->tokens, token);
 		if (space == 1)
 		{
 			token->space = 1;
 			space = 0;
 		}
+		if (token->expansion == 1)
+			split_expand(data, token);
+		else
+			add_elem(data->tokens, token);
 	}
 	return (data->tokens);
 }
@@ -119,7 +149,10 @@ char	*token_string(char *s, size_t *i, t_type *last)
 	if (s[(*i)] == '\'' || s[(*i)] == '"' || *last == HERE_DOC)
 		return (quoted_token(s + *i, s[(*i)], i, last));
 	if (s[*i] == '$')
+	{
 		token = unquoted_expan(s + *i, i);
+		*last = EXPANSION;
+	}
 	else
 	{
 		len = word_len(s + (*i), 0);

@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 23:29:39 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/11 15:40:12 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/11 16:15:19 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ void	exit_arg_checker(char *str)
 	if (!str)
 		return ;
 	i = 4;
+	if (!str[i])
+		ft_exit("exit", 0);
 	while (str[i] && ft_isspace(str[i]))
 		i++;
 	if (ft_atoib(str + i) && ft_atoi(str + i) == 0)

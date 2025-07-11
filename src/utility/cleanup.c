@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 17:07:45 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/11 15:26:18 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/11 16:10:54 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,13 +82,7 @@ void	child_died(int status)
 			rl_done = 1;
 		}
 		exit_export = mini_join(exit_code, mini_itoa(WTERMSIG(status) + 128));
-		if (ft_strcmp(find_export("?"), "") == 0)
-			export(exit_export);
-		else
 			replace_export(exit_export);
 	}
-	else if (ft_strcmp(find_export("?"), "") == 0)
-		export(mini_join(exit_code, mini_itoa(WEXITSTATUS(status))));
-	else
-		replace_export(mini_join(exit_code, mini_itoa(WEXITSTATUS(status))));
+	replace_export(mini_join(exit_code, mini_itoa(WEXITSTATUS(status))));
 }
