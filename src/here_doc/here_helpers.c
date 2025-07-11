@@ -6,13 +6,13 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 14:52:01 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/11 14:54:18 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/11 15:17:34 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	get_here_lines(int fd, t_vector	**lines)
+static void	get_here_lines(int fd, t_vector	*lines)
 {
 	char	*line;
 

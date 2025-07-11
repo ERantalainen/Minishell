@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 18:40:32 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/11 15:15:12 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/11 15:17:46 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void	input_syntax(t_cmd *cmd, t_data *data)
 {
 	if (cmd->type == INPUT && cmd->next == EMPTY)
 		data->valid = -10;
-	else if (cmd->type == INPUT && cmd->next != FILES)
+	else if (cmd->type == INPUT && cmd->next != FILES && cmd->next != STRING)
 		data->valid = -1;
 }
 
