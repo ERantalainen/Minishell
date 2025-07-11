@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 18:40:32 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/11 04:22:39 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/11 04:39:39 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ static void	syntax_help(t_cmd *cmd, t_data *data, int i, t_vector *commands)
 	input_syntax(cmd, data);
 	output_syntax(cmd, data);
 	additional_syntax(cmd, data, i);
-	if (data->valid == -10 || !commands->data[i + 1])
+	if (data->valid == -10)
 		ft_fprintf(2, "%s'\n", mini_join(TOKEN, "newline"));
 	else if (data->valid != 1 && data->valid != 0 && commands->data[i + 1])
 	{
