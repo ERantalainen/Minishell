@@ -6,7 +6,7 @@
 #    By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/03 18:36:06 by jpelline          #+#    #+#              #
-#    Updated: 2025/07/11 04:08:12 by erantala         ###   ########.fr        #
+#    Updated: 2025/07/11 14:57:59 by erantala         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -117,7 +117,8 @@ SRCS_OTHER := \
 	minishell.c \
 	non_interactive.c \
 	take_input.c \
-	signal.c
+	signal.c \
+	here_helpers.c
 
 # Combine all source files
 SRCS := \

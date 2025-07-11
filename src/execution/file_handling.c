@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file_handling.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 21:19:02 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/11 13:14:50 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/11 15:08:15 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,19 @@ void	open_handler(t_pipedata *p, const char *path)
 	fd = open(p->cmd_args[0], O_RDONLY);
 	if (ft_strcmp(p->cmd_args[0], "..") == 0 || ft_strcmp(p->cmd_args[0],
 			".") == 0)
-		ft_exit_child(mini_join(p->cmd_args[0], CMD), 2);
+		ft_exit_child(mini_join(p->cmd_args[0], CMD), 127);
 	if (stat(p->cmd_args[0], &st) == 0 && S_ISDIR(st.st_mode))
+	{
 		ft_fprintf(2, "%s: Is a directory\n", p->cmd_args[0]);
+		ft_exit_child(NULL, 126);
+	}
 	if (fd < 0)
 	{
 		if (errno == EISDIR)
+		{
 			ft_fprintf(2, "%s: Is a directory\n", p->cmd_args[0]);
+			ft_exit_child(NULL, 126);
+		}
 		else if (errno == ENOTDIR)
 			ft_fprintf(2, "%s: Not a directory\n", p->cmd_args[0]);
 		else if (errno == EACCES)
@@ -43,9 +49,11 @@ void	open_handler(t_pipedata *p, const char *path)
 
 void	check_open_errno(const char *file)
 {
-	ft_fprintf(2, "errno: %d\n", errno);
 	if (errno == EISDIR)
+	{
 		ft_fprintf(2, "%s: Is a directory\n", file);
+		ft_exit_child(NULL, 126);
+	}
 	else if (errno == ENOTDIR)
 		ft_fprintf(2, "%s: Not a directory\n", file);
 	else if (errno == EACCES)

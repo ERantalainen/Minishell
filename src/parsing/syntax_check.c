@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 15:48:23 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/11 04:36:22 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/11 15:11:20 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,13 @@ void	check_repeat(t_vector *tokens)
 			remove_elem(tokens, i);
 			nx->t = HERE_DOC;
 			nx->s = mini_strdup("<<");
+			return ;
 		}
 		if (cur->t == PIPE && nx->t == PIPE)
-			er_pr(mini_join(TOKEN, "|'"), data, 127, 0);
-		if (data->valid == 0)
+		{
+			er_pr(mini_join(TOKEN, "|'"), data, 2, 0);
 			return ;
+		}
 		i++;
 	}
 }

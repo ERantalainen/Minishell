@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_help.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 18:40:32 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/11 13:11:19 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/11 15:15:12 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,6 @@ static void	check_files(t_cmd *cmd, t_cmd *next, t_data *data)
 {
 	if (cmd->type == INPUT)
 	{
-		// if (access(next->str, R_OK) != 0)
-		// {
-		// 	er_pr(mini_join(MS, mini_strndup(next->str,
-		// 				word_len(next->str, 0))), data, 1, 1);
-		// }
 		cmd->next = FILES;
 		next->type = FILES;
 	}
