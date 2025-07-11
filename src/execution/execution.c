@@ -104,4 +104,10 @@ void	execution(t_cmd **tokens, char **env)
 	if (p->pipe_count > 0)
 		init_pipes(p);
 	exec_pipeline(tokens, p, env);
+	dup2(p->stdin_copy, STDIN_FILENO);
+	close(p->stdin_copy);
+	dup2(p->stdout_copy, STDOUT_FILENO);
+	close(p->stdout_copy);
+	close(p->infile);
+	close(p->outfile);
 }

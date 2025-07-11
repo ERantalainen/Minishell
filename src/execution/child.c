@@ -28,7 +28,7 @@ static void	execute_child_builtin(t_cmd **tokens, t_pipedata *p, char **env)
 		close(p->stdin_copy);
 		close(p->stdout_copy);
 		build_handler(tokens, p->cmd_index);
-		exit(ft_atoi(find_export("?")));
+		ft_exit_child(NULL, ft_atoi(find_export("?")));
 	}
 	build_handler(tokens, 0);
 }

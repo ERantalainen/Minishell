@@ -45,17 +45,11 @@ void	wait_for_children(t_pipedata *p, int status)
 	{
 		ignore();
 		if (waitpid(p->pids[i], &status, 0) < 0)
-			exit(1);
+			ft_exit_child(NULL, 1);
 		child_died(status);
 		catcher();
 		i++;
 	}
-	dup2(p->stdin_copy, STDIN_FILENO);
-	close(p->stdin_copy);
-	dup2(p->stdout_copy, STDOUT_FILENO);
-	close(p->stdout_copy);
-	close(p->infile);
-	close(p->outfile);
 }
 
 void	close_unused_pipes(t_pipedata *p, int i)
