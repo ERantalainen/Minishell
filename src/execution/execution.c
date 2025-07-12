@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 16:20:20 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/12 23:52:36 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/13 00:38:08 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ static void	exec_builtin(t_cmd **tokens, t_pipedata *p, char **env)
 
 static void	close_pipe_pair(t_pipedata *p, int i)
 {
-	safe_close(p->pipefd[i][READ]);
-	safe_close(p->pipefd[i][WRITE]);
+	close(p->pipefd[i][READ]);
+	close(p->pipefd[i][WRITE]);
 }
 
 static void	exec_pipeline(t_cmd **tokens, t_pipedata *p, char **env)

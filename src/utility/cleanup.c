@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 17:07:45 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/13 00:20:44 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/13 00:40:27 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	clean_heredoc(void)
 	i = 0;
 	while (i < data->heredocs->count)
 	{
-		safe_close(data->hdfd[i]);
+		close(data->hdfd[i]);
 		if (unlink((char *)data->heredocs->data[i]) == -1)
 			perror("minishell: ");
 		i++;
@@ -41,7 +41,7 @@ void	ft_exit(char *s, unsigned char code)
 	while (i < data->fds->count)
 	{
 		fd = (int *)data->fds->data[i];
-		safe_close(*fd);
+		close(*fd);
 		i++;
 	}
 	i = 3;
