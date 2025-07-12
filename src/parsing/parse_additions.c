@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 15:44:37 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/12 23:29:14 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/13 00:55:34 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static char	*here_token(char *s, size_t *i, int pos)
 	else
 	{
 		str = mini_strndup(s + 1, pos - 1);
-		(*i) += pos;
+		(*i) += pos + 1;
 	}
 	return (str);
 }
