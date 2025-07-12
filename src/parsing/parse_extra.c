@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_extra.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 18:04:47 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/10 23:10:32 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/12 23:30:08 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ size_t	word_len(char *s, int quote)
 // Count the lenght of a word
 int	check_specials(int c, int quote)
 {
-	if (quote == 0 && (c == '\'' || c == '"'))
+	if ((quote == 0 || quote == -1 ) && (c == '\'' || c == '"'))
 		return (1);
 	if (c == '<' || c == '|' || c == '>' || c == quote)
 		return (1);
