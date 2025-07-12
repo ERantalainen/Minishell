@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 15:44:11 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/12 23:11:06 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/13 00:19:37 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,12 @@ static void	write_to_tmpfile(char *limiter, int index)
 	t_data	*data;
 
 	data = get_data();
-	if (data->non_interactive == true)
-		return ;
 	while (true)
 	{
-		input = readline("\1\e[38;5;231m\2╰─❯❯ \1\e[0m\2");
+		if (!isatty(0))
+			input = get_next_line(STDIN_FILENO);
+		else
+			input = readline("\1\e[38;5;231m\2╰─❯❯ \1\e[0m\2");
 		if (g_sig == SIGINT || !input)
 		{
 			if (g_sig == SIGINT)
