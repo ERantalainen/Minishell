@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 16:20:20 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/13 00:38:08 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/13 02:01:20 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	setup_child(t_cmd **tokens, t_pipedata *p, char **env, int i)
 	p->is_builtin = false;
 	p->pids[i] = fork();
 	if (p->pids[i] < 0)
-		ft_exit_child("fork", 1);
+		ft_exit_child(p, "fork", 1);
 	if (p->pids[i] == 0)
 	{
 		local_p = *p;
@@ -27,7 +27,7 @@ void	setup_child(t_cmd **tokens, t_pipedata *p, char **env, int i)
 		local_p.pipe_index = i;
 		check_for_redirects(tokens, &local_p);
 		if (setup_cmd_to_execute(tokens, &local_p) < 0)
-			ft_exit_child(NULL, 1);
+			ft_exit_child(p, NULL, 1);
 		child_process(tokens, &local_p, env);
 	}
 }

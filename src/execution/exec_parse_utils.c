@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 18:35:04 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/12 23:52:40 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/13 02:02:28 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ char	*find_bin_in_path(char **env_paths, char *cmd)
 	return (NULL);
 }
 
-static void	check_cmd_validity(char *cmd)
+static void	check_cmd_validity(t_pipedata *p, char *cmd)
 {
 	int	i;
 
@@ -86,7 +86,7 @@ static void	check_cmd_validity(char *cmd)
 	{
 		if (ft_isspace(cmd[i]))
 		{
-			ft_exit_child(mini_join(mini_strndup(cmd, ft_strlen(cmd)),
+			ft_exit_child(p, mini_join(mini_strndup(cmd, ft_strlen(cmd)),
 					": command not found"), 127);
 		}
 		else
@@ -108,15 +108,15 @@ char	*get_bin_path(char *cmd, char **env, t_pipedata *p)
 		return (mini_strdup(cmd));
 	env_paths = parse_paths(env);
 	if (!env_paths)
-		ft_exit_child(mini_join(MS, mini_join(mini_strndup(cmd,
+		ft_exit_child(p, mini_join(MS, mini_join(mini_strndup(cmd,
 						word_len(cmd, 0)), NSFOD)), 127);
 	args = mini_split(cmd, ' ');
-	check_cmd_validity(cmd);
+	check_cmd_validity(p, cmd);
 	temp = mini_join("/", args[0]);
 	path = find_bin_in_path(env_paths, temp);
 	open_handler(p, path);
 	if (!path)
-		ft_exit_child(mini_join(mini_strndup(cmd, word_len(cmd, 0)),
+		ft_exit_child(p, mini_join(mini_strndup(cmd, word_len(cmd, 0)),
 				": command not found"), 127);
 	return (path);
 }

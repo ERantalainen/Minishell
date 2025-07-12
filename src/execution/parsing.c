@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 13:28:50 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/12 12:03:57 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/13 02:01:10 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static int	find_next_cmd_in_tokens(t_cmd **tokens, t_pipedata *p)
 		return (-1);
 	else if ((!tokens[p->cmd_index] || tokens[p->cmd_index]->type == PIPE)
 		&& p->pipe_count > 0)
-		ft_exit_child(NULL, 1);
+		ft_exit_child(p, NULL, 1);
 	return (0);
 }
 

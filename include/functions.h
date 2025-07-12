@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 19:21:07 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/12 23:53:28 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/13 02:01:04 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void		increase_shell_lvl(void);
 t_data		*get_data(void);
 void		clean_heredoc(void);
 void		soft_exit(char *s, int code, bool err);
-void		ft_exit_child(char *s, int code);
+void		ft_exit_child(t_pipedata *p, char *s, int code);
 void		free_arenas(void);
 void		ft_exit(char *s, unsigned char code);
 int			exit_calci(char *cmd);

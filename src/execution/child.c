@@ -6,18 +6,18 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 20:49:29 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/13 00:16:23 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/13 02:15:27 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	safe_execve(char *path, char **argv, char **env)
+static int	safe_execve(t_pipedata *p, char *path, char **argv, char **env)
 {
 	t_stat	st;
 
 	if (fstat(STDOUT_FILENO, &st) == -1 && errno == EBADF)
-		ft_exit_child(NULL, 1);
+		ft_exit_child(p, NULL, 1);
 	return (execve(path, argv, env));
 }
 
@@ -28,7 +28,7 @@ static void	execute_child_builtin(t_cmd **tokens, t_pipedata *p)
 		safe_close(p->stdin_copy);
 		safe_close(p->stdout_copy);
 		build_handler(tokens, p->cmd_index);
-		ft_exit_child(NULL, ft_atoi(find_export("?")));
+		ft_exit_child(p, NULL, ft_atoi(find_export("?")));
 	}
 	build_handler(tokens, 0);
 }
@@ -107,10 +107,10 @@ void	child_process(t_cmd **tokens, t_pipedata *p, char **env)
 				ft_strlen(tokens[p->cmd_index]->str)), env, p);
 	if (access(p->cmd_args[0], X_OK) >= 0
 		&& ft_strncmp(p->cmd_args[0], "/", 1 == 0))
-		if (safe_execve(p->cmd_args[0], p->cmd_args, env) < 0)
-			ft_exit_child(NULL, 1);
-	if (safe_execve(path, p->cmd_args, env) < 0 && path_exists() == 1)
-		ft_exit_child(NULL, 1);
+		if (safe_execve(p, p->cmd_args[0], p->cmd_args, env) < 0)
+			ft_exit_child(p, NULL, 1);
+	if (safe_execve(p, path, p->cmd_args, env) < 0 && path_exists() == 1)
+		ft_exit_child(p, NULL, 1);
 	else
-		ft_exit_child(NULL, 0);
+		ft_exit_child(p, NULL, 0);
 }

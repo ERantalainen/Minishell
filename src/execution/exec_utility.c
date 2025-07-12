@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 21:15:46 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/13 00:38:20 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/13 02:01:15 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	wait_for_children(t_pipedata *p)
 	{
 		ignore();
 		if (waitpid(p->pids[i], &status, 0) < 0)
-			ft_exit_child("waitpid", 1);
+			ft_exit_child(p, "waitpid", 1);
 		child_died(status);
 		catcher();
 		i++;
