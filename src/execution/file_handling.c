@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 21:19:02 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/11 22:36:53 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/12 23:47:02 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	open_handler(t_pipedata *p, const char *path)
 	if (fd < 0)
 		handle_open_error(cmd, path);
 	else
-		close(fd);
+		safe_close(fd);
 }
 
 void	check_open_errno(const char *file)
@@ -83,7 +83,7 @@ void	open_file(t_cmd **tokens, t_pipedata *p, int settings)
 	if (tokens[p->index]->type == INPUT || tokens[p->index]->type == HERE_DOC)
 	{
 		if (p->infile)
-			close(p->infile);
+			safe_close(p->infile);
 		p->infile = open(tokens[p->index + 1]->str, settings);
 		if (p->infile < 0)
 			check_open_errno(tokens[p->index + 1]->str);
@@ -91,7 +91,7 @@ void	open_file(t_cmd **tokens, t_pipedata *p, int settings)
 	else
 	{
 		if (p->outfile)
-			close(p->outfile);
+			safe_close(p->outfile);
 		p->outfile = open(tokens[p->index + 1]->str, settings, 0644);
 		if (p->outfile < 0)
 			check_open_errno(tokens[p->index + 1]->str);

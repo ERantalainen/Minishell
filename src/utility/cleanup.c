@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 17:07:45 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/12 23:10:48 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/12 23:50:47 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	clean_heredoc(void)
 	i = 0;
 	while (i < data->heredocs->count)
 	{
-		close(data->hdfd[i]);
+		safe_close(data->hdfd[i]);
 		if (unlink((char *)data->heredocs->data[i]) == -1)
 			perror("minishell: ");
 		i++;
@@ -46,7 +46,7 @@ void	ft_exit(char *s, unsigned char code)
 	}
 	i = 3;
 	while (i < 1024)
-		close(i++);
+		safe_close(i++);
 	(void)s;
 	free_arenas();
 	exit(code);
@@ -58,9 +58,9 @@ void	ft_exit_child(char *s, int code)
 
 	i = 3;
 	while (i < _SC_OPEN_MAX)
-		close(i++);
+		safe_close(i++);
 	if (s)
-		ft_fprintf(2, "%s\n", s);
+		ft_fprintf(2, "error: %s\n", s);
 	exit(code);
 }
 

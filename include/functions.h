@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   functions.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 19:21:07 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/12 23:11:37 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/12 23:49:59 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,6 +168,8 @@ int			path_exists(void);
 void		child_process(t_cmd **tokens, t_pipedata *p, char **env);
 void		cmd_help(t_vector *tokens, size_t *i, t_token *token, t_cmd *cmd);
 void		child_died(int status);
+void		safe_close(int fd);
+int			safe_dup(int fd);
 
 void		exit_arg_checker(char *str);
 char		*echo_part(t_cmd *cmd, int *pos, bool *nl);

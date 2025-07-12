@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 16:20:20 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/11 22:48:16 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/12 23:43:54 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ void	setup_child(t_cmd **tokens, t_pipedata *p, char **env, int i)
 
 	p->is_builtin = false;
 	p->pids[i] = fork();
+	if (p->pids[i] < 0)
+		ft_exit_child("fork", 1);
 	if (p->pids[i] == 0)
 	{
 		local_p = *p;
@@ -40,8 +42,8 @@ static void	exec_builtin(t_cmd **tokens, t_pipedata *p, char **env)
 
 static void	close_pipe_pair(t_pipedata *p, int i)
 {
-	close(p->pipefd[i][READ]);
-	close(p->pipefd[i][WRITE]);
+	safe_close(p->pipefd[i][READ]);
+	safe_close(p->pipefd[i][WRITE]);
 }
 
 static void	exec_pipeline(t_cmd **tokens, t_pipedata *p, char **env)
@@ -82,14 +84,8 @@ void	execution(t_cmd **tokens, char **env)
 	if (data->valid != 1)
 		return ;
 	p = arena_malloc(sizeof(t_pipedata));
-	p->index = 0;
-	p->pipe_count = 0;
-	p->cmd_index = 0;
-	p->pipe_index = 0;
-	p->infile = dup(STDIN_FILENO);
-	p->outfile = dup(STDOUT_FILENO);
-	p->stdin_copy = dup(STDIN_FILENO);
-	p->stdout_copy = dup(STDOUT_FILENO);
+	if (init_pipdata(p) < 0)
+		return ;
 	i = 0;
 	while (tokens[i])
 		if (tokens[i++]->type == PIPE)

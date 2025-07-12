@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 21:15:46 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/11 22:43:54 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/12 23:30:35 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,23 +47,25 @@ void	wait_for_children(t_pipedata *p)
 	{
 		ignore();
 		if (waitpid(p->pids[i], &status, 0) < 0)
-			ft_exit_child(NULL, 1);
+			ft_exit_child("waitpid", 1);
 		child_died(status);
 		catcher();
 		i++;
 	}
-	dup2(p->stdin_copy, STDIN_FILENO);
-	close(p->stdin_copy);
-	dup2(p->stdout_copy, STDOUT_FILENO);
-	close(p->stdout_copy);
-	close(p->infile);
-	close(p->outfile);
+	if (dup2(p->stdin_copy, STDIN_FILENO) < 0)
+		perror("dup2");
+	safe_close(p->stdin_copy);
+	if (dup2(p->stdout_copy, STDOUT_FILENO) < 0)
+		perror("dup2");
+	safe_close(p->stdout_copy);
+	safe_close(p->infile);
+	safe_close(p->outfile);
 }
 
 void	close_unused_pipes(t_pipedata *p, int i)
 {
-	close(p->pipefd[i - 1][READ]);
-	close(p->pipefd[i - 1][WRITE]);
+	safe_close(p->pipefd[i - 1][READ]);
+	safe_close(p->pipefd[i - 1][WRITE]);
 }
 
 void	init_pipes(t_pipedata *p)
