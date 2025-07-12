@@ -17,6 +17,8 @@
 
 t_vector	*next_check(t_vector *commands);
 
+int		check_all_redir(char *s, size_t	len);
+
 // Tokenizers
 t_token		*create_token(char *s, size_t *i, t_type last, t_data *data);
 t_vector	*token_vector(char *s);

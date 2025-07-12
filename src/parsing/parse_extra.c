@@ -12,8 +12,6 @@
 
 #include "minishell.h"
 
-int		check_all_redir(char *s, size_t	len);
-
 char	*ambigous(char *s, size_t i)
 {
 	size_t	pos;
