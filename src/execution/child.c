@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 20:49:29 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/12 23:28:01 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/13 00:16:23 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,9 @@ static void	close_unused_child_fds(t_pipedata *p, int *child_stdin,
 	while (j < p->pipe_count)
 	{
 		if (p->pipefd[j][READ] != *child_stdin)
-			safe_close(p->pipefd[j][READ]);
+			close(p->pipefd[j][READ]);
 		if (p->pipefd[j][WRITE] != *child_stdout)
-			safe_close(p->pipefd[j][WRITE]);
+			close(p->pipefd[j][WRITE]);
 		j++;
 	}
 	if (dup2(*child_stdin, STDIN_FILENO) < 0)
