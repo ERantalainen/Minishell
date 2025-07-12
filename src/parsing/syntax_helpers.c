@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_helpers.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 23:47:36 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/12 13:42:20 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/12 15:53:27 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
