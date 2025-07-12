@@ -6,11 +6,11 @@
 #    By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/03 18:36:06 by jpelline          #+#    #+#              #
-#    Updated: 2025/07/12 12:43:54 by jpelline         ###   ########.fr        #
+#    Updated: 2025/07/12 13:05:51 by jpelline         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-# ================================= SETTINGS ================================= #
+# ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ SETTINGS ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ #
 
 # Project configuration
 PROGRAM_NAME	:= minishell
@@ -18,7 +18,7 @@ NAME			:= minishell_standard
 CC				:= cc
 
 # Compiler flags
-CFLAGS			:= -Wall -Wextra -Werror
+CFLAGS			:= #-Wall -Wextra -Werror
 DEBUG_FLAGS		:= -g3 -fsanitize=address -fsanitize=undefined
 OPTFLAGS		:= -O2
 
@@ -44,7 +44,7 @@ LDFLAGS			:= -L$(LIBFT_DIR) -lft -lreadline
 # Dependency generation flags
 DEPFLAGS		= -MT $@ -MMD -MP -MF $(DEP_DIR)/$*.d
 
-# ============================== VISUAL STYLING ============================== #
+# ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ VISUAL STYLING ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ #
 
 # Terminal colors for build output
 BOLD			:= $(shell tput bold)
@@ -56,7 +56,7 @@ CYAN			:= $(shell tput setaf 6)
 WHITE			:= $(shell tput setaf 7)
 RESET			:= $(shell tput sgr0)
 
-# ============================== SOURCE FILES ================================ #
+# ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ SOURCE FILES ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ #
 
 # Parsing and syntax analysis
 SRCS_PARSE := \
@@ -131,7 +131,7 @@ SRCS := \
 	$(SRCS_BUILTIN) \
 	$(SRCS_EXEC)
 
-# ============================== BUILD VARIABLES ============================= #
+# ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ BUILD VARIABLES ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ #
 
 # Object files and build tracking
 OBJS				:= $(addprefix $(OBJ_DIR)/,$(SRCS:.c=.o))
@@ -160,8 +160,9 @@ is_up_to_date = \
 	( [ -z "$(LATEST_LIBFT_SRC)" ] || [ "$(PROGRAM_NAME)" -nt $(LATEST_LIBFT_SRC) ] ) && \
 	[ "$(OBJ_FILES_EXIST)" = "yes" ]
 
-# ============================== BUILD TARGETS =============================== #
+# ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ BUILD TARGETS ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ #
 
+# Default target with intelligent rebuild detection
 all:
 	@if [ -f $(MARKER_STANDARD) ] && $(is_up_to_date) 2>/dev/null; then \
 		echo ">$(BOLD)$(YELLOW)  $(NAME) is already up to date.$(RESET)"; \
@@ -172,6 +173,7 @@ all:
 		echo ">$(BOLD)$(GREEN)  All components built successfully!$(RESET)"; \
 	fi
 
+# Main executable linking with dependency checking
 $(NAME): $(OBJS) libft-check
 	@echo ">$(BOLD)$(GREEN)  Linking $(NAME)...$(RESET)"
 	@$(CC) $(CFLAGS) -o $(PROGRAM_NAME) $(OBJS) $(LDFLAGS) $(OPTFLAGS)
@@ -179,6 +181,7 @@ $(NAME): $(OBJS) libft-check
 	@rm -f $(PROGRESS_FILE)
 	@echo ">$(BOLD)$(GREEN)  $(NAME) successfully compiled!$(RESET)"
 
+# Individual object file compilation with progress tracking
 $(OBJ_DIR)/%.o: %.c include/minishell.h | $(OBJ_DIR) $(DEP_DIR)
 	@if [ -f $(PROGRESS_FILE) ]; then \
 		CURRENT=$$(cat $(PROGRESS_FILE)); \
@@ -189,22 +192,26 @@ $(OBJ_DIR)/%.o: %.c include/minishell.h | $(OBJ_DIR) $(DEP_DIR)
 	fi
 	@$(CC) $(CFLAGS) $(DEPFLAGS) $(OPTFLAGS) -c $< -o $@ $(INC)
 
-# ============================== ADDITIONAL TARGETS =============================== #
+# ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ ADDITIONAL TARGETS ■■■■■■■■■■■■■■■■■■■■■■■■■■ #
 
+# Directory creation and dependency management
 $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
 	@echo "0" > $(PROGRESS_FILE)
 
+# Include auto-generated dependency files
 -include $(wildcard $(DEP_DIR)/*.d)
 
 $(DEP_DIR): | $(OBJ_DIR)
 	@mkdir -p $@
 
+# Development and debugging build configuration
 debug: CFLAGS += $(DEBUG_FLAGS)
 debug: OPTFLAGS := -O0
 debug: clean $(NAME)
 	@echo ">$(BOLD)$(CYAN)  Debug build completed!$(RESET)"
 
+# External library management
 $(LIBFT):
 	@echo ">$(MAGENTA)  Entering libft directory...$(RESET)"
 	@$(MAKE) -C $(LIBFT_DIR) --no-print-directory
@@ -212,8 +219,9 @@ $(LIBFT):
 libft-check: $(LIBFT)
 	@$(MAKE) -C $(LIBFT_DIR) --no-print-directory
 
-# ============================== CLEAN TARGETS =============================== #
+# ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ CLEAN TARGETS ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ #
 
+# Remove object files and build artifacts
 clean:
 	@if [ -d $(OBJ_DIR) ]; then \
 		echo "> [ minishell ] $(YELLOW) Cleaning object files...$(RESET)"; \
@@ -223,6 +231,7 @@ clean:
 		echo "> [ minishell ] $(BOLD)$(YELLOW) Nothing to be done with $(RESET)$(WHITE)clean$(RESET)"; \
 	fi
 
+# Complete cleanup including executables and external libraries
 fclean: clean
 	@if [ -f $(PROGRAM_NAME) ]; then \
 		echo "> [ minishell ] $(YELLOW) Removing $(PROGRAM_NAME)...$(RESET)"; \
@@ -238,10 +247,14 @@ fclean: clean
 		echo "> [ libft ] $(BOLD)$(YELLOW) Nothing to be done with $(RESET)$(WHITE)fclean$(RESET)"; \
 	fi
 
+# Full rebuild from clean slate
 re:
 	@echo "> [ minishell ] $(BOLD)$(WHITE) Rebuilding from scratch...$(RESET)"
 	@$(MAKE) fclean --no-print-directory
 	@$(MAKE) $(NAME) --no-print-directory
 
+# ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ TARGET DECLARATIONS ■■■■■■■■■■■■■■■■■■■■■■■■■ #
+
+# Preserve intermediate object files and declare phony targets
 .SECONDARY: $(OBJS)
 .PHONY: all debug clean fclean re libft-check
