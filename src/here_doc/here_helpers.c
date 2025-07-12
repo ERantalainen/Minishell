@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_helpers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 14:52:01 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/12 13:33:01 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/12 23:09:47 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,11 +83,11 @@ void	fix_lines(char **file, size_t index, char *name, t_data *data)
 	close(fd);
 	fd = open(name, O_WRONLY);
 	if (fd == -1)
-		perror("minishell:");
+		soft_exit("heredoc:", 1, 1);
 	while (file[i])
 	{
 		if (write(fd, file[i], ft_strlen(file[i])) < 0)
-			perror("write");
+			soft_exit("heredoc", 1, 1);
 		i++;
 	}
 	close(fd);

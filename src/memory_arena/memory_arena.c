@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   memory_arena.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 16:05:04 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/10 21:27:24 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/12 16:30:19 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_arena	*init_arena(size_t size)
 
 	arena = ft_calloc(1, size + (sizeof(t_arena)));
 	if (!arena)
-		exit(1);
+		ft_exit("MALLOC FAILURE", 1);
 	arena->max = size;
 	arena->index = 0;
 	return (arena);
@@ -74,7 +74,7 @@ t_arena	**new_arena(t_arena **curr, int count, size_t n)
 	i = 0;
 	arenas = ft_calloc(sizeof(t_arena *), count + 2);
 	if (!arenas)
-		exit(1);
+		ft_exit("MALLOC FAILURE", 1);
 	while (i < count)
 	{
 		arenas[i] = curr[i];
@@ -98,7 +98,7 @@ t_arena	**get_arenas(t_arena **new)
 	{
 		arenas = ft_calloc(sizeof(t_arena *), 2);
 		if (!arenas)
-			exit(1);
+			ft_exit("MALLOC FAILURE", 1);
 		arenas = new_arena(arenas, 0, ARENA_SIZE);
 		arenas = new_arena(arenas, 1, ARENA_SIZE);
 	}

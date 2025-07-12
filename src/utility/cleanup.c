@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 17:07:45 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/12 13:35:24 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/12 23:10:48 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,4 +84,17 @@ void	child_died(int status)
 		replace_export(exit_export);
 	}
 	replace_export(mini_join(exit_code, mini_itoa(WEXITSTATUS(status))));
+}
+
+void	soft_exit(char *s, int code, bool err)
+{
+	t_data	*data;
+
+	data = get_data();
+	data->valid = 0;
+	if (s && !err)
+		ft_fprintf(2, "%s\n", s);
+	if (err && s)
+		perror(mini_join(MS, s));
+	replace_export(mini_join("?=", mini_itoa(code)));
 }

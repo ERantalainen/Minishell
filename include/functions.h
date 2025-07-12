@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   functions.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 19:21:07 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/12 13:41:52 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/12 23:11:37 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,7 @@
 # include "structs.h"
 
 t_vector	*next_check(t_vector *commands);
-
-int		check_all_redir(char *s, size_t	len);
+int			check_all_redir(char *s, size_t	len);
 
 // Tokenizers
 t_token		*create_token(char *s, size_t *i, t_type last, t_data *data);
@@ -99,6 +98,7 @@ char		*get_pwd(void);
 void		increase_shell_lvl(void);
 t_data		*get_data(void);
 void		clean_heredoc(void);
+void		soft_exit(char *s, int code, bool err);
 void		ft_exit_child(char *s, int code);
 void		free_arenas(void);
 void		ft_exit(char *s, unsigned char code);
