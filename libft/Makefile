@@ -96,21 +96,21 @@ is_up_to_date	= [ -f $(NAME) ] && \
 # Default target with intelligent rebuild detection
 all:
 	@if [ -f $(NAME) ] && [ -f $(MARKER) ] && $(is_up_to_date) 2>/dev/null; then \
-		echo ">$(BOLD)$(YELLOW)  $(NAME) is already up to date.$(RESET)"; \
+		echo ">$(BOLD)$(YELLOW) $(NAME) is already up to date.$(RESET)"; \
 	else \
 		echo ">$(BOLD)$(WHITE) Starting to build $(NAME)...$(RESET)"; \
 		$(MAKE) $(NAME) --no-print-directory; \
 		touch $(MARKER); \
-		echo ">$(BOLD)$(GREEN)  All components built successfully!$(RESET)"; \
+		echo ">$(BOLD)$(GREEN) All components built successfully!$(RESET)"; \
 	fi
 
 # Library creation target
 $(NAME): $(OBJS)
-	@echo ">$(BOLD)$(GREEN)  All files compiled successfully!$(RESET)"
-	@echo ">$(BOLD)$(GREEN)  Linking $(NAME)...$(RESET)"
+	@echo ">$(BOLD)$(GREEN) All files compiled successfully!$(RESET)"
+	@echo ">$(BOLD)$(GREEN) Linking $(NAME)...$(RESET)"
 	@$(AR) $@ $^
 	@touch $(MARKER)
-	@echo ">$(BOLD)$(GREEN)  $(NAME) successfully compiled!$(RESET)"
+	@echo ">$(BOLD)$(GREEN) $(NAME) successfully compiled!$(RESET)"
 
 # ========================== DIRECTORY CREATION ======================= #
 
@@ -127,7 +127,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR) $(DEP_DIR)
 	$(eval COMPILED_COUNT := $(shell echo $$(($(COMPILED_COUNT)+1))))
 	$(eval PROGRESS := $(shell echo $$(($(COMPILED_COUNT)*100/$(TOTAL_SRCS)))))
 	@if [ $$(($(PROGRESS) % 25)) -eq 0 ] || [ $(PROGRESS) -eq 100 ]; then \
-		printf ">   [%3d%%] $(CYAN)Compiling... (%d/%d files)$(RESET)\n" \
+		printf "> [%3d%%] $(CYAN)Compiling... (%d/%d files)$(RESET)\n" \
 			$(PROGRESS) $(COMPILED_COUNT) $(TOTAL_SRCS); \
 	fi
 	@$(CC) $(CFLAGS) $(DEPFLAGS) -c $< -o $@ $(INC)

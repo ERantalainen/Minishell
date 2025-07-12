@@ -6,7 +6,7 @@
 #    By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/03 18:36:06 by jpelline          #+#    #+#              #
-#    Updated: 2025/07/12 13:22:41 by jpelline         ###   ########.fr        #
+#    Updated: 2025/07/12 13:29:25 by jpelline         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -174,21 +174,21 @@ is_up_to_date = \
 # Default target with intelligent rebuild detection
 all:
 	@if [ -f $(MARKER_STANDARD) ] && $(is_up_to_date) 2>/dev/null; then \
-		echo ">$(BOLD)$(YELLOW)  $(NAME) is already up to date.$(RESET)"; \
+		echo ">$(BOLD)$(YELLOW) $(NAME) is already up to date.$(RESET)"; \
 	else \
 		echo ">$(BOLD)$(WHITE) Starting to build $(NAME)...$(RESET)"; \
 		$(MAKE) $(NAME) --no-print-directory; \
 		touch $(MARKER_STANDARD); \
-		echo ">$(BOLD)$(GREEN)  All components built successfully!$(RESET)"; \
+		echo ">$(BOLD)$(GREEN) All components built successfully!$(RESET)"; \
 	fi
 
 # Main executable linking with dependency checking
 $(NAME): $(OBJS) libft-check
-	@echo ">$(BOLD)$(GREEN)  Linking $(NAME)...$(RESET)"
+	@echo ">$(BOLD)$(GREEN) Linking $(NAME)...$(RESET)"
 	@$(CC) $(CFLAGS) -o $(PROGRAM_NAME) $(OBJS) $(LDFLAGS) $(OPTFLAGS)
 	@touch $(MARKER_STANDARD)
 	@rm -f $(PROGRESS_FILE)
-	@echo ">$(BOLD)$(GREEN)  $(NAME) successfully compiled!$(RESET)"
+	@echo ">$(BOLD)$(GREEN) $(NAME) successfully compiled!$(RESET)"
 
 # Individual object file compilation with progress tracking
 $(OBJ_DIR)/%.o: %.c include/minishell.h | $(OBJ_DIR) $(DEP_DIR)
@@ -196,7 +196,7 @@ $(OBJ_DIR)/%.o: %.c include/minishell.h | $(OBJ_DIR) $(DEP_DIR)
 		CURRENT=$$(cat $(PROGRESS_FILE)); \
 		NEXT=$$((CURRENT + 1)); \
 		echo "$$NEXT" > $(PROGRESS_FILE); \
-		printf ">   [%3d%%] $(CYAN)(%d/%d files) Compiling $<... $(RESET)\n" \
+		printf "> [%3d%%] $(CYAN)(%d/%d files) Compiling $<... $(RESET)\n" \
 			$$((NEXT*100/$(TOTAL_SRCS))) $$((NEXT)) $(TOTAL_SRCS); \
 	fi
 	@$(CC) $(CFLAGS) $(DEPFLAGS) $(OPTFLAGS) -c $< -o $@ $(INC)
@@ -222,7 +222,7 @@ debug: clean $(NAME)
 
 # External library management
 $(LIBFT):
-	@echo ">$(MAGENTA)  Entering libft directory...$(RESET)"
+	@echo ">$(MAGENTA) Entering libft directory...$(RESET)"
 	@$(MAKE) -C $(LIBFT_DIR) --no-print-directory
 
 libft-check: $(LIBFT)
