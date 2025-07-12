@@ -6,19 +6,19 @@
 #    By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/03 18:36:06 by jpelline          #+#    #+#              #
-#    Updated: 2025/07/12 12:26:35 by jpelline         ###   ########.fr        #
+#    Updated: 2025/07/12 12:43:54 by jpelline         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # ================================= SETTINGS ================================= #
 
 # Project configuration
-PROGRAM_NAME		:= minishell
+PROGRAM_NAME	:= minishell
 NAME			:= minishell_standard
-CC			:= cc
+CC				:= cc
 
 # Compiler flags
-CFLAGS			:=
+CFLAGS			:= -Wall -Wextra -Werror
 DEBUG_FLAGS		:= -g3 -fsanitize=address -fsanitize=undefined
 OPTFLAGS		:= -O2
 
@@ -32,12 +32,12 @@ LIBFT_DIR		:= libft
 BUILTIN_DIRS := $(shell find $(SRC_DIR)/built_in -type d | tr '\n' ':' | sed 's/:$$//')
 
 VPATH			:= $(SRC_DIR):$(BUILTIN_DIRS):$(SRC_DIR)/execution \
-			:$(SRC_DIR)/here_doc:$(SRC_DIR)/main:$(SRC_DIR)/memory_arena \
-			:$(SRC_DIR)/parsing:$(SRC_DIR)/signal:$(SRC_DIR)/utility \
-			:$(SRC_DIR)/vector
+				:$(SRC_DIR)/here_doc:$(SRC_DIR)/main:$(SRC_DIR)/memory_arena \
+				:$(SRC_DIR)/parsing:$(SRC_DIR)/signal:$(SRC_DIR)/utility \
+				:$(SRC_DIR)/vector
 
 # Include paths and libraries
-INC			:= -I./include -I$(LIBFT_DIR)/include
+INC				:= -I./include -I$(LIBFT_DIR)/include
 LIBFT			:= $(LIBFT_DIR)/libft.a
 LDFLAGS			:= -L$(LIBFT_DIR) -lft -lreadline
 
@@ -134,22 +134,22 @@ SRCS := \
 # ============================== BUILD VARIABLES ============================= #
 
 # Object files and build tracking
-OBJS			:= $(addprefix $(OBJ_DIR)/,$(SRCS:.c=.o))
-TOTAL_SRCS		:= $(words $(SRCS))
+OBJS				:= $(addprefix $(OBJ_DIR)/,$(SRCS:.c=.o))
+TOTAL_SRCS			:= $(words $(SRCS))
 
 # Build markers and progress tracking
 MARKER_STANDARD		:= .standard_build
 PROGRESS_FILE		:= $(OBJ_DIR)/.progress
 
 # Utility variables for build optimization
-LATEST_SRC		:= $(shell find src -name "*.c" | xargs ls -t 2>/dev/null | head -1)
+LATEST_SRC			:= $(shell find src -name "*.c" | xargs ls -t 2>/dev/null | head -1)
 OBJ_FILES_EXIST		:= $(shell [ -n "$(wildcard $(OBJ_DIR)/*.o)" ] && echo yes)
 
 # Looking for updated header files
-LATEST_HEADER := $(shell find include $(LIBFT_DIR)/include -name "*.h" 2>/dev/null | xargs ls -t 2>/dev/null | head -1)
+LATEST_HEADER		:= $(shell find include $(LIBFT_DIR)/include -name "*.h" 2>/dev/null | xargs ls -t 2>/dev/null | head -1)
 
 # Looking for updated libft source files
-LATEST_LIBFT_SRC := $(shell find $(LIBFT_DIR)/src -name "*.c" 2>/dev/null | xargs ls -t 2>/dev/null | head -1)
+LATEST_LIBFT_SRC 	:= $(shell find $(LIBFT_DIR)/src -name "*.c" 2>/dev/null | xargs ls -t 2>/dev/null | head -1)
 
 # Check if binary is up to date
 is_up_to_date = \
@@ -209,7 +209,7 @@ $(LIBFT):
 	@echo ">$(MAGENTA)  Entering libft directory...$(RESET)"
 	@$(MAKE) -C $(LIBFT_DIR) --no-print-directory
 
-libft-check:
+libft-check: $(LIBFT)
 	@$(MAKE) -C $(LIBFT_DIR) --no-print-directory
 
 # ============================== CLEAN TARGETS =============================== #
