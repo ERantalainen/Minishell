@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 02:49:43 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/11 22:22:05 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/13 02:51:59 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,25 +21,25 @@ static char	*get_prompt(void)
 
 	data = get_data();
 	cwd = data->directory;
-	prompt = mini_join("\1\e[38;5;231m\2╭─❮ \1\e[38;5;219m\2", cwd);
+	prompt = mini_join("\1\e[38;5;231m\2❯ \1\e[38;5;219m\2", cwd);
 	temp = prompt;
 	prompt = mini_join(temp, " \1\e[38;5;231m\2❯ \1\e[38;5;156m\2minishell"
-			"\1\e[0m\2\n\1\e[38;5;231m\2╰─❯\1\e[0m\2 ");
+			"\1\e[0m\2\1\e[38;5;231m\2 ❯\1\e[0m\2 ");
 	return (prompt);
 }
 
 char	*take_input(void)
 {
 	char	*input;
+	char	*prompt;
 	char	*ret;
 
+	prompt = get_prompt();
 	while (1)
 	{
-		input = readline(get_prompt());
+		input = readline(prompt);
 		if (!input)
-		{
 			ft_exit("exit", 0);
-		}
 		if (input[0] != 0)
 		{
 			ret = mini_strdup(input);

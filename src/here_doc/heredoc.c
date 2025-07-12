@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 15:44:11 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/13 00:35:45 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/13 02:51:51 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void	write_to_tmpfile(char *limiter, int index)
 		if (!isatty(0))
 			input = get_next_line(STDIN_FILENO);
 		else
-			input = readline("\1\e[38;5;231m\2╰─❯❯ \1\e[0m\2");
+			input = readline("\1\e[38;5;231m\2❯❯ \1\e[0m\2");
 		if (g_sig == SIGINT || !input)
 		{
 			if (g_sig == SIGINT)
