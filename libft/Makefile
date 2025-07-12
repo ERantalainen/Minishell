@@ -142,27 +142,27 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR) $(DEP_DIR)
 # Remove object files and dependency files
 clean:
 	@if [ -d $(OBJ_DIR) ]; then \
-		echo "> [ libft ] $(YELLOW) Cleaning object files...$(RESET)"; \
+		echo "> [ libft     ] $(YELLOW) Cleaning object files...$(RESET)"; \
 		rm -rf $(OBJ_DIR); \
-		echo "            $(YELLOW) Object files cleaned!$(RESET)"; \
+		echo "                $(YELLOW) Object files cleaned!$(RESET)"; \
 	else \
-		echo "> [ libft ] $(BOLD)$(YELLOW) Nothing to be done with $(RESET)$(WHITE)clean$(RESET)"; \
+		echo "> [ libft     ] $(BOLD)$(YELLOW) Nothing to be done with $(RESET)$(WHITE)clean$(RESET)"; \
 	fi
 
 # Remove everything including the library
 fclean: clean
 	@if [ -f $(NAME) ]; then \
-		echo "> [ libft ] $(YELLOW) Removing $(NAME)...$(RESET)"; \
+		echo "> [ libft     ] $(YELLOW) Removing $(NAME)...$(RESET)"; \
 		rm -rf $(NAME); \
 		rm -f $(MARKER); \
-		echo "            $(YELLOW) $(NAME) removed!$(RESET)"; \
+		echo "                $(YELLOW) $(NAME) removed!$(RESET)"; \
 	else \
-		echo "> [ libft ] $(BOLD)$(YELLOW) Nothing to be done with $(RESET)$(WHITE)fclean$(RESET)"; \
+		echo "> [ libft     ] $(BOLD)$(YELLOW) Nothing to be done with $(RESET)$(WHITE)fclean$(RESET)"; \
 	fi
 
 # Full rebuild from scratch
 re: fclean
-	@echo "> [ libft ] $(BOLD)$(WHITE) Rebuilding from scratch...$(RESET)"
+	@echo "> [ libft     ] $(BOLD)$(WHITE) Rebuilding from scratch...$(RESET)"
 	@$(MAKE) all --no-print-directory
 
 # ========================== BUILD OPTIMIZATION ======================= #

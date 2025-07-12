@@ -6,7 +6,7 @@
 #    By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/03 18:36:06 by jpelline          #+#    #+#              #
-#    Updated: 2025/07/12 13:05:51 by jpelline         ###   ########.fr        #
+#    Updated: 2025/07/12 13:22:41 by jpelline         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,11 +29,13 @@ DEP_DIR			:= $(OBJ_DIR)/.deps
 LIBFT_DIR		:= libft
 
 # Search paths for source files
-BUILTIN_DIRS := $(shell find $(SRC_DIR)/built_in -type d | tr '\n' ':' | sed 's/:$$//')
+BUILTIN_DIRS := $(shell find $(SRC_DIR)/built_in -type d \
+						| tr '\n' ':' | sed 's/:$$//')
 
 VPATH			:= $(SRC_DIR):$(BUILTIN_DIRS):$(SRC_DIR)/execution \
-				:$(SRC_DIR)/here_doc:$(SRC_DIR)/main:$(SRC_DIR)/memory_arena \
-				:$(SRC_DIR)/parsing:$(SRC_DIR)/signal:$(SRC_DIR)/utility \
+				:$(SRC_DIR)/here_doc:$(SRC_DIR)/main \
+				:$(SRC_DIR)/memory_arena:$(SRC_DIR)/parsing \
+				:$(SRC_DIR)/signal:$(SRC_DIR)/utility \
 				:$(SRC_DIR)/vector
 
 # Include paths and libraries
@@ -142,14 +144,20 @@ MARKER_STANDARD		:= .standard_build
 PROGRESS_FILE		:= $(OBJ_DIR)/.progress
 
 # Utility variables for build optimization
-LATEST_SRC			:= $(shell find src -name "*.c" | xargs ls -t 2>/dev/null | head -1)
-OBJ_FILES_EXIST		:= $(shell [ -n "$(wildcard $(OBJ_DIR)/*.o)" ] && echo yes)
+LATEST_SRC			:= $(shell find src -name "*.c" | \
+							xargs ls -t 2>/dev/null | head -1)
+OBJ_FILES_EXIST		:= $(shell [ -n "$(wildcard $(OBJ_DIR)/*.o)" ] \
+							&& echo yes)
 
 # Looking for updated header files
-LATEST_HEADER		:= $(shell find include $(LIBFT_DIR)/include -name "*.h" 2>/dev/null | xargs ls -t 2>/dev/null | head -1)
+LATEST_HEADER		:= $(shell find include $(LIBFT_DIR)/include \
+							-name "*.h" 2>/dev/null | xargs ls -t \
+							2>/dev/null | head -1)
 
 # Looking for updated libft source files
-LATEST_LIBFT_SRC 	:= $(shell find $(LIBFT_DIR)/src -name "*.c" 2>/dev/null | xargs ls -t 2>/dev/null | head -1)
+LATEST_LIBFT_SRC 	:= $(shell find $(LIBFT_DIR)/src -name "*.c" \
+							2>/dev/null | xargs ls -t 2>/dev/null \
+							| head -1)
 
 # Check if binary is up to date
 is_up_to_date = \
@@ -157,7 +165,8 @@ is_up_to_date = \
 	[ "$(PROGRAM_NAME)" -nt $(LATEST_SRC) ] && \
 	[ "$(PROGRAM_NAME)" -nt $(LATEST_HEADER) ] && \
 	[ "$(PROGRAM_NAME)" -nt $(LIBFT) ] && \
-	( [ -z "$(LATEST_LIBFT_SRC)" ] || [ "$(PROGRAM_NAME)" -nt $(LATEST_LIBFT_SRC) ] ) && \
+	( [ -z "$(LATEST_LIBFT_SRC)" ] || [ "$(PROGRAM_NAME)" -nt \
+	$(LATEST_LIBFT_SRC) ] ) && \
 	[ "$(OBJ_FILES_EXIST)" = "yes" ]
 
 # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ BUILD TARGETS ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ #
@@ -228,7 +237,8 @@ clean:
 		rm -rf $(OBJ_DIR); \
 		echo "                $(YELLOW) Object files cleaned!$(RESET)"; \
 	else \
-		echo "> [ minishell ] $(BOLD)$(YELLOW) Nothing to be done with $(RESET)$(WHITE)clean$(RESET)"; \
+		echo "> [ minishell ] $(BOLD)$(YELLOW) Nothing to be done with \
+		$(RESET)$(WHITE)clean$(RESET)"; \
 	fi
 
 # Complete cleanup including executables and external libraries
@@ -239,12 +249,14 @@ fclean: clean
 		rm -f $(MARKER_STANDARD); \
 		echo "                $(YELLOW) $(PROGRAM_NAME) removed!$(RESET)"; \
 	else \
-		echo "> [ minishell ] $(BOLD)$(YELLOW) Nothing to be done with $(RESET)$(WHITE)fclean$(RESET)"; \
+		echo "> [ minishell ] $(BOLD)$(YELLOW) Nothing to be done with \
+		$(RESET)$(BOLD)$(WHITE)fclean$(RESET)"; \
 	fi
 	@if [ -f $(LIBFT) ]; then \
 		$(MAKE) -C $(LIBFT_DIR) fclean --no-print-directory; \
 	else \
-		echo "> [ libft ] $(BOLD)$(YELLOW) Nothing to be done with $(RESET)$(WHITE)fclean$(RESET)"; \
+		echo "> [ libft     ] $(BOLD)$(YELLOW) Nothing to be done with \
+		$(RESET)$(BOLD)$(WHITE)fclean$(RESET)"; \
 	fi
 
 # Full rebuild from clean slate
