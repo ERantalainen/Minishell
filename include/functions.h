@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 19:21:07 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/12 23:49:59 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/12 23:53:28 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,6 +170,7 @@ void		cmd_help(t_vector *tokens, size_t *i, t_token *token, t_cmd *cmd);
 void		child_died(int status);
 void		safe_close(int fd);
 int			safe_dup(int fd);
+int			init_pipedata(t_pipedata *p);
 
 void		exit_arg_checker(char *str);
 char		*echo_part(t_cmd *cmd, int *pos, bool *nl);

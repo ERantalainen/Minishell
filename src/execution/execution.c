@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 16:20:20 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/12 23:43:54 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/12 23:52:36 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	execution(t_cmd **tokens, char **env)
 	if (data->valid != 1)
 		return ;
 	p = arena_malloc(sizeof(t_pipedata));
-	if (init_pipdata(p) < 0)
+	if (init_pipedata(p) < 0)
 		return ;
 	i = 0;
 	while (tokens[i])

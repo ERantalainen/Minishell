@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 20:59:20 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/12 23:43:11 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/12 23:53:51 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	safe_dup(int fd)
 	return (new_fd);
 }
 
-int	init_pipdata(t_pipedata *p)
+int	init_pipedata(t_pipedata *p)
 {
 	p->index = 0;
 	p->pipe_count = 0;
@@ -64,4 +64,5 @@ int	init_pipdata(t_pipedata *p)
 			safe_close(p->stdout_copy);
 		return (-1);
 	}
+	return (0);
 }
