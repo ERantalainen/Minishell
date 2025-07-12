@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_input.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/12 00:14:25 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/12 13:39:59 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ t_vector	*creator(char *s, size_t len, size_t i, t_data *data)
 	t_token	*token;
 	bool	space;
 
+	token = NULL;
 	while (i < len && s[i] && data->valid == 1)
 	{
 		space = 0;

@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 17:07:45 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/11 22:01:35 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/12 13:35:24 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,8 @@ void	child_died(int status)
 		{
 			if (WTERMSIG(status) == SIGQUIT)
 				ft_fprintf(STDERR_FILENO, "%s", QUIT);
-			write(1, "\n", 1);
+			if (write(1, "\n", 1) < 0)
+				perror("write");
 			rl_replace_line("", 0);
 			rl_done = 1;
 		}

@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 20:49:29 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/11 21:58:34 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/12 13:43:03 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int	safe_execve(char *path, char **argv, char **env)
 	return (execve(path, argv, env));
 }
 
-static void	execute_child_builtin(t_cmd **tokens, t_pipedata *p, char **env)
+static void	execute_child_builtin(t_cmd **tokens, t_pipedata *p)
 {
 	if (p->pipe_count > 0)
 	{
@@ -96,7 +96,7 @@ void	child_process(t_cmd **tokens, t_pipedata *p, char **env)
 	close_unused_child_fds(p, &child_stdin, &child_stdout);
 	if (p->is_builtin == true)
 	{
-		execute_child_builtin(tokens, p, env);
+		execute_child_builtin(tokens, p);
 		return ;
 	}
 	close(p->stdin_copy);

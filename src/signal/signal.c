@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 17:07:20 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/11 22:52:19 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/12 13:32:37 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ void	handler(int sig, siginfo_t *a, void *b)
 	if (sig == SIGINT)
 	{
 		replace_export("?=130");
-		write(1, "\n", 1);
+		if (write(1, "\n", 1) < 0)
+			perror("write");
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();

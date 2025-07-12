@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:34:01 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/11 01:24:13 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/12 13:36:30 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,11 @@ void	echo(t_cmd **cmd, int i)
 	bool	newline;
 
 	if (!cmd[i])
-		return ((void)write(1, "\n", 1));
+	{
+		if (write(1, "\n", 1) < 0)
+			perror("write");
+		return ;
+	}
 	newline = 1;
 	command = "";
 	process_echo_arguments(cmd, &command, &newline, &i);

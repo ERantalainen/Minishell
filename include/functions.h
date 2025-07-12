@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   functions.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 19:21:07 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/11 23:56:20 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/12 13:41:52 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void		check_command_syntax(t_vector *commands, t_data *data);
 void		er_pr(char *error, t_data *data, int exit, bool per);
 char		*ambigous(char *s, size_t i);
 void		syntax_help(t_cmd *cmd, t_data *data, int i, t_vector *commands);
-void		check_files(t_cmd *cmd, t_cmd *next, t_data *data);
+void		check_files(t_cmd *cmd, t_cmd *next);
 
 // Built In
 void		echo(t_cmd **cmd, int i);

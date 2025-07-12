@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:34:05 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/10 22:56:27 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/12 13:37:30 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ static void	check_cd_res(char *path, t_data *data)
 	{
 		replace_export(mini_join("OLDPWD=", data->directory));
 		data->directory = (mini_join(data->directory, mini_join("/", path)));
-		chdir(data->directory);
+		if (chdir(data->directory) < 0)
+			perror("chdir");
 		replace_export(mini_join("PWD=", data->directory));
 		replace_export("?=0");
 		return ;

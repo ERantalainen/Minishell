@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 14:52:01 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/11 22:11:59 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/12 13:33:01 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,8 @@ void	fix_lines(char **file, size_t index, char *name, t_data *data)
 		perror("minishell:");
 	while (file[i])
 	{
-		write(fd, file[i], ft_strlen(file[i]));
+		if (write(fd, file[i], ft_strlen(file[i])) < 0)
+			perror("write");
 		i++;
 	}
 	close(fd);

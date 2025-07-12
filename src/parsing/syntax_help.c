@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_help.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 18:40:32 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/11 23:56:46 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/12 13:41:08 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static void	additional_syntax(t_cmd *cmd, t_data *data, size_t i)
 		er_pr(mini_join(TOKEN, "|'"), data, 2, 0);
 }
 
-void	check_files(t_cmd *cmd, t_cmd *next, t_data *data)
+void	check_files(t_cmd *cmd, t_cmd *next)
 {
 	if (cmd->type == INPUT)
 	{

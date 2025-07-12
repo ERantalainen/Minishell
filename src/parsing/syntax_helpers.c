@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_helpers.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 23:47:36 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/11 23:49:49 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/12 13:42:20 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	check_command_syntax(t_vector *commands, t_data *data)
 		cmd = commands->data[i];
 		if (commands->data[i + 1]
 			&& (cmd->next == STRING || cmd->next == FILES))
-			check_files(cmd, commands->data[i + 1], data);
+			check_files(cmd, commands->data[i + 1]);
 		if (data->valid != 1)
 			return ;
 		syntax_help(cmd, data, i, commands);

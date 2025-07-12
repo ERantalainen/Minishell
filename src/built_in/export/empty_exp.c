@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 01:00:50 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/10 22:58:03 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/12 13:34:54 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,10 @@ void	empty_export(void)
 		line = data->exp->data[i];
 		if (ft_strncmp(line, "?=", 2) != 0 && ft_strncmp(line, "_", 1) != 0)
 		{
-			write(STDOUT_FILENO, "declare -x ", 11);
-			write(STDOUT_FILENO, line, key_len(line) + 1);
+			if (write(STDOUT_FILENO, "declare -x ", 11) < 0)
+				perror("write");
+			if (write(STDOUT_FILENO, line, key_len(line) + 1) < 0)
+				perror("write");
 			ft_putchar_fd('"', STDOUT_FILENO);
 			line += key_len(line) + 1;
 			ft_printf("%s\"\n", line);
@@ -103,8 +105,10 @@ void	empty_export_char(char **s)
 		line = s[i];
 		if (ft_strncmp(line, "?=", 2) != 0 && ft_strncmp(line, "_", 1) != 0)
 		{
-			write(STDOUT_FILENO, "declare -x ", 11);
-			write(STDOUT_FILENO, line, key_len(line) + 1);
+			if (write(STDOUT_FILENO, "declare -x ", 11) < 0)
+				perror("write");
+			if (write(STDOUT_FILENO, line, key_len(line) + 1) < 0)
+				perror("write");
 			ft_putchar_fd('"', STDOUT_FILENO);
 			line += key_len(line) + 1;
 			ft_printf("%s\"\n", line);
