@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_helpers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 14:52:01 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/12 23:09:47 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/12 23:56:48 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	fix_lines(char **file, size_t index, char *name, t_data *data)
 
 	fd = data->hdfd[index];
 	i = 0;
-	close(fd);
+	safe_close(fd);
 	fd = open(name, O_WRONLY);
 	if (fd == -1)
 		soft_exit("heredoc:", 1, 1);
@@ -90,7 +90,7 @@ void	fix_lines(char **file, size_t index, char *name, t_data *data)
 			soft_exit("heredoc", 1, 1);
 		i++;
 	}
-	close(fd);
+	safe_close(fd);
 }
 
 char	*mini_substr(char const *s, unsigned int start, size_t len)

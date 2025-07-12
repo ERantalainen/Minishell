@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 17:07:45 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/12 23:50:47 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/12 23:57:04 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	ft_exit(char *s, unsigned char code)
 	while (i < data->fds->count)
 	{
 		fd = (int *)data->fds->data[i];
-		close(*fd);
+		safe_close(*fd);
 		i++;
 	}
 	i = 3;
