@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 17:07:45 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/13 00:04:35 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/13 00:09:31 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,8 @@ void	ft_exit(char *s, unsigned char code)
 		i++;
 	}
 	i = 3;
-	while (i < _SC_OPEN_MAX)
-	{
-		if (close(i++) < 0)
-			break ;
-	}
+	while (i < 1024)
+		close(i++);
 	(void)s;
 	free_arenas();
 	exit(code);
@@ -60,11 +57,8 @@ void	ft_exit_child(char *s, int code)
 	int	i;
 
 	i = 3;
-	while (i < _SC_OPEN_MAX)
-	{
-		if (close(i++) < 0)
-			break ;
-	}
+	while (i < 1024)
+		close(i++);
 	if (s)
 		ft_fprintf(2, "error: %s\n", s);
 	exit(code);
