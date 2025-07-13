@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 02:20:24 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/13 03:18:50 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/13 04:40:28 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,13 @@ static t_cmd	*export_multiword(t_data *data, t_cmd *cmd, int i)
 		||	ft_strlen(cmd->str) == word_len(cmd->str, 0))
 		return (cmd);
 	extra_token = arena_malloc(sizeof(t_cmd));
-	extra_token->space = 1;
+	extra_token->space = 0;
 	extra_token->quoted = 0;
 	extra_token->str = mini_strndup(cmd->str, word_len(cmd->str, 0));	
-	extra_token->type = STRING;
+	extra_token->type = BUILTIN;
 	cmd->str = mini_strdup(cmd->str + word_len(cmd->str, 0) + 1);
+	cmd->space = 1;
+	cmd->type = STRING;
 	add_elem(data->cmds, extra_token);
 	return (extra_token);
 }
