@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 23:29:39 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/13 02:13:52 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/13 17:52:25 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ static void	overflow_error(char *str, int i)
 
 static int	check_for_too_many(void)
 {
-
 	ft_fprintf(2, "minishell: exit: too many arguments\n");
 	replace_export("?=1");
 	return (1);
@@ -35,12 +34,12 @@ static	int	count_args(char	*str)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] && str[i + 1] 
+		if (str[i] && str[i + 1]
 			&& ft_isspace(str[i]) && !ft_isspace(str[i + 1]))
-			{
-				check_for_too_many();
-				return (0);
-			}
+		{
+			check_for_too_many();
+			return (0);
+		}
 		i++;
 	}
 	return (1);
@@ -50,7 +49,7 @@ void	exit_arg_checker(char *str)
 {
 	size_t	i;
 	bool	valid;
-	
+
 	if (!str)
 		return ;
 	i = 5;

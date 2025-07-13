@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 19:21:07 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/13 03:35:59 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/13 17:02:34 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,7 @@ void		reset_sig(void);
 void		here_catcher(void);
 void		handler(int sig, siginfo_t *a, void *b);
 void		heredoc_signal(void);
+char		*here_eof(char *limiter);
 
 // Execution
 void		execution(t_cmd **tokens, char **env);

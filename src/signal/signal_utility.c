@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal_utility.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 22:50:24 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/11 22:52:49 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/13 17:52:16 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,17 @@ void	heredoc_signal(void)
 	sigaction(SIGINT, &s_sig, NULL);
 	rl_event_hook = &check_signal;
 	replace_export("?=130");
+}
+
+char	*here_eof(char *limiter)
+{
+	char	*eof_msg;
+	t_data	*data;
+
+	data = get_data();
+	eof_msg = mini_join(EOF1, ft_itoa(data->line));
+	limiter = mini_join(limiter, "\')");
+	eof_msg = mini_join(eof_msg, EOF2);
+	eof_msg = mini_join(eof_msg, limiter);
+	return (eof_msg);
 }

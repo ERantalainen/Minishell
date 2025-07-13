@@ -3,69 +3,54 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 15:44:11 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/13 16:15:05 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/13 17:46:19 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// Writes to heredoc tmp file until LIMITER is encountered
-char	*here_eof(char *limiter)
+static char	*here_line(char *input)
 {
-	char	*eof_msg;
-	t_data	*data;
+	char	*temp;
 
-	data = get_data();
-	eof_msg = mini_join(EOF1, ft_itoa(data->line));
-	limiter = mini_join(limiter, "\')");
-	eof_msg = mini_join(eof_msg, EOF2);
-	eof_msg = mini_join(eof_msg, limiter);
-	return (eof_msg);
+	if (!isatty(STDIN_FILENO))
+			input = get_next_line(STDIN_FILENO);
+	else
+		input = readline("\1\e[38;5;231m\2❯❯ \1\e[0m\2");
+	if (!input)
+		return (NULL);
+	if (input[ft_strlen(input) - 1] == '\n')
+		temp = mini_strndup(input, ft_strlen(input) - 1);
+	else
+		temp = mini_strdup(input);
+	free(input);
+	return (temp);
 }
 
-static void	write_to_tmpfile(char *limiter, int index)
+static void	write_to_tmpfile(char *limiter, int index, t_data *data)
 {
 	char	*input;
-	char	*temp;
-	t_data	*data;
 
-	limiter = mini_join(limiter, "\n");
-	data = get_data();
+	input = "";
 	while (true)
 	{
-		if (!isatty(STDIN_FILENO))
-			input = get_next_line(STDIN_FILENO);
-		else
-			input = readline("\1\e[38;5;231m\2❯❯ \1\e[0m\2");
+		input = here_line(input);
 		if (g_sig == SIGINT || (!input && isatty(0)))
 		{
 			if (g_sig == SIGINT)
 				data->valid = 0;
 			else if (!input)
 				ft_fprintf(2, "%s\n", here_eof(limiter));
-			if (input)
-				free(input);
-			return ;
-		}
-		if (!input || ft_strcmp(input, limiter) == 0)
-		{
-			if (input)
-				free(input);
 			break ;
 		}
-		if (isatty(STDIN_FILENO))
-		{
-			temp = ft_strjoin(input, "\n");
-			free(input);
-			input = temp;
-		}
+		if (!input || ft_strcmp(input, limiter) == 0)
+			break ;
+		input = mini_join(input, "\n");
 		if (write(data->hdfd[index], input, ft_strlen(input)) < 0)
 			return (free(input), soft_exit("Heredoc input error", 1, 0));
-		if (input)
-			free(input);
 	}
 }
 
@@ -75,7 +60,7 @@ void	here_loop(char *limiter, int index, t_data *data, char *name)
 {
 	add_elem(data->fds, &data->hdfd[index]);
 	heredoc_signal();
-	write_to_tmpfile(limiter, index);
+	write_to_tmpfile(limiter, index, data);
 	catcher();
 	if (g_sig != 0)
 		g_sig = 0;

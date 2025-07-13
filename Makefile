@@ -6,7 +6,7 @@
 #    By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/03 18:36:06 by jpelline          #+#    #+#              #
-#    Updated: 2025/07/13 01:58:43 by erantala         ###   ########.fr        #
+#    Updated: 2025/07/13 16:36:25 by erantala         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -80,7 +80,6 @@ SRCS_BUILTIN := \
 	cd.c \
 	export.c \
 	export_help.c \
-	export_help_extra.c \
 	built_in.c \
 	env.c \
 	unset.c \

@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 01:32:56 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/13 02:09:17 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/13 18:29:35 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,12 @@ static bool	overflow(long long nbr, int neg, int digit, bool *valid)
 		}
 	}
 	if (neg > 0)
+	{
 		if (nbr > (LONG_MAX - digit) / 10)
 		{
 			*valid = false;
 			return (false);
 		}
+	}
 	return (true);
 }

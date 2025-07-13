@@ -6,19 +6,19 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 18:39:57 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/13 03:15:49 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/13 17:51:13 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static t_cmd	*command_checks(t_data *data, t_token *tk, t_cmd *cmd, size_t *i)
+static t_cmd	*command_checks(t_data *dt, t_token *tk, t_cmd *cmd, size_t *i)
 {
-	
-	if (data->last != FILES
-		&& ((((*i == 0) || ((access(tk->s, R_OK | W_OK) != 0 && tk->space == 1))
-					|| data->last == PIPE)) || tk->quoted == 1))
-		return (cmd_help(cmd, i, tk, data));
+	if (dt->last != FILES
+		&& ((((*i == 0) || ((access(tk->s, R_OK | W_OK) != 0
+							&& tk->space == 1))
+					|| dt->last == PIPE)) || tk->quoted == 1))
+		return (cmd_help(cmd, i, tk, dt));
 	else
 	{
 		cmd->type = FILES;
@@ -32,7 +32,7 @@ t_cmd	*make_cmd_str(t_vector *tokens, size_t *i, t_data *data)
 {
 	t_token	*tk;
 	t_cmd	*cmd;
-	
+
 	cmd = arena_malloc(sizeof(t_cmd));
 	tk = tokens->data[(*i)];
 	cmd->type = STRING;

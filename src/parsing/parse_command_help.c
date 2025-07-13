@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 02:20:24 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/13 04:40:28 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/13 17:47:27 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,13 @@ static t_cmd	*export_multiword(t_data *data, t_cmd *cmd, int i)
 {
 	t_cmd	*extra_token;
 
-	if (i != 0 || cmd->type != BUILTIN 
-		||	ft_strlen(cmd->str) == word_len(cmd->str, 0))
+	if (i != 0 || cmd->type != BUILTIN
+		|| ft_strlen(cmd->str) == word_len(cmd->str, 0))
 		return (cmd);
 	extra_token = arena_malloc(sizeof(t_cmd));
 	extra_token->space = 0;
 	extra_token->quoted = 0;
-	extra_token->str = mini_strndup(cmd->str, word_len(cmd->str, 0));	
+	extra_token->str = mini_strndup(cmd->str, word_len(cmd->str, 0));
 	extra_token->type = BUILTIN;
 	cmd->str = mini_strdup(cmd->str + word_len(cmd->str, 0) + 1);
 	cmd->space = 1;
@@ -90,8 +90,8 @@ t_cmd	*cmd_help(t_cmd *cmd, size_t *i, t_token *token, t_data *data)
 	bool	join;
 
 	join = 0;
-	while ((*i) < data->tokens->count && (token->t == STRING 
-		|| token->t == FILES))
+	while ((*i) < data->tokens->count && (token->t == STRING
+			|| token->t == FILES))
 	{
 		if (join == 0)
 			cmd->str = token->s;
