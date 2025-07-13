@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   empty_exp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 01:00:50 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/13 20:31:46 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/13 22:47:28 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	empty_export(void)
 		ln = data->exp->data[i];
 		if (ft_strncmp(ln, "?=", 2) != 0 && ft_strncmp(ln, "_", 1) != 0)
 		{
-			ft_fprintf(0, "declare -x %s", mini_strndup(ln, key_len(ln) + 1));
+			ft_fprintf(1, "declare -x %s", mini_strndup(ln, key_len(ln) + 1));
 			ln += key_len(ln);
 			if (ln[0])
 				ft_printf("\"%s\"\n", ln + 1);
