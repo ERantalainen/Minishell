@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 15:44:11 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/13 02:51:51 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/13 03:49:47 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static void	write_to_tmpfile(char *limiter, int index)
 			input = get_next_line(STDIN_FILENO);
 		else
 			input = readline("\1\e[38;5;231m\2❯❯ \1\e[0m\2");
-		if (g_sig == SIGINT || !input)
+		if (g_sig == SIGINT || (!input && isatty(0)))
 		{
 			if (g_sig == SIGINT)
 				data->valid = 0;
@@ -47,9 +47,10 @@ static void	write_to_tmpfile(char *limiter, int index)
 				ft_fprintf(2, "%s\n", here_eof(limiter));
 			return ;
 		}
-		if (ft_strcmp(input, limiter) == 0)
+		if (input == NULL || ft_strcmp(input, limiter) == 0)
 			break ;
-		input = mini_join(input, "\n");
+		if (isatty(STDIN_FILENO))
+			input = mini_join(input, "\n");
 		if (write(data->hdfd[index], input, ft_strlen(input)) < 0)
 			return (soft_exit("Heredoc input error", 1, 0));
 	}
