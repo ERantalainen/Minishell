@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 21:15:46 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/13 02:01:15 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/13 21:13:10 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,25 +41,28 @@ void	wait_for_children(t_pipedata *p)
 	int	i;
 	int	status;
 
-	status = 0;
 	i = 0;
-	while (i < p->pipe_count + 1)
+	if (p->pids[0])
 	{
-		ignore();
-		if (waitpid(p->pids[i], &status, 0) < 0)
-			ft_exit_child(p, "waitpid", 1);
-		child_died(status);
-		catcher();
-		i++;
+		while (i < p->pipe_count + 1)
+		{
+			ignore();
+			if (waitpid(p->pids[i], &status, 0) < 0)
+				ft_exit_child(p, "waitpid", 1);
+			child_died(status);
+			catcher();
+			i++;
+		}
 	}
-	if (dup2(p->stdin_copy, STDIN_FILENO) < 0)
+	if (dup2(p->stdin_copy, STDIN_FILENO) < 0
+		|| dup2(p->stdout_copy, STDOUT_FILENO) < 0)
 		perror("dup2");
-	safe_close(p->stdin_copy);
-	if (dup2(p->stdout_copy, STDOUT_FILENO) < 0)
-		perror("dup2");
-	safe_close(p->stdout_copy);
-	safe_close(p->infile);
-	safe_close(p->outfile);
+	close(p->stdin_copy);
+	close(p->stdout_copy);
+	if (p->is_builtin == true && p->pipe_count == 0)
+		return ;
+	close(p->infile);
+	close(p->outfile);
 }
 
 void	close_unused_pipes(t_pipedata *p, int i)

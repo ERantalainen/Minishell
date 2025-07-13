@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 20:59:20 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/13 01:11:45 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/13 21:06:24 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,13 @@ int	init_pipedata(t_pipedata *p)
 		|| p->stdin_copy < 0 || p->stdout_copy < 0)
 	{
 		if (p->infile >= 0)
-			safe_close(p->infile);
+			close(p->infile);
 		if (p->outfile >= 0)
-			safe_close(p->outfile);
+			close(p->outfile);
 		if (p->stdin_copy >= 0)
-			safe_close(p->stdin_copy);
+			close(p->stdin_copy);
 		if (p->stdout_copy >= 0)
-			safe_close(p->stdout_copy);
+			close(p->stdout_copy);
 		return (-1);
 	}
 	return (0);

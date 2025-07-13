@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 20:49:29 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/13 02:15:27 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/13 21:02:42 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,13 @@ static void	close_unused_child_fds(t_pipedata *p, int *child_stdin,
 	if (dup2(*child_stdout, STDOUT_FILENO) < 0)
 		perror("dup2");
 	if (*child_stdin != p->infile && *child_stdin != STDIN_FILENO)
-		safe_close(*child_stdin);
+		close(*child_stdin);
 	if (*child_stdout != p->outfile && *child_stdout != STDOUT_FILENO)
-		safe_close(*child_stdout);
+		close(*child_stdout);
 	if (p->infile != STDIN_FILENO)
-		safe_close(p->infile);
+		close(p->infile);
 	if (p->outfile != STDOUT_FILENO)
-		safe_close(p->outfile);
+		close(p->outfile);
 }
 
 static void	setup_read_and_write_ends(t_pipedata *p, int *child_stdin,
@@ -101,8 +101,8 @@ void	child_process(t_cmd **tokens, t_pipedata *p, char **env)
 		execute_child_builtin(tokens, p);
 		return ;
 	}
-	safe_close(p->stdin_copy);
-	safe_close(p->stdout_copy);
+	close(p->stdin_copy);
+	close(p->stdout_copy);
 	path = get_bin_path(mini_strndup(tokens[p->cmd_index]->str,
 				ft_strlen(tokens[p->cmd_index]->str)), env, p);
 	if (access(p->cmd_args[0], X_OK) >= 0

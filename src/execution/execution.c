@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 16:20:20 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/13 02:01:20 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/13 21:02:47 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,7 @@ static void	exec_pipeline(t_cmd **tokens, t_pipedata *p, char **env)
 			close_pipe_pair(p, i - 1);
 		i++;
 	}
-	if (p->pids[0])
-		wait_for_children(p);
+	wait_for_children(p);
 }
 
 void	execution(t_cmd **tokens, char **env)
