@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 19:21:07 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/13 17:02:34 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/13 20:32:19 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ void		count_unset(t_cmd **cmds, int i);
 char		*join_full(t_cmd **cmds, int i);
 char		*exit_join(t_cmd **cmds, int i);
 long		exit_atoi(const char *nptr, bool *valid);
-
 
 // Export
 int			count_export(t_cmd **cmds, int i);

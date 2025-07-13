@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 21:19:17 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/10 22:58:11 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/13 20:30:14 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,24 +23,9 @@ void	env(void)
 	while (i < data->env_vec->count)
 	{
 		line = data->env_vec->data[i];
-		if (ft_strncmp(line, "?=", 2) != 0)
+		if (ft_strncmp(line, "?=", 2) != 0 && ft_strchr(line, '='))
 			printf("%s\n", line);
 		i++;
 	}
 	replace_export("?=0");
-}
-
-void	env_char(char **s)
-{
-	char	*line;
-	size_t	i;
-
-	i = 0;
-	while (s[i])
-	{
-		line = s[i];
-		if (ft_strncmp(line, "?=", 2) != 0)
-			printf("%s\n", line);
-		i++;
-	}
 }

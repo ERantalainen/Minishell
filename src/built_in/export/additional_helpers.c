@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 01:21:51 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/13 16:39:34 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/13 20:24:50 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static bool	export_str(char *s)
 		}
 		i++;
 	}
-	if (s[i] != '=')
+	if (s[i] != '=' && s[i] != 0)
 		return (false);
 	return (true);
 }

@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 15:44:11 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/13 17:46:19 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/13 20:32:28 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static char	*here_line(char *input)
 	char	*temp;
 
 	if (!isatty(STDIN_FILENO))
-			input = get_next_line(STDIN_FILENO);
+		input = get_next_line(STDIN_FILENO);
 	else
 		input = readline("\1\e[38;5;231m\2❯❯ \1\e[0m\2");
 	if (!input)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_helpers.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 15:43:47 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/11 22:11:24 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/13 20:13:50 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ char	*mini_strndup(char *s, size_t n)
 
 	i = 0;
 	dup = arena_malloc(n + 1);
-	while (i < n)
+	while (i < n && s[i])
 	{
 		dup[i] = s[i];
 		i++;

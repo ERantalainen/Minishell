@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   empty_exp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 01:00:50 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/12 13:34:54 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/13 20:31:46 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,26 +15,22 @@
 void	empty_export(void)
 {
 	size_t	i;
-	size_t	pos;
 	t_data	*data;
-	char	*line;
+	char	*ln;
 
 	data = get_data();
 	i = 0;
-	pos = 0;
-	(void)pos;
 	while (i < data->exp->count)
 	{
-		line = data->exp->data[i];
-		if (ft_strncmp(line, "?=", 2) != 0 && ft_strncmp(line, "_", 1) != 0)
+		ln = data->exp->data[i];
+		if (ft_strncmp(ln, "?=", 2) != 0 && ft_strncmp(ln, "_", 1) != 0)
 		{
-			if (write(STDOUT_FILENO, "declare -x ", 11) < 0)
-				perror("write");
-			if (write(STDOUT_FILENO, line, key_len(line) + 1) < 0)
-				perror("write");
-			ft_putchar_fd('"', STDOUT_FILENO);
-			line += key_len(line) + 1;
-			ft_printf("%s\"\n", line);
+			ft_fprintf(0, "declare -x %s", mini_strndup(ln, key_len(ln) + 1));
+			ln += key_len(ln);
+			if (ln[0])
+				ft_printf("\"%s\"\n", ln + 1);
+			else
+				ft_printf("\n");
 		}
 		i++;
 	}
