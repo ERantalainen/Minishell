@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 15:44:11 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/13 20:32:28 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/13 23:32:40 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	here_loop(char *limiter, int index, t_data *data, char *name)
 	if (g_sig != 0)
 		g_sig = 0;
 	if (data->hdfd[index] >= 0)
-		close(data->hdfd[index]);
+		safe_close(&data->hdfd[index]);
 	data->hdfd[index] = open(name, O_RDONLY);
 	if (data->hdfd[index] == -1)
 		soft_exit("heredoc", 1, 1);

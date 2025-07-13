@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 20:49:29 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/13 21:02:42 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/13 23:47:37 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ static void	execute_child_builtin(t_cmd **tokens, t_pipedata *p)
 {
 	if (p->pipe_count > 0)
 	{
-		safe_close(p->stdin_copy);
-		safe_close(p->stdout_copy);
+		safe_close(&p->stdin_copy);
+		safe_close(&p->stdout_copy);
 		build_handler(tokens, p->cmd_index);
 		ft_exit_child(p, NULL, ft_atoi(find_export("?")));
 	}
@@ -42,23 +42,23 @@ static void	close_unused_child_fds(t_pipedata *p, int *child_stdin,
 	while (j < p->pipe_count)
 	{
 		if (p->pipefd[j][READ] != *child_stdin)
-			close(p->pipefd[j][READ]);
+			safe_close(&p->pipefd[j][READ]);
 		if (p->pipefd[j][WRITE] != *child_stdout)
-			close(p->pipefd[j][WRITE]);
+			safe_close(&p->pipefd[j][WRITE]);
 		j++;
 	}
-	if (dup2(*child_stdin, STDIN_FILENO) < 0)
-		perror("dup2");
+	if (dup2(*child_stdin, STDIN_FILENO) < 0 && p->is_child == true)
+		ft_exit_child(p, "dup2", 1);
 	if (dup2(*child_stdout, STDOUT_FILENO) < 0)
-		perror("dup2");
+		ft_exit_child(p, "dup2", 1);
 	if (*child_stdin != p->infile && *child_stdin != STDIN_FILENO)
-		close(*child_stdin);
+		safe_close(&*child_stdin);
 	if (*child_stdout != p->outfile && *child_stdout != STDOUT_FILENO)
-		close(*child_stdout);
+		safe_close(&*child_stdout);
 	if (p->infile != STDIN_FILENO)
-		close(p->infile);
+		safe_close(&p->infile);
 	if (p->outfile != STDOUT_FILENO)
-		close(p->outfile);
+		safe_close(&p->outfile);
 }
 
 static void	setup_read_and_write_ends(t_pipedata *p, int *child_stdin,
@@ -101,8 +101,8 @@ void	child_process(t_cmd **tokens, t_pipedata *p, char **env)
 		execute_child_builtin(tokens, p);
 		return ;
 	}
-	close(p->stdin_copy);
-	close(p->stdout_copy);
+	safe_close(&p->stdin_copy);
+	safe_close(&p->stdout_copy);
 	path = get_bin_path(mini_strndup(tokens[p->cmd_index]->str,
 				ft_strlen(tokens[p->cmd_index]->str)), env, p);
 	if (access(p->cmd_args[0], X_OK) >= 0

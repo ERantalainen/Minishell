@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 16:20:20 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/13 21:02:47 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/13 23:49:28 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,14 @@ void	setup_child(t_cmd **tokens, t_pipedata *p, char **env, int i)
 {
 	t_pipedata	local_p;
 
+	p->is_child = true;
 	p->is_builtin = false;
 	p->pids[i] = fork();
 	if (p->pids[i] < 0)
-		ft_exit_child(p, "fork", 1);
+	{
+		handle_failure(p, "fork");
+		return ;
+	}
 	if (p->pids[i] == 0)
 	{
 		local_p = *p;
@@ -34,16 +38,17 @@ void	setup_child(t_cmd **tokens, t_pipedata *p, char **env, int i)
 
 static void	exec_builtin(t_cmd **tokens, t_pipedata *p, char **env)
 {
+	p->is_child = false;
 	check_for_redirects(tokens, p);
 	if (setup_cmd_to_execute(tokens, p) < 0)
 		return ;
 	child_process(tokens, p, env);
 }
 
-static void	close_pipe_pair(t_pipedata *p, int i)
+void	close_pipe_pair(t_pipedata *p, int i)
 {
-	close(p->pipefd[i][READ]);
-	close(p->pipefd[i][WRITE]);
+	safe_close(&p->pipefd[i][READ]);
+	safe_close(&p->pipefd[i][WRITE]);
 }
 
 static void	exec_pipeline(t_cmd **tokens, t_pipedata *p, char **env)
@@ -56,7 +61,10 @@ static void	exec_pipeline(t_cmd **tokens, t_pipedata *p, char **env)
 	{
 		p->cmd_found = false;
 		if (i < p->pipe_count && pipe(p->pipefd[i]) < 0)
-			perror("pipe");
+		{
+			handle_failure(p, "pipe");
+			return ;
+		}
 		reset_sig();
 		if (p->pipe_count == 0 && check_for_builtin(tokens, p->pipe_count))
 			exec_builtin(tokens, p, env);

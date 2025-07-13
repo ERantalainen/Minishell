@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 20:59:20 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/13 21:06:24 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/13 23:39:14 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@ int	path_exists(void)
 	return (1);
 }
 
-void	safe_close(int fd)
+void	safe_close(int *fd)
 {
-	if (close(fd) < 0)
-		perror("close");
+	close(*fd);
+	*fd = -1;
 }
 
 int	safe_dup(int fd)
@@ -39,6 +39,22 @@ int	safe_dup(int fd)
 		return (-1);
 	}
 	return (new_fd);
+}
+
+void	handle_failure(t_pipedata *p, char *str)
+{
+	if (str)
+		perror(str);
+	if (p->pipe_count > 0)
+		close_pipe_pair(p, p->pipe_index);
+	if (p->infile >= 0)
+		safe_close(&p->infile);
+	if (p->outfile >= 0)
+		safe_close(&p->outfile);
+	if (p->stdin_copy >= 0)
+		safe_close(&p->stdin_copy);
+	if (p->stdout_copy >= 0)
+		safe_close(&p->stdout_copy);
 }
 
 int	init_pipedata(t_pipedata *p)
@@ -55,13 +71,13 @@ int	init_pipedata(t_pipedata *p)
 		|| p->stdin_copy < 0 || p->stdout_copy < 0)
 	{
 		if (p->infile >= 0)
-			close(p->infile);
+			safe_close(&p->infile);
 		if (p->outfile >= 0)
-			close(p->outfile);
+			safe_close(&p->outfile);
 		if (p->stdin_copy >= 0)
-			close(p->stdin_copy);
+			safe_close(&p->stdin_copy);
 		if (p->stdout_copy >= 0)
-			close(p->stdout_copy);
+			safe_close(&p->stdout_copy);
 		return (-1);
 	}
 	return (0);

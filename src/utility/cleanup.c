@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 17:07:45 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/13 02:18:51 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/13 23:47:24 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	clean_heredoc(void)
 	i = 0;
 	while (i < data->heredocs->count)
 	{
-		close(data->hdfd[i]);
+		safe_close(&data->hdfd[i]);
 		if (unlink((char *)data->heredocs->data[i]) == -1)
 			perror("minishell: ");
 		i++;
@@ -41,7 +41,7 @@ void	ft_exit(char *s, unsigned char code)
 	while (i < data->fds->count)
 	{
 		fd = (int *)data->fds->data[i];
-		close(*fd);
+		safe_close(&*fd);
 		i++;
 	}
 	(void)s;
@@ -51,10 +51,14 @@ void	ft_exit(char *s, unsigned char code)
 
 void	ft_exit_child(t_pipedata *p, char *s, int code)
 {
-	close(p->stdin_copy);
-	close(p->stdout_copy);
-	close(p->infile);
-	close(p->outfile);
+	if (p->infile >= 0)
+		safe_close(&p->infile);
+	if (p->outfile >= 0)
+		safe_close(&p->outfile);
+	if (p->stdin_copy >= 0)
+		safe_close(&p->stdin_copy);
+	if (p->stdout_copy >= 0)
+		safe_close(&p->stdout_copy);
 	if (s)
 		ft_fprintf(2, "error: %s\n", s);
 	exit(code);

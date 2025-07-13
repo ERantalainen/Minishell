@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 19:33:55 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/13 21:19:54 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/13 23:43:40 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ typedef struct s_pipedata
 	int			index;
 	bool		is_builtin;
 	bool		cmd_found;
+	bool		is_child;
 }				t_pipedata;
 
 #endif // STRUCTS_H

@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 19:21:07 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/13 21:18:45 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/13 23:49:36 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,11 +166,13 @@ int			setup_cmd_to_execute(t_cmd **tokens, t_pipedata *p);
 int			path_exists(void);
 void		child_process(t_cmd **tokens, t_pipedata *p, char **env);
 void		child_died(int status);
-void		safe_close(int fd);
+void		safe_close(int *fd);
 int			safe_dup(int fd);
 int			init_pipedata(t_pipedata *p);
 int			check_all_redir(char *s, size_t	len);
 void		exit_arg_checker(char *str);
 char		*echo_part(t_cmd *cmd, int *pos, bool *nl);
+void		handle_failure(t_pipedata *p, char *str);
+void		close_pipe_pair(t_pipedata *p, int i);
 
 #endif // FUNCTIONS_H
