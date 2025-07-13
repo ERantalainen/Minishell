@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 23:29:39 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/13 17:52:25 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/13 19:20:06 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,11 @@ void	exit_arg_checker(char *str)
 	if (!str)
 		return ;
 	i = 5;
+	if (ft_strlen(str) > 4 && ft_strcmp(str + i, "") == 0)
+	{
+		ft_fprintf(2, "exit\n");
+		overflow_error(str, i);
+	}
 	if (!str[i])
 		ft_exit("exit", 0);
 	while (str[i] && ft_isspace(str[i]))
