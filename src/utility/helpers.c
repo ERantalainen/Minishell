@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:02:28 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/13 20:07:35 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/13 22:50:28 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ void	init_data(char **env)
 	data->check_build = 1;
 	array_to_vec(data->env_vec, (void **)env);
 	add_elem(data->env_vec, mini_strdup("?=0"));
-	export("OLDPWD");
+	if (ft_strcmp(find_export("OLDPWD"), "") == 0)
+		export("OLDPWD");
 	init_export();
 }
 
