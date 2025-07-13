@@ -3,17 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 19:33:55 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/13 02:30:17 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/13 21:19:54 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCTS_H
 # define STRUCTS_H
-
-# include "libft.h"
 
 enum			e_pipe
 {
@@ -27,13 +25,6 @@ enum			e_open
 	APPEND_CONF = O_WRONLY | O_APPEND | O_CREAT,
 	INPUT_CONF = O_RDONLY
 };
-
-typedef struct s_arena
-{
-	size_t		max;
-	size_t		index;
-	char		data[];
-}				t_arena;
 
 typedef enum e_type
 {
@@ -50,6 +41,13 @@ typedef enum e_type
 	QUOTED,
 	EXPANSION
 }				t_type;
+
+typedef struct s_arena
+{
+	size_t		max;
+	size_t		index;
+	char		data[];
+}				t_arena;
 
 typedef struct s_token
 {

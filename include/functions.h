@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   functions.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 19:21:07 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/13 20:32:19 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/13 21:18:45 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 # define FUNCTIONS_H
 
 # include "structs.h"
-
-t_vector	*next_check(t_vector *commands);
-int			check_all_redir(char *s, size_t	len);
 
 // Tokenizers
 t_token		*create_token(char *s, size_t *i, t_type last, t_data *data);
@@ -172,7 +169,7 @@ void		child_died(int status);
 void		safe_close(int fd);
 int			safe_dup(int fd);
 int			init_pipedata(t_pipedata *p);
-
+int			check_all_redir(char *s, size_t	len);
 void		exit_arg_checker(char *str);
 char		*echo_part(t_cmd *cmd, int *pos, bool *nl);
 
