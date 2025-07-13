@@ -6,22 +6,49 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 02:49:43 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/13 02:51:59 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/13 03:10:32 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static char	*color_path(char *path)
+{
+	char	*result;
+	char	char_str[2];
+	int		i;
+
+	result = mini_strdup("");
+	char_str[1] = '\0';
+	i = 0;
+	while (path[i])
+	{
+		if (path[i] == '/')
+			result = mini_join(result, "\1\e[38;5;231m\2/");
+		else
+		{
+			if (i == 0 || path[i - 1] == '/')
+				result = mini_join(result, "\1\e[38;5;219m\2");
+			char_str[0] = path[i];
+			result = mini_join(result, char_str);
+		}
+		i++;
+	}
+	return (result);
+}
+
 static char	*get_prompt(void)
 {
 	char	*cwd;
+	char	*colored_cwd;
 	char	*prompt;
 	char	*temp;
 	t_data	*data;
 
 	data = get_data();
 	cwd = data->directory;
-	prompt = mini_join("\1\e[38;5;231m\2❯ \1\e[38;5;219m\2", cwd);
+	colored_cwd = color_path(cwd);
+	prompt = mini_join("\1\e[38;5;231m\2❯ ", colored_cwd);
 	temp = prompt;
 	prompt = mini_join(temp, " \1\e[38;5;231m\2❯ \1\e[38;5;156m\2minishell"
 			"\1\e[0m\2\1\e[38;5;231m\2 ❯\1\e[0m\2 ");
