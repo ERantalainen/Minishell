@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 18:46:33 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/11 03:46:45 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/13 02:12:51 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,9 @@
 int	exit_calci(char *cmd)
 {
 	long long	res;
+	bool		empty;
 
-	res = ft_atol(cmd);
+	res = exit_atoi(cmd, &empty);
 	return ((unsigned char)res);
 }
 

@@ -6,28 +6,32 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 13:56:30 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/11 02:03:19 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/13 02:26:17 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	built_in(t_cmd *cmd)
+void	built_in(t_cmd *cmd, int pos)
 {
 	size_t		i;
 	const char	*built[8] = {"echo", "cd", "pwd", "export", "unset", "env",
 		"exit", NULL};
 	size_t		len;
+	char		*compare;
 
 	i = 0;
 	if (cmd->type != STRING && cmd->type != FILES)
 		return ;
+	compare = cmd->str;
+	if (cmd->quoted == 0 && pos == 0)
+		compare = mini_strndup(cmd->str, word_len(cmd->str, 0));
 	while (i < 7)
 	{
 		len = ft_strlen(built[i]);
-		if (len < ft_strlen(cmd->str))
-			len = ft_strlen(cmd->str);
-		if (ft_strncmp(cmd->str, built[i], len) == 0)
+		if (len < ft_strlen(compare))
+			len = ft_strlen(compare);
+		if (ft_strncmp(compare, built[i], len) == 0)
 			cmd->type = BUILTIN;
 		i++;
 	}

@@ -6,31 +6,33 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 18:39:57 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/12 00:14:45 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/13 03:15:49 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	command_checks(t_data *data, t_token *tk, t_cmd *cmd, size_t *i)
+static t_cmd	*command_checks(t_data *data, t_token *tk, t_cmd *cmd, size_t *i)
 {
+	
 	if (data->last != FILES
 		&& ((((*i == 0) || ((access(tk->s, R_OK | W_OK) != 0 && tk->space == 1))
 					|| data->last == PIPE)) || tk->quoted == 1))
-		cmd_help(data->tokens, i, tk, cmd);
+		return (cmd_help(cmd, i, tk, data));
 	else
 	{
 		cmd->type = FILES;
 		cmd->str = tk->s;
 		(*i)++;
 	}
+	return (cmd);
 }
 
 t_cmd	*make_cmd_str(t_vector *tokens, size_t *i, t_data *data)
 {
 	t_token	*tk;
 	t_cmd	*cmd;
-
+	
 	cmd = arena_malloc(sizeof(t_cmd));
 	tk = tokens->data[(*i)];
 	cmd->type = STRING;
@@ -42,12 +44,6 @@ t_cmd	*make_cmd_str(t_vector *tokens, size_t *i, t_data *data)
 		cmd->next = tk->t;
 	else
 		cmd->next = EMPTY;
-	if (data->check_build == 1)
-	{
-		built_in(cmd);
-		if (cmd->type == BUILTIN)
-			data->check_build = 0;
-	}
 	data->last = cmd->type;
 	return (cmd);
 }
@@ -104,7 +100,6 @@ char	*unquoted_expan(char *s, size_t *pos)
 
 t_vector	*create_commands(t_vector *tokens)
 {
-	t_vector	*commands;
 	t_token		*curr;
 	size_t		i;
 	t_data		*data;
@@ -117,16 +112,16 @@ t_vector	*create_commands(t_vector *tokens)
 	}
 	i = 0;
 	data->check_build = 1;
-	commands = new_vector(4);
+	data->cmds = new_vector(4);
 	while (i < data->tokens->count)
 	{
 		curr = tokens->data[i];
 		if (curr->t == STRING || curr->t == FILES)
-			add_elem(commands, make_cmd_str(tokens, &i, data));
+			add_elem(data->cmds, make_cmd_str(tokens, &i, data));
 		else
-			add_elem(commands, make_cmd_spc(tokens, &i, data));
+			add_elem(data->cmds, make_cmd_spc(tokens, &i, data));
 	}
-	next_check(commands);
-	first_trim_check(commands);
-	return (commands);
+	next_check(data->cmds);
+	first_trim_check(data->cmds);
+	return (data->cmds);
 }

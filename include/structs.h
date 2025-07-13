@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 19:33:55 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/11 16:35:57 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/13 02:30:17 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ typedef struct s_data
 	t_vector	*heredocs;
 	t_vector	*fds;
 	t_vector	*tokens;
+	t_vector	*cmds;
 	char		**environ;
 	t_vector	*env_vec;
 	t_vector	*exp;

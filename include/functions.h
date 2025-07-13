@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   functions.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 19:21:07 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/13 02:01:04 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/13 03:35:59 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_token		*check_type(t_token *new, t_data *data, size_t *i, char *s);
 // Command creator
 t_vector	*create_commands(t_vector *tokens);
 void		first_trim_check(t_vector *commands);
-void		cmd_help(t_vector *tks, size_t *i, t_token *tk, t_cmd *cm);
+t_cmd		*cmd_help(t_cmd *cmd, size_t *i, t_token *tk, t_data *data);
 t_cmd		*make_cmd_spc(t_vector *tokens, size_t *i, t_data *data);
 t_cmd		*make_cmd_str(t_vector *tokens, size_t *i, t_data *data);
 
@@ -56,11 +56,13 @@ void		unset(char *key);
 void		cd(t_cmd **cmd, int i);
 void		env(void);
 void		export(char *export);
-void		built_in(t_cmd *cmd);
+void		built_in(t_cmd *cmd, int i);
 void		build_handler(t_cmd **cmds, int i);
 void		count_unset(t_cmd **cmds, int i);
 char		*join_full(t_cmd **cmds, int i);
 char		*exit_join(t_cmd **cmds, int i);
+long		exit_atoi(const char *nptr, bool *valid);
+
 
 // Export
 int			count_export(t_cmd **cmds, int i);
@@ -166,7 +168,6 @@ void		setup_child(t_cmd **tokens, t_pipedata *p, char **env, int i);
 int			setup_cmd_to_execute(t_cmd **tokens, t_pipedata *p);
 int			path_exists(void);
 void		child_process(t_cmd **tokens, t_pipedata *p, char **env);
-void		cmd_help(t_vector *tokens, size_t *i, t_token *token, t_cmd *cmd);
 void		child_died(int status);
 void		safe_close(int fd);
 int			safe_dup(int fd);
