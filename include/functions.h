@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 19:21:07 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/13 23:49:36 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/13 23:56:23 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,7 +161,7 @@ void		open_handler(t_pipedata *p, const char *path);
 void		open_file(t_cmd **tokens, t_pipedata *p, int settings);
 void		check_for_redirects(t_cmd **tokens, t_pipedata *p);
 void		setup_pipes(int in, int out, int close_in, int close_out);
-void		setup_child(t_cmd **tokens, t_pipedata *p, char **env, int i);
+int			setup_child(t_cmd **tokens, t_pipedata *p, char **env, int i);
 int			setup_cmd_to_execute(t_cmd **tokens, t_pipedata *p);
 int			path_exists(void);
 void		child_process(t_cmd **tokens, t_pipedata *p, char **env);

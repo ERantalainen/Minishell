@@ -6,13 +6,13 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 16:20:20 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/13 23:49:28 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/14 00:09:23 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	setup_child(t_cmd **tokens, t_pipedata *p, char **env, int i)
+int	setup_child(t_cmd **tokens, t_pipedata *p, char **env, int i)
 {
 	t_pipedata	local_p;
 
@@ -22,7 +22,7 @@ void	setup_child(t_cmd **tokens, t_pipedata *p, char **env, int i)
 	if (p->pids[i] < 0)
 	{
 		handle_failure(p, "fork");
-		return ;
+		return (-1);
 	}
 	if (p->pids[i] == 0)
 	{
@@ -34,6 +34,7 @@ void	setup_child(t_cmd **tokens, t_pipedata *p, char **env, int i)
 			ft_exit_child(p, NULL, 1);
 		child_process(tokens, &local_p, env);
 	}
+	return (0);
 }
 
 static void	exec_builtin(t_cmd **tokens, t_pipedata *p, char **env)
@@ -69,7 +70,8 @@ static void	exec_pipeline(t_cmd **tokens, t_pipedata *p, char **env)
 		if (p->pipe_count == 0 && check_for_builtin(tokens, p->pipe_count))
 			exec_builtin(tokens, p, env);
 		else
-			setup_child(tokens, p, env, i);
+			if (setup_child(tokens, p, env, i) < 0)
+				return ;
 		if (p->pipe_count > 0)
 			find_next_cmd_index(tokens, p);
 		if (i > 0)
