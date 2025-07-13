@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 02:49:43 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/13 03:10:32 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/13 03:12:02 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,15 +42,13 @@ static char	*get_prompt(void)
 	char	*cwd;
 	char	*colored_cwd;
 	char	*prompt;
-	char	*temp;
 	t_data	*data;
 
 	data = get_data();
 	cwd = data->directory;
 	colored_cwd = color_path(cwd);
 	prompt = mini_join("\1\e[38;5;231m\2❯ ", colored_cwd);
-	temp = prompt;
-	prompt = mini_join(temp, " \1\e[38;5;231m\2❯ \1\e[38;5;156m\2minishell"
+	prompt = mini_join(prompt, " \1\e[38;5;231m\2❯ \1\e[38;5;156m\2minishell"
 			"\1\e[0m\2\1\e[38;5;231m\2 ❯\1\e[0m\2 ");
 	return (prompt);
 }
