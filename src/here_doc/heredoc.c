@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 15:44:11 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/13 03:49:47 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/13 16:15:05 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // Writes to heredoc tmp file until LIMITER is encountered
-
 char	*here_eof(char *limiter)
 {
 	char	*eof_msg;
@@ -30,12 +29,14 @@ char	*here_eof(char *limiter)
 static void	write_to_tmpfile(char *limiter, int index)
 {
 	char	*input;
+	char	*temp;
 	t_data	*data;
 
+	limiter = mini_join(limiter, "\n");
 	data = get_data();
 	while (true)
 	{
-		if (!isatty(0))
+		if (!isatty(STDIN_FILENO))
 			input = get_next_line(STDIN_FILENO);
 		else
 			input = readline("\1\e[38;5;231m\2❯❯ \1\e[0m\2");
@@ -45,21 +46,31 @@ static void	write_to_tmpfile(char *limiter, int index)
 				data->valid = 0;
 			else if (!input)
 				ft_fprintf(2, "%s\n", here_eof(limiter));
+			if (input)
+				free(input);
 			return ;
 		}
-		if (input == NULL || ft_strcmp(input, limiter) == 0)
+		if (!input || ft_strcmp(input, limiter) == 0)
+		{
+			if (input)
+				free(input);
 			break ;
+		}
 		if (isatty(STDIN_FILENO))
-			input = mini_join(input, "\n");
+		{
+			temp = ft_strjoin(input, "\n");
+			free(input);
+			input = temp;
+		}
 		if (write(data->hdfd[index], input, ft_strlen(input)) < 0)
-			return (soft_exit("Heredoc input error", 1, 0));
+			return (free(input), soft_exit("Heredoc input error", 1, 0));
+		if (input)
+			free(input);
 	}
 }
 
 // Heredoc execution, takes the limiter and index of heredoc (if multiple)
-
 // Heredoc loop
-
 void	here_loop(char *limiter, int index, t_data *data, char *name)
 {
 	add_elem(data->fds, &data->hdfd[index]);
