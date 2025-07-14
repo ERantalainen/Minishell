@@ -56,6 +56,8 @@ char	*find_bin_in_path(char **env_paths, char *cmd)
 {
 	char	*current_path;
 	int		i;
+	int		fd;
+	t_stat	st;
 
 	i = 0;
 	while (env_paths[i] != NULL)
@@ -63,16 +65,23 @@ char	*find_bin_in_path(char **env_paths, char *cmd)
 		current_path = mini_join(env_paths[i], cmd);
 		if (access(current_path, X_OK) == -1)
 		{
-			if (open(current_path, O_RDONLY) >= 0)
+			fd = open(current_path, O_RDONLY);
+			if (fd >= 0)
 			{
+				close(fd);
 				ft_fprintf(2, "minishell: %s: Permission denied\n",
 					current_path);
 				break ;
 			}
-			i++;
+		}
+		else if (stat(current_path, &st) == 0)
+		{
+            if (S_ISREG(st.st_mode) && (st.st_mode & (S_IXUSR | S_IXGRP | S_IXOTH)))
+                return (current_path);
 		}
 		else
 			return (current_path);
+		i++;
 	}
 	return (NULL);
 }
@@ -101,10 +110,15 @@ char	*get_bin_path(char *cmd, char **env, t_pipedata *p)
 	char	*temp;
 	char	*path;
 
-	if (path_exists() == -1 && !access(cmd, X_OK))
-		return (mini_strdup(cmd));
+	if (ft_strncmp(cmd, "./", 2) == 0 && access(cmd, X_OK) == 0)
+	{
+		cmd = mini_join(get_pwd(), cmd + 1);
+		return (cmd);
+	}
 	open_handler(p, cmd);
-	if (path_exists() && ft_strncmp(cmd, "/", 1) == 0 && !access(cmd, X_OK))
+	if (access(cmd, X_OK) == 0 && ft_strncmp(cmd, "/", 1) == 0)
+		return (mini_strdup(cmd));
+	if (path_exists() == -1 && access(cmd, X_OK) == 0)
 		return (mini_strdup(cmd));
 	env_paths = parse_paths(env);
 	if (!env_paths)

@@ -15,9 +15,15 @@
 static void	handle_open_error(t_pipedata *p, const char *cmd, const char *path)
 {
 	if (errno == EISDIR && ft_strchr(cmd, '\\'))
+	{
 		ft_fprintf(2, "%s: Is a directory\n", cmd);
+		ft_exit_child(p, NULL, 126);
+	}
 	else if (errno == ENOTDIR)
+	{
 		ft_fprintf(2, "%s: Not a directory\n", cmd);
+		ft_exit_child(p, NULL, 126);
+	}
 	else if (errno == EACCES)
 		ft_fprintf(2, "%s: Permission denied\n", cmd);
 	else if (errno == ENOENT && access(path, X_OK) < 0
@@ -28,7 +34,7 @@ static void	handle_open_error(t_pipedata *p, const char *cmd, const char *path)
 	}
 }
 
-void	open_handler(t_pipedata *p, const char *path)
+int	open_handler(t_pipedata *p, const char *path)
 {
 	t_stat	st;
 	int		fd;
@@ -36,7 +42,7 @@ void	open_handler(t_pipedata *p, const char *path)
 
 	cmd = p->cmd_args[0];
 	if (!cmd)
-		return ;
+		return (-1);
 	if (ft_strcmp(cmd, "..") == 0 || ft_strcmp(cmd, ".") == 0)
 		ft_exit_child(p, mini_join(cmd, CMD), 127);
 	if (stat(cmd, &st) == 0 && S_ISDIR(st.st_mode))
@@ -51,9 +57,13 @@ void	open_handler(t_pipedata *p, const char *path)
 	}
 	fd = open(cmd, O_RDONLY);
 	if (fd < 0)
+	{
 		handle_open_error(p, cmd, path);
+		return (-1);
+	}
 	else
 		safe_close(&fd);
+	return (0);
 }
 
 void	check_open_errno(t_pipedata *p, const char *file)

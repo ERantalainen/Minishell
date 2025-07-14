@@ -157,7 +157,7 @@ void		find_next_cmd_index(t_cmd **tokens, t_pipedata *p);
 void		wait_for_children(t_pipedata *p);
 void		close_unused_pipes(t_pipedata *p, int i);
 void		init_pipes(t_pipedata *p);
-void		open_handler(t_pipedata *p, const char *path);
+int 		open_handler(t_pipedata *p, const char *path);
 void		open_file(t_cmd **tokens, t_pipedata *p, int settings);
 void		check_for_redirects(t_cmd **tokens, t_pipedata *p);
 void		setup_pipes(int in, int out, int close_in, int close_out);
