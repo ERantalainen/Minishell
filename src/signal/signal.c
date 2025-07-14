@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 17:07:20 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/12 13:32:37 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/14 18:05:06 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	ignore(void)
 {
 	struct sigaction	s_sig;
 
-	ft_memset(&s_sig, 0, sizeof(s_sig));
+	ft_memset(&s_sig, 0, sizeof(sigaction));
 	s_sig.sa_handler = SIG_IGN;
 	sigaction(SIGINT, &s_sig, NULL);
 	sigaction(SIGQUIT, &s_sig, NULL);
@@ -60,7 +60,7 @@ void	reset_sig(void)
 {
 	struct sigaction	s_sig;
 
-	ft_memset(&s_sig, 0, sizeof(s_sig));
+	ft_memset(&s_sig, 0, sizeof(sigaction));
 	s_sig.sa_handler = SIG_DFL;
 	sigaction(SIGINT, &s_sig, NULL);
 	sigaction(SIGQUIT, &s_sig, NULL);

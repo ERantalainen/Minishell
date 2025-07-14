@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 22:50:24 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/13 17:52:16 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/14 18:22:54 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	heredoc_signal(void)
 {
 	struct sigaction	s_sig;
 
-	ft_memset(&s_sig, 0, sizeof(s_sig));
+	ft_memset(&s_sig, 0, sizeof(sigaction));
 	s_sig.sa_handler = heredoc_handler;
 	sigaction(SIGINT, &s_sig, NULL);
 	rl_event_hook = &check_signal;

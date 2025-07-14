@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 14:52:01 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/14 15:52:10 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/14 20:19:40 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,12 @@ void	here_check(int fd, char *name, t_data *data, size_t index)
 	while (file[i])
 	{
 		j = 0;
-		while (file[i][j])
+		while (file[i][j] && j < ft_strlen(file[i]))
 		{
 			if (file[i][j] == '$')
 				file[i] = here_expansion(file[i], &j);
-			j++;
+			else
+				j++;
 		}
 		i++;
 	}
@@ -56,20 +57,20 @@ char	*here_expansion(char *ln, size_t *i)
 {
 	char	*expansion;
 	size_t	len;
-	size_t	expan_len;
 
 	expansion = (find_export(mini_strndup((ln + (*i)), key_len(ln + *i))));
 	if (ft_strcmp(expansion, "") == 0)
 	{
+		expansion = mini_strndup(ln, *i);
 		*i += key_len(ln + *i);
-		return (mini_strdup("\n"));
+		ln = mini_join(expansion, ln + *i);
+		return (ln);
 	}
-	len = ft_strlen(ln);
-	expan_len = key_len(ln + *i) + word_len(ln + (*i), 0);
 	expansion = mini_join(mini_strndup(ln, (*i)), expansion);
-	(*i) += expan_len - 1;
-	if ((*i) < len)
-		expansion = mini_join(expansion, ln + (*i));
+	len = ft_strlen(expansion);
+	if ((*i + key_len(ln + *i)) < ft_strlen(ln))
+		expansion = mini_join(expansion, ln + *i + key_len(ln + *i));
+	*i = 0;
 	return (expansion);
 }
 
@@ -81,7 +82,7 @@ void	fix_lines(char **file, size_t index, char *name, t_data *data)
 	fd = data->hdfd[index];
 	i = 0;
 	safe_close(&fd);
-	fd = open(name, O_WRONLY);
+	fd = open(name, O_WRONLY | O_TRUNC);
 	if (fd == -1)
 		soft_exit("heredoc:", 1, 1);
 	while (file[i])

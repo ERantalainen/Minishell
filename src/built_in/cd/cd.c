@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:34:05 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/12 13:37:54 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/14 19:23:19 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,7 @@ static void	check_cd_res(char *path, t_data *data)
 	{
 		replace_export(mini_join("OLDPWD=", data->directory));
 		data->directory = (mini_join(data->directory, mini_join("/", path)));
-		if (chdir(data->directory) < 0)
-			perror("chdir");
+		(void)chdir(data->directory);
 		replace_export(mini_join("PWD=", data->directory));
 		replace_export("?=0");
 		return ;
