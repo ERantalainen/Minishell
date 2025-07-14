@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_token_help.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 02:09:42 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/11 22:10:31 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/14 17:33:23 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,4 +32,24 @@ t_token	*check_type(t_token *new, t_data *data, size_t *i, char *s)
 		&& (s[*i - 1] != '"' && s[*i - 1] != '\''))
 		new->t = HERE_DOC;
 	return (new);
+}
+
+void	first_trim_check(t_vector *commands)
+{
+	t_cmd	*cmd;
+	size_t	i;
+
+	i = 0;
+	cmd = (t_cmd *)commands->data[1];
+	if (!cmd || (cmd->type != STRING && cmd->type != FILES))
+		return ;
+	if (!cmd->quoted)
+	{
+		while (cmd->str[i] && ft_isspace(cmd->str[i]))
+			i++;
+	}
+	else
+		return ;
+	cmd->str += i;
+	commands->data[1] = cmd;
 }

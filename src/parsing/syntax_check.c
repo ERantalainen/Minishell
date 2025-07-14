@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 15:48:23 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/14 15:41:57 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/14 17:33:54 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	check_nexts(t_vector *tokens, t_data *data)
 	size_t	i;
 
 	i = 0;
-	while (i < tokens->count)
+	while (i < tokens->count && data->valid == 1)
 	{
 		curr = tokens->data[i];
 		next = tokens->data[i + 1];
@@ -66,7 +66,6 @@ void	check_nexts(t_vector *tokens, t_data *data)
 		{
 			er_pr(mini_join(TOKEN, "newline\'"), data, 2, 0);
 			data->valid = 0;
-			return ;
 		}
 		if (curr->t == HERE_DOC)
 		{
@@ -74,7 +73,6 @@ void	check_nexts(t_vector *tokens, t_data *data)
 			{
 				er_pr(mini_join(TOKEN, mini_join(next->s, "\'")), data, 2, 0);
 				data->valid = 0;
-				return ;
 			}
 		}
 		i++;

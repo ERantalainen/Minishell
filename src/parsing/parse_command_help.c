@@ -6,31 +6,11 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 02:20:24 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/13 17:47:27 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/14 17:34:09 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	first_trim_check(t_vector *commands)
-{
-	t_cmd	*cmd;
-	size_t	i;
-
-	i = 0;
-	cmd = (t_cmd *)commands->data[1];
-	if (!cmd || (cmd->type != STRING && cmd->type != FILES))
-		return ;
-	if (!cmd->quoted)
-	{
-		while (cmd->str[i] && ft_isspace(cmd->str[i]))
-			i++;
-	}
-	else
-		return ;
-	cmd->str += i;
-	commands->data[1] = cmd;
-}
 
 t_cmd	*make_cmd_spc(t_vector *tokens, size_t *i, t_data *data)
 {
@@ -76,6 +56,35 @@ static t_cmd	*export_multiword(t_data *data, t_cmd *cmd, int i)
 	return (extra_token);
 }
 
+static t_cmd	*split_multi(t_data *data, t_cmd *cmd, size_t *i)
+{
+	t_cmd	*new;
+	char	**split;
+	t_token	*token;
+	size_t	j;
+
+	j = 2;
+	split = mini_split(cmd->str, ' ');
+	if (cmd->quoted == 1 || ft_stralen(split) < 2)
+		return (cmd);
+	token = data->tokens->data[*i + 1];
+	if (token && cmd->str[ft_strlen(cmd->str) - 1] == ' ')
+		token->space = 1;
+	new = arena_malloc(sizeof(t_cmd));
+	new->str = split[0];
+	new->space = cmd->space;
+	new->type = STRING;
+	add_elem(data->cmds, new);
+	cmd->str = split[1];
+	while (split[j])
+	{
+		cmd->str = mini_append(cmd->str, split[j]);
+		j++;
+	}
+	cmd->space = 1;
+	return (cmd);
+}
+
 static	t_cmd	*build_help(size_t *i, t_cmd *cmd, t_data *data)
 {
 	built_in(cmd, *i);
@@ -94,7 +103,10 @@ t_cmd	*cmd_help(t_cmd *cmd, size_t *i, t_token *token, t_data *data)
 			|| token->t == FILES))
 	{
 		if (join == 0)
+		{
 			cmd->str = token->s;
+			cmd = split_multi(data, cmd, i);
+		}
 		else
 			cmd->str = mini_join(cmd->str, token->s);
 		if (data->check_build == 1)
