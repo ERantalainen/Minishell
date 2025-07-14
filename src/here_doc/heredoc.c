@@ -59,6 +59,7 @@ static void	write_to_tmpfile(char *limiter, int index, t_data *data)
 void	here_loop(char *limiter, int index, t_data *data, char *name)
 {
 	add_elem(data->fds, &data->hdfd[index]);
+	add_elem(data->heredocs, name);
 	heredoc_signal();
 	write_to_tmpfile(limiter, index, data);
 	catcher();

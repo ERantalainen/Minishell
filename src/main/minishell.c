@@ -30,8 +30,8 @@ static void	parse_and_execute(t_data *data)
 				check_command_syntax(tokens, data);
 				execution((t_cmd **)tokens->data,
 					vec_to_array(data->env_vec));
-				clean_heredoc();
 			}
+			clean_heredoc();
 		}
 		data->line++;
 	}
