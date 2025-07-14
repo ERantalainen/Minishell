@@ -57,12 +57,8 @@ int	open_handler(t_pipedata *p, const char *path)
 	}
 	fd = open(cmd, O_RDONLY);
 	if (fd < 0)
-	{
-		handle_open_error(p, cmd, path);
-		return (-1);
-	}
-	else
-		safe_close(&fd);
+		return (handle_open_error(p, cmd, path), -1);
+	safe_close(&fd);
 	return (0);
 }
 

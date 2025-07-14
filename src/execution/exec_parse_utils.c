@@ -12,28 +12,6 @@
 
 #include "minishell.h"
 
-char	**get_cmd_args(char *cmd, char *path)
-{
-	char	**args;
-	char	**cmd_args;
-	int		i;
-
-	args = mini_split(cmd, ' ');
-	i = 0;
-	while (args[i])
-		i++;
-	cmd_args = arena_malloc((i + 1) * sizeof(char *));
-	cmd_args[0] = mini_strdup(path);
-	i = 1;
-	while (args[i])
-	{
-		cmd_args[i] = mini_strdup(args[i]);
-		i++;
-	}
-	cmd_args[i] = NULL;
-	return (cmd_args);
-}
-
 static char	**parse_paths(char **env)
 {
 	char	**env_paths;
@@ -52,34 +30,48 @@ static char	**parse_paths(char **env)
 	return (NULL);
 }
 
+static int	check_file_permissions(char *current_path)
+{
+	int		fd;
+	t_stat	st;
+
+	if (access(current_path, X_OK) == -1)
+	{
+		fd = open(current_path, O_RDONLY);
+		if (fd >= 0)
+		{
+			close(fd);
+			ft_fprintf(2, "minishell: %s: Permission denied\n",
+				current_path);
+			return (-1);
+		}
+		return (0);
+	}
+	else if (stat(current_path, &st) == 0)
+	{
+		if (S_ISREG(st.st_mode)
+			&& (st.st_mode & (S_IXUSR | S_IXGRP | S_IXOTH)))
+			return (1);
+		return (0);
+	}
+	else
+		return (1);
+}
+
 char	*find_bin_in_path(char **env_paths, char *cmd)
 {
 	char	*current_path;
 	int		i;
-	int		fd;
-	t_stat	st;
+	int		perm_result;
 
 	i = 0;
 	while (env_paths[i] != NULL)
 	{
 		current_path = mini_join(env_paths[i], cmd);
-		if (access(current_path, X_OK) == -1)
-		{
-			fd = open(current_path, O_RDONLY);
-			if (fd >= 0)
-			{
-				close(fd);
-				ft_fprintf(2, "minishell: %s: Permission denied\n",
-					current_path);
-				break ;
-			}
-		}
-		else if (stat(current_path, &st) == 0)
-		{
-            if (S_ISREG(st.st_mode) && (st.st_mode & (S_IXUSR | S_IXGRP | S_IXOTH)))
-                return (current_path);
-		}
-		else
+		perm_result = check_file_permissions(current_path);
+		if (perm_result == -1)
+			break ;
+		else if (perm_result == 1)
 			return (current_path);
 		i++;
 	}
@@ -111,10 +103,7 @@ char	*get_bin_path(char *cmd, char **env, t_pipedata *p)
 	char	*path;
 
 	if (ft_strncmp(cmd, "./", 2) == 0 && access(cmd, X_OK) == 0)
-	{
-		cmd = mini_join(get_pwd(), cmd + 1);
-		return (cmd);
-	}
+		return (mini_join(get_pwd(), cmd + 1));
 	open_handler(p, cmd);
 	if (access(cmd, X_OK) == 0 && ft_strncmp(cmd, "/", 1) == 0)
 		return (mini_strdup(cmd));

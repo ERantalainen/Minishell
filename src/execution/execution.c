@@ -89,7 +89,7 @@ void	execution(t_cmd **tokens, char **env)
 
 	if ((tokens[0]->type == HERE_DOC && tokens[1]->next == EMPTY)
 		|| (tokens[0]->next == EMPTY && ft_strcmp(tokens[0]->str, "") == 0
-		&& tokens[0]->quoted == false && tokens[0]->space == false))
+			&& tokens[0]->quoted == false && tokens[0]->space == false))
 		return ;
 	data = get_data();
 	if (data->valid != 1)

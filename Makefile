@@ -111,6 +111,7 @@ SRCS_EXEC := \
 	execution.c \
 	exec_utility.c \
 	exec_utility_extra.c \
+	exec_parse_cmd.c \
 	file_handling.c \
 	child.c \
 	parsing.c

@@ -108,7 +108,8 @@ void	child_process(t_cmd **tokens, t_pipedata *p, char **env)
 	safe_close(&p->stdout_copy);
 	path = get_bin_path(mini_strndup(tokens[p->cmd_index]->str,
 				ft_strlen(tokens[p->cmd_index]->str)), env, p);
-	if (access(p->cmd_args[0], X_OK) >= 0 && ft_strncmp(p->cmd_args[0], "/", 1) == 0)
+	if (access(p->cmd_args[0], X_OK) >= 0
+		&& ft_strncmp(p->cmd_args[0], "/", 1) == 0)
 		if (safe_execve(p, p->cmd_args[0], p->cmd_args, env) < 0)
 			ft_exit_child(p, NULL, 1);
 	if (safe_execve(p, path, p->cmd_args, env) < 0 && path_exists() == 1)
