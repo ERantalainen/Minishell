@@ -121,6 +121,7 @@ typedef struct s_pipedata
 	bool		is_builtin;
 	bool		cmd_found;
 	bool		is_child;
+	bool		has_out_redirect;
 }				t_pipedata;
 
 #endif // STRUCTS_H

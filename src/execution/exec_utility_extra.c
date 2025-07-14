@@ -68,6 +68,7 @@ int	init_pipedata(t_pipedata *p)
 	p->outfile = safe_dup(STDOUT_FILENO);
 	p->stdin_copy = safe_dup(STDIN_FILENO);
 	p->stdout_copy = safe_dup(STDOUT_FILENO);
+	p->has_out_redirect = false;
 	if (p->infile < 0 || p->outfile < 0
 		|| p->stdin_copy < 0 || p->stdout_copy < 0)
 	{

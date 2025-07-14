@@ -74,7 +74,10 @@ static void	setup_read_and_write_ends(t_pipedata *p, int *child_stdin,
 	else if (p->pipe_index == 0)
 	{
 		*child_stdin = p->infile;
-		*child_stdout = p->pipefd[p->pipe_index][WRITE];
+		if (p->has_out_redirect)
+			*child_stdout = p->outfile;
+		else
+			*child_stdout = p->pipefd[p->pipe_index][WRITE];
 	}
 	else if (p->pipe_index == p->pipe_count)
 	{

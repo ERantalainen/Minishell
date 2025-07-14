@@ -105,6 +105,7 @@ void	open_file(t_cmd **tokens, t_pipedata *p, int settings)
 		p->outfile = open(tokens[p->index + 1]->str, settings, 0644);
 		if (p->outfile < 0)
 			check_open_errno(p, tokens[p->index + 1]->str);
+		p->has_out_redirect = true;
 	}
 }
 
