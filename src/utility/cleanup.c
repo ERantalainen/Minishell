@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 17:07:45 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/13 23:47:24 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/14 20:35:54 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ void	ft_exit(char *s, unsigned char code)
 		i++;
 	}
 	(void)s;
+	// if (s)
+	// 	ft_fprintf(STDOUT_FILENO, "%s\n", s);
 	free_arenas();
 	exit(code);
 }
