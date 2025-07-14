@@ -18,7 +18,7 @@ int	setup_child(t_cmd **tokens, t_pipedata *p, char **env, int i)
 
 	p->is_child = true;
 	p->is_builtin = false;
-	p->is_out_redirect = false;
+	p->has_out_redirect = false;
 	p->pids[i] = fork();
 	if (p->pids[i] < 0)
 	{
