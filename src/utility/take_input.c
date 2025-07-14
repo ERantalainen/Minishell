@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   take_input.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 02:49:43 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/13 03:12:02 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/14 16:18:54 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int	check_quotes(char *s)
 				i++;
 			if (!s[i])
 			{
-				ft_fprintf(2, "Syntax error unclosed quotes\n");
+				ft_fprintf(2, "minishell: error unclosed quotes\n");
 				return (1);
 			}
 		}
