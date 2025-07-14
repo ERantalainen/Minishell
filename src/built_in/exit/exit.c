@@ -15,6 +15,7 @@
 static void	overflow_error(char *str, int i)
 {
 	str += i;
+	ft_fprintf(2, "exit\n");
 	ft_fprintf(2, mini_join(mini_join(mini_join(MS, "exit: "),
 				mini_strndup(str, word_len(str, 0))), NMARG));
 	ft_exit("exit", 2);
@@ -30,14 +31,21 @@ static int	check_for_too_many(void)
 static	int	count_args(char	*str)
 {
 	size_t	i;
+	bool	alpha;
 
+	alpha = false;
 	i = 0;
 	while (str[i])
 	{
+		if (alpha == false && ft_isalpha(str[i]))
+			alpha = true;
 		if (str[i] && str[i + 1]
 			&& ft_isspace(str[i]) && !ft_isspace(str[i + 1]))
 		{
-			check_for_too_many();
+			if (alpha == false)
+				check_for_too_many();
+			else
+				overflow_error(str, 0);
 			return (0);
 		}
 		i++;
@@ -54,10 +62,7 @@ void	exit_arg_checker(char *str)
 		return ;
 	i = 5;
 	if (ft_strlen(str) > 4 && ft_strcmp(str + i, "") == 0)
-	{
-		ft_fprintf(2, "exit\n");
 		overflow_error(str, i);
-	}
 	if (!str[i])
 		ft_exit("exit", 0);
 	while (str[i] && ft_isspace(str[i]))
