@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   functions.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 19:21:07 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/13 23:56:23 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/14 15:41:48 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void		check_repeat(t_vector *tokens);
 void		check_command_syntax(t_vector *commands, t_data *data);
 void		er_pr(char *error, t_data *data, int exit, bool per);
 char		*ambigous(char *s, size_t i);
-void		syntax_help(t_cmd *cmd, t_data *data, int i, t_vector *commands);
+int			syntax_help(t_cmd *cmd, t_data *data, int i, t_vector *commands);
 void		check_files(t_cmd *cmd, t_cmd *next);
 
 // Built In
@@ -136,7 +136,7 @@ void		fix_lines(char **file, size_t i, char *name, t_data *data);
 char		*here_doc(char *limiter, int index, t_type type);
 char		*name_join(char const *s1, char const *s2);
 void		here_two(t_vector *tokens, int count, t_data *data);
-int			here_count(t_vector *tokens, t_data *data);
+int			here_count(t_vector *tokens);
 
 // Signal handling
 void		catcher(void);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_helpers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 14:52:01 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/13 23:33:11 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/14 15:52:10 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ char	*here_expansion(char *ln, size_t *i)
 	if (ft_strcmp(expansion, "") == 0)
 	{
 		*i += key_len(ln + *i);
-		return (mini_strdup(""));
+		return (mini_strdup("\n"));
 	}
 	len = ft_strlen(ln);
 	expan_len = key_len(ln + *i) + word_len(ln + (*i), 0);

@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 18:39:57 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/13 17:51:13 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/14 16:12:34 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,19 +52,17 @@ t_cmd	*make_cmd_str(t_vector *tokens, size_t *i, t_data *data)
 static char	*unquoted_expan_help(char *token, size_t *pos,
 	char *s, bool space)
 {
-	int		len;
 	char	*res;
 	int		i;
 
 	i = 0;
 	res = "";
-	len = ft_strlen(token);
 	if (ft_strcmp(token, "") == 0)
 	{
 		*pos += key_len(s);
 		return ("");
 	}
-	while (token[i] && i < len)
+	while (token[i])
 	{
 		if (!ft_isspace(token[i]) || space == 0)
 			res = mini_join(res, mini_strndup(token + i, 1));
@@ -74,6 +72,8 @@ static char	*unquoted_expan_help(char *token, size_t *pos,
 			space = 0;
 		i++;
 	}
+	if (res[i - 1] == ' ')
+		res = mini_strndup(res, i - 1);
 	*pos += key_len(s);
 	return (res);
 }

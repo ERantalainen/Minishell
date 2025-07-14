@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_help.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 18:40:32 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/12 13:41:08 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/14 15:32:44 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,16 +62,21 @@ void	check_files(t_cmd *cmd, t_cmd *next)
 	}
 }
 
-void	syntax_help(t_cmd *cmd, t_data *data, int i, t_vector *commands)
+int	syntax_help(t_cmd *cmd, t_data *data, int i, t_vector *commands)
 {
 	input_syntax(cmd, data);
 	output_syntax(cmd, data);
 	additional_syntax(cmd, data, i);
 	if (data->valid == -10)
+	{
 		ft_fprintf(2, "%s'\n", mini_join(TOKEN, "newline"));
+		return (-1);
+	}
 	else if (data->valid != 1 && data->valid != 0 && commands->data[i + 1])
 	{
 		cmd = commands->data[i + 1];
 		ft_fprintf(2, "%s'\n", mini_join(TOKEN, cmd->str));
+		return (-1);
 	}
+	return (0);
 }
