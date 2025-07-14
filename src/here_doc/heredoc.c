@@ -22,7 +22,7 @@ static char	*here_line(char *input)
 		input = readline("\1\e[38;5;231m\2❯❯ \1\e[0m\2");
 	if (!input)
 		return (NULL);
-	if (input[ft_strlen(input) - 1] == '\n')
+	if (input[0] && input[ft_strlen(input) - 1] == '\n')
 		temp = mini_strndup(input, ft_strlen(input) - 1);
 	else
 		temp = mini_strdup(input);

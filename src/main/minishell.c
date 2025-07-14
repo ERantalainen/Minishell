@@ -28,6 +28,12 @@ static void	parse_and_execute(t_data *data)
 			if (data->valid == 1 && tokens)
 			{
 				check_command_syntax(tokens, data);
+				for (size_t i = 0; i < tokens->count; i++)
+				{
+					t_cmd *cmd = tokens->data[i];
+					printf("%zu: %s, %d, %d, Space: %d Quote: %d\n", i,
+						cmd->str, cmd->type, cmd->next, cmd->space, cmd->quoted);
+				}
 				execution((t_cmd **)tokens->data,
 					vec_to_array(data->env_vec));
 				clean_heredoc();
