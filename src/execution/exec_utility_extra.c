@@ -24,7 +24,8 @@ int	path_exists(void)
 
 void	safe_close(int *fd)
 {
-	close(*fd);
+	if (*fd != -1)
+		close(*fd);
 	*fd = -1;
 }
 
