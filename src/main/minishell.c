@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 18:29:23 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/14 20:36:07 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/15 05:28:13 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ static void	parse_and_execute(t_data *data)
 					vec_to_array(data->env_vec));
 			}
 			clean_heredoc();
-		}
 		data->line++;
+		}
 	}
 }
 

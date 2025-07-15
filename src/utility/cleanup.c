@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 17:07:45 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/14 20:35:54 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/15 03:40:25 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ void	clean_heredoc(void)
 	while (i < data->heredocs->count)
 	{
 		safe_close(&data->hdfd[i]);
-		if (unlink((char *)data->heredocs->data[i]) == -1)
-			perror("minishell: ");
+		unlink((char *)data->heredocs->data[i]);
+		data->hdfd[i] = -1;
 		i++;
 	}
 	data->heredocs = new_vector(2);

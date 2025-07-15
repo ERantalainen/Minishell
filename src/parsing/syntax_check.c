@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 15:48:23 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/14 17:33:54 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/15 01:59:35 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,6 @@ int	check_heredoc(t_vector *tokens)
 int	here_count(t_vector *tokens)
 {
 	t_token	*curr;
-	t_token	*next;
 	size_t	i;
 	size_t	count;
 
@@ -120,7 +119,6 @@ int	here_count(t_vector *tokens)
 	while (i < tokens->count - 1)
 	{
 		curr = tokens->data[i];
-		next = tokens->data[i + 1];
 		if (curr->t == HERE_DOC)
 			count++;
 		i++;

@@ -6,92 +6,60 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 23:39:37 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/14 16:04:18 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/15 05:25:58 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	valid_option(char *s)
+static int	valid_option(char *s, bool quoted, bool *nl)
 {
 	int	i;
 
 	i = 0;
-	if (s[i] != '-')
+	if (!s || !s[i] || s[i] != '-')
 		return (-1);
 	i++;
 	while (s[i] && s[i] == 'n')
 		i++;
-	if (s[i] && s[i] != 'n')
+	if (s[i] && s[i] != 'n' && quoted)
 		return (-1);
-	else
-		return (i);
-}
-
-static void	options(char *command, int *i, bool *nl)
-{
-	char	*check_option;
-	size_t	j;
-
-	j = 0;
-	if ((command[*i] == '-' && command[*i + 1] == 'n'))
+	else if (s[i] && (s[i] != 'n' || ft_isspace(s[i])))
 	{
-		while (1 && command[*i + j])
-		{
-			check_option = mini_strndup(command + *i + j,
-					ft_strlen(command + *i + j));
-			if (valid_option(check_option) == -1)
-				break ;
-			else
-				*i += word_len(command + *i, 0) + (j - *i);
-			j = *i;
-			*nl = 0;
-			while (ft_isspace(command[j]))
-				j++;
-		}
-	}
-}
-
-static int	check_non_quoted_string(t_cmd *cmd)
-{
-	int		i;
-	int		total;
-	char	**split;
-
-	split = mini_split(cmd->str, ' ');
-	if (ft_stralen(split) < 2)
-		return (0);
-	i = 0;
-	total = 0;
-	while (split[i])
-	{
-		if (valid_option(split[i]) == -1)
-			break ;
-		else
+		while (s[i] && ft_isspace(s[i]))
 			i++;
+		if (s[i])
+			return (-1);
 	}
-	while (i - 1 >= 0)
-	{
-		total += ft_strlen(split[i - 1]);
-		if ((i - 1) % 2 == 0)
-			total++;
-		i--;
-	}
-	return (total);
+	*nl = false;
+	return (i);
 }
 
-char	*echo_part(t_cmd *cmd, int *pos, bool *nl)
+int	echo_part(t_cmd **c, int *pos, bool *nl, bool qt)
 {
 	char	*command;
 
-	if (cmd->quoted == 0)
-		cmd->str += check_non_quoted_string(cmd);
-	command = cmd->str;
-	while (command[*pos] && !cmd->quoted && ft_isspace(command[*pos]))
+	qt = c[*pos]->quoted;
+	if (c[*pos]->space)
+	{
+		command = c[*pos]->str;
 		(*pos)++;
-	options(command, pos, nl);
-	if (!command[*pos] && cmd->space == 0)
-		return ("");
+	}
 	else
-		return (mini_strdup(command += *pos));
+	{
+		command = "";
+		while (c[*pos] && (c[*pos]->type == FILES || c[*pos]->type == STRING))
+		{
+			if (c[*pos]->quoted)
+				qt = 1;
+			if (!c[*pos]->space)
+			{
+				command = mini_join(command, c[*pos]->str);
+				(*pos)++;
+			}
+			else
+				break ;
+		}
+	}
+	return (valid_option(command, qt, nl));
 }

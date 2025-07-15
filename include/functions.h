@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 19:21:07 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/14 15:41:48 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/15 05:07:45 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,7 +171,7 @@ int			safe_dup(int fd);
 int			init_pipedata(t_pipedata *p);
 int			check_all_redir(char *s, size_t len);
 void		exit_arg_checker(char *str);
-char		*echo_part(t_cmd *cmd, int *pos, bool *nl);
+int			echo_part(t_cmd **cmd, int *pos, bool *nl, bool qt);
 void		handle_failure(t_pipedata *p, char *str);
 void		close_pipe_pair(t_pipedata *p, int i);
 

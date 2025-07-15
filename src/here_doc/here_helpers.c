@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 14:52:01 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/14 20:19:40 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/15 01:58:42 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ void	here_check(int fd, char *name, t_data *data, size_t index)
 char	*here_expansion(char *ln, size_t *i)
 {
 	char	*expansion;
-	size_t	len;
 
 	expansion = (find_export(mini_strndup((ln + (*i)), key_len(ln + *i))));
 	if (ft_strcmp(expansion, "") == 0)
@@ -67,7 +66,6 @@ char	*here_expansion(char *ln, size_t *i)
 		return (ln);
 	}
 	expansion = mini_join(mini_strndup(ln, (*i)), expansion);
-	len = ft_strlen(expansion);
 	if ((*i + key_len(ln + *i)) < ft_strlen(ln))
 		expansion = mini_join(expansion, ln + *i + key_len(ln + *i));
 	*i = 0;
