@@ -37,7 +37,7 @@ void	built_in(t_cmd *cmd, int pos)
 	}
 }
 
-void	build_handler(t_cmd **cmds, int i)
+void	build_handler(t_pipedata *p, t_cmd **cmds, int i)
 {
 	while (cmds[i])
 	{
@@ -46,7 +46,7 @@ void	build_handler(t_cmd **cmds, int i)
 			if (ft_strncmp("echo", cmds[i]->str, 4) == 0)
 				echo(cmds, i + 1);
 			if (ft_strncmp("exit", cmds[i]->str, 4) == 0)
-				exit_arg_checker(exit_join(cmds, i));
+				exit_arg_checker(exit_join(cmds, i), p);
 			if (ft_strncmp("cd", cmds[i]->str, 2) == 0)
 				cd(cmds, i);
 			if (ft_strncmp("pwd", cmds[i]->str, 3) == 0)
