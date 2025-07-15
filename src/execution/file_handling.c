@@ -25,7 +25,10 @@ static void	handle_open_error(t_pipedata *p, const char *cmd, const char *path)
 		ft_exit_child(p, NULL, 126);
 	}
 	else if (errno == EACCES)
+	{
 		ft_fprintf(2, "%s: Permission denied\n", cmd);
+		ft_exit_child(p, NULL, 126);
+	}
 	else if (errno == ENOENT && access(path, X_OK) < 0
 		&& (ft_strchr(cmd, '/')))
 	{
@@ -38,26 +41,27 @@ int	open_handler(t_pipedata *p, const char *path)
 {
 	t_stat	st;
 	int		fd;
-	char	*cmd;
 
-	cmd = p->cmd_args[0];
-	if (!cmd)
+	if (!p->cmd_args[0])
 		return (-1);
-	if (ft_strcmp(cmd, "..") == 0 || ft_strcmp(cmd, ".") == 0)
-		ft_exit_child(p, mini_join(cmd, CMD), 127);
-	if (stat(cmd, &st) == 0 && S_ISDIR(st.st_mode))
+	if (ft_strcmp(p->cmd_args[0], "..") == 0 || ft_strcmp(p->cmd_args[0], ".") == 0)
+		ft_exit_child(p, mini_join(p->cmd_args[0], CMD), 127);
+	if (stat(p->cmd_args[0], &st) == 0 && S_ISDIR(st.st_mode))
 	{
-		if (ft_strchr(cmd, '/'))
+		if (ft_strchr(p->cmd_args[0], '/'))
 		{
-			ft_fprintf(2, "%s: Is a directory\n", cmd);
+			ft_fprintf(2, "%s: Is a directory\n", p->cmd_args[0]);
 			ft_exit_child(p, NULL, 126);
 		}
-		ft_fprintf(2, "%s: command not found\n", cmd);
+		ft_fprintf(2, "%s: command not found\n", p->cmd_args[0]);
 		ft_exit_child(p, NULL, 127);
 	}
-	fd = open(cmd, O_RDONLY);
+	fd = open(p->cmd_args[0], O_RDONLY);
 	if (fd < 0)
-		return (handle_open_error(p, cmd, path), -1);
+		return (handle_open_error(p, p->cmd_args[0], path), -1);
+	else if (fd >= 0)
+		if (ft_strncmp(p->cmd_args[0], "./", 2) == 0 && access(p->cmd_args[0], X_OK) != 0)
+			handle_open_error(p, p->cmd_args[0], path);
 	safe_close(&fd);
 	return (0);
 }
