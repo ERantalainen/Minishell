@@ -27,10 +27,10 @@ static void	execute_child_builtin(t_cmd **tokens, t_pipedata *p)
 	{
 		safe_close(&p->stdin_copy);
 		safe_close(&p->stdout_copy);
-		build_handler(tokens, p->cmd_index);
+		build_handler(p, tokens, p->cmd_index);
 		ft_exit_child(p, NULL, ft_atoi(find_export("?")));
 	}
-	build_handler(tokens, 0);
+	build_handler(p, tokens, 0);
 }
 
 static void	close_unused_child_fds(t_pipedata *p, int *child_stdin,

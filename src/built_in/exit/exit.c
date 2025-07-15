@@ -53,11 +53,13 @@ static	int	count_args(char	*str)
 	return (1);
 }
 
-void	exit_arg_checker(char *str)
+void	exit_arg_checker(char *str, t_pipedata *p)
 {
 	size_t	i;
 	bool	valid;
 
+	safe_close(&p->stdin_copy);
+	safe_close(&p->stdout_copy);
 	if (!str)
 		return ;
 	i = 5;
