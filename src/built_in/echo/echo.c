@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:34:01 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/15 12:13:27 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/15 12:37:52 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,38 +27,39 @@ static size_t	skip_redirects(t_cmd **tokens, size_t tok_i)
 	return (tok_i);
 }
 
-static char	*process_echo_arguments(t_cmd **c,
-					bool *newline, int *i, char *part)
+static char	*build_echo_string(t_cmd **c, int *i, char *part)
 {
-	int		pos;
-	bool	quoted;
+	while (c[*i] && (c[*i]->type == FILES || c[*i]->type == STRING))
+	{
+		if (c[*i]->space)
+			part = mini_append(part, c[*i]->str);
+		else
+			part = mini_join(part, c[*i]->str);
+		(*i)++;
+	}
+	*i = skip_redirects(c, *i);
+	if (c[*i] && (c[*i]->type == FILES || c[*i]->type == STRING))
+		part = mini_append(part, "");
+	return (part);
+}
+
+static char	*process_echo_arguments(t_cmd **c, bool *nl, int *i, char *part)
+{
+	int	pos;
 
 	pos = *i;
 	part = "";
 	while (c[*i] && (c[*i]->type == FILES || c[*i]->type == STRING))
 	{
 		c[*i]->space = 0;
-		quoted = 0;
-		if (echo_part(c, &pos, newline, quoted) == -1)
+		if (echo_part(c, &pos, nl, 0) == -1)
 		{
-			while (c[*i] && (c[*i]->type == FILES || c[*i]->type == STRING))
-			{
-				if (c[*i]->space)
-					part = mini_append(part, c[*i]->str);
-				else
-					part = mini_join(part, c[*i]->str);
-				(*i)++;
-			}
-			(*i) = skip_redirects(c, *i);
+			part = build_echo_string(c, i, part);
 			if (c[*i] && (c[*i]->type == FILES || c[*i]->type == STRING))
-			{
-				part = mini_append(part, "");
 				continue ;
-			}
-			else
-				break ;
+			break ;
 		}
-		(*i) = pos;
+		*i = pos;
 	}
 	return (part);
 }
