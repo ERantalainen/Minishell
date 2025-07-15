@@ -35,6 +35,7 @@ int	setup_child(t_cmd **tokens, t_pipedata *p, char **env, int i)
 			ft_exit_child(p, NULL, 1);
 		child_process(tokens, &local_p, env);
 	}
+	ignore();
 	return (0);
 }
 
