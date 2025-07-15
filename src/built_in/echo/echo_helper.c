@@ -19,6 +19,8 @@ static int	valid_option(char *s, bool quoted, bool *nl)
 	i = 0;
 	if (!s || !s[i] || s[i] != '-')
 		return (-1);
+	else if (!s[i + 1] && s[i] == '-')
+		return (-1);
 	i++;
 	while (s[i] && s[i] == 'n')
 		i++;
