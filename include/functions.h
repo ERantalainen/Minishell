@@ -73,7 +73,7 @@ char		**export_to_arr(char *key, char **exports);
 char		**count_export_child(t_cmd **cmds, int i, char **envi);
 char		*build_exports(t_cmd **cmds, int *i);
 int			check_export(char **exports);
-void		export_addition(char	*command);
+void		export_addition(char *command);
 
 // Memory Arena
 t_arena		*init_arena(size_t size);
@@ -175,5 +175,6 @@ void		exit_arg_checker(char *str, t_pipedata *p);
 int			echo_part(t_cmd **cmd, int *pos, bool *nl, bool qt);
 void		handle_failure(t_pipedata *p, char *str);
 void		close_pipe_pair(t_pipedata *p, int i);
+size_t		skip_redirects(t_cmd **tokens, size_t tok_i);
 
 #endif // FUNCTIONS_H

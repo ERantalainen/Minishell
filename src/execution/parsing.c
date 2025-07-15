@@ -59,21 +59,6 @@ static size_t	get_cmd_array_size(t_cmd **tokens, t_pipedata *p, char **split)
 	return (total_args);
 }
 
-static size_t	skip_redirects(t_cmd **tokens, size_t tok_i)
-{
-	while (tokens[tok_i] && (tokens[tok_i]->type == OUTPUT
-			|| tokens[tok_i]->type == APPEND))
-	{
-		tok_i++;
-		if (tokens[tok_i] && (tokens[tok_i]->type == FILES))
-		{
-			tok_i++;
-			break ;
-		}
-	}
-	return (tok_i);
-}
-
 static void	check_and_add_arguments(t_cmd **tokens, t_pipedata *p,
 	size_t *arg_i,
 		size_t *tok_i)

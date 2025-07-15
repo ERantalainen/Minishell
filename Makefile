@@ -113,7 +113,9 @@ SRCS_EXEC := \
 	exec_utility_extra.c \
 	exec_parse_cmd.c \
 	file_handling.c \
+	file_utility.c \
 	child.c \
+	parsing_utility.c \
 	parsing.c
 
 # Main program and entry point

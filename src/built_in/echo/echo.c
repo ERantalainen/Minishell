@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static size_t	skip_redirects(t_cmd **tokens, size_t tok_i)
+static size_t	skip_redirects_echo(t_cmd **tokens, size_t tok_i)
 {
 	if (tokens[tok_i] && (tokens[tok_i]->type == OUTPUT
 			|| tokens[tok_i]->type == APPEND))
@@ -37,7 +37,7 @@ static char	*build_echo_string(t_cmd **c, int *i, char *part)
 			part = mini_join(part, c[*i]->str);
 		(*i)++;
 	}
-	*i = skip_redirects(c, *i);
+	*i = skip_redirects_echo(c, *i);
 	if (c[*i] && (c[*i]->type == FILES || c[*i]->type == STRING))
 		part = mini_append(part, "");
 	return (part);
