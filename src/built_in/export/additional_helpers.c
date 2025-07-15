@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 01:21:51 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/13 20:24:50 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/15 15:36:30 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static bool	export_str(char *s)
 		if (s[i] == '=' && i != 0)
 			break ;
 		if ((!ft_isalpha(s[0]) && s[0] != '_') || ((ft_isalnum(s[i]) == 0)
-				&& s[i] != '_' && s[i]))
+				&& s[i] != '_' && s[i]) && (s[i] == '+' && s[i + 1] != '='))
 		{
 			ft_fprintf(2, "minishell: export: `%s", mini_join(s, INV));
 			replace_export("?=1");

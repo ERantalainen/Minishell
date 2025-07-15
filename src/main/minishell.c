@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 18:29:23 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/15 05:28:13 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/15 15:25:57 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ static void	parse_and_execute(t_data *data)
 
 	while (true)
 	{
+		if (isatty(0))
+		{
 		data->valid = 1;
 		input = take_input();
 		if (input)
@@ -33,6 +35,7 @@ static void	parse_and_execute(t_data *data)
 			}
 			clean_heredoc();
 		data->line++;
+		}
 		}
 	}
 }
