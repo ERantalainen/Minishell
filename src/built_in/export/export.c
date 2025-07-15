@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:12:54 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/14 16:01:55 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/15 15:48:42 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,17 +61,19 @@ size_t	key_len(char *s)
 	if (s[i] == '$')
 		i++;
 	while ((s[i] && s[i] != '='
-			&& (ft_isalnum(s[i]) || s[i] == '_' || s[i] == '?')))
+			&& (ft_isalnum(s[i]) || s[i] == '_' || s[i] == '?'
+			|| (s[i] == '+' && s[i + 1] == '='))))
 		i++;
 	return (i);
 }
 
-// Finds an exported variable by searching its key.
 void	make_export(char *command)
 {
 	if (ft_strcmp(command, "") == 0)
 		empty_export();
-	if (ft_strcmp("", find_export(command)) != 0)
+	else if (command[key_len(command) - 1] == '+')
+		export_addition(command);
+	else if (ft_strcmp("", find_export(command)) != 0)
 		replace_export(command);
 	else
 		export(command);
@@ -79,7 +81,6 @@ void	make_export(char *command)
 	replace_export("?=0");
 }
 
-// Makes an export by builting the key and expansion.
 void	replace_export(char *key)
 {
 	t_data	*data;

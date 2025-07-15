@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_help.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 03:49:53 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/11 00:12:12 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/15 15:50:19 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,15 @@ int	find_line(char	**line, char *key)
 	return (-1);
 }
 
-char	**export_to_arr(char *key, char **exports)
+void	export_addition(char *command)
 {
-	char	**new_exp;
+	char	*original;
+	char	*key;
 
-	new_exp = ft_stradd(exports, key);
-	return (new_exp);
+	key = mini_strndup(command, key_len(command) - 1);
+	original = find_export(key);
+	original = mini_join(original, command += key_len(command) + 1);
+	key = mini_join(key, "=");
+	original = mini_join(key, original);
+	replace_export(original);
 }
