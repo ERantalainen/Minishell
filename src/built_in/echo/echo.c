@@ -3,14 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:34:01 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/15 05:24:57 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/15 12:13:27 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static size_t	skip_redirects(t_cmd **tokens, size_t tok_i)
+{
+	if (tokens[tok_i] && (tokens[tok_i]->type == OUTPUT
+			|| tokens[tok_i]->type == APPEND))
+	{
+		tok_i++;
+		if (tokens[tok_i] && (tokens[tok_i]->type == FILES
+				|| tokens[tok_i]->type == STRING))
+		{
+			tok_i++;
+		}
+	}
+	return (tok_i);
+}
 
 static char	*process_echo_arguments(t_cmd **c,
 					bool *newline, int *i, char *part)
@@ -19,13 +34,13 @@ static char	*process_echo_arguments(t_cmd **c,
 	bool	quoted;
 
 	pos = *i;
+	part = "";
 	while (c[*i] && (c[*i]->type == FILES || c[*i]->type == STRING))
 	{
 		c[*i]->space = 0;
 		quoted = 0;
 		if (echo_part(c, &pos, newline, quoted) == -1)
 		{
-			part = "";
 			while (c[*i] && (c[*i]->type == FILES || c[*i]->type == STRING))
 			{
 				if (c[*i]->space)
@@ -34,7 +49,14 @@ static char	*process_echo_arguments(t_cmd **c,
 					part = mini_join(part, c[*i]->str);
 				(*i)++;
 			}
-			break ;
+			(*i) = skip_redirects(c, *i);
+			if (c[*i] && (c[*i]->type == FILES || c[*i]->type == STRING))
+			{
+				part = mini_append(part, "");
+				continue ;
+			}
+			else
+				break ;
 		}
 		(*i) = pos;
 	}
