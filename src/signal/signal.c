@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 17:07:20 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/14 18:05:06 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/15 16:06:06 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,12 @@ void	catcher(void)
 	struct sigaction	s_sig;
 	struct sigaction	ign;
 
-	ft_memset(&s_sig, 0, sizeof(sigaction));
-	ft_memset(&ign, 0, sizeof(sigaction));
+	ft_memset(&s_sig, 0, sizeof(struct sigaction));
+	ft_memset(&ign, 0, sizeof(struct sigaction));
 	ign.sa_handler = SIG_IGN;
 	s_sig.sa_flags = SA_SIGINFO;
+	ign.sa_flags = 0;
+
 	s_sig.sa_sigaction = &handler;
 	sigaction(SIGINT, &s_sig, NULL);
 	sigaction(SIGQUIT, &ign, NULL);
@@ -49,8 +51,9 @@ void	ignore(void)
 {
 	struct sigaction	s_sig;
 
-	ft_memset(&s_sig, 0, sizeof(sigaction));
+	ft_memset(&s_sig, 0, sizeof(struct sigaction));
 	s_sig.sa_handler = SIG_IGN;
+	s_sig.sa_flags = 0;
 	sigaction(SIGINT, &s_sig, NULL);
 	sigaction(SIGQUIT, &s_sig, NULL);
 	return ;
@@ -60,8 +63,9 @@ void	reset_sig(void)
 {
 	struct sigaction	s_sig;
 
-	ft_memset(&s_sig, 0, sizeof(sigaction));
+	ft_memset(&s_sig, 0, sizeof(struct sigaction));
 	s_sig.sa_handler = SIG_DFL;
+	s_sig.sa_flags = 0;
 	sigaction(SIGINT, &s_sig, NULL);
 	sigaction(SIGQUIT, &s_sig, NULL);
 	return ;
