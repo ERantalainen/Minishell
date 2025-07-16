@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 19:21:07 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/15 15:46:00 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/16 17:23:49 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ char		**count_export_child(t_cmd **cmds, int i, char **envi);
 char		*build_exports(t_cmd **cmds, int *i);
 int			check_export(char **exports);
 void		export_addition(char *command);
+bool		find_exp_bool(char *key);
 
 // Memory Arena
 t_arena		*init_arena(size_t size);

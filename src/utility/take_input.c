@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 02:49:43 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/14 16:18:54 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/16 14:26:26 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ char	*take_input(void)
 	prompt = get_prompt();
 	while (1)
 	{
+		catcher();
 		input = readline(prompt);
 		if (!input)
 			ft_exit("exit", 0);

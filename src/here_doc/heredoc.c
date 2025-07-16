@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 15:44:11 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/15 15:28:07 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/15 17:33:58 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	here_loop(char *limiter, int index, t_data *data, char *name)
 	catcher();
 	if (g_sig != 0)
 		g_sig = 0;
-	if (data->hdfd[index] >= 0)
+	if (data->hdfd[index] > 2)
 		safe_close(&data->hdfd[index]);
 	if (data->valid != 1)
 		return ;
@@ -88,7 +88,7 @@ char	*here_doc(char *limiter, int index, t_type type)
 	if (data->hdfd[index] == -1)
 		soft_exit("heredoc", 1, 1);
 	here_loop(limiter, index, data, name);
-	if (type == STRING && data->valid)
+	if (type == STRING && data->valid == 1)
 		here_check(data->hdfd[index], name, data, index);
 	return (name);
 }

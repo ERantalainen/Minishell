@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:12:54 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/15 16:49:51 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/16 17:25:49 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	make_export(char *command)
 		empty_export();
 	else if (command[key_len(command) - 1] == '+')
 		export_addition(command);
-	else if (ft_strcmp("", find_export(command)) != 0)
+	else if (find_exp_bool(command))
 		replace_export(command);
 	else
 		export(command);

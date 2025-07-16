@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 01:21:51 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/15 16:49:59 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/16 17:23:39 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,32 @@ int	check_export(char **exports)
 		i++;
 	}
 	return (1);
+}
+
+bool	find_exp_bool(char *key)
+{
+	t_data	*data;
+	size_t	i;
+	size_t	len;
+	char	*var;
+
+	data = get_data();
+	if (!key)
+		return ("");
+	if (ft_strlen(key) == 1 && key[0] == '$')
+		return (mini_strdup("$"));
+	i = 0;
+	if (key[0] == '$')
+		key += 1;
+	while (i < data->env_vec->count)
+	{
+		var = data->env_vec->data[i];
+		len = key_len(var);
+		if (key_len(key) > len)
+			len = key_len(key);
+		if (ft_strncmp(key, var, len) == 0)
+			return (true);
+		i++;
+	}
+	return (false);
 }

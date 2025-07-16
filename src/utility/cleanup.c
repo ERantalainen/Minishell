@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 17:07:45 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/15 17:09:37 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/16 17:26:17 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	ft_exit(char *s, unsigned char code)
 		safe_close(&*fd);
 		i++;
 	}
+	s = "";
 	if (!s || s[0])
 		ft_fprintf(STDOUT_FILENO, "%s\n", s);
 	free_arenas();
