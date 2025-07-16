@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 21:19:02 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/13 23:32:40 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/17 01:55:17 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,22 +71,27 @@ int	open_handler(t_pipedata *p, const char *path)
 	return (0);
 }
 
-void	check_for_redirects(t_cmd **tokens, t_pipedata *p)
+int	check_for_redirects(t_cmd **tokens, t_pipedata *p)
 {
+	int	check;
+
+	check = 0;
 	while (tokens[p->index])
 	{
 		if (tokens[p->index]->type == PIPE)
-			return ;
-		if (tokens[p->index]->type == OUTPUT && tokens[p->index]->next != EMPTY)
-			open_file(tokens, p, OUTPUT_CONF);
-		else if (tokens[p->index]->type == APPEND
-			&& tokens[p->index]->next != EMPTY)
-			open_file(tokens, p, APPEND_CONF);
-		else if (tokens[p->index]->type == INPUT
-			&& tokens[p->index]->next != EMPTY)
-			open_file(tokens, p, INPUT_CONF);
-		else if (tokens[p->index]->type == HERE_DOC)
-			open_file(tokens, p, INPUT_CONF);
+			return (0);
+		if (tokens[p->index]->type == OUTPUT)
+			check = open_file(tokens, p, OUTPUT_CONF);
+		else if (tokens[p->index]->type == APPEND)
+			check = open_file(tokens, p, APPEND_CONF);
+		else if (tokens[p->index]->type == INPUT)
+			check = open_file(tokens, p, INPUT_CONF);
+		else if (tokens[p->index]->type == HERE_DOC
+			&& tokens[p->index + 1]->next != OUTPUT)
+			check = open_file(tokens, p, INPUT_CONF);
+		if (check == -1)
+			return (-1);
 		p->index++;
 	}
+	return (check);
 }

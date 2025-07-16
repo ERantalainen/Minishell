@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   take_input.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 02:49:43 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/17 00:31:08 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/17 00:56:01 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ char	*take_input(t_data *data)
 	while (1)
 	{
 		if (!isatty(STDIN_FILENO))
-				dup2(data->stdin, STDIN_FILENO);
+			dup2(data->stdin, STDIN_FILENO);
 		input = readline(prompt);
 		if (!input)
 			ft_exit("exit", 0);

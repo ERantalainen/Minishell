@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 16:20:20 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/16 01:12:46 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/17 01:55:23 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ int	setup_child(t_cmd **tokens, t_pipedata *p, char **env, int i)
 		local_p = *p;
 		local_p.cmd_index = p->index;
 		local_p.pipe_index = i;
-		check_for_redirects(tokens, &local_p);
+		if (check_for_redirects(tokens, &local_p) < 0)
+			ft_exit_child(p, NULL, 1);
 		if (setup_cmd_to_execute(tokens, &local_p) < 0)
 			ft_exit_child(p, NULL, 1);
 		child_process(tokens, &local_p, env);
@@ -43,7 +44,9 @@ int	setup_child(t_cmd **tokens, t_pipedata *p, char **env, int i)
 static void	exec_builtin(t_cmd **tokens, t_pipedata *p, char **env)
 {
 	p->is_child = false;
-	check_for_redirects(tokens, p);
+	p->is_builtin = true;
+	if (check_for_redirects(tokens, p) < 0)
+		return ;
 	if (setup_cmd_to_execute(tokens, p) < 0)
 		return ;
 	child_process(tokens, p, env);
