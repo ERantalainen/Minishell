@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   additional_helpers.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 01:21:51 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/16 17:23:39 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/16 20:44:44 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
