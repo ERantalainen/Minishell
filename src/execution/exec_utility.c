@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 21:15:46 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/13 23:48:23 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/16 01:12:48 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ void	wait_for_children(t_pipedata *p)
 		while (i < p->pipe_count + 1)
 		{
 			if (waitpid(p->pids[i], &status, 0) < 0)
-				ft_exit_child(p, "waitpid", 1);
+				if (errno != EINTR)
+					ft_exit_child(p, "waitpid", 1);
 			child_died(status);
-			catcher();
 			i++;
 		}
 	}
@@ -62,7 +62,6 @@ void	wait_for_children(t_pipedata *p)
 		return ;
 	safe_close(&p->infile);
 	safe_close(&p->outfile);
-	catcher();
 }
 
 void	close_unused_pipes(t_pipedata *p, int i)
