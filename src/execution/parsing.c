@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 13:28:50 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/15 11:15:10 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/16 23:01:00 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,19 +44,29 @@ static size_t	get_cmd_array_size(t_cmd **tokens, t_pipedata *p, char **split)
 {
 	size_t	total_args;
 	size_t	arg_i;
+	size_t	tok_i;
+	size_t	skip;
 
+	tok_i = p->cmd_index;
+	skip = 0;
 	total_args = 0;
-	arg_i = 0;
-	total_args = p->cmd_index + 1;
-	while (tokens[total_args] && (tokens[total_args]->type == FILES
-			|| tokens[total_args]->type == STRING
-			|| tokens[total_args]->type == BUILTIN
-			|| tokens[total_args]->type == HERE_DOC))
-		total_args++;
-	arg_i = 0;
-	while (split[arg_i++])
-		total_args++;
-	return (total_args);
+	while (true)
+	{
+		while (tokens[tok_i] && (tokens[tok_i]->type == FILES
+				|| tokens[tok_i]->type == STRING
+				|| tokens[tok_i]->type == BUILTIN
+				|| tokens[tok_i]->type == HERE_DOC))
+		{
+			total_args++;
+			tok_i++;
+		}
+		skip = tok_i;
+		skip = skip_redirects(tokens, tok_i);
+		if (skip == tok_i)
+			break ;
+		tok_i = skip;
+	}
+	return (total_args + 1);
 }
 
 static void	check_and_add_arguments(t_cmd **tokens, t_pipedata *p,
