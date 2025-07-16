@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+         #
+#    By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/03 18:36:06 by jpelline          #+#    #+#              #
-#    Updated: 2025/07/16 16:39:56 by erantala         ###   ########.fr        #
+#    Updated: 2025/07/16 23:14:58 by jpelline         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ NAME			:= minishell_standard
 CC				:= cc
 
 # Compiler flags
-CFLAGS			:= -Wall -Wextra -Werror
+CFLAGS			:=
 DEBUG_FLAGS		:= -g3 -fsanitize=address -fsanitize=undefined
 OPTFLAGS		:= -O2
 
@@ -167,7 +167,8 @@ is_up_to_date = \
 	[ "$(PROGRAM_NAME)" -nt $(LATEST_HEADER) ] && \
 	[ "$(PROGRAM_NAME)" -nt $(LIBFT) ] && \
 	( [ -z "$(LATEST_LIBFT_SRC)" ] || [ "$(PROGRAM_NAME)" -nt \
-	$(LATEST_LIBFT_SRC) ] )
+	$(LATEST_LIBFT_SRC) ] ) && \
+	[ -z "$$(find $(SRC_DIR) -name '*.c' -newer $(NAME) 2>/dev/null)" ]
 
 # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ BUILD TARGETS ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ #
 
