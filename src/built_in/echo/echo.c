@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:34:01 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/16 20:42:32 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/16 20:46:07 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static size_t	skip_redirects_echo(t_cmd **tokens, size_t tok_i)
 {
 	if (tokens[tok_i] && (tokens[tok_i]->type == OUTPUT
 			|| tokens[tok_i]->type == APPEND
+			|| tokens[tok_i]->type == HERE_DOC
 			|| tokens[tok_i]->type == INPUT))
 	{
 		tok_i++;
