@@ -149,8 +149,6 @@ PROGRESS_FILE		:= $(OBJ_DIR)/.progress
 # Utility variables for build optimization
 LATEST_SRC			:= $(shell find src -name "*.c" | \
 							xargs ls -t 2>/dev/null | head -1)
-OBJ_FILES_EXIST		:= $(shell [ -n "$(wildcard $(OBJ_DIR)/*.o)" ] \
-							&& echo yes)
 
 # Looking for updated header files
 LATEST_HEADER		:= $(shell find include $(LIBFT_DIR)/include \
@@ -169,8 +167,7 @@ is_up_to_date = \
 	[ "$(PROGRAM_NAME)" -nt $(LATEST_HEADER) ] && \
 	[ "$(PROGRAM_NAME)" -nt $(LIBFT) ] && \
 	( [ -z "$(LATEST_LIBFT_SRC)" ] || [ "$(PROGRAM_NAME)" -nt \
-	$(LATEST_LIBFT_SRC) ] ) && \
-	[ "$(OBJ_FILES_EXIST)" = "yes" ]
+	$(LATEST_LIBFT_SRC) ] )
 
 # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ BUILD TARGETS ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ #
 
