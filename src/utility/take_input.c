@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 02:49:43 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/16 14:26:26 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/17 00:31:08 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static char	*get_prompt(void)
 	return (prompt);
 }
 
-char	*take_input(void)
+char	*take_input(t_data *data)
 {
 	char	*input;
 	char	*prompt;
@@ -62,21 +62,21 @@ char	*take_input(void)
 	prompt = get_prompt();
 	while (1)
 	{
-		catcher();
+		if (!isatty(STDIN_FILENO))
+				dup2(data->stdin, STDIN_FILENO);
 		input = readline(prompt);
 		if (!input)
 			ft_exit("exit", 0);
 		if (input[0] != 0)
 		{
 			ret = mini_strdup(input);
+			free (input);
 			if (check_quotes(input))
 			{
 				add_history(ret);
-				free(input);
 				replace_export("?=2");
 				return (NULL);
 			}
-			free(input);
 			return (ret);
 		}
 	}

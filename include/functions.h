@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 19:21:07 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/16 17:23:49 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/17 00:29:24 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_cmd		*make_cmd_str(t_vector *tokens, size_t *i, t_data *data);
 // Input
 void		non_interactive(void);
 char		*get_input(char **argv, int argc);
-char		*take_input(void);
+char		*take_input(t_data *data);
 int			check_quotes(char *s);
 
 // Syntax Check

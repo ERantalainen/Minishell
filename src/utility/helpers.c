@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:02:28 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/13 22:50:28 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/17 00:28:17 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	init_data(char **env)
 	if (ft_strcmp(find_export("OLDPWD"), "") == 0)
 		export("OLDPWD");
 	init_export();
+	data->stdin = dup(STDIN_FILENO);
 }
 
 char	*get_pwd(void)
