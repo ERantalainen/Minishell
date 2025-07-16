@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 02:20:24 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/14 17:34:09 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/17 00:03:02 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,25 +63,24 @@ static t_cmd	*split_multi(t_data *data, t_cmd *cmd, size_t *i)
 	t_token	*token;
 	size_t	j;
 
-	j = 2;
+	j = 0;
 	split = mini_split(cmd->str, ' ');
 	if (cmd->quoted == 1 || ft_stralen(split) < 2)
 		return (cmd);
 	token = data->tokens->data[*i + 1];
 	if (token && cmd->str[ft_strlen(cmd->str) - 1] == ' ')
 		token->space = 1;
-	new = arena_malloc(sizeof(t_cmd));
-	new->str = split[0];
-	new->space = cmd->space;
-	new->type = STRING;
-	add_elem(data->cmds, new);
-	cmd->str = split[1];
-	while (split[j])
+	while (j < ft_stralen(split) - 1)
 	{
-		cmd->str = mini_append(cmd->str, split[j]);
+		new = arena_malloc(sizeof(t_cmd));
+		new->str = split[j];
+		new->space = 1;
+		new->type = STRING;
+		add_elem(data->cmds, new);
 		j++;
 	}
 	cmd->space = 1;
+	cmd->str = split[j];
 	return (cmd);
 }
 
