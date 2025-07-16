@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 13:28:50 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/16 23:01:00 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/16 23:09:25 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ int	setup_cmd_to_execute(t_cmd **tokens, t_pipedata *p)
 		return (-1);
 	split = mini_split(tokens[p->cmd_index]->str, ' ');
 	total_args = get_cmd_array_size(tokens, p, split);
-	p->cmd_args = arena_malloc((total_args - p->cmd_index) * sizeof(char *));
+	p->cmd_args = arena_malloc((total_args) * sizeof(char *));
 	arg_i = 0;
 	tok_i = 0;
 	while (split[tok_i])
