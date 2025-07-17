@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   take_input.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 02:49:43 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/17 00:56:01 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/17 18:14:50 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ char	*take_input(t_data *data)
 		{
 			ret = mini_strdup(input);
 			free (input);
-			if (check_quotes(input))
+			if (check_quotes(ret))
 			{
 				add_history(ret);
 				replace_export("?=2");
@@ -92,7 +92,8 @@ int	check_quotes(char *s)
 	{
 		if (s[i] == '"' || s[i] == '\'')
 		{
-			quote = s[i++];
+			quote = s[i];
+			i++;
 			while (s[i] && s[i] != quote)
 				i++;
 			if (!s[i])
