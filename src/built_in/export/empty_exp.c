@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 01:00:50 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/13 22:54:17 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/18 00:38:02 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	empty_export(void)
 	t_data	*data;
 	char	*ln;
 
+	init_export();
 	data = get_data();
 	i = 0;
 	while (i < data->exp->count)

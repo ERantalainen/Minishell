@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 22:35:51 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/16 14:25:23 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/18 00:40:24 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	increase_shell_lvl(void)
 	int		nbr;
 
 	level = find_export("SHLVL");
-	if (ft_strcmp(level, "") == 0)
+	if (ft_strcmp(level, "") == 0 || !ft_atoib(level))
 		nbr = 0;
 	else
 		nbr = ft_atoi(level);
