@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 18:35:04 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/13 02:02:28 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/18 01:20:26 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ char	*get_bin_path(char *cmd, char **env, t_pipedata *p)
 	char	*path;
 
 	if (ft_strncmp(cmd, "./", 2) == 0 && access(cmd, X_OK) == 0)
-		return (mini_join(get_pwd(), cmd + 1));
+		return (check_dir(p, cmd));
 	open_handler(p, cmd);
 	if (access(cmd, X_OK) == 0 && ft_strncmp(cmd, "/", 1) == 0)
 		return (mini_strdup(cmd));

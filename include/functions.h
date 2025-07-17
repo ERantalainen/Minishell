@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 19:21:07 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/17 01:03:24 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/18 01:19:27 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,5 +177,6 @@ int			echo_part(t_cmd **cmd, int *pos, bool *nl, bool qt);
 void		handle_failure(t_pipedata *p, char *str);
 void		close_pipe_pair(t_pipedata *p, int i);
 size_t		skip_redirects(t_cmd **tokens, size_t tok_i);
+char		*check_dir(t_pipedata *p, char *cmd);
 
 #endif // FUNCTIONS_H

@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 21:51:52 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/14 21:51:57 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/18 01:19:31 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,4 +32,16 @@ char	**get_cmd_args(char *cmd, char *path)
 	}
 	cmd_args[i] = NULL;
 	return (cmd_args);
+}
+
+char	*check_dir(t_pipedata *p, char *cmd)
+{
+	t_stat st;
+	
+	if (stat(cmd, &st) == 0 && S_ISDIR(st.st_mode))
+	{
+		ft_fprintf(2, "%s: Is a directory\n", cmd);
+		ft_exit_child(p, NULL, 126);
+	}
+	return (mini_join(get_pwd(), cmd + 1));
 }
