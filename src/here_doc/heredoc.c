@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 15:44:11 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/15 17:33:58 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/17 02:23:37 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	here_loop(char *limiter, int index, t_data *data, char *name)
 
 char	*here_doc(char *limiter, int index, t_type type)
 {
-	const char	*base = "._heredoc_.";
+	const char	*base = "/tmp/._heredoc_.";
 	static int	filecount = 0;
 	char		*name;
 	t_data		*data;
