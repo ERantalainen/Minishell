@@ -36,8 +36,8 @@ char	**get_cmd_args(char *cmd, char *path)
 
 char	*check_dir(t_pipedata *p, char *cmd)
 {
-	t_stat st;
-	
+	t_stat	st;
+
 	if (stat(cmd, &st) == 0 && S_ISDIR(st.st_mode))
 	{
 		ft_fprintf(2, "%s: Is a directory\n", cmd);

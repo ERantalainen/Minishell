@@ -46,7 +46,7 @@ void	ft_exit(char *s, unsigned char code)
 		i++;
 	}
 	if (!s || ft_strcmp("", s) != 0)
-		ft_fprintf(STDOUT_FILENO, "%s\n", s);
+		ft_fprintf(STDERR_FILENO, "%s\n", s);
 	free_arenas();
 	exit(code);
 }

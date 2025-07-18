@@ -62,7 +62,7 @@ static char	*cd_make_path(t_cmd **cmd, int i)
 		return ("");
 	i++;
 	while (cmd[i] && (cmd[i]->type == FILES || cmd[i]->type == STRING
-		|| cmd[i]->type == OUTPUT || cmd[i]->type == APPEND))
+			|| cmd[i]->type == OUTPUT || cmd[i]->type == APPEND))
 	{
 		if (cmd[i]->type == OUTPUT || cmd[i]->type == APPEND)
 			i++;

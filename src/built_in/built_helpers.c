@@ -28,7 +28,7 @@ char	*join_full(t_cmd **cmds, int i)
 	res = mini_strdup(cmds[i]->str);
 	i++;
 	while (cmds[i] && ((cmds[i]->type == FILES || cmds[i]->type == STRING)
-		|| cmds[i]->type == OUTPUT || cmds[i]->type == APPEND))
+			|| cmds[i]->type == OUTPUT || cmds[i]->type == APPEND))
 	{
 		if (cmds[i]->type == OUTPUT || cmds[i]->type == APPEND)
 			i++;
