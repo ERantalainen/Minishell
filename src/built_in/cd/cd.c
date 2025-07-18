@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:34:05 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/15 02:04:21 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/18 15:03:33 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,16 @@ static void	check_cd_res(char *path, t_data *data)
 
 static void	change_dir(char *path, t_data *data)
 {
+	if (ft_strcmp(path, "") == 0)
+	{
+		path = find_export("$HOME");
+		if (ft_strcmp(path, "") == 0)
+		{
+			ft_fprintf(2, "minishell: cd: HOME not set\n");
+			replace_export("?=1");
+			return ;
+		}
+	}
 	if (chdir(path) == -1)
 	{
 		perror((mini_join("minishell: cd: ", path)));
@@ -44,14 +54,19 @@ static char	*cd_make_path(t_cmd **cmd, int i)
 {
 	char	*path;
 
-	path = "";
-	if (cmd[i]->next == EMPTY)
-		return (cmd[i]->str);
-	path = mini_join(path, cmd[i]->str);
+	while (cmd[i] && (cmd[i]->type == OUTPUT || cmd[i]->type == APPEND))
+		i += 2;
+	if (cmd[i])
+		path = mini_strdup(cmd[i]->str);
+	else
+		return ("");
 	i++;
-	while (cmd[i] && (cmd[i]->type == FILES || cmd[i]->type == STRING))
+	while (cmd[i] && (cmd[i]->type == FILES || cmd[i]->type == STRING
+		|| cmd[i]->type == OUTPUT || cmd[i]->type == APPEND))
 	{
-		if (cmd[i]->space == 0)
+		if (cmd[i]->type == OUTPUT || cmd[i]->type == APPEND)
+			i++;
+		else if (cmd[i]->space == 0)
 			path = mini_join(path, cmd[i]->str);
 		else
 		{
@@ -70,7 +85,7 @@ void	cd(t_cmd **cmd, int i)
 	char	*path;
 
 	data = get_data();
-	if ((cmd[i]->next != FILES && cmd[i]->next != STRING))
+	if ((cmd[i]->next == EMPTY || cmd[i]->next == PIPE))
 	{
 		path = find_export("$HOME");
 		if (ft_strcmp(path, "") == 0)
@@ -80,7 +95,7 @@ void	cd(t_cmd **cmd, int i)
 			return ;
 		}
 	}
-	else if ((cmd[i]->next == FILES || cmd[i]->next == STRING)
+	else if ((cmd[i]->next != EMPTY)
 		&& ft_strlen(cmd[i]->str) == 2)
 		path = cd_make_path(cmd, i + 1);
 	else

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 23:29:39 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/13 19:20:06 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/18 15:21:26 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static void	overflow_error(char *str, int i)
 {
 	str += i;
-	ft_fprintf(2, "exit\n");
+	ft_fprintf(1, "exit\n");
 	ft_fprintf(2, mini_join(mini_join(mini_join(MS, "exit: "),
 				mini_strndup(str, word_len(str, 0))), NMARG));
 	ft_exit("exit", 2);

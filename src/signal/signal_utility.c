@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 22:50:24 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/15 16:06:13 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/18 15:15:29 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ char	*here_eof(char *limiter)
 	t_data	*data;
 
 	data = get_data();
-	eof_msg = mini_join(EOF1, ft_itoa(data->line));
+	eof_msg = mini_join(EOF1, mini_itoa(data->line));
 	limiter = mini_join(limiter, "\')");
 	eof_msg = mini_join(eof_msg, EOF2);
 	eof_msg = mini_join(eof_msg, limiter);

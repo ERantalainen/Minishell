@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file_handling.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 21:19:02 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/18 01:20:55 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/18 15:18:20 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	handle_open_error(t_pipedata *p, const char *cmd, const char *path)
 		ft_fprintf(2, "%s: Permission denied\n", cmd);
 		ft_exit_child(p, NULL, 126);
 	}
-	else if (errno == ENOENT && access(path, X_OK) < 0
+	else if (errno == ENOENT && path && access(path, X_OK) < 0
 		&& (ft_strchr(cmd, '/')))
 	{
 		ft_fprintf(2, "%s: No such file or directory\n", cmd);

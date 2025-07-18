@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 13:56:30 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/13 02:26:17 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/18 14:43:03 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	build_handler(t_pipedata *p, t_cmd **cmds, int i)
 			if (ft_strncmp("echo", cmds[i]->str, 4) == 0)
 				echo(cmds, i + 1);
 			if (ft_strncmp("exit", cmds[i]->str, 4) == 0)
-				exit_arg_checker(exit_join(cmds, i), p);
+				exit_arg_checker(join_full(cmds, i), p);
 			if (ft_strncmp("cd", cmds[i]->str, 2) == 0)
 				cd(cmds, i);
 			if (ft_strncmp("pwd", cmds[i]->str, 3) == 0)
