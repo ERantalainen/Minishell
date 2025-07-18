@@ -41,21 +41,22 @@ void	wait_for_children(t_pipedata *p)
 	int	i;
 	int	status;
 
-	i = 0;
+	i = -1;
 	if (p->pids[0])
 	{
-		while (i < p->pipe_count + 1)
+		while (++i < p->pipe_count + 1)
 		{
 			if (waitpid(p->pids[i], &status, 0) < 0)
 				if (errno != EINTR)
 					ft_exit_child(p, "waitpid", 1);
 			child_died(status);
-			i++;
 		}
 	}
-	if (dup2(p->stdin_copy, STDIN_FILENO) < 0
-		|| dup2(p->stdout_copy, STDOUT_FILENO) < 0)
-		ft_exit_child(p, "dup2", 1);
+	if (p->is_builtin == true && p->pipe_count == 0)
+	{
+		dup2(p->stdin_copy, STDIN_FILENO);
+		dup2(p->stdout_copy, STDOUT_FILENO);
+	}
 	safe_close(&p->stdin_copy);
 	safe_close(&p->stdout_copy);
 	if (p->is_builtin == true && p->pipe_count == 0)

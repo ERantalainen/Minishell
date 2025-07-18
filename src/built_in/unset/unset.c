@@ -17,6 +17,7 @@ void	count_unset(t_cmd **cmds, int i)
 	char	*cmd;
 
 	cmd = "";
+	i = skip_redirects(cmds, i);
 	while (cmds[i] && ((cmds[i]->type == FILES || cmds[i]->type == STRING)))
 	{
 		if (cmds[i]->space == 0)
@@ -32,6 +33,7 @@ void	count_unset(t_cmd **cmds, int i)
 			cmd = arena_malloc(1);
 		}
 		i++;
+		i = skip_redirects(cmds, i);
 	}
 }
 

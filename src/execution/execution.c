@@ -95,6 +95,7 @@ void	execution(t_cmd **tokens, char **env)
 	data = get_data();
 	if (data->valid != 1)
 		return ;
+	close(data->stdin);
 	p = arena_malloc(sizeof(t_pipedata));
 	if (init_pipedata(p) < 0)
 		return ;
@@ -105,5 +106,6 @@ void	execution(t_cmd **tokens, char **env)
 	if (p->pipe_count > 0)
 		init_pipes(p);
 	exec_pipeline(tokens, p, env);
+	data->stdin = dup(STDIN_FILENO);
 	catcher();
 }

@@ -37,6 +37,7 @@ void	ft_exit(char *s, unsigned char code)
 
 	i = 0;
 	data = get_data();
+	close(data->stdin);
 	rl_clear_history();
 	while (i < data->fds->count)
 	{
