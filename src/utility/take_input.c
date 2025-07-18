@@ -24,11 +24,11 @@ static char	*color_path(char *path)
 	while (path[i])
 	{
 		if (path[i] == '/')
-			result = mini_join(result, "\1\e[38;5;231m\2/");
+			result = mini_join(result, "\001\x1b[38;5;231m\002/");
 		else
 		{
 			if (i == 0 || path[i - 1] == '/')
-				result = mini_join(result, "\1\e[38;5;219m\2");
+				result = mini_join(result, "\001\x1b[38;5;219m\002");
 			char_str[0] = path[i];
 			result = mini_join(result, char_str);
 		}
@@ -47,9 +47,10 @@ static char	*get_prompt(void)
 	data = get_data();
 	cwd = data->directory;
 	colored_cwd = color_path(cwd);
-	prompt = mini_join("\1\e[38;5;231m\2❯ ", colored_cwd);
-	prompt = mini_join(prompt, " \1\e[38;5;231m\2❯ \1\e[38;5;156m\2minishell"
-			"\1\e[0m\2\1\e[38;5;231m\2 ❯\1\e[0m\2 ");
+	prompt = mini_join("\001\x1b[38;5;231m\002> ", colored_cwd);
+	prompt = mini_join(prompt, " \001\x1b[38;5;231m\002> "
+			"\001\x1b[38;5;156m\002minishell"
+			"\001\x1b[0m\002\001\x1b[38;5;231m\002 >\001\x1b[0m\002 ");
 	return (prompt);
 }
 
