@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:34:01 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/18 02:06:41 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/18 11:39:13 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ static char	*process_echo_arguments(t_cmd **c, bool *nl, int *i, char *part)
 
 	pos = *i;
 	part = "";
+	*i = skip_redirects_echo(c, *i);
 	while (c[*i] && (c[*i]->type == FILES || c[*i]->type == STRING))
 	{
 		c[*i]->space = 0;

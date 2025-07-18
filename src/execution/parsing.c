@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 13:28:50 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/17 01:55:53 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/18 12:10:57 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,9 @@ static void	additional_arguments_to_cmd(t_cmd **tokens, t_pipedata *p,
 		size_t arg_i, size_t tok_i)
 {
 	tok_i = p->cmd_index;
-	if (tokens[tok_i] && (tokens[tok_i]->next == FILES
+	tok_i = skip_redirects(tokens, tok_i + 1);
+	if (tok_i == p->cmd_index && tokens[tok_i]
+		&& (tokens[tok_i]->next == FILES
 			|| tokens[tok_i]->next == HERE_DOC
 			|| tokens[tok_i]->next == BUILTIN
 			|| tokens[tok_i]->next == STRING))
