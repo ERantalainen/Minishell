@@ -15,7 +15,6 @@
 static void	overflow_error(char *str, int i)
 {
 	str += i;
-	ft_fprintf(1, "exit\n");
 	ft_fprintf(2, mini_join(mini_join(mini_join(MS, "exit: "),
 				mini_strndup(str, word_len(str, 0))), NMARG));
 	ft_exit("exit", 2);
