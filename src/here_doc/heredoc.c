@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 15:44:11 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/17 02:23:37 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/20 00:08:17 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static char	*here_line(char *input)
 	if (!isatty(STDIN_FILENO))
 		input = get_next_line(STDIN_FILENO);
 	else
-		input = readline("\1\e[38;5;231m\2❯❯ \1\e[0m\2");
+		input = readline(HD_PROMPT);
 	if (!input)
 		return (NULL);
 	if (input[0] && input[ft_strlen(input) - 1] == '\n')

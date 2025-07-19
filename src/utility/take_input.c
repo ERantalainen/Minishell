@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   take_input.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 02:49:43 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/17 18:14:50 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/20 00:05:03 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,11 @@ static char	*color_path(char *path)
 	while (path[i])
 	{
 		if (path[i] == '/')
-			result = mini_join(result, "\001\x1b[38;5;231m\002/");
+			result = mini_join(result, COLOR_WHITE "/");
 		else
 		{
 			if (i == 0 || path[i - 1] == '/')
-				result = mini_join(result, "\001\x1b[38;5;219m\002");
+				result = mini_join(result, COLOR_PINK);
 			char_str[0] = path[i];
 			result = mini_join(result, char_str);
 		}
@@ -47,10 +47,8 @@ static char	*get_prompt(void)
 	data = get_data();
 	cwd = data->directory;
 	colored_cwd = color_path(cwd);
-	prompt = mini_join("\001\x1b[38;5;231m\002> ", colored_cwd);
-	prompt = mini_join(prompt, " \001\x1b[38;5;231m\002> "
-			"\001\x1b[38;5;156m\002minishell"
-			"\001\x1b[0m\002\001\x1b[38;5;231m\002 >\001\x1b[0m\002 ");
+	prompt = mini_join(COLOR_WHITE "> ", colored_cwd);
+	prompt = mini_join(prompt, PROMPT);
 	return (prompt);
 }
 
