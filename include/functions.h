@@ -15,7 +15,7 @@
 
 # include "structs.h"
 
-// Tokenizers
+// --- Tokenizers ---
 t_token		*create_token(char *s, size_t *i, t_type last, t_data *data);
 t_vector	*token_vector(char *s);
 char		*token_string(char *s, size_t *i, t_type *last);
@@ -24,20 +24,20 @@ char		*quoted_token(char *s, char quote, size_t *i, t_type *last);
 char		*unquoted_expan(char *s, size_t *pos);
 t_token		*check_type(t_token *new, t_data *data, size_t *i, char *s);
 
-// Command creator
+// --- Command creator ---
 t_vector	*create_commands(t_vector *tokens);
 void		first_trim_check(t_vector *commands);
 t_cmd		*cmd_help(t_cmd *cmd, size_t *i, t_token *tk, t_data *data);
 t_cmd		*make_cmd_spc(t_vector *tokens, size_t *i, t_data *data);
 t_cmd		*make_cmd_str(t_vector *tokens, size_t *i, t_data *data);
 
-// Input
+// --- Input ---
 void		non_interactive(void);
 char		*get_input(char **argv, int argc);
 char		*take_input(t_data *data);
 int			check_quotes(char *s);
 
-// Syntax Check
+//  --- Syntax Check ---
 t_vector	*next_check(t_vector *commands);
 void		check_repeat(t_vector *tokens);
 void		check_command_syntax(t_vector *commands, t_data *data);
@@ -46,8 +46,9 @@ char		*ambigous(char *s, size_t i);
 int			syntax_help(t_cmd *cmd, t_data *data, int i, t_vector *commands);
 void		check_files(t_cmd *cmd, t_cmd *next);
 
-// Built In
+//  --- Built In ---
 void		echo(t_cmd **cmd, int i);
+int			echo_part(t_cmd **cmd, int *pos, bool *nl, bool qt);
 void		pwd(void);
 void		unset(char *key);
 void		cd(t_cmd **cmd, int i);
@@ -59,8 +60,9 @@ void		count_unset(t_cmd **cmds, int i);
 char		*join_full(t_cmd **cmds, int i);
 char		*exit_join(t_cmd **cmds, int i);
 long		exit_atoi(const char *nptr, bool *valid);
+void		exit_arg_checker(char *str, t_pipedata *p);
 
-// Export
+//  --- Export ---
 int			count_export(t_cmd **cmds, int i);
 void		init_export(void);
 void		sort_export(size_t count, t_data *data, char **exps);
@@ -76,14 +78,14 @@ int			check_export(char **exports);
 void		export_addition(char *command);
 bool		find_exp_bool(char *key);
 
-// Memory Arena
+//  --- Memory Arena ---
 t_arena		*init_arena(size_t size);
 void		*arena_malloc(size_t n);
 t_arena		**get_arenas(t_arena **new);
 t_arena		*find_arena(size_t n);
 t_arena		**new_arena(t_arena **curr, int count, size_t n);
 
-// Vector
+//  --- Vector ---
 t_vector	*new_vector(size_t elem);
 void		expand_vector(t_vector *vector);
 void		add_elem(t_vector *vector, void *elem);
@@ -92,7 +94,7 @@ void		array_to_vec(t_vector *vec, void **arr);
 char		**vec_to_array(t_vector *vec);
 void		remove_elem(t_vector *vector, size_t i);
 
-// Helpers
+//  --- Helpers ---
 void		init_data(char **env);
 char		*get_pwd(void);
 void		increase_shell_lvl(void);
@@ -105,7 +107,7 @@ void		ft_exit(char *s, unsigned char code);
 int			exit_calci(char *cmd);
 int			pwd_check(void);
 
-// Utility
+//  --- Utility ---
 size_t		expanded_length(char *s, size_t n);
 int			check_specials(int c, int quote);
 int			find_line(char **line, char *key);
@@ -116,7 +118,7 @@ char		**replace_line(char **s, char *line, size_t i);
 size_t		key_len(char *s);
 size_t		word_len(char *s, int quote);
 
-// String functions
+//  --- String functions ---
 char		**ft_strremove(char **s, int i);
 size_t		ft_stralen(char **s);
 char		*mini_substr(char const *s, unsigned int start, size_t len);
@@ -130,7 +132,7 @@ char		*ft_strornchr(const char *s, int one, int two, size_t n);
 char		*mini_strndup(char *s, size_t n);
 char		*mini_strdup(char *s);
 
-// Heredoc
+//  --- Heredoc ---
 void		here_check(int fd, char *name, t_data *data, size_t i);
 char		*here_expansion(char *ln, size_t *i);
 int			check_heredoc(t_vector *tokens);
@@ -140,7 +142,7 @@ char		*name_join(char const *s1, char const *s2);
 void		here_two(t_vector *tokens, int count, t_data *data);
 int			here_count(t_vector *tokens);
 
-// Signal handling
+// --- Execution --- Signal handling ---
 void		catcher(void);
 void		ignore(void);
 void		reset_sig(void);
@@ -149,34 +151,42 @@ void		handler(int sig, siginfo_t *a, void *b);
 void		heredoc_signal(void);
 char		*here_eof(char *limiter);
 
-// Execution
+// --- Execution --- Pipeline Setup & Execution ---
 void		execution(t_cmd **tokens, char **env);
 void		setup_pipeline(t_cmd **tokens, char **env);
+int			init_pipedata(t_pipedata *p);
+int			setup_child(t_cmd **tokens, t_pipedata *p, char **env, int i);
+int			setup_cmd_to_execute(t_cmd **tokens, t_pipedata *p);
+void		child_process(t_cmd **tokens, t_pipedata *p, char **env);
+void		child_died(int status);
+void		wait_for_children(t_pipedata *p);
+
+// --- Execution --- Pipe Management ---
+void		init_pipes(t_pipedata *p);
+void		close_unused_pipes(t_pipedata *p, int i);
+void		close_pipe_pair(t_pipedata *p, int i);
+void		setup_pipes(int in, int out, int close_in, int close_out);
+void		safe_close(int *fd);
+int			safe_dup(int fd);
+
+// --- Execution --- Command & Path Resolution ---
 char		*get_bin_path(char *cmd, char **env, t_pipedata *p);
 char		**get_cmd_args(char *cmd, char *path);
-bool		check_for_builtin(t_cmd **tokens, int pipe_count);
+char		*check_dir(t_pipedata *p, char *cmd);
+int			path_exists(void);
+
+// --- Execution --- Token/Command Parsing & Navigation ---
 void		find_next_cmd_index(t_cmd **tokens, t_pipedata *p);
-void		wait_for_children(t_pipedata *p);
-void		close_unused_pipes(t_pipedata *p, int i);
-void		init_pipes(t_pipedata *p);
+size_t		skip_redirects(t_cmd **tokens, size_t tok_i);
+bool		check_for_builtin(t_cmd **tokens, int pipe_count);
+
+// --- Execution --- File & Redirect Handling ---
 int			open_handler(t_pipedata *p, const char *path);
 int			open_file(t_cmd **tokens, t_pipedata *p, int settings);
 int			check_for_redirects(t_cmd **tokens, t_pipedata *p);
-void		setup_pipes(int in, int out, int close_in, int close_out);
-int			setup_child(t_cmd **tokens, t_pipedata *p, char **env, int i);
-int			setup_cmd_to_execute(t_cmd **tokens, t_pipedata *p);
-int			path_exists(void);
-void		child_process(t_cmd **tokens, t_pipedata *p, char **env);
-void		child_died(int status);
-void		safe_close(int *fd);
-int			safe_dup(int fd);
-int			init_pipedata(t_pipedata *p);
 int			check_all_redir(char *s, size_t len);
-void		exit_arg_checker(char *str, t_pipedata *p);
-int			echo_part(t_cmd **cmd, int *pos, bool *nl, bool qt);
+
+// --- Execution --- Error & Failure Handling ---
 void		handle_failure(t_pipedata *p, char *str);
-void		close_pipe_pair(t_pipedata *p, int i);
-size_t		skip_redirects(t_cmd **tokens, size_t tok_i);
-char		*check_dir(t_pipedata *p, char *cmd);
 
 #endif // FUNCTIONS_H
