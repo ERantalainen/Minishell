@@ -14,11 +14,7 @@
 
 static int	find_next_cmd_in_tokens(t_cmd **tokens, t_pipedata *p)
 {
-	if (tokens[p->cmd_index] && (tokens[p->cmd_index]->type == INPUT
-			|| tokens[p->cmd_index]->type == OUTPUT
-			|| tokens[p->cmd_index]->type == APPEND)
-		&& tokens[p->cmd_index]->next == BUILTIN)
-		p->cmd_index += 2;
+	p->cmd_index = skip_redirects(tokens, p->cmd_index);
 	while (tokens[p->cmd_index] && tokens[p->cmd_index]->type != STRING
 		&& tokens[p->cmd_index]->type != FILES
 		&& tokens[p->cmd_index]->type != BUILTIN)
@@ -28,6 +24,7 @@ static int	find_next_cmd_in_tokens(t_cmd **tokens, t_pipedata *p)
 		tokens[p->cmd_index + 1]->type = STRING;
 	while (tokens[p->cmd_index] && tokens[p->cmd_index]->type != STRING
 		&& tokens[p->cmd_index]->type != PIPE
+		&& tokens[p->cmd_index]->type != FILES
 		&& tokens[p->cmd_index]->type != BUILTIN)
 		p->cmd_index++;
 	if (tokens[p->cmd_index] && tokens[p->cmd_index]->type == BUILTIN)
@@ -122,7 +119,6 @@ int	setup_cmd_to_execute(t_cmd **tokens, t_pipedata *p)
 	size_t	total_args;
 	size_t	arg_i;
 	size_t	tok_i;
-
 	if (find_next_cmd_in_tokens(tokens, p) < 0)
 		return (-1);
 	split = mini_split(tokens[p->cmd_index]->str, ' ');
