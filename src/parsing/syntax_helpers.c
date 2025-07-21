@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 23:47:36 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/14 15:43:00 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/21 18:23:48 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,26 +64,22 @@ void	here_two(t_vector *tokens, int count, t_data *data)
 	}
 }
 
-void	check_command_syntax(t_vector *commands, t_data *data)
+void	check_command_syntax(t_vector *commands, t_data *data, int i)
 {
 	size_t	i;
 	t_cmd	*cmd;
 
-	i = 0;
-	while (commands && i < commands->count)
+	cmd = commands->data[i];
+	if (commands->data[i + 1]
+		&& (cmd->next == STRING || cmd->next == FILES))
+		check_files(cmd, commands->data[i + 1]);
+	if (data->valid != 1)
+		return ;
+	syntax_help(cmd, data, i, commands);
+	if (data->valid != 1)
 	{
-		cmd = commands->data[i];
-		if (commands->data[i + 1]
-			&& (cmd->next == STRING || cmd->next == FILES))
-			check_files(cmd, commands->data[i + 1]);
-		if (data->valid != 1)
-			return ;
-		syntax_help(cmd, data, i, commands);
-		if (data->valid != 1)
-		{
-			replace_export("?=2");
-			return ;
-		}
-		i++;
+		replace_export("?=2");
+		return ;
 	}
+	i++;
 }
