@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 16:20:20 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/17 01:55:23 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/21 14:29:33 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	setup_child(t_cmd **tokens, t_pipedata *p, char **env, int i)
 		if (check_for_redirects(tokens, &local_p) < 0)
 			ft_exit_child(p, NULL, 1);
 		if (setup_cmd_to_execute(tokens, &local_p) < 0)
-			ft_exit_child(p, NULL, 1);
+			ft_exit_child(p, NULL, 0);
 		child_process(tokens, &local_p, env);
 	}
 	ignore();
