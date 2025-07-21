@@ -63,6 +63,7 @@ void	ft_exit_child(t_pipedata *p, char *s, int code)
 		safe_close(&p->stdout_copy);
 	if (s)
 		ft_fprintf(2, "error: %s\n", s);
+	free_arenas();
 	exit(code);
 }
 
@@ -77,15 +78,15 @@ void	child_died(int status)
 		{
 			if (WTERMSIG(status) == SIGQUIT)
 				ft_fprintf(STDERR_FILENO, "%s", QUIT);
-			if (write(1, "\n", 1) < 0)
-				perror("write");
+			write(1, "\n", 1);
 			rl_replace_line("", 0);
 			rl_done = 1;
 		}
 		exit_export = mini_join(exit_code, mini_itoa(WTERMSIG(status) + 128));
 		replace_export(exit_export);
 	}
-	replace_export(mini_join(exit_code, mini_itoa(WEXITSTATUS(status))));
+	else
+		replace_export(mini_join(exit_code, mini_itoa(WEXITSTATUS(status))));
 }
 
 void	soft_exit(char *s, int code, bool err)
