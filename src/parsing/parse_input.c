@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/13 00:55:54 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/22 05:01:10 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_token	*create_token(char *s, size_t *i, t_type last, t_data *data)
 	new->quoted = 0;
 	new->space = 0;
 	new->t = STRING;
-	if (last == QUOTED || s[*i - 1] == '"' || s[*i - 1] == '\'')
+	if ((last == QUOTED || s[*i - 1] == '"' || s[*i - 1] == '\'') && last != 5)
 	{
 		new->quoted = 1;
 		return (new);
@@ -33,8 +33,8 @@ t_token	*create_token(char *s, size_t *i, t_type last, t_data *data)
 		new->expansion = 1;
 	else
 		new = check_type(new, data, i, s);
-	if (new->t == STRING && (last == HERE_DOC && (s[(*i)] == '"'
-				|| s[(*i)] == '\'' || data->last == HERE_NOEXP)))
+	if (new->t == STRING && (last == HERE_DOC && (s[(*i -1)] == '"'
+				|| s[(*i -1)] == '\'' || data->last == HERE_NOEXP)))
 		new->t = HERE_NOEXP;
 	return (new);
 }
@@ -56,7 +56,6 @@ t_vector	*token_vector(char *s)
 	tokens = creator(s, len, i, data);
 	if (tokens->count == 0)
 		return (NULL);
-	check_heredoc(tokens);
 	check_repeat(tokens);
 	return (tokens);
 }
@@ -90,15 +89,21 @@ t_vector	*creator(char *s, size_t len, size_t i, t_data *data)
 	return (data->tokens);
 }
 
-int	check_empty_quote(char *s)
+int	check_empty_quote(char *s, size_t *i)
 {
 	size_t	pos;
 
 	pos = 0;
 	if (s[pos] && s[pos] == '"' && s[pos + 1] && s[pos + 1] == '"')
+	{
+		*i += 2;
 		return (1);
+	}
 	if (s[pos] && s[pos] == '\'' && s[pos + 1] && s[pos + 1] == '\'')
+	{
+		*i += 2;
 		return (1);
+	}
 	return (0);
 }
 
@@ -107,15 +112,13 @@ char	*token_string(char *s, size_t *i, t_type *last)
 	char	*token;
 	int		len;
 
-	if (check_empty_quote(s + *i))
-	{
-		*i += 2;
+	if (check_empty_quote(s + *i, i))
 		return ("");
-	}
 	if ((*last == INPUT || *last == OUTPUT || *last == APPEND) && s[*i] == '$')
 		if (ambigous(s, *i) != NULL)
 			return (NULL);
-	if (s[(*i)] == '\'' || s[(*i)] == '"' || *last == HERE_DOC)
+	printf("String: %s, last: %d\n", s + *i, *last);
+	if (s[(*i)] == '\'' || s[(*i)] == '"' || *last == HERE_DOC || *last == HERE_NOEXP)
 		return (quoted_token(s + *i, s[(*i)], i, last));
 	if (s[*i] == '$')
 	{

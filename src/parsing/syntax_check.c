@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 15:48:23 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/15 01:59:35 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/22 05:01:34 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,16 +79,16 @@ void	check_nexts(t_vector *tokens, t_data *data)
 	}
 }
 
-// ENSURE NO SYNTAX ERROR WITH REPEAT SYMBOLS
 int	check_heredoc(t_vector *tokens)
 {
 	int		count;
-	t_token	*curr;
+	t_cmd	*curr;
 	t_data	*data;
 
 	data = get_data();
 	curr = tokens->data[0];
-	if (tokens->count == 1 && curr->t == HERE_DOC)
+	next_check(tokens);
+	if (tokens->count == 1 && curr->type == HERE_DOC)
 	{
 		er_pr(mini_join(TOKEN, "newline\'"), data, 2, 0);
 		return (0);
@@ -110,16 +110,16 @@ int	check_heredoc(t_vector *tokens)
 
 int	here_count(t_vector *tokens)
 {
-	t_token	*curr;
+	t_cmd	*curr;
 	size_t	i;
 	size_t	count;
 
 	count = 0;
 	i = 0;
-	while (i < tokens->count - 1)
+	while (i < tokens->count)
 	{
 		curr = tokens->data[i];
-		if (curr->t == HERE_DOC)
+		if (curr->type == HERE_DOC)
 			count++;
 		i++;
 	}
