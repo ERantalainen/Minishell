@@ -68,6 +68,8 @@ char	*find_bin_in_path(char **env_paths, char *cmd)
 	while (env_paths[i] != NULL)
 	{
 		current_path = mini_join(env_paths[i], cmd);
+		if (!current_path)
+			break ;
 		perm_result = check_file_permissions(current_path);
 		if (perm_result == -1)
 			break ;
