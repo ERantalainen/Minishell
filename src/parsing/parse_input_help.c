@@ -6,45 +6,62 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 18:39:57 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/22 14:46:36 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/22 21:14:36 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static t_cmd	*command_checks(t_data *dt, t_token *tk, t_cmd *cmd, size_t *i)
+t_cmd	*split_multi(t_data *data, t_cmd *cmd, size_t *i)
 {
-	if (dt->last != FILES
-		&& ((((*i == 0) || ((access(tk->s, R_OK | W_OK) != 0
-							&& tk->space == 1))
-					|| dt->last == PIPE)) || tk->quoted == 1))
-		return (cmd_help(cmd, i, tk, dt));
-	else
+	t_cmd	*new;
+	char	**split;
+	t_token	*token;
+	size_t	j;
+
+	j = 0;
+	split = mini_split(cmd->str, ' ');
+	if (cmd->quoted == 1 || ft_stralen(split) < 2)
+		return (cmd);
+	token = data->tokens->data[*i + 1];
+	if (token && cmd->str[ft_strlen(cmd->str) - 1] == ' ')
+		token->space = 1;
+	while (j < ft_stralen(split) - 1)
 	{
-		cmd->type = FILES;
-		cmd->str = tk->s;
-		(*i)++;
+		new = arena_malloc(sizeof(t_cmd));
+		new->str = split[j];
+		new->space = 1;
+		new->type = STRING;
+		add_elem(data->cmds, new);
+		j++;
 	}
+	cmd->space = 1;
+	cmd->str = split[j];
 	return (cmd);
 }
 
-t_cmd	*make_cmd_str(t_vector *tokens, size_t *i, t_data *data)
+t_cmd	*make_cmd_spc(t_vector *tokens, size_t *i, t_data *data)
 {
-	t_token	*tk;
+	t_token	*token;
 	t_cmd	*cmd;
 
 	cmd = arena_malloc(sizeof(t_cmd));
-	tk = tokens->data[(*i)];
-	cmd->type = STRING;
-	cmd->str = "";
-	cmd->space = tk->space;
-	cmd->quoted = tk->quoted;
-	command_checks(data, tk, cmd, i);
+	token = tokens->data[(*i)];
+	cmd->type = token->t;
+	cmd->space = token->space;
+	cmd->quoted = token->quoted;
+	cmd->str = token->s;
+	(*i)++;
 	if ((*i) < tokens->count)
-		cmd->next = tk->t;
+	{
+		token = tokens->data[(*i)];
+		cmd->next = token->t;
+	}
 	else
 		cmd->next = EMPTY;
 	data->last = cmd->type;
+	if (cmd->type == PIPE)
+		data->check_build = 1;
 	return (cmd);
 }
 
