@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 15:48:23 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/22 05:01:34 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/22 14:39:50 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,25 +53,24 @@ void	check_repeat(t_vector *tokens)
 
 void	check_nexts(t_vector *tokens, t_data *data)
 {
-	t_token	*curr;
-	t_token	*next;
+	t_cmd	*curr;
 	size_t	i;
 
 	i = 0;
 	while (i < tokens->count && data->valid == 1)
 	{
 		curr = tokens->data[i];
-		next = tokens->data[i + 1];
-		if (!next && curr->t == HERE_DOC)
+		if (curr->next == EMPTY && curr->type == HERE_DOC)
 		{
 			er_pr(mini_join(TOKEN, "newline\'"), data, 2, 0);
 			data->valid = 0;
 		}
-		if (curr->t == HERE_DOC)
+		if (curr->type == HERE_DOC)
 		{
-			if (next->t != STRING && next->t != HERE_NOEXP)
+			if (curr->next != STRING && curr->next != HERE_NOEXP)
 			{
-				er_pr(mini_join(TOKEN, mini_join(next->s, "\'")), data, 2, 0);
+				curr = tokens->data[i + 1];
+				er_pr(mini_join(TOKEN, mini_join(curr->str, "\'")), data, 2, 0);
 				data->valid = 0;
 			}
 		}
