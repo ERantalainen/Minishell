@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 18:29:23 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/22 16:34:03 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/22 16:41:33 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	main(int ac, char **av, char **env)
 	catcher();
 	increase_shell_lvl();
 	if (!isatty(STDIN_FILENO))
-		non_interactive();
+		non_interactive(data);
 	else
 		parse_and_execute(data);
 }

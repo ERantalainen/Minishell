@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   functions.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 19:21:07 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/18 01:19:27 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/22 16:41:27 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_cmd		*make_cmd_spc(t_vector *tokens, size_t *i, t_data *data);
 t_cmd		*make_cmd_str(t_vector *tokens, size_t *i, t_data *data);
 
 // --- Input ---
-void		non_interactive(void);
+void		non_interactive(t_data *data);
 char		*get_input(char **argv, int argc);
 char		*take_input(t_data *data);
 int			check_quotes(char *s);

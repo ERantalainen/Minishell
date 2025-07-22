@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 15:48:23 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/22 14:42:39 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/22 16:39:20 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,15 +86,14 @@ int	check_heredoc(t_vector *tokens)
 
 	data = get_data();
 	curr = tokens->data[0];
-	next_check(tokens);
+	check_nexts(tokens, data);
+	if (!data->valid)
+		return (0);
 	if (tokens->count == 1 && curr->type == HERE_DOC)
 	{
 		er_pr(mini_join(TOKEN, "newline\'"), data, 2, 0);
 		return (0);
 	}
-	check_nexts(tokens, data);
-	if (!data->valid)
-		return (0);
 	count = here_count(tokens);
 	if (count > 16)
 		ft_exit("minishell: here document count exceeded", 2);
