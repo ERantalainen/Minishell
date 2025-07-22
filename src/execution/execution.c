@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 16:20:20 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/21 14:29:33 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/22 13:33:33 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,15 +82,29 @@ static void	exec_pipeline(t_cmd **tokens, t_pipedata *p, char **env)
 	wait_for_children(p);
 }
 
+int	only_heredocs(t_cmd **tokens)
+{
+	int	i = 0;
+	while (tokens[i])
+	{
+		if (tokens[i]->type == HERE_DOC)
+			i += 2;
+		else
+			return (0);
+	}
+	return (-1);
+}
+
 void	execution(t_cmd **tokens, char **env)
 {
 	t_pipedata	*p;
 	t_data		*data;
 	int			i;
 
-	if ((tokens[0]->type == HERE_DOC && tokens[1]->next == EMPTY)
-		|| (tokens[0]->next == EMPTY && ft_strcmp(tokens[0]->str, "") == 0
-			&& tokens[0]->quoted == false && tokens[0]->space == false))
+	if ((only_heredocs(tokens) == -1) || (tokens[0]->next == EMPTY
+		&& ft_strcmp(tokens[0]->str, "") == 0
+		&& tokens[0]->quoted == false
+		&& tokens[0]->space == false))
 		return ;
 	data = get_data();
 	if (data->valid != 1)
