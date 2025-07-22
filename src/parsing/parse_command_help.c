@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 02:20:24 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/22 21:14:41 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/22 21:40:52 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static t_cmd	*command_checks(t_data *dt, t_token *tk, t_cmd *cmd, size_t *i)
 		(*i)++;
 	}
 	return (cmd);
-}
+
 
 static t_cmd	*export_multiword(t_data *data, t_cmd *cmd, int i)
 {
