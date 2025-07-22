@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 23:47:36 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/22 05:15:10 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/22 05:17:29 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ void	here_two(t_vector *tokens, int count, t_data *data)
 	int		i;
 
 	i = 0;
+	if (!data->valid)
+		return ;
 	while (count > 0 && tokens->data[i])
 	{
 		curr = tokens->data[i];
