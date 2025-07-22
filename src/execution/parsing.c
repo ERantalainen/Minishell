@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 13:28:50 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/19 23:58:33 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/22 21:52:45 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ int	setup_cmd_to_execute(t_cmd **tokens, t_pipedata *p)
 	size_t	total_args;
 	size_t	arg_i;
 	size_t	tok_i;
+
 	if (find_next_cmd_in_tokens(tokens, p) < 0)
 		return (-1);
 	split = mini_split(tokens[p->cmd_index]->str, ' ');

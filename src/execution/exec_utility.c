@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 21:15:46 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/17 00:58:32 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/22 21:52:40 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ bool	check_for_builtin(t_cmd **tokens, int pipe_count)
 	int	i;
 
 	i = 0;
-	if (tokens[i]->type != BUILTIN && pipe_count == 0)
-		return (false);
 	while (tokens[i])
 	{
 		if (tokens[i]->type == BUILTIN)
