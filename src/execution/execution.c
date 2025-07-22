@@ -6,7 +6,7 @@
 /*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 16:20:20 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/22 13:33:33 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/22 13:45:09 by jpelline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,9 +90,19 @@ int	only_heredocs(t_cmd **tokens)
 		if (tokens[i]->type == HERE_DOC)
 			i += 2;
 		else
-			return (0);
+			return (1);
 	}
-	return (-1);
+	return (0);
+}
+
+int	only_empty_export(t_cmd **tokens)
+{
+	if (tokens[0]->next == EMPTY
+		&& ft_strcmp(tokens[0]->str, "") == 0
+		&& tokens[0]->quoted == false
+		&& tokens[0]->space == false)
+		return (0);
+	return (1);
 }
 
 void	execution(t_cmd **tokens, char **env)
@@ -101,10 +111,7 @@ void	execution(t_cmd **tokens, char **env)
 	t_data		*data;
 	int			i;
 
-	if ((only_heredocs(tokens) == -1) || (tokens[0]->next == EMPTY
-		&& ft_strcmp(tokens[0]->str, "") == 0
-		&& tokens[0]->quoted == false
-		&& tokens[0]->space == false))
+	if (!only_heredocs(tokens) || !only_empty_export(tokens))
 		return ;
 	data = get_data();
 	if (data->valid != 1)
