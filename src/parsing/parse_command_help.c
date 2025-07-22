@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 02:20:24 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/22 14:59:06 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/22 16:35:38 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,8 @@ t_cmd	*cmd_help(t_cmd *cmd, size_t *i, t_token *token, t_data *data)
 		if (token->space == 1)
 			break ;
 		join = 1;
+		if (token->quoted == 1)
+			cmd->quoted = 1;
 	}
 	return (cmd);
 }

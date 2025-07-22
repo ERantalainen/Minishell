@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 18:40:32 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/14 15:32:44 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/22 16:24:19 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,9 @@ static void	input_syntax(t_cmd *cmd, t_data *data)
 		data->valid = -10;
 	else if (cmd->type == INPUT && cmd->next != FILES && cmd->next != STRING
 		&& cmd->next != BUILTIN)
+		data->valid = -1;
+	else if (cmd->type == HERE_DOC && cmd->next != FILES && cmd->next != STRING
+	&& cmd->next  != HERE_NOEXP)
 		data->valid = -1;
 }
 
@@ -40,7 +43,10 @@ static void	additional_syntax(t_cmd *cmd, t_data *data, size_t i)
 	if (cmd->type == PIPE && cmd->next == EMPTY)
 		data->valid = -10;
 	if (cmd->type == PIPE && i == 0)
+	{
 		er_pr(mini_join(TOKEN, "|'"), data, 2, 0);
+		data->valid = -11;
+	}
 }
 
 void	check_files(t_cmd *cmd, t_cmd *next)
@@ -67,6 +73,8 @@ int	syntax_help(t_cmd *cmd, t_data *data, int i, t_vector *commands)
 	input_syntax(cmd, data);
 	output_syntax(cmd, data);
 	additional_syntax(cmd, data, i);
+	if (data->valid == -11)
+		return (-1);
 	if (data->valid == -10)
 	{
 		ft_fprintf(2, "%s'\n", mini_join(TOKEN, "newline"));

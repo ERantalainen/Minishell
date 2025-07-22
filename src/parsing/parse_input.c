@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/22 14:57:26 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/22 16:33:59 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ char	*token_string(char *s, size_t *i, t_type *last)
 	int		len;
 
 	if (check_empty_quote(s + *i, i))
-		return ("");
+		return (mini_strdup(""));
 	if ((*last == INPUT || *last == OUTPUT || *last == APPEND) && s[*i] == '$')
 		if (ambigous(s, *i) != NULL)
 			return (NULL);
