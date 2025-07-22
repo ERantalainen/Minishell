@@ -15,10 +15,6 @@
 static int	find_next_cmd_in_tokens(t_cmd **tokens, t_pipedata *p)
 {
 	p->cmd_index = skip_redirects(tokens, p->cmd_index);
-	while (tokens[p->cmd_index] && tokens[p->cmd_index]->type != STRING
-		&& tokens[p->cmd_index]->type != FILES
-		&& tokens[p->cmd_index]->type != BUILTIN)
-		p->cmd_index++;
 	if (tokens[p->cmd_index] && tokens[p->cmd_index]->type == FILES
 		&& tokens[p->cmd_index]->next == FILES)
 		tokens[p->cmd_index + 1]->type = STRING;
