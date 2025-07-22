@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 18:39:57 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/14 17:15:11 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/22 14:46:36 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ t_vector	*create_commands(t_vector *tokens)
 	while (i < data->tokens->count)
 	{
 		curr = tokens->data[i];
-		if (curr->t == STRING || curr->t == FILES)
+		if (curr->t == STRING || curr->t == FILES || curr->t == HERE_NOEXP)
 			add_elem(data->cmds, make_cmd_str(tokens, &i, data));
 		else
 			add_elem(data->cmds, make_cmd_spc(tokens, &i, data));

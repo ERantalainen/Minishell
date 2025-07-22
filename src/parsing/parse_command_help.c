@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 02:20:24 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/17 00:03:02 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/22 14:59:06 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ t_cmd	*cmd_help(t_cmd *cmd, size_t *i, t_token *token, t_data *data)
 
 	join = 0;
 	while ((*i) < data->tokens->count && (token->t == STRING
-			|| token->t == FILES))
+			|| token->t == FILES || token->t == HERE_NOEXP))
 	{
 		if (join == 0)
 		{

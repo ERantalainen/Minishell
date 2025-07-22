@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 18:33:04 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/21 14:26:24 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/22 14:48:28 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ t_vector	*next_check(t_vector *commands)
 	{
 		curr = commands->data[i];
 		next = commands->data[i + 1];
-		if (curr->type == HERE_DOC)
-			next->type = FILES;
 		curr->next = next->type;
 		i++;
 	}

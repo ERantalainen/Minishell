@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 15:44:11 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/20 00:08:17 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/22 14:44:19 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ char	*here_doc(char *limiter, int index, t_type type)
 	if (data->hdfd[index] == -1)
 		soft_exit("heredoc", 1, 1);
 	here_loop(limiter, index, data, name);
-	if (type == STRING && data->valid == 1)
+	if ((type == STRING || type == FILES) && data->valid == 1)
 		here_check(data->hdfd[index], name, data, index);
 	return (name);
 }

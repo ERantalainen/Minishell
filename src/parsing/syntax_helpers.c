@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 23:47:36 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/22 14:21:39 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/22 15:00:41 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*create_here_prompt(t_vector *vec, int i, int count)
 	tks = (t_cmd **)vec->data;
 	here_type = tks[j - 1]->type;
 	limiter = mini_strdup(tks[j - 1]->str);
-	if (tks[j - 1]->quoted == 1)
+	if (tks[j - 1]->quoted == 1 || (tks[j] && tks[j]->quoted == 1))
 		here_type = HERE_NOEXP;
 	while (tks[j] && (tks[j]->type == HERE_NOEXP || tks[j]->type == FILES
 			|| tks[j]->type == STRING) && (!tks[j]->space))

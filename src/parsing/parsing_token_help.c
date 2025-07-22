@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 02:09:42 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/14 17:33:23 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/22 14:56:03 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 t_token	*check_type(t_token *new, t_data *data, size_t *i, char *s)
 {
+	if (new->quoted == 1)
+		return (new);
 	if (s[*i - 1] == '"' || s[*i - 1] == '\'')
 		new->t = STRING;
 	else if (data->tokens->count == 0 && !ft_isspace(s[*i]))

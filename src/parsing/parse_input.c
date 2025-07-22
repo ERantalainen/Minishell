@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/22 14:17:53 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/22 14:57:26 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,14 @@ t_token	*create_token(char *s, size_t *i, t_type last, t_data *data)
 	new->quoted = 0;
 	new->space = 0;
 	new->t = STRING;
-	if ((last == QUOTED || s[*i - 1] == '"' || s[*i - 1] == '\'') && last != 5)
-	{
+	if ((last == QUOTED || s[*i - 1] == '"' || s[*i - 1] == '\''))
 		new->quoted = 1;
-		return (new);
-	}
 	if (last == EXPANSION)
 		new->expansion = 1;
 	else
 		new = check_type(new, data, i, s);
-	if (new->t == STRING && (last == HERE_DOC && (s[(*i -1)] == '"'
-				|| s[(*i -1)] == '\'' || data->last == HERE_NOEXP)))
+	if ((last == HERE_DOC && (s[(*i - 1)] == '"' || s[(*i - 1)] == '\''))
+	|| (last == HERE_NOEXP && new->t == STRING))
 		new->t = HERE_NOEXP;
 	return (new);
 }
