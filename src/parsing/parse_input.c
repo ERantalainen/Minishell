@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:38:10 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/22 05:01:10 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/22 14:17:53 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,6 @@ char	*token_string(char *s, size_t *i, t_type *last)
 	if ((*last == INPUT || *last == OUTPUT || *last == APPEND) && s[*i] == '$')
 		if (ambigous(s, *i) != NULL)
 			return (NULL);
-	printf("String: %s, last: %d\n", s + *i, *last);
 	if (s[(*i)] == '\'' || s[(*i)] == '"' || *last == HERE_DOC || *last == HERE_NOEXP)
 		return (quoted_token(s + *i, s[(*i)], i, last));
 	if (s[*i] == '$')

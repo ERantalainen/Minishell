@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 23:47:36 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/22 05:17:29 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/22 14:21:39 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char	*create_here_prompt(t_vector *vec, int i, int count)
 			j++;
 		}
 	}
-	while (i++ < j)
+	while (i++ < j - 1)
 		remove_elem(vec, i);
 	return (here_doc(limiter, count - 1, here_type));
 }
