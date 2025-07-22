@@ -179,6 +179,8 @@ int			path_exists(void);
 void		find_next_cmd_index(t_cmd **tokens, t_pipedata *p);
 size_t		skip_redirects(t_cmd **tokens, size_t tok_i);
 bool		check_for_builtin(t_cmd **tokens, int pipe_count);
+int			only_heredocs(t_cmd **tokens);
+int			only_empty_export(t_cmd **tokens);
 
 // --- Execution --- File & Redirect Handling ---
 int			open_handler(t_pipedata *p, const char *path);

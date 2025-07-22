@@ -31,7 +31,7 @@ t_token	*create_token(char *s, size_t *i, t_type last, t_data *data)
 	else
 		new = check_type(new, data, i, s);
 	if ((last == HERE_DOC && (s[(*i - 1)] == '"' || s[(*i - 1)] == '\''))
-	|| (last == HERE_NOEXP && new->t == STRING))
+		|| (last == HERE_NOEXP && new->t == STRING))
 		new->t = HERE_NOEXP;
 	return (new);
 }
@@ -114,7 +114,8 @@ char	*token_string(char *s, size_t *i, t_type *last)
 	if ((*last == INPUT || *last == OUTPUT || *last == APPEND) && s[*i] == '$')
 		if (ambigous(s, *i) != NULL)
 			return (NULL);
-	if (s[(*i)] == '\'' || s[(*i)] == '"' || *last == HERE_DOC || *last == HERE_NOEXP)
+	if (s[(*i)] == '\'' || s[(*i)] == '"'
+		|| *last == HERE_DOC || *last == HERE_NOEXP)
 		return (quoted_token(s + *i, s[(*i)], i, last));
 	if (s[*i] == '$')
 	{
@@ -129,5 +130,3 @@ char	*token_string(char *s, size_t *i, t_type *last)
 	}
 	return (token);
 }
-
-// Create a string for the token

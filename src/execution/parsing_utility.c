@@ -28,3 +28,28 @@ size_t	skip_redirects(t_cmd **tokens, size_t tok_i)
 	}
 	return (tok_i);
 }
+
+int	only_heredocs(t_cmd **tokens)
+{
+	int	i;
+
+	i = 0;
+	while (tokens[i])
+	{
+		if (tokens[i]->type == HERE_DOC)
+			i += 2;
+		else
+			return (1);
+	}
+	return (0);
+}
+
+int	only_empty_export(t_cmd **tokens)
+{
+	if (tokens[0]->next == EMPTY
+		&& ft_strcmp(tokens[0]->str, "") == 0
+		&& tokens[0]->quoted == false
+		&& tokens[0]->space == false)
+		return (0);
+	return (1);
+}
