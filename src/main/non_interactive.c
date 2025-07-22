@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 22:53:35 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/15 17:11:02 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/22 03:51:33 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	non_interactive(void)
 		if (line)
 		{
 			commands = create_commands(token_vector(line));
-			check_command_syntax(commands, data);
+			check_command_syntax(commands, data, 0);
 			if (data->valid == 1 && commands->data)
 				execution((t_cmd **)commands->data,
 					vec_to_array(data->env_vec));

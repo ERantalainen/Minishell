@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   functions.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 19:21:07 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/18 01:19:27 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/22 04:08:30 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,12 @@ int			check_quotes(char *s);
 //  --- Syntax Check ---
 t_vector	*next_check(t_vector *commands);
 void		check_repeat(t_vector *tokens);
-void		check_command_syntax(t_vector *commands, t_data *data);
+void		check_command_syntax(t_vector *commands, t_data *data, int i);
 void		er_pr(char *error, t_data *data, int exit, bool per);
 char		*ambigous(char *s, size_t i);
 int			syntax_help(t_cmd *cmd, t_data *data, int i, t_vector *commands);
 void		check_files(t_cmd *cmd, t_cmd *next);
+void		check_all_syntax(t_vector *commands, t_data *data);
 
 //  --- Built In ---
 void		echo(t_cmd **cmd, int i);

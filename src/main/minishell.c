@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 18:29:23 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/21 14:26:41 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/22 04:08:55 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,10 @@ static void	parse_and_execute(t_data *data)
 		{
 			add_history(input);
 			tokens = create_commands(token_vector(input));
+			check_heredoc(tokens);
+			check_all_syntax(tokens, data);
 			if (data->valid == 1 && tokens)
 			{
-				check_command_syntax(tokens, data);
 				execution((t_cmd **)tokens->data,
 					vec_to_array(data->env_vec));
 			}
