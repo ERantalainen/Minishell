@@ -44,9 +44,9 @@
 # define CMD ": command not found"
 # define NMARG ": numeric argument required\n"
 
-# define PROMPT	" \001\x1b[38;5;231m\002> " \
+# define PROMPT	"\001\x1b[38;5;231m\002> " \
 				"\001\x1b[38;5;156m\002minishell" \
-				"\001\x1b[0m\002\001\x1b[38;5;231m\002 >\001\x1b[0m\002 "
+				"\001\x1b[0m\002\001\x1b[38;5;231m\002$\001\x1b[0m\002 "
 
 # define HD_PROMPT	"\001\x1b[38;5;231m\002>> \001\x1b[0m\002"
 
