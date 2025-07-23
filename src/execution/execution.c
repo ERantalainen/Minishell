@@ -69,7 +69,7 @@ static void	exec_pipeline(t_cmd **tokens, t_pipedata *p, char **env)
 		p->cmd_found = false;
 		if (i < p->pipe_count && pipe(p->pipefd[i]) < 0)
 			return (handle_failure(p, "pipe"));
-		if (p->pipe_count == 0 && check_for_builtin(tokens, p->pipe_count))
+		if (p->pipe_count == 0 && check_for_builtin(tokens))
 			exec_builtin(tokens, p, env);
 		else if (setup_child(tokens, p, env, i) < 0)
 			return ;

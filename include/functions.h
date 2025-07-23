@@ -179,7 +179,7 @@ int			path_exists(void);
 // --- Execution --- Token/Command Parsing & Navigation ---
 void		find_next_cmd_index(t_cmd **tokens, t_pipedata *p);
 size_t		skip_redirects(t_cmd **tokens, size_t tok_i);
-bool		check_for_builtin(t_cmd **tokens, int pipe_count);
+bool	    check_for_builtin(t_cmd **tokens);
 int			only_heredocs(t_cmd **tokens);
 int			only_empty_export(t_cmd **tokens);
 

@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-bool	check_for_builtin(t_cmd **tokens, int pipe_count)
+bool	check_for_builtin(t_cmd **tokens)
 {
 	int	i;
 
