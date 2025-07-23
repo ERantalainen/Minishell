@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpelline <jpelline@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 20:49:29 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/13 23:47:37 by jpelline         ###   ########.fr       */
+/*   Updated: 2025/07/23 16:51:52 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,9 @@ void	child_process(t_cmd **tokens, t_pipedata *p, char **env)
 	safe_close(&p->stdout_copy);
 	path = get_bin_path(mini_strndup(tokens[p->cmd_index]->str,
 				ft_strlen(tokens[p->cmd_index]->str)), env, p);
+	puts(path);
+	puts(p->cmd_args[0]);
+	puts(p->cmd_args[1]);
 	if (access(p->cmd_args[0], X_OK) >= 0
 		&& ft_strncmp(p->cmd_args[0], "/", 1) == 0)
 		if (safe_execve(p, p->cmd_args[0], p->cmd_args, env) < 0)
