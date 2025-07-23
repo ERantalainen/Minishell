@@ -86,8 +86,7 @@ int	check_for_redirects(t_cmd **tokens, t_pipedata *p)
 			check = open_file(tokens, p, APPEND_CONF);
 		else if (tokens[p->index]->type == INPUT)
 			check = open_file(tokens, p, INPUT_CONF);
-		else if (tokens[p->index]->type == HERE_DOC
-			&& tokens[p->index + 1]->next != OUTPUT)
+		else if (tokens[p->index]->type == HERE_DOC)
 			check = open_file(tokens, p, INPUT_CONF);
 		if (check == -1)
 			return (-1);

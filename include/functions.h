@@ -188,6 +188,7 @@ int			open_handler(t_pipedata *p, const char *path);
 int			open_file(t_cmd **tokens, t_pipedata *p, int settings);
 int			check_for_redirects(t_cmd **tokens, t_pipedata *p);
 int			check_all_redir(char *s, size_t len);
+int         safe_execve(t_pipedata *p, char *path, char **argv, char **env);
 
 // --- Execution --- Error & Failure Handling ---
 void		handle_failure(t_pipedata *p, char *str);

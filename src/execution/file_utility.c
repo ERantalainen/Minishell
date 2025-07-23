@@ -49,6 +49,7 @@ int	open_file(t_cmd **tokens, t_pipedata *p, int settings)
 		p->infile = open(tokens[p->index + 1]->str, settings);
 		if (p->infile < 0)
 			return (check_open_errno(p, tokens[p->index + 1]->str));
+		p->has_in_redirect = true;
 	}
 	else
 	{

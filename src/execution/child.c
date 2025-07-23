@@ -12,15 +12,6 @@
 
 #include "minishell.h"
 
-static int	safe_execve(t_pipedata *p, char *path, char **argv, char **env)
-{
-	t_stat	st;
-
-	if (fstat(STDOUT_FILENO, &st) == -1 && errno == EBADF)
-		ft_exit_child(p, NULL, 1);
-	return (execve(path, argv, env));
-}
-
 static void	execute_child_builtin(t_cmd **tokens, t_pipedata *p)
 {
 	if (p->pipe_count > 0)
@@ -61,6 +52,19 @@ static void	close_unused_child_fds(t_pipedata *p, int *child_stdin,
 		safe_close(&p->outfile);
 }
 
+static void setup_middle_pipe(t_pipedata *p, int *child_stdin,
+		int *child_stdout)
+{
+		if (p->has_in_redirect)
+			*child_stdin = p->infile;
+		else
+			*child_stdin = p->pipefd[p->pipe_index - 1][READ];
+		if (p->has_out_redirect)
+			*child_stdout = p->outfile;
+		else
+			*child_stdout = p->pipefd[p->pipe_index][WRITE];
+}
+
 static void	setup_read_and_write_ends(t_pipedata *p, int *child_stdin,
 		int *child_stdout)
 {
@@ -81,14 +85,14 @@ static void	setup_read_and_write_ends(t_pipedata *p, int *child_stdin,
 	}
 	else if (p->pipe_index == p->pipe_count)
 	{
-		*child_stdin = p->pipefd[p->pipe_index - 1][READ];
+		if (p->has_in_redirect)
+			*child_stdin = p->infile;
+		else
+			*child_stdin = p->pipefd[p->pipe_index - 1][READ];
 		*child_stdout = p->outfile;
 	}
 	else
-	{
-		*child_stdin = p->pipefd[p->pipe_index - 1][READ];
-		*child_stdout = p->pipefd[p->pipe_index][WRITE];
-	}
+		setup_middle_pipe(p, child_stdin, child_stdout);
 }
 
 void	child_process(t_cmd **tokens, t_pipedata *p, char **env)
@@ -108,9 +112,6 @@ void	child_process(t_cmd **tokens, t_pipedata *p, char **env)
 	safe_close(&p->stdout_copy);
 	path = get_bin_path(mini_strndup(tokens[p->cmd_index]->str,
 				ft_strlen(tokens[p->cmd_index]->str)), env, p);
-	puts(path);
-	puts(p->cmd_args[0]);
-	puts(p->cmd_args[1]);
 	if (access(p->cmd_args[0], X_OK) >= 0
 		&& ft_strncmp(p->cmd_args[0], "/", 1) == 0)
 		if (safe_execve(p, p->cmd_args[0], p->cmd_args, env) < 0)

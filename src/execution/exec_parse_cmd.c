@@ -45,3 +45,12 @@ char	*check_dir(t_pipedata *p, char *cmd)
 	}
 	return (mini_join(get_pwd(), cmd + 1));
 }
+
+int	safe_execve(t_pipedata *p, char *path, char **argv, char **env)
+{
+	t_stat	st;
+
+	if (fstat(STDOUT_FILENO, &st) == -1 && errno == EBADF)
+		ft_exit_child(p, NULL, 1);
+	return (execve(path, argv, env));
+}
