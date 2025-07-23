@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 18:40:32 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/22 17:46:54 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/23 16:39:22 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	input_syntax(t_cmd *cmd, t_data *data)
 	else if (cmd->type == HERE_DOC && cmd->next == EMPTY)
 		data->valid = -10;
 	else if (cmd->type == HERE_DOC && cmd->next != FILES && cmd->next != STRING
-	&& cmd->next  != HERE_NOEXP)
+		&& cmd->next != HERE_NOEXP)
 		data->valid = -1;
 }
 

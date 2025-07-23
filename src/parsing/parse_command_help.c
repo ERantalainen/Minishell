@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 02:20:24 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/22 21:44:18 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/23 16:39:08 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,6 @@ t_cmd	*make_cmd_str(t_vector *tokens, size_t *i, t_data *data)
 	data->last = cmd->type;
 	return (cmd);
 }
-
-
 
 t_cmd	*cmd_help(t_cmd *cmd, size_t *i, t_token *token, t_data *data)
 {

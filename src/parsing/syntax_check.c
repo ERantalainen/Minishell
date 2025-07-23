@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 15:48:23 by erantala          #+#    #+#             */
-/*   Updated: 2025/07/22 16:39:20 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/23 16:39:46 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	check_nexts(t_vector *tokens, t_data *data)
 		}
 		if (curr->type == HERE_DOC)
 		{
-			if (curr->next != STRING && curr->next != HERE_NOEXP && curr->next != FILES)
+			if (curr->next != 7 && curr->next != 6 && curr->next != 8)
 			{
 				curr = tokens->data[i + 1];
 				er_pr(mini_join(TOKEN, mini_join(curr->str, "\'")), data, 2, 0);

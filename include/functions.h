@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 19:21:07 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/22 21:12:59 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/23 16:40:45 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,7 +179,7 @@ int			path_exists(void);
 // --- Execution --- Token/Command Parsing & Navigation ---
 void		find_next_cmd_index(t_cmd **tokens, t_pipedata *p);
 size_t		skip_redirects(t_cmd **tokens, size_t tok_i);
-bool	    check_for_builtin(t_cmd **tokens);
+bool		check_for_builtin(t_cmd **tokens);
 int			only_heredocs(t_cmd **tokens);
 int			only_empty_export(t_cmd **tokens);
 
