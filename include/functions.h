@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 19:21:07 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/23 16:40:45 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/23 18:04:19 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,7 +188,7 @@ int			open_handler(t_pipedata *p, const char *path);
 int			open_file(t_cmd **tokens, t_pipedata *p, int settings);
 int			check_for_redirects(t_cmd **tokens, t_pipedata *p);
 int			check_all_redir(char *s, size_t len);
-int         safe_execve(t_pipedata *p, char *path, char **argv, char **env);
+int			safe_execve(t_pipedata *p, char *path, char **argv, char **env);
 
 // --- Execution --- Error & Failure Handling ---
 void		handle_failure(t_pipedata *p, char *str);

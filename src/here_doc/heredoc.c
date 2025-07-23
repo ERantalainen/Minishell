@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 15:44:11 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/22 14:44:19 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/23 18:02:07 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ static void	write_to_tmpfile(char *limiter, int index, t_data *data)
 // Heredoc loop
 void	here_loop(char *limiter, int index, t_data *data, char *name)
 {
+	replace_export("?=0");
 	add_elem(data->heredocs, name);
 	heredoc_signal();
 	write_to_tmpfile(limiter, index, data);

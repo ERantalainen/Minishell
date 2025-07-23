@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 20:49:29 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/23 16:51:52 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/23 18:03:45 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,17 +52,17 @@ static void	close_unused_child_fds(t_pipedata *p, int *child_stdin,
 		safe_close(&p->outfile);
 }
 
-static void setup_middle_pipe(t_pipedata *p, int *child_stdin,
+static void	setup_middle_pipe(t_pipedata *p, int *child_stdin,
 		int *child_stdout)
 {
-		if (p->has_in_redirect)
-			*child_stdin = p->infile;
-		else
-			*child_stdin = p->pipefd[p->pipe_index - 1][READ];
-		if (p->has_out_redirect)
-			*child_stdout = p->outfile;
-		else
-			*child_stdout = p->pipefd[p->pipe_index][WRITE];
+	if (p->has_in_redirect)
+		*child_stdin = p->infile;
+	else
+		*child_stdin = p->pipefd[p->pipe_index - 1][READ];
+	if (p->has_out_redirect)
+		*child_stdout = p->outfile;
+	else
+		*child_stdout = p->pipefd[p->pipe_index][WRITE];
 }
 
 static void	setup_read_and_write_ends(t_pipedata *p, int *child_stdin,

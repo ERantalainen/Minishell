@@ -6,7 +6,7 @@
 /*   By: erantala <erantala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 16:20:20 by jpelline          #+#    #+#             */
-/*   Updated: 2025/07/23 16:55:53 by erantala         ###   ########.fr       */
+/*   Updated: 2025/07/23 18:03:55 by erantala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static void	exec_pipeline(t_cmd **tokens, t_pipedata *p, char **env)
 		if (i < p->pipe_count && pipe(p->pipefd[i]) < 0)
 			return (handle_failure(p, "pipe"));
 		if (p->pipe_count == 0 && check_for_builtin(tokens)
-			&& tokens[0]->type  != STRING)
+			&& tokens[0]->type != STRING)
 			exec_builtin(tokens, p, env);
 		else if (setup_child(tokens, p, env, i) < 0)
 			return ;
